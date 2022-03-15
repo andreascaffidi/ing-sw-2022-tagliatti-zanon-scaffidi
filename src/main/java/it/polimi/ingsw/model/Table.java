@@ -1,4 +1,8 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.islands.Island;
+import it.polimi.ingsw.model.islands.IslandGroup;
+import it.polimi.ingsw.model.pawns.MotherNature;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 
 import java.util.*;

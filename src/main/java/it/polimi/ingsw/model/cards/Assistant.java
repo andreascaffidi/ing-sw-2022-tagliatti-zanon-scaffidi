@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.cards;
 
 public class Assistant {
     private int value;

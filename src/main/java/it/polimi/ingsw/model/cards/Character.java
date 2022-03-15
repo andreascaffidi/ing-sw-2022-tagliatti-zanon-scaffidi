@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.cards;
+
+import it.polimi.ingsw.model.Table;
 
 public abstract class Character {
     private String name;

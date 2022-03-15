@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.Character;
+import it.polimi.ingsw.model.enums.ColorS;
+
 public class TableExpertMode extends Table{
     private int bank;
     private Character[] characterCards;
