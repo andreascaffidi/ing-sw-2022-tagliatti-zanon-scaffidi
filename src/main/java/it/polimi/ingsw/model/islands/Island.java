@@ -12,23 +12,34 @@ public class Island {
     private List<Student> students;
     private Tower tower;
 
-    public Island(){
-
+    public Island(int id){
+        this.id=id;
+        this.motherNature=false;
+        this.students=new ArrayList<Student>();
+        this.tower=null;
     }
 
     public void addStudent(Student student){
-
+        this.students.add(student);
     }
 
     public void setTower(Tower tower){
-
-    }
-
-    public Player getSupremacy(){
-
+        this.tower=tower;
     }
 
     private int numStudent(ColorS color){
+        return this.students.size();
+    }
 
+    public void setMotherNature(boolean motherNature) {
+        this.motherNature = motherNature;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public Tower getTower() {
+        return tower;
     }
 }

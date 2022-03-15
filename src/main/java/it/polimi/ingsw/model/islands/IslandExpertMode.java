@@ -9,12 +9,12 @@ public class IslandExpertMode extends Island{
     private boolean additionalInfluence;
     private ColorS noInfluenceColor;
 
-    public IslandExpertMode(){
-
+    public IslandExpertMode(int id){
+        super(id);
+        this.entryTile=false;
+        this.countTowers=false;
+        this.additionalInfluence=false;
+        this.noInfluenceColor=null;
     }
 
-    @Override
-    public Player getSupremacy(){
-
-    }
 }
