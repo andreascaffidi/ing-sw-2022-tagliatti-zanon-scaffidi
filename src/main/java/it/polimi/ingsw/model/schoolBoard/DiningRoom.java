@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.schoolBoard;
-import it.polimi.ingsw.model.ColorS;
-import it.polimi.ingsw.model.Student;
+import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.pawns.Student;
 import java.util.*;
 
 public class DiningRoom {

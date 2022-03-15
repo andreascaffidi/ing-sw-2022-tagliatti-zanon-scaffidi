@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.model.cards.Assistant;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 
 import java.util.*;

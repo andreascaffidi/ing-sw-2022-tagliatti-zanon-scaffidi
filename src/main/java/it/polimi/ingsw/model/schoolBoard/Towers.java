@@ -1,5 +1,5 @@
 package it.polimi.ingsw.model.schoolBoard;
-import it.polimi.ingsw.model.Tower;
+import it.polimi.ingsw.model.pawns.Tower;
 import java.util.*;
 
 public class Towers {
