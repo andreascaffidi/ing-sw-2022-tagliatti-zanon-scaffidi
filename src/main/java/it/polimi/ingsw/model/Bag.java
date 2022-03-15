@@ -1,20 +1,60 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 
 import java.util.*;
 
+import static it.polimi.ingsw.model.Table.NUM_OF_STUDENTS_PER_COLOR;
+
 public class Bag {
     private List<Student> students;
 
-    public Bag(){
 
+    public Bag() {
+        this.students = new ArrayList<Student>();
     }
 
+    public setup(){
+        //TODO: non va bene perche nel setup delle isole tolgo degli studneto
+        // For every color of students I put 26 Student in the bag
+        for (ColorS color : ColorS.values()) {
+            for (int i=0;i<NUM_OF_STUDENTS_PER_COLOR; i++){
+                this.students.add(new Student(color));
+            }
+        }
+        //then I shuffle them
+        Collections.shuffle(students);
+    }
+
+
+
+    /** Add a student to the bag
+     *
+     * @param student the student to add
+     */
     public void addStudent(Student student){
+        this.students.add(student);
 
+        //then I shuffle them
+        Collections.shuffle(students);
     }
 
-    public Student drawStudent(){
+    /** Add a list of  students to the bag and then shuffle the,
+     *
+     * @param student the student to add
+     */
+    public void addStudents(List<Student> student){
+        this.students.addAll(student);
 
+        //then I shuffle them
+        Collections.shuffle(students);
+    }
+
+    /**
+     * Return and removes a studnet from the bag
+     * @return Student
+     */
+    public Student drawStudent(){
+        return this.students.remove(0);
     }
 }
