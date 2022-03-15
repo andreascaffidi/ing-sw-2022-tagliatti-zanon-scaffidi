@@ -6,11 +6,30 @@ public class Assistant {
     private boolean played;
     private int id;
 
-    public Assistant(){
-
+    public Assistant(int value, int motherNatureMovements, int id){
+        this.value = value;
+        this.motherNatureMovements = motherNatureMovements;
+        this.played = false;
+        this.id = id;
     }
 
-    public void playAssistant(int id){
+    public int getValue() {
+        return value;
+    }
 
+    public int getMotherNatureMovements() {
+        return motherNatureMovements;
+    }
+
+    public boolean isPlayed() {
+        return played;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void playAssistant(){
+        played = true;
     }
 }
