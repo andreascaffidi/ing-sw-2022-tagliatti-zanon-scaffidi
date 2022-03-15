@@ -8,7 +8,8 @@ public class Table {
     private Bag bag;
     private List<Cloud> clouds;
     private List<SchoolBoard> boards;
-    private int numberOfPlayer;
+    private int numberOfPlayers;
+    private MotherNature motherNature;
 
     public Table(){
 
