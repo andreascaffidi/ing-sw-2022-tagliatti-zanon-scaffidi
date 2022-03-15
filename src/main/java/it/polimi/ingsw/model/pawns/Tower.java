@@ -7,7 +7,12 @@ public class Tower {
     private ColorT color;
     private Player owner;
 
-    public Tower(){
+    public Tower(ColorT color, Player owner){
+        this.color=color;
+        this.owner=owner;
+    }
 
+    public Player getOwner() {
+        return owner;
     }
 }
