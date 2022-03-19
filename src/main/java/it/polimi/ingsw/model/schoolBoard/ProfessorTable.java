@@ -24,9 +24,9 @@ public class ProfessorTable {
     }
 
     public boolean hasProfessor(ColorS color){
-        for(Professor i: this.professors)
+        for(Professor p: this.professors)
         {
-            if(i.getcolor() == color) //TODO: qui getcolor() del professore va definita
+            if(p.getColor() == color)
             {
                 return true;
             }
