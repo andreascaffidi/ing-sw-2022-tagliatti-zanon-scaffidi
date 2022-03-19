@@ -17,4 +17,8 @@ public class IslandExpertMode extends Island{
         this.noInfluenceColor=null;
     }
 
+    @Override
+    public Player getSupremacy(){
+
+    }
 }
