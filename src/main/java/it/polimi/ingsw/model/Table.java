@@ -24,7 +24,6 @@ public class Table {
     private Bag bag;
     private List<Cloud> clouds;
     private List<SchoolBoard> boards;
-    private Player[] players;               //aggiunto l'attributo players
 
     //todo: attributi aggiunti dopo
     private List<Professor> professors;
@@ -35,12 +34,6 @@ public class Table {
         this.bag = new Bag();
         this.numberOfPlayers = players.size();
         this.setupStudents();
-
-        //inizializzo players
-        this.players = new Player[numberOfPlayers];
-        for (int i = 0; i<this.numberOfPlayers; i++){
-            this.players[i] = players.get(i);
-        }
 
 
         //PUNTO 1-2-3-5
@@ -174,50 +167,44 @@ public class Table {
     }
 
     /**
-     * Calculates the influence of every player on the island and returns the player who has the highest influence:
-     * for each player checks if he has a specific professor and in that case increments a counter (that calculates influence)
-     * of the number of students on the island with the same color of the specific professor. If the player in exam is the
-     * owner of the tower/s on the island/s, increments influence of the number of towers on the island. If the calculated
-     * influence is bigger than the highest influence, it becomes the highest influence; else if they are equals a boolean
-     * flag "parity" turns on. At the end if there's a parity of the highest influence calculated, the method returns
-     * the old owner of the tower (if there isn't a tower it returns null); else it returns the player who has the
-     * highest influence.
-     * @param island
-     * @return player who has the highest influence on the island
+     * sull'isola per ogni player calcolo l'influenza che avrebbe e me la salvo su una array temporaneo, trovo il massimo
+     * dell'array (massima supremazia), se è uguale allora c'è una parità che posso gestire con un'eccezione, successivamente
+     * confronto il player trovato con il proprietario della torre, se è lo stesso o se è null allora ritorno il player calcolato,
+     * altrimenti se è diverso confronto la supremazia calcolata del player trovato con la supremazia del proprietario (+1)
      */
-    public Player getSupremacy(Island island) {
-        Player oldIslandKing = null, newIslandKing = null;
-        int playerInfluence = 0, maxInfluence = 0;
-        boolean parity = false;
-
-        if (island.getTower() != null) {
-            oldIslandKing = island.getTower().getOwner();
-        }
-
-        for (Player p : players) {
-            for (Professor pr : professors) {
-                if (pr.getOwner().equals(p)) {
-                    playerInfluence = playerInfluence + island.numStudent(pr.getColor());
+    //TODO
+    public Player getSupremacy(Island island){
+        int count=0, supremacy=0;
+        Player player;
+        ColorS colorSupremacy;
+        List<Student> students = island.getStudents();
+        for (ColorS c : ColorS.values()){
+            for (Student s : students){
+                if (s.getColor()==c){
+                    count++;
                 }
             }
-            if (p.equals(oldIslandKing)) {
-                playerInfluence = playerInfluence + island.numOfTowers();
+            if (count > supremacy){
+                supremacy = count;
+                colorSupremacy=c;
             }
-            if (playerInfluence > maxInfluence) {
-                maxInfluence = playerInfluence;
-                newIslandKing = p;
-                parity = false;
-            } else if (playerInfluence == maxInfluence){
-                parity = true;
+            else if (count == supremacy){
+                colorSupremacy=null;
             }
-            playerInfluence = 0;
         }
-
-        if (parity == true){
-            return oldIslandKing;
+        player = getProfessor(colorSupremacy).getOwner();
+        if (island.getTower() == null){
+            return player;
         }
-        else {
-            return newIslandKing;
+        else if (tower.getOwner() == player){
+            return player;
+        }
+        else if(supremacy > island.getSupremacy()+1){
+            island.setSupremacy(supremacy);
+            return player;
+        }
+        else{
+            return island.getTower().getOwner();
         }
     }
 

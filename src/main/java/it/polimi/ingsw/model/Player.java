@@ -47,15 +47,4 @@ public class Player {
     public int getTagTeam() {
         return tagTeam;
     }
-
-    /**
-     * definito Override metodo equals()
-     */
-    @Override
-    public boolean equals(Object o){
-        if(!(o instanceof Player)) return false;
-        if(o==null) return false;
-        Player that = (Player) o;
-        return this.username==that.username;
-    }
 }
