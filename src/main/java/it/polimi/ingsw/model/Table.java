@@ -155,7 +155,11 @@ public class Table {
     }
 
     public Island motherNatureIsland(){
-
+        this.islands.forEach(island->{
+            if(island.isMotherNature()){
+                return island;
+            }
+        });
     }
 
     public Player getWinner(){
