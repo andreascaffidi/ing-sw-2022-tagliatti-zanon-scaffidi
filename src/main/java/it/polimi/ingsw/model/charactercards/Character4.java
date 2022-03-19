@@ -6,8 +6,9 @@ public class Character4 {
     }
 
     @Override
-    public void activate(Table table, Controller controller)
+    public void activate(Table table, int increment)
     {
+        
         //TODO: Puoi muovere madre natura fino a 2 isole addizionali rispetto a quanto indicato sulla carta assistente che hai giocato
     }
 }

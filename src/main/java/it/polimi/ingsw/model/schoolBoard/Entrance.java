@@ -20,8 +20,4 @@ public class Entrance {
     public void removeStudent(Student student){
         students.remove(student);
     }
-
-    public void addStudent(List<Student> students){
-        this.students.addAll(students);
-    }
 }

@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Table;
 
-public abstract class Character {
+public interface Character {
     private String name;
     private int cost;
 

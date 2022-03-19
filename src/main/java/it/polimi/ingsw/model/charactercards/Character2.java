@@ -6,9 +6,11 @@ public class Character2 {
         super(2, 2);
     }
 
+    //TODO: durante questo turno, prendi il controllo dei Professori anche se nella tua sala hai lo stesso numero di studenti del giocatore che li controlla in quel momento
     @Override
-    public void activate(Table table, Controller controller)
+    public void activate(Table table)
     {
-        //TODO: durante questo turno, prendi il controllo dei Professori anche se nella tua sala hai lo stesso numero di studenti del giocatore che li controlla in quel momento
+        table.setProfessorTie(true);
+
     }
 }

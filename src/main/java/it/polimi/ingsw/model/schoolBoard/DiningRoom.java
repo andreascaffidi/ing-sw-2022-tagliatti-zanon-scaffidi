@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model.schoolBoard;
 import com.sun.source.tree.DefaultCaseLabelTree;
-import it.polimi.ingsw.model.ColorS;
-import it.polimi.ingsw.model.Student;
+import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.pawns.Student;
+
 import java.util.*;
 
 public class DiningRoom {
@@ -19,26 +20,6 @@ public class DiningRoom {
         this.pinkLine = new ArrayList<Student>();
     }
 
-    public List<Student> getGreenLine() {
-        return greenLine;
-    }
-
-    public List<Student> getRedLine() {
-        return redLine;
-    }
-
-    public List<Student> getYellowLine() {
-        return yellowLine;
-    }
-
-    public List<Student> getBlueLine() {
-        return blueLine;
-    }
-
-    public List<Student> getPinkLine() {
-        return pinkLine;
-    }
-
     public List<Student> getLine(ColorS color)
     {
         switch (color) {
@@ -52,12 +33,12 @@ public class DiningRoom {
                 return yellowLine;
             case PINK:
                 return pinkLine;
-            default: return //TODO: ritorna eccezione nel caso in cui il colore non fosse giusto
+            default: return null;
         }
     }
 
-    public void addStudent(ColorS color, Student student){
-        switch (color)
+    public void addStudent(Student student){
+        switch (student.getColor())
         {
             case BLUE:
                 blueLine.add(student);
@@ -69,7 +50,7 @@ public class DiningRoom {
                 redLine.add(student);
             case YELLOW:
                 yellowLine.add(student);
-            default: return //TODO: ritorna eccezione nel caso in cui il colore non fosse giusto
+            default: return;
         }
     }
 
@@ -86,7 +67,7 @@ public class DiningRoom {
                 return redLine.size();
             case YELLOW:
                 return yellowLine.size();
-            default: return //TODO: ritorna eccezione nel caso in cui il colore non fosse giusto
+            default: return 0;
         }
     }
 }
