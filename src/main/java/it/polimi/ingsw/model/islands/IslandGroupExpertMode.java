@@ -8,4 +8,14 @@ public class IslandGroupExpertMode extends IslandExpertMode{
         super(id);
         this.islands=islands;
     }
+
+    /**
+     * This Override is useful for table.getSupremacy() method to count the influence of towers on the islands
+     * @return number of towers on the group of islands
+     */
+    @Override
+    public int numOfTowers(){
+        return islands.size();
+    }
+
 }
