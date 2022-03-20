@@ -71,4 +71,7 @@ public class Island {
         }
     }
 
+    public boolean isMotherNature() {
+        return motherNature;
+    }
 }

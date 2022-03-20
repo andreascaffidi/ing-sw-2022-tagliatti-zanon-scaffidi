@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.schoolBoard;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.islands.Island;
 
 public class SchoolBoard {
     private Player player;
@@ -36,4 +37,5 @@ public class SchoolBoard {
     public Towers getTowers() {
         return towers;
     }
+
 }

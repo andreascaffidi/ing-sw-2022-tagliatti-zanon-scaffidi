@@ -31,12 +31,12 @@ public class Table {
     private List<Student> students;
 
     public Table(List<Player> players){
-        this.motherNature = new MotherNature();
         this.bag = new Bag();
         this.numberOfPlayers = players.size();
         this.setupStudents();
 
         //inizializzo players
+        //todo: forse conviene lasciare una lista per i giocatori
         this.players = new Player[numberOfPlayers];
         for (int i = 0; i<this.numberOfPlayers; i++){
             this.players[i] = players.get(i);
@@ -70,9 +70,8 @@ public class Table {
         for(int i = 0; i < this.boards.size(); i++){
             List<Student> studentsToAdd = new ArrayList<Student>();
             for(int j=0; j<NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW; j++){
-                studentsToAdd.add(this.bag.drawStudent());
+                this.boards.get(i).getEntrance().addStudent(this.bag.drawStudent());
             }
-            this.boards.get(i).getEntance().addStudent(studentsToAdd);
         }
     }
 
@@ -92,7 +91,11 @@ public class Table {
         //prendo un isola a caso
         int motherNatureIslandIndex = new Random().nextInt(NUM_OF_ISLANDS);
         Island motherNatureIsland = islands.get(motherNatureIslandIndex);
+
+        //instanzio madre natura
+        this.motherNature = new MotherNature(motherNatureIsland);
         this.setMotherNature(motherNatureIsland);
+
         int oppositeIslandIndex = (motherNatureIslandIndex + (NUM_OF_ISLANDS/2)) % NUM_OF_ISLANDS;
 
         for(int i = 0; i<this.islands.size(); i++){
@@ -143,14 +146,8 @@ public class Table {
 
 
     public Professor getProfessor(ColorS color){
-        for(int i = 0; i < this.professors.size(); i++) {
-            if(this.professors.get(i).getColor() == color){
-                return this.professors.get(i);
-            }
-        }
-
-        //FIXME: non ritornare null
-        return null;
+        return this.professors.stream().filter(professor->professor.getColor() == color)
+                .findAny().orElseThrow(()->new RuntimeException("Professor not found"));
     }
 
     public IslandGroup newIslandGroup(List<Island> islands){
@@ -161,20 +158,47 @@ public class Table {
 
     }
 
+    //TODO: testare il funzionamento
     public Island motherNatureIsland(){
-        this.islands.forEach(island->{
-            if(island.isMotherNature()){
-                return island;
+        return this.islands.stream().filter(island -> island.isMotherNature())
+                .findFirst().orElseThrow(() -> new RuntimeException("Mother Nature not found"));
+    }
+
+    //TODO: testare perch non sono convinto ahahah
+    public Player getPlayerWithMaxTowers(){
+        Map<Player,Integer> towers = new HashMap<>();
+        for(int i = 0; i< this.players.length; i++) {
+            for (Island island : islands) {
+                if (island.getTower().getOwner() == this.players[i]) {
+                    towers.replace(players[i],towers.get(players[i]),towers.get(players[i])+1);
+                }
             }
-        });
+        }
+        return Collections.max(towers.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
+    }
+    //TODO: testare perchè non sono convinto, come sopra; più che altro perche ritorno la chiave della mappa
+    // che credo non sia lo stesso oggetto player in players
+    // (un po come nei foreach)
+    public Player getPlayerWithMaxProfessor(){
+        Map<Player,Integer> professors = new HashMap<>();
+        for(int i = 0; i< this.boards.size(); i++) {
+            int nProfessor = boards.get(i).getProfessorTable().getProfessors().size();
+            professors.put(boards.get(i).getPlayer(),nProfessor);
+        }
+        return Collections.max(professors.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
     }
 
+
+    // get winner da fare nel controller
+    @Deprecated
     public Player getWinner(){
-
+        return null;
     }
 
+    //TODO: testare il funzionamento
     public Player professorOwner(ColorS color){
-
+        return this.boards.stream().filter(board -> board.getProfessorTable().hasProfessor(color))
+                .findFirst().orElseThrow(() -> new RuntimeException("Professor owner not found")).getPlayer();
     }
 
     /**
