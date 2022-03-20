@@ -26,7 +26,10 @@ public class Bag {
         Collections.shuffle(students);
     }
 
-
+    public List<Student> getStudents()
+    {
+        return this.students;
+    }
 
     /** Add a student to the bag
      *
