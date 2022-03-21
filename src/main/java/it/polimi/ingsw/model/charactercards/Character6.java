@@ -1,13 +1,29 @@
 package it.polimi.ingsw.model.charactercards;
 
-public class Character6 {
-    public Character1(String name, int cost) {
-        super(6, 3);
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.cards.TypeOfCard;
+
+public class Character6 implements TypeOfCard {
+
+    private int islandChosen;
+
+    public Character6() {
+        islandChosen=0;
     }
 
     @Override
-    public void activate(Table table, Controller controller)
+    public void effect(TableExpertMode table)
     {
-        //TODO: durante il conteggio dell'influenza su un'Isola (o gruppo di isole), le torri presenti non vengono calcolate
+        //notify view scegliere isola
+        table.getIsland(islandChosen).setCountTowers(false);
+    }
+
+    @Override
+    public void setup(TableExpertMode table) {
+
+    }
+
+    public void setIslandChosen(int islandChosen) {
+        this.islandChosen = islandChosen;
     }
 }

@@ -47,4 +47,16 @@ public class Player {
     public int getTagTeam() {
         return tagTeam;
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o == null)
+            return false;
+        if(!(o instanceof Player))
+            return false;
+        Player p = (Player)o;
+
+        return this.username == p.username;
+    }
 }

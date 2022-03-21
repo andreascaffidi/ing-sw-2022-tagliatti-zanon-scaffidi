@@ -9,6 +9,7 @@ public class TableExpertMode extends Table{
     private int bank;
     private Character[] characterCards;
     private boolean professorTie;
+    private ColorS noInfluenceColor;
 
     public TableExpertMode(List<Player> players){
         super(players);
@@ -31,6 +32,21 @@ public class TableExpertMode extends Table{
     }
 
     public void resetCardsEffect(){
+        this.professorTie=false;
+        for (IslandExpertMode i: this.islands){
+            i.setCountTowers(true);
+        }
+        for (PlayerExpertMode p : this.players){
+            p.setAdditionalInfluence(false);
+        }
+        this.noInfluenceColor=null;
+    }
 
+    public void setNoInfluenceColor(ColorS noInfluenceColor) {
+        this.noInfluenceColor = noInfluenceColor;
+    }
+
+    public void setProfessorTie(boolean professorTie) {
+        this.professorTie = professorTie;
     }
 }

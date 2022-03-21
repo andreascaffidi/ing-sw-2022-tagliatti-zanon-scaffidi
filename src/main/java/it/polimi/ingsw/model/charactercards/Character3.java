@@ -1,26 +1,42 @@
 package it.polimi.ingsw.model.charactercards;
 
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Table;
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.cards.TypeOfCard;
 import it.polimi.ingsw.model.islands.Island;
+import it.polimi.ingsw.model.pawns.Tower;
 
-public class Character3 {
-    public Character3(String name, int cost) {
-        super(3, 3);
+public class Character3 implements TypeOfCard {
+
+    private int islandChosen;
+
+    public Character3() {
+        this.islandChosen=0;
     }
 
-    //TODO: scegli un'isola e calcola la maggioranza come se Madre Natura avesse terminato il suo movimento lì.
-    //In questo turno Madre Natura si muoverà come di consueto e nell'Isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata
+
     @Override
-    public Player activate(Table table, Island island)
+    public void effect(TableExpertMode table)
     {
-        for(Island i : table.getIslands())
-        {
-            if(i.equals(island))
-            {
-                return table.getSupremacy(i);
-                //supponiamo ci sia un metodo nel controller che ad ogni round sostituisca le torri in base alla supremazia.
-            }
+        //notify view scegli un isola
+
+        Island island = table.getIsland(islandChosen);
+        Player king = table.getSupremacy(island);
+        if (!king.equals(table.getIsland(islandChosen).getTower().getOwner())) {
+            int lastIndex = king.getSchoolBoard().getTowers().getTowers().size()-1;
+            Tower newTower = king.getSchoolBoard().getTowers().getTowers().remove(lastIndex);
+            Tower oldTower = table.getIsland(islandChosen).getTower();
+            table.getIsland(islandChosen).setTower(newTower);
+            oldTower.getOwner().getSchoolBoard().getTowers().getTowers().add(oldTower);
         }
+    }
+
+    @Override
+    public void setup(TableExpertMode table) {
+
+    }
+
+    public void setIslandChosen(int islandChosen) {
+        this.islandChosen = islandChosen;
     }
 }

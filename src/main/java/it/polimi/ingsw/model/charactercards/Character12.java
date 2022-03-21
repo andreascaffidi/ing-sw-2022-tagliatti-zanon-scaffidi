@@ -1,14 +1,40 @@
 package it.polimi.ingsw.model.charactercards;
 
-public class Character12 {
-    public Character12(String name, int cost) {
-        super(12, 3);
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.cards.TypeOfCard;
+import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.pawns.Student;
+
+public class Character12 implements TypeOfCard {
+
+    private static final int NUM_OF_STUDENTS = 3;
+    private ColorS color;
+
+    public Character12() {
+        this.color = null;
     }
 
     @Override
-    public void activate(Table table, Controller controller)
+    public void effect(TableExpertMode table)
     {
-        //TODO: Scegli un colore di Studente; ogni giocatore (incluso te) deve rimettere nel sacchetto 3 studenti di quel colore presenti nella sua sala.
+
         //Chi avesse meno di 3 studenti di quel colore, rimetterà tutti quelli che ha
+        //notify view scegli colore
+        for (Player p : table.getPlayers()){
+            for (int i = 0; i < NUM_OF_STUDENTS; i++){
+                Student student = p.getSchoolBoard().getDiningRoom().removeStudent(color);
+                table.getBag().addStudent(student);
+            }
+        }
+    }
+
+    @Override
+    public void setup(TableExpertMode table) {
+
+    }
+
+    public void setColor(ColorS color) {
+        this.color = color;
     }
 }

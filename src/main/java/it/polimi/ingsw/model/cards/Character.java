@@ -1,14 +1,18 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Table;
+import it.polimi.ingsw.model.TableExpertMode;
 
-public interface Character {
+public class Character {
+
     private String name;
     private int cost;
+    private TypeOfCard typeOfCard;
 
-    public Character(String name, int cost){
+    public Character(String name, int cost, TypeOfCard typeOfCard){
         this.name = name;
         this.cost = cost;
+        this.typeOfCard = typeOfCard;
     }
 
     public String getName() {
@@ -20,10 +24,14 @@ public interface Character {
     }
 
     public void incrementCost(){
-        cost = cost++;
+        this.cost++;
     }
 
-    public void activate(Table table, Controller controller){
-        //TODO: qua va modellata l'interazione con il controller
+    public void activate(TableExpertMode table){
+        typeOfCard.effect(table);
+    }
+
+    public void setup(TableExpertMode table){
+        typeOfCard.setup(table);
     }
 }

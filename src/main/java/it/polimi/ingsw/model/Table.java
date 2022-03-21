@@ -75,6 +75,10 @@ public class Table {
         }
     }
 
+    public Player[] getPlayers() {
+        return players;
+    }
+
     private void setupIsland(){
         this.islands = new ArrayList<Island>();
         for (int i = 0; i < NUM_OF_ISLANDS; i++){
@@ -140,8 +144,18 @@ public class Table {
         this.motherNature.setIsland(motherNatureIsland);
     }
 
-    public void moveMotherNature(){
-
+    public void moveMotherNature(int movement){
+        int id = this.motherNatureIsland().getId();
+        this.motherNatureIsland().setMotherNature(false);
+        for (int i = 0; i < movement; i++){
+            if (id == this.islands.size()){
+                id = 0;
+            }
+            else {
+                id++;
+            }
+        }
+        this.setMotherNature(this.getIsland(id));
     }
 
 
@@ -199,6 +213,21 @@ public class Table {
     public Player professorOwner(ColorS color){
         return this.boards.stream().filter(board -> board.getProfessorTable().hasProfessor(color))
                 .findFirst().orElseThrow(() -> new RuntimeException("Professor owner not found")).getPlayer();
+    }
+
+    public Bag getBag() {
+        return bag;
+    }
+
+    public Island getIsland(int id)
+    {
+        for(Island i: this.islands)
+        {
+            if(i.getId() == id)
+            {
+                return i;
+            }
+        }
     }
 
     /**

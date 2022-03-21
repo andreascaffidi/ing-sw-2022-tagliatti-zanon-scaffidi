@@ -1,14 +1,39 @@
 package it.polimi.ingsw.model.charactercards;
 
-public class Character11 {
-    public Character11(String name, int cost) {
-        super(11, 2);
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.cards.TypeOfCard;
+import it.polimi.ingsw.model.pawns.Student;
+
+import java.util.List;
+
+public class Character11 implements TypeOfCard {
+
+    private static final int NUM_OF_STUDENTS = 4;
+    private List<Student> students;
+    private Student studentChosen;
+
+    public Character11() {
+        this.students = null;
+        this.studentChosen = null;
     }
 
     @Override
-    public void activate(Table table, Controller controller)
+    public void effect(TableExpertMode table)
     {
-        //TODO: All'inizio della partita, pescate 4 studenti e piazzateli su questa carta.
-        //Prendi 1 studente da questa carta e piazzalo nella tua sala. Poi pesca un nuovo Studente dal sacchetto e posizionalo su questa carta.
+        //notify view scegli studente carta
+        game.currentPlayer().getSchoolBoard().getDinnerRoom().addStudent(studentChosen);
+        this.students.add(table.getBag().drawStudent());
+    }
+
+    @Override
+    public void setup(TableExpertMode table) {
+        for(int i = 0; i < NUM_OF_STUDENTS; i++)
+        {
+            this.students.add(table.getBag().drawStudent());
+        }
+    }
+
+    public void setStudentChosen(Student studentChosen) {
+        this.studentChosen = studentChosen;
     }
 }

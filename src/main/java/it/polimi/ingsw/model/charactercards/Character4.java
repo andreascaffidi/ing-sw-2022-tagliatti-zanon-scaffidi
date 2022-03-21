@@ -1,14 +1,25 @@
 package it.polimi.ingsw.model.charactercards;
 
-public class Character4 {
-    public Character4(String name, int cost) {
-        super(4, 1);
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.cards.TypeOfCard;
+
+public class Character4 implements TypeOfCard {
+
+    private int additionalMovements;
+
+    public Character4() {
+        this.additionalMovements=0;
     }
 
     @Override
-    public void activate(Table table, int increment)
+    public void effect(TableExpertMode table)
     {
-        
-        //TODO: Puoi muovere madre natura fino a 2 isole addizionali rispetto a quanto indicato sulla carta assistente che hai giocato
+        //notify view scegli intero da 1 a 2
+        table.moveMotherNature(this.additionalMovements);
+    }
+
+    @Override
+    public void setup(TableExpertMode table) {
+
     }
 }
