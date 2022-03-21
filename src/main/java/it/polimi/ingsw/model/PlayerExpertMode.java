@@ -6,11 +6,13 @@ import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 import java.util.List;
 
 public class PlayerExpertMode extends Player{
+    public static final int NUM_OF_COINS_SETUP = 1;
     private int coins;
+    private boolean additionalInfluence;
 
     public PlayerExpertMode(String username, List<Assistant> assistantDeck, SchoolBoard schoolBoard, int tagTeam) {
         super(username, assistantDeck, schoolBoard, tagTeam);
-        this.coins = 0;
+        this.coins = NUM_OF_COINS_SETUP;
     }
 
     /**
@@ -31,5 +33,14 @@ public class PlayerExpertMode extends Player{
 
     public int getCoins() {
         return coins;
+    }
+
+
+    public void setAdditionalInfluence(boolean additionalInfluence) {
+        this.additionalInfluence = additionalInfluence;
+    }
+
+    public boolean isAdditionalInfluence() {
+        return additionalInfluence;
     }
 }

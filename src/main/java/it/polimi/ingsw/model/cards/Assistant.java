@@ -1,16 +1,18 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.enums.Wizard;
+
 public class Assistant {
     private int value;
     private int motherNatureMovements;
     private boolean played;
-    private int id;
+    private Wizard wizard;
 
-    public Assistant(int value, int motherNatureMovements, int id){
+    public Assistant(int value, int motherNatureMovements, Wizard wizard){
         this.value = value;
         this.motherNatureMovements = motherNatureMovements;
         this.played = false;
-        this.id = id;
+        this.wizard = wizard;
     }
 
     public int getValue() {
@@ -25,11 +27,11 @@ public class Assistant {
         return played;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void playAssistant(){
         played = true;
+    }
+
+    public Wizard getWizard() {
+        return wizard;
     }
 }

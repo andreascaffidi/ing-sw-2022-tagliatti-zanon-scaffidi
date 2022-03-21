@@ -1,5 +1,4 @@
 package it.polimi.ingsw.model.schoolBoard;
-import com.sun.source.tree.DefaultCaseLabelTree;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 
@@ -69,5 +68,13 @@ public class DiningRoom {
                 return yellowLine.size();
             default: return 0;
         }
+    }
+
+    public void removeStudent(Student s) {
+       this.getLine(s.getColor()).remove(s);
+    }
+
+    public Student removeStudent(ColorS color){
+       return this.getLine(color).remove(this.getLine(color).size()-1);
     }
 }

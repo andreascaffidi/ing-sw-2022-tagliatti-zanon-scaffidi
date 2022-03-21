@@ -13,27 +13,26 @@ public class Character7 implements TypeOfCard {
     private static final int NUM_OF_STUDENTS = 6;
     private List<Student> cardStudentsChosen;
     private List<Student> entranceStudentChosen;
-    private Player player;
 
 
     public Character7() {
         this.cardStudents=null;
         this.cardStudentsChosen=null;
         this.entranceStudentChosen=null;
-        this.player=null;
     }
 
     @Override
     public void effect(TableExpertMode table)
     {
         //notify view scegliere numero scambi, studenti sulla carta e studenti in entrata
+        //TODO rivedere l'implementazione
         for (Student s : cardStudentsChosen){
             this.cardStudents.remove(s);
-            player.getSchoolBoard().getEntrance().addStudent(s);
+            table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(s);
         }
         for (Student s : entranceStudentChosen){
             this.cardStudents.add(s);
-            player.getSchoolBoard().getEntrance().removeStudent(s);
+            table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(s);
         }
 
     }
@@ -52,9 +51,5 @@ public class Character7 implements TypeOfCard {
 
     public void setEntranceStudentChosen(List<Student> entranceStudentChosen) {
         this.entranceStudentChosen = entranceStudentChosen;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 }

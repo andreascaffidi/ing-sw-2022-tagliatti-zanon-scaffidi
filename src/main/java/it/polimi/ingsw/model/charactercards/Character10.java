@@ -19,15 +19,15 @@ public class Character10 implements TypeOfCard {
     @Override
     public void effect(TableExpertMode table)
     {
-        //TODO: puoi scambiare fra loro fino a 2 studenti presenti nella tua Sala e nel tuo ingresso
+        //TODO: rivedere l'implementazione
         //notify view scegliere studenti sala e studenti ingresso
         for (Student s : dinnerRoomStudentsChosen){
-            game.currenPlayer().getSchoolBoard.getDinnerRoom().removeStudent(s);
-            game.currenPlayer().getSchoolBoard.getEntrace().addStudent(s);
+            table.getCurrentPlayer().getSchoolBoard().getDiningRoom().removeStudent(s);
+            table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(s);
         }
         for (Student s : entranceStudentsChosen){
-            game.currenPlayer().getSchoolBoard.getEntrace().removeStudent(s);
-            game.currenPlayer().getSchoolBoard.getDinnerRoom().addStudent(s);
+            table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(s);
+            table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(s);
         }
     }
 

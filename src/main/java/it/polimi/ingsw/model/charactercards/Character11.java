@@ -21,7 +21,7 @@ public class Character11 implements TypeOfCard {
     public void effect(TableExpertMode table)
     {
         //notify view scegli studente carta
-        game.currentPlayer().getSchoolBoard().getDinnerRoom().addStudent(studentChosen);
+        table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(studentChosen);
         this.students.add(table.getBag().drawStudent());
     }
 

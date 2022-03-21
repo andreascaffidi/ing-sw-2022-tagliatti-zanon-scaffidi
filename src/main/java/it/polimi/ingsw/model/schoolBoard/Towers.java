@@ -17,7 +17,7 @@ public class Towers {
         towers.add(tower);
     }
 
-    public void removeTower(Tower tower){
-        towers.remove(tower);
+    public Tower removeLastTower(){
+        return towers.remove(towers.size()-1);
     }
 }

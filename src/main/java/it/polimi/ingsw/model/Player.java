@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.cards.Assistant;
+import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 
 import java.util.*;
@@ -10,6 +11,7 @@ public class Player {
     private SchoolBoard schoolBoard;
     private List<Assistant> discardPile;
     private int tagTeam;
+    private ColorT towerColor;
 
     public Player(String username) {
         this.username = username;
@@ -58,5 +60,13 @@ public class Player {
         Player p = (Player)o;
 
         return this.username == p.username;
+    }
+
+    public ColorT getTowerColor() {
+        return towerColor;
+    }
+
+    public void setTowerColor(ColorT towerColor) {
+        this.towerColor = towerColor;
     }
 }

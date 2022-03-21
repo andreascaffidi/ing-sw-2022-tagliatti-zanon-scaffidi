@@ -16,7 +16,12 @@ public class DiningRoomExpertMode extends DiningRoom{
         super.addStudent(student);
         if(getLine(student.getColor()).size() == 3 || getLine(student.getColor()).size() == 6 || getLine(student.getColor()).size() == 9)
         {
+
             //TODO: chiamare il controller per incrementare le monete del player
         }
+    }
+
+    public Student removeStudent(ColorS color){
+        return super.getLine(color).remove(super.getLine(color).size()-1);
     }
 }

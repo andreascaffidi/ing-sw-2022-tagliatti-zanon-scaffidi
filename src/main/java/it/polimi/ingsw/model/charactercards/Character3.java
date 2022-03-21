@@ -23,11 +23,10 @@ public class Character3 implements TypeOfCard {
         Island island = table.getIsland(islandChosen);
         Player king = table.getSupremacy(island);
         if (!king.equals(table.getIsland(islandChosen).getTower().getOwner())) {
-            int lastIndex = king.getSchoolBoard().getTowers().getTowers().size()-1;
-            Tower newTower = king.getSchoolBoard().getTowers().getTowers().remove(lastIndex);
+            Tower newTower = king.getSchoolBoard().getTowers().removeLastTower();
             Tower oldTower = table.getIsland(islandChosen).getTower();
             table.getIsland(islandChosen).setTower(newTower);
-            oldTower.getOwner().getSchoolBoard().getTowers().getTowers().add(oldTower);
+            oldTower.getOwner().getSchoolBoard().getTowers().addTower(oldTower);
         }
     }
 

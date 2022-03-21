@@ -18,11 +18,11 @@ public class Character12 implements TypeOfCard {
     @Override
     public void effect(TableExpertMode table)
     {
-
         //Chi avesse meno di 3 studenti di quel colore, rimetterà tutti quelli che ha
         //notify view scegli colore
         for (Player p : table.getPlayers()){
             for (int i = 0; i < NUM_OF_STUDENTS; i++){
+                //TODO: implementare expert mode di schoolboard
                 Student student = p.getSchoolBoard().getDiningRoom().removeStudent(color);
                 table.getBag().addStudent(student);
             }

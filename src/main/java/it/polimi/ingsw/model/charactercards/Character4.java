@@ -15,11 +15,21 @@ public class Character4 implements TypeOfCard {
     public void effect(TableExpertMode table)
     {
         //notify view scegli intero da 1 a 2
+        //TODO: verificare timing
+
+        /*  Aggiungere intero in tableexpertmode e qunado il controller verificherà
+         * il numero massimo di mosse disponibili, terrà conto anche di queste
+         * mosse bonus
+         */
         table.moveMotherNature(this.additionalMovements);
     }
 
     @Override
     public void setup(TableExpertMode table) {
 
+    }
+
+    public void setAdditionalMovements(int additionalMovements) {
+        this.additionalMovements = additionalMovements;
     }
 }

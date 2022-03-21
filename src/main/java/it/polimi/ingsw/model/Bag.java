@@ -14,17 +14,6 @@ public class Bag {
         this.students = new ArrayList<Student>();
     }
 
-    public setup(){
-        //TODO: non va bene perche nel setup delle isole tolgo degli studneto
-        // For every color of students I put 26 Student in the bag
-        for (ColorS color : ColorS.values()) {
-            for (int i=0;i<NUM_OF_STUDENTS_PER_COLOR; i++){
-                this.students.add(new Student(color));
-            }
-        }
-        //then I shuffle them
-        Collections.shuffle(students);
-    }
 
     public List<Student> getStudents()
     {

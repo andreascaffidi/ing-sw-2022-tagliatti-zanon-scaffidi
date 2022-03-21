@@ -2,47 +2,125 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.Character;
 import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.islands.IslandExpertMode;
+import it.polimi.ingsw.model.pawns.MotherNature;
 import it.polimi.ingsw.model.pawns.Professor;
+import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import static it.polimi.ingsw.model.PlayerExpertMode.NUM_OF_COINS_SETUP;
 
 public class TableExpertMode extends Table{
+    private final int NUM_OF_CHARACTER_CARDS = 3;
+    private final int NUM_OF_COINS = 20;
+
     private int bank;
     private Character[] characterCards;
     private boolean professorTie;
     private ColorS noInfluenceColor;
 
+
+    private List<IslandExpertMode> islands;
+    private PlayerExpertMode[] players;               //aggiunto l'attributo players
+
+
+
     public TableExpertMode(List<Player> players){
         super(players);
+        this.bank = NUM_OF_COINS - players.size()*NUM_OF_COINS_SETUP;
+        this.characterCards = new Character[NUM_OF_CHARACTER_CARDS];
+        this.setupCharacterCards(); //todo:fare implementazione
 
-        //Pescare carte personaggio
+        this.bag = new Bag();
+        this.numberOfPlayers = players.size();
+
+        this.setupStudents();
+        this.setupPlayers(players);
+        this.setupIslands();
+        this.setupClouds();
+        this.setupProfessors();
+
+        //todo:schoolboardexpertmode
+        for(int i = 0; i < this.numberOfPlayers; i++){
+            this.boards.add(new SchoolBoard(players.get(i)));
+        }
+
+        this.setupAssistantCards();
+        this.setupSchoolboards();
+
+
+    }
+
+    @Override
+    //FIXME: esegue il cast ma non è bellissimo
+    protected void setupPlayers(List<Player>players){
+        this.players = new PlayerExpertMode[numberOfPlayers];
+        for (int i = 0; i<this.numberOfPlayers; i++){
+            //Assegno un colore al giocatore
+            players.get(i).setTowerColor(ColorT.values()[i]);
+            this.players[i] = (PlayerExpertMode) players.get(i);
+        }
+    }
+
+    @Override
+    protected void setupIslands(){
+        this.islands = new ArrayList<>();
+        for (int i = 0; i < NUM_OF_ISLANDS; i++){
+            this.islands.add(new IslandExpertMode(i));
+        }
+
+        // aggiungo al sacchetto 2 studenti per colore e li tolgo dal totale: PUNTO 3 SETUP REGOLE
+        for (ColorS color : ColorS.values()) {
+            for (int i=0;i<NUM_OF_STUDENTS_SETUP; i++){
+                this.bag.addStudent(this.students.remove(this.students.size()));
+            }
+        }
+
+        //prendo un isola a caso
+        int motherNatureIslandIndex = new Random().nextInt(NUM_OF_ISLANDS);
+        Island motherNatureIsland = islands.get(motherNatureIslandIndex);
+
+        //instanzio madre natura
+        this.motherNature = new MotherNature(motherNatureIsland);
+        this.setMotherNature(motherNatureIsland);
+
+        int oppositeIslandIndex = (motherNatureIslandIndex + (NUM_OF_ISLANDS/2)) % NUM_OF_ISLANDS;
+
+        for(int i = 0; i<this.islands.size(); i++){
+            if(i != motherNatureIslandIndex && i != oppositeIslandIndex) {
+                this.islands.get(i).addStudent(bag.drawStudent());
+            }
+        }
+
+        // aggiungo al bag tutti gli studenti rimasti
+        this.bag.addStudents(students);
+    }
+
+    public void setupCharacterCards(){
+        //todo leggere il json e instanziare carte
     }
 
     public void deposit(int coins){
         this.bank += coins;
     }
 
-    @Override
-    private void setupIsland(){
 
-    }
 
-    @Override
-    public Player professorOwner(ColorS color){
-
-    }
 
     public void resetCardsEffect(){
-        this.professorTie=false;
+        this.professorTie = false;
         for (IslandExpertMode i: this.islands){
             i.setCountTowers(true);
         }
         for (PlayerExpertMode p : this.players){
             p.setAdditionalInfluence(false);
         }
-        this.noInfluenceColor=null;
+        this.noInfluenceColor = null;
     }
 
     public void setNoInfluenceColor(ColorS noInfluenceColor) {
@@ -53,8 +131,10 @@ public class TableExpertMode extends Table{
         this.professorTie = professorTie;
     }
 
-    @Override
+
     public Player getSupremacy(IslandExpertMode island) {
+        if(island.isEntryTile()) return island.getTower().getOwner();
+
         Player oldIslandKing = null, newIslandKing = null;
         int playerInfluence = 0, maxInfluence = 0;
         boolean parity = false;
@@ -63,10 +143,10 @@ public class TableExpertMode extends Table{
             oldIslandKing = island.getTower().getOwner();
         }
 
-        for (Player p : this.getPlayers()) {
+        for (PlayerExpertMode p : this.getPlayers()) {
             for (ColorS c : ColorS.values()) {
                 Professor pr = this.getProfessor(c);
-                if (c != island.getNoInfluenceColor() && pr.getOwner().equals(p)) {
+                if (c != this.noInfluenceColor && pr.getOwner().equals(p)) {
                     playerInfluence = playerInfluence + island.numStudent(pr.getColor());
                 }
             }
@@ -74,7 +154,7 @@ public class TableExpertMode extends Table{
                 playerInfluence = playerInfluence + island.getNumOfTowers();
             }
 
-            if (island.isAdditionalInfluence()){        //sarebbe meglio mettere l'attributo sul playerExpertMode
+            if (p.isAdditionalInfluence()){        //sarebbe meglio mettere l'attributo sul playerExpertMode
                 playerInfluence+=2;
             }
 
@@ -88,6 +168,8 @@ public class TableExpertMode extends Table{
             playerInfluence = 0;
         }
 
+        //TODO: gestire professorTie
+
         if (parity == true){
             return oldIslandKing;
         }
@@ -95,4 +177,28 @@ public class TableExpertMode extends Table{
             return newIslandKing;
         }
     }
+
+    @Override
+    public IslandExpertMode getIsland(int id){
+        for(IslandExpertMode i: this.islands)
+        {
+            if(i.getId() == id)
+            {
+                return i;
+            }
+        }
+        throw new RuntimeException("Island not found");
+    }
+
+
+    //TODO: implementare
+    public PlayerExpertMode getCurrentPlayer(){
+        return new PlayerExpertMode("Prova",null,null,0);
+    }
+
+    // TODO: Copia
+    public PlayerExpertMode[] getPlayers() {
+        return players;
+    }
+
 }

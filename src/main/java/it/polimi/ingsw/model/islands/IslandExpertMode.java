@@ -17,8 +17,15 @@ public class IslandExpertMode extends Island{
         this.entryTile = entryTile;
     }
 
-    @Override
-    public Player getSupremacy(Island island){
+    public boolean isCountTowers() {
+        return countTowers;
+    }
 
+    public void setCountTowers(boolean countTowers) {
+        this.countTowers = countTowers;
+    }
+
+    public boolean isEntryTile() {
+        return entryTile;
     }
 }

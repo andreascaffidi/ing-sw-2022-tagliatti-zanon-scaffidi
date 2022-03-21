@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.MotherNature;
 import it.polimi.ingsw.model.pawns.Student;
@@ -8,79 +9,78 @@ import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 
 import java.util.*;
 
-public class Table {
+public abstract class Table {
 
-    private static final int NUM_OF_ISLANDS = 12;
+    public static final int NUM_OF_ISLANDS = 12;
     public static final int NUM_OF_STUDENTS_PER_COLOR = 26;
     public static final int NUM_OF_STUDENTS_SETUP = 2;
     public static final int NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW = 7;
 
 
-    private int numberOfPlayers;
-    private List<Island> islands;
-    private MotherNature motherNature;
-    private Bag bag;
-    private List<Cloud> clouds;
-    private List<SchoolBoard> boards;
-    private Player[] players;               //aggiunto l'attributo players
+    protected Bag bag;
+    protected int numberOfPlayers;
+    protected List<Student> students;
 
-    //todo: attributi aggiunti dopo
+    private List<Island> islands;
+    protected MotherNature motherNature;
+    private List<Cloud> clouds;
+    protected List<SchoolBoard> boards;
+    private Player[] players;
+    private Player currentPlayer;
     private List<Professor> professors;
-    private List<Student> students;
+
+    //TODO: impementare parti comuni
+    public Table(){
+
+    }
 
     public Table(List<Player> players){
+        this();
+
         this.bag = new Bag();
         this.numberOfPlayers = players.size();
+
         this.setupStudents();
 
-        //inizializzo players
         //todo: forse conviene lasciare una lista per i giocatori
-        this.players = new Player[numberOfPlayers];
-        for (int i = 0; i<this.numberOfPlayers; i++){
-            this.players[i] = players.get(i);
-        }
-
+        //PARTE DEL PUNTO 8
+        this.setupPlayers(players);
 
         //PUNTO 1-2-3-5
-        this.setupIsland();
+        this.setupIslands();
 
         //PUNTO 5
-        this.clouds = new ArrayList<Cloud>();
-        // The number of clouds is the same as the number of players
-        for(int i = 0; i < this.numberOfPlayers; i++){
-            this.clouds.add(new Cloud());
-        }
+        this.setupClouds();
 
         //PUNTO 6
         this.setupProfessors();
 
         //PUNTO 7
         for(int i = 0; i < this.numberOfPlayers; i++){
-          this.boards.add(new SchoolBoard(players.get(i)));
+            this.boards.add(new SchoolBoard(players.get(i)));
         }
-        //TODO PUNTO 8 SU SCHOOL BOARD
 
-        //TODO PUNTO 9 INTERAZIONE GIOCATORE
+        //TODO PUNTO 9 INTERAZIONE GIOCATORE ma forse è indifferente la scelta del mago
         //scegliere mago
-
+        this.setupAssistantCards();
 
         //PUNTO 10
-        for(int i = 0; i < this.boards.size(); i++){
-            List<Student> studentsToAdd = new ArrayList<Student>();
-            for(int j=0; j<NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW; j++){
-                this.boards.get(i).getEntrance().addStudent(this.bag.drawStudent());
-            }
+        this.setupSchoolboards();
+    }
+
+    protected void setupPlayers(List<Player>players){
+        this.players = new Player[numberOfPlayers];
+        for (int i = 0; i<this.numberOfPlayers; i++){
+            //Assegno un colore al giocatore
+            players.get(i).setTowerColor(ColorT.values()[i]);
+            this.players[i] = players.get(i);
         }
     }
 
-    public Player[] getPlayers() {
-        return players;
-    }
-
-    private void setupIsland(){
+    protected void setupIslands(){
         this.islands = new ArrayList<Island>();
         for (int i = 0; i < NUM_OF_ISLANDS; i++){
-            this.islands.add( new Island());
+            this.islands.add(new Island(i));
         }
 
         // aggiungo al sacchetto 2 studenti per colore e li tolgo dal totale: PUNTO 3 SETUP REGOLE
@@ -110,10 +110,18 @@ public class Table {
         this.bag.addStudents(students);
     }
 
+    protected void setupClouds(){
+        this.clouds = new ArrayList<>();
+        // The number of clouds is the same as the number of players
+        for(int i = 0; i < this.numberOfPlayers; i++){
+            this.clouds.add(new Cloud());
+        }
+    }
+
     /**
      * Creates all 130 students and shuffle them
      */
-    public void setupStudents(){
+    protected void setupStudents(){
         this.students = new ArrayList<Student>();
         for (ColorS color : ColorS.values()) {
             for (int i=0;i<NUM_OF_STUDENTS_PER_COLOR; i++){
@@ -126,11 +134,25 @@ public class Table {
     /**
      * Creates all professors, one for each color
      */
-    public void setupProfessors(){
-        this.professors = new ArrayList<Professor>();
+    protected void setupProfessors(){
+        this.professors = new ArrayList<>();
         for (ColorS color : ColorS.values()) {
             professors.add(new Professor(color));
         }
+    }
+
+    protected void setupSchoolboards(){
+        for(int i = 0; i < this.boards.size(); i++){
+            List<Student> studentsToAdd = new ArrayList<Student>();
+            for(int j=0; j<NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW; j++){
+                this.boards.get(i).getEntrance().addStudent(this.bag.drawStudent());
+            }
+        }
+    }
+
+
+    protected void setupAssistantCards(){
+        //TODO LEGGERE JSON E INSTANZIARE LE CARTE CON I VALORI LETTI
     }
 
     /**
@@ -145,6 +167,7 @@ public class Table {
     public void moveMotherNature(int movement){
         int id = this.motherNatureIsland().getId();
         this.motherNatureIsland().setMotherNature(false);
+        //FIXME implementare con modulo
         for (int i = 0; i < movement; i++){
             if (id == this.islands.size()){
                 id = 0;
@@ -160,6 +183,16 @@ public class Table {
     public Professor getProfessor(ColorS color){
         return this.professors.stream().filter(professor->professor.getColor() == color)
                 .findAny().orElseThrow(()->new RuntimeException("Professor not found"));
+    }
+
+
+
+    public Player getCurrentPlayer(){
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer){
+        this.currentPlayer = currentPlayer;
     }
 
 
@@ -189,8 +222,10 @@ public class Table {
         this.islands.add(islandGroup);
     }
 
-    public List<Island> canIUnify(){
 
+    //TODO metodo ricorsivo che ritorna le isole da unire
+    public List<Island> canIUnify(){
+        return new ArrayList<>();
     }
 
     //TODO: testare il funzionamento
@@ -199,7 +234,7 @@ public class Table {
                 .findFirst().orElseThrow(() -> new RuntimeException("Mother Nature not found"));
     }
 
-    //TODO: testare perch non sono convinto ahahah
+    //TODO: testare perche non sono convinto ahahah
     public Player getPlayerWithMaxTowers(){
         Map<Player,Integer> towers = new HashMap<>();
         for(int i = 0; i< this.players.length; i++) {
@@ -224,12 +259,6 @@ public class Table {
     }
 
 
-    // get winner da fare nel controller
-    @Deprecated
-    public Player getWinner(){
-        return null;
-    }
-
     //TODO: testare il funzionamento
     public Player professorOwner(ColorS color){
         return this.boards.stream().filter(board -> board.getProfessorTable().hasProfessor(color))
@@ -249,6 +278,7 @@ public class Table {
                 return i;
             }
         }
+        throw new RuntimeException("Island not found");
     }
 
     /**
@@ -304,6 +334,7 @@ public class Table {
         clonedIslands.addAll(this.islands);
         return clonedIslands;
     }
+
     public Player[] getPlayers() {
         return players;
     }

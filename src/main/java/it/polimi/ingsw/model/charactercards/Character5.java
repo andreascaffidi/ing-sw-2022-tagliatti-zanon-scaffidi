@@ -10,8 +10,8 @@ public class Character5 implements TypeOfCard {
     private static final int MAX_ENTRY_TILE = 4;
 
     public Character5() {
-        this.islandChosen=0;
-        this.numOfEntryTile=0;
+        this.islandChosen = 0;
+        this.numOfEntryTile = 0;
     }
 
     @Override
@@ -21,6 +21,7 @@ public class Character5 implements TypeOfCard {
         if (this.numOfEntryTile < MAX_ENTRY_TILE){
             table.getIsland(islandChosen).setEntryTile(true);
             this.numOfEntryTile++;
+            //todo: numOfEntryTile va decrementato in quache modo
         }
     }
 

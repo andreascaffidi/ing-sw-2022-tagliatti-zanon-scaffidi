@@ -77,10 +77,6 @@ public class Island {
         return motherNature;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
     public void setNumOfTowers(int numOfTowers) {
         this.numOfTowers = numOfTowers;
     }
