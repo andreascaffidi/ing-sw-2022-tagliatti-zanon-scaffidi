@@ -11,12 +11,14 @@ public class Island {
     private boolean motherNature;
     private List<Student> students;
     private Tower tower;
+    private int numOfTowers;
 
     public Island(int id){
         this.id=id;
         this.motherNature=false;
         this.students=new ArrayList<Student>();
         this.tower=null;
+        this.numOfTowers = 1;
     }
 
     public int getId()
@@ -30,6 +32,14 @@ public class Island {
      */
     public void addStudent(Student student){
         this.students.add(student);
+    }
+
+    /**
+     * adds a list of students to the island
+     * @param students
+     */
+    public void addStudents(List<Student> students){
+        this.students.addAll(students);
     }
 
     public void setTower(Tower tower){
@@ -63,20 +73,27 @@ public class Island {
         return tower;
     }
 
-    /**
-     * Counts the number of towers on the island, this method is useful for table.getSupremacy() method because a group of
-     * islands has more than one tower.
-     */
-    public int numOfTowers(){
-        if (tower == null){
-            return 0;
-        }
-        else{
-            return 1;
-        }
-    }
-
     public boolean isMotherNature() {
         return motherNature;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setNumOfTowers(int numOfTowers) {
+        this.numOfTowers = numOfTowers;
+    }
+
+    /**
+     * change island id when a new group of island is created
+     * @param decrement
+     */
+    public void changeId(int decrement){
+        this.id = this.id - decrement;
+    }
+
+    public int getNumOfTowers() {
+        return numOfTowers;
     }
 }

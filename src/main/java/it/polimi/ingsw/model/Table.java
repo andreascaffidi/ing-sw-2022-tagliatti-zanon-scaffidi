@@ -1,11 +1,9 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
-import it.polimi.ingsw.model.islands.IslandGroup;
 import it.polimi.ingsw.model.pawns.MotherNature;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Professor;
-import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 
 import java.util.*;
@@ -164,8 +162,31 @@ public class Table {
                 .findAny().orElseThrow(()->new RuntimeException("Professor not found"));
     }
 
-    public IslandGroup newIslandGroup(List<Island> islands){
 
+    /**
+     * create a group of island from a list of islands: add all the students, set the tower, remove the islands and change
+     * all island ids.
+     * @param islands : islands to merge
+     */
+    public void newIslandGroup(List<Island> islands){
+        int id_min = islands.stream().map(Island::getId).reduce(0, (id1, id2) -> id1 < id2 ? id1 : id2);
+        int id_max = islands.stream().map(Island::getId).reduce(0, (id1, id2) -> id1 > id2 ? id1 : id2);
+        Island islandGroup = new Island(id_min);
+        for (Island i : islands){
+            this.islands.remove(i);
+            if (i.isMotherNature()){
+                islandGroup.setMotherNature(true);
+            }
+            islandGroup.addStudents(i.getStudents());
+        }
+        islandGroup.setTower(islands.get(0).getTower());
+        islandGroup.setNumOfTowers(islands.size());
+        for (Island i : this.islands){
+            if (i.getId() > id_max){
+                i.changeId(islands.size()-1);
+            }
+        }
+        this.islands.add(islandGroup);
     }
 
     public List<Island> canIUnify(){
@@ -258,7 +279,7 @@ public class Table {
                 }
             }
             if (p.equals(oldIslandKing)) {
-                playerInfluence = playerInfluence + island.numOfTowers();
+                playerInfluence = playerInfluence + island.getNumOfTowers();
             }
             if (playerInfluence > maxInfluence) {
                 maxInfluence = playerInfluence;
@@ -282,5 +303,8 @@ public class Table {
         List<Island> clonedIslands = new ArrayList<Island>();
         clonedIslands.addAll(this.islands);
         return clonedIslands;
+    }
+    public Player[] getPlayers() {
+        return players;
     }
 }
