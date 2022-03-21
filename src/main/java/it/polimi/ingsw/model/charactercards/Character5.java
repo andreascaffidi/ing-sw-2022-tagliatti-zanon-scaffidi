@@ -1,22 +1,36 @@
 package it.polimi.ingsw.model.charactercards;
 
-public class Character5 {
-    public Character5(String name, int cost) {
-        super(5, 2);
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.cards.TypeOfCard;
+
+public class Character5 implements TypeOfCard {
+
+    private int islandChosen;
+    private int numOfEntryTile;
+    private static final int MAX_ENTRY_TILE = 4;
+
+    public Character5() {
+        this.islandChosen=0;
+        this.numOfEntryTile=0;
     }
 
     @Override
-    public void activate(Table table, Controller controller)
+    public void effect(TableExpertMode table)
     {
-        //TODO: All'inizio della partita, mettete le 4 tessere divieto su un'Isola a tua scelta.
-        //La prima volta che Madre natura termina il suo movimento lì, rimettete la tessera divieto sulla carta senza calcolare l'influenza su quell'isola nè piazzare torri
+        //notify view scegliere isola
+        if (this.numOfEntryTile < MAX_ENTRY_TILE){
+            table.getIsland(islandChosen).setEntryTile(true);
+            this.numOfEntryTile++;
+        }
     }
 
-    public void setup(Table table)
+    @Override
+    public void setup(TableExpertMode table)
     {
-        for(int i = 0; i < NUM_OF_STUDENTS; i++)
-        {
-            students.add(table.bag.drawstudent());
-        }
+
+    }
+
+    public void setIslandChosen(int islandChosen) {
+        this.islandChosen = islandChosen;
     }
 }

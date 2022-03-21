@@ -1,13 +1,30 @@
 package it.polimi.ingsw.model.charactercards;
 
-public class Character9 {
-    public Character9(String name, int cost) {
-        super(9, 3);
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.cards.TypeOfCard;
+import it.polimi.ingsw.model.enums.ColorS;
+
+public class Character9 implements TypeOfCard {
+
+    private ColorS color;
+
+    public Character9() {
+        this.color=null;
     }
 
     @Override
-    public void activate(Table table, Controller controller)
+    public void effect(TableExpertMode table)
     {
-        //TODO: Scegli un colore di Studente; in questo turno, durante il calcolo dell'influenza quel colore non fornisce influenza
+        //notify view scegli colore
+        table.setNoInfluenceColor(color);
+    }
+
+    @Override
+    public void setup(TableExpertMode table) {
+
+    }
+
+    public void setColor(ColorS color) {
+        this.color = color;
     }
 }
