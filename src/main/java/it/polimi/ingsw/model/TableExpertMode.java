@@ -21,6 +21,11 @@ public class TableExpertMode extends Table{
     }
 
     @Override
+    private void setupIsland(){
+
+    }
+
+    @Override
     public Player professorOwner(ColorS color){
 
     }

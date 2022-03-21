@@ -249,4 +249,9 @@ public class Table {
         }
     }
 
+    public  List<Island> getIslands() {
+        List<Island> clonedIslands = new ArrayList<Island>();
+        clonedIslands.addAll(this.islands);
+        return clonedIslands;
+    }
 }

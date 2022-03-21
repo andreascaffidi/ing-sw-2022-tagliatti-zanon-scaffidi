@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Table;
+import it.polimi.ingsw.model.islands.Island;
+
 public class Character3 {
     public Character3(String name, int cost) {
         super(3, 3);

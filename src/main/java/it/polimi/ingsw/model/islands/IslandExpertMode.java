@@ -18,7 +18,7 @@ public class IslandExpertMode extends Island{
     }
 
     @Override
-    public Player getSupremacy(){
+    public Player getSupremacy(Island island){
 
     }
 }
