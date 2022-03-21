@@ -21,6 +21,11 @@ public class Island {
         this.numOfTowers = 1;
     }
 
+    public int getId()
+    {
+        return this.id;
+    }
+
     /**
      * Adds a student to the island
      * @param student

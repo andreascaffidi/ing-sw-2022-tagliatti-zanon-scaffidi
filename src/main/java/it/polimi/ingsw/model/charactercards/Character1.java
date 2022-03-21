@@ -1,32 +1,58 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.model.Table;
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.cards.TypeOfCard;
 import it.polimi.ingsw.model.pawns.Student;
 import java.util.*;
 
-public class Character1 extends Character{
+public class Character1 implements TypeOfCard {
 
     private static final int NUM_OF_STUDENTS = 4;
 
     private List<Student> students;
 
-    public Character1(String name, int cost) {
-        super(1, 1);
+    private int islandChosen;
+
+    private Student studentChosen;
+
+    public Character1() {
+        this.students = null;
+        this.islandChosen = 0;
+        this.studentChosen = null;
     }
 
-    //TODO: prendi 1 studente dalla carta e piazzalo su un'isola a tua scelta, poi pesca 1 studente dal sacchetto e mettilo su questa carta
+    /**
+     * take a student from the card and place on an island
+     * @param table
+     */
     @Override
-    public void activate(Table table, Island island, int pos)
+    public void effect(TableExpertMode table)
     {
-        table.island.addStudent(students.remove(pos));
-
+        //notify view scegliere isola e studente tra students
+        this.students.remove(studentChosen);
+        table.getIsland(islandChosen).addStudent(studentChosen);
+        this.students.add(table.getBag().drawStudent());
     }
 
-    //TODO: all'inizio della partita, pescate 4 studenti e piazzateli sopra questa carta
-    public void setup(Table table)
+    /**
+     * draw 4 student from the bag and place on the card
+     * @param table
+     */
+    @Override
+    public void setup(TableExpertMode table)
     {
         for(int i = 0; i < NUM_OF_STUDENTS; i++)
         {
-            students.add(table.bag.drawstudent());
+            this.students.add(table.getBag().drawStudent());
         }
+    }
+
+    public void setIslandChosen(int islandChosen) {
+        this.islandChosen = islandChosen;
+    }
+
+    public void setStudentChosen(Student studentChosen) {
+        this.studentChosen = studentChosen;
     }
 }
