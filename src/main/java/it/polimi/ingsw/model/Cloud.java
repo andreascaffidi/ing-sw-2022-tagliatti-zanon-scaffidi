@@ -19,4 +19,8 @@ public class Cloud {
         this.students = new ArrayList<Student>();
         return clonedList;
     }
+
+    public List<Student> getStudents() {
+        return this.students;
+    }
 }

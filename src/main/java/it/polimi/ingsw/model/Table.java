@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Tower;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
+//import org.json.simple.parser.JSONParser;
 
 
 import java.util.*;
@@ -178,6 +179,7 @@ public class Table {
 
 
     protected void setupAssistantCards(){
+        //JSONParser parser = new JSONParser();
 
         //TODO LEGGERE JSON E INSTANZIARE LE CARTE CON I VALORI LETTI
     }
@@ -194,15 +196,7 @@ public class Table {
     public void moveMotherNature(int movement){
         int id = this.motherNatureIsland().getId();
         this.motherNatureIsland().setMotherNature(false);
-        //FIXME implementare con modulo
-        for (int i = 0; i < movement; i++){
-            if (id == this.islands.size()){
-                id = 0;
-            }
-            else {
-                id++;
-            }
-        }
+        id = (id + movement) % this.islands.size();
         this.setMotherNature(this.getIsland(id));
     }
 

@@ -33,42 +33,16 @@ public class DiningRoom {
                 return yellowLine;
             case PINK:
                 return pinkLine;
-            default: return null;
         }
+        throw new RuntimeException();
     }
 
-    public void addStudent(Student student) throws GetCoinException {
-        switch (student.getColor())
-        {
-            case BLUE:
-                blueLine.add(student);
-            case PINK:
-                pinkLine.add(student);
-            case GREEN:
-                greenLine.add(student);
-            case RED:
-                redLine.add(student);
-            case YELLOW:
-                yellowLine.add(student);
-            default: return;
-        }
+    public void addStudent(Student student){
+        this.getLine(student.getColor()).add(student);
     }
 
     public int getNumberOfStudentsPerColor(ColorS color){
-        switch (color)
-        {
-            case BLUE:
-                return blueLine.size();
-            case PINK:
-                return pinkLine.size();
-            case GREEN:
-                return greenLine.size();
-            case RED:
-                return redLine.size();
-            case YELLOW:
-                return yellowLine.size();
-            default: return 0;
-        }
+        return this.getLine(color).size();
     }
 
     public void removeStudent(Student s) {

@@ -15,7 +15,6 @@ public class Character8 implements TypeOfCard {
     @Override
     public void effect(TableExpertMode table)
     {
-        //TODO: In questo turno, durante il calcolo dell'influenza hai 2 punti di influenza addizionali
         table.getCurrentPlayer().setAdditionalInfluence(true);
     }
 

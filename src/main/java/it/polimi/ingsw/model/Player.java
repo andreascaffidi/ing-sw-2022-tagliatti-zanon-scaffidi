@@ -22,10 +22,10 @@ public class Player {
         this.tagTeam = tagTeam;
     }
 
-    public Player(String username, List<Assistant> assistantDeck, SchoolBoard schoolBoard, int tagTeam) {
+    public Player(String username, List<Assistant> assistantDeck, int tagTeam, ColorT towerColor) {
         this.username = username;
+        this.towerColor = towerColor;
         this.assistantDeck = assistantDeck;
-        this.schoolBoard = schoolBoard;
         this.discardPile = new ArrayList<Assistant>();
         this.tagTeam = tagTeam;
     }
@@ -63,6 +63,11 @@ public class Player {
 
     public ColorT getTowerColor() {
         return towerColor;
+    }
+
+    public void addToDiscardPile(Assistant assistant){
+        this.discardPile.add(assistant);
+        this.assistantDeck.remove(assistant);
     }
 
     public void setTowerColor(ColorT towerColor) {

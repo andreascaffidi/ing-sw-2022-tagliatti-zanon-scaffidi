@@ -13,8 +13,8 @@ public class DiningRoomExpertMode extends DiningRoom{
         super();
     }
 
-    @Override
-    public void addStudent(Student student) throws GetCoinException {
+    //fixme: sistemare override
+    public void addStudent2(Student student) throws GetCoinException {
         super.addStudent(student);
         int position = getLine(student.getColor()).size();
         if(position == 3 || position == 6 || position == 9)

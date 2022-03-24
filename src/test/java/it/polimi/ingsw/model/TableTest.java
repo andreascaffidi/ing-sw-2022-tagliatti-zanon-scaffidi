@@ -1,10 +1,32 @@
 package it.polimi.ingsw.model;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TableTest {
+
+    @BeforeEach
+    void setUp() {
+    }
+
+    @AfterEach
+    void tearDown() {
+    }
+
+    @Test
+    void setupPlayers() {
+    }
+
+    @Test
+    void setupIslands() {
+    }
+
+    @Test
+    void setupClouds() {
+    }
 
     @Test
     void setupStudents() {
@@ -12,6 +34,14 @@ class TableTest {
 
     @Test
     void setupProfessors() {
+    }
+
+    @Test
+    void setupSchoolboards() {
+    }
+
+    @Test
+    void setupAssistantCards() {
     }
 
     @Test
@@ -24,6 +54,14 @@ class TableTest {
 
     @Test
     void getProfessor() {
+    }
+
+    @Test
+    void getCurrentPlayer() {
+    }
+
+    @Test
+    void setCurrentPlayer() {
     }
 
     @Test
@@ -47,14 +85,26 @@ class TableTest {
     }
 
     @Test
-    void getWinner() {
-    }
-
-    @Test
     void professorOwner() {
     }
 
     @Test
+    void getBag() {
+    }
+
+    @Test
+    void getIsland() {
+    }
+
+    @Test
     void getSupremacy() {
+    }
+
+    @Test
+    void getIslands() {
+    }
+
+    @Test
+    void getPlayers() {
     }
 }

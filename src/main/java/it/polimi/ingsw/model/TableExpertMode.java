@@ -156,32 +156,31 @@ public class TableExpertMode extends Table {
             for (ColorS c : ColorS.values()) {
                 Professor pr = this.getProfessor(c);
                 if (c != this.noInfluenceColor && pr.getOwner().equals(p)) {
-                    playerInfluence = playerInfluence + island.numStudent(pr.getColor());
+                    playerInfluence = playerInfluence + island.numStudent(c);
                 }
             }
             if (p.equals(oldIslandKing) && island.isCountTowers()) {
                 playerInfluence = playerInfluence + island.getNumOfTowers();
             }
 
-            if (p.isAdditionalInfluence()) {        //sarebbe meglio mettere l'attributo sul playerExpertMode
-                playerInfluence += 2;
+            if (p.isAdditionalInfluence()){
+                playerInfluence+=2;
             }
 
             if (playerInfluence > maxInfluence) {
                 maxInfluence = playerInfluence;
                 newIslandKing = p;
                 parity = false;
-            } else if (playerInfluence == maxInfluence) {
+            } else if (playerInfluence == maxInfluence){
                 parity = true;
             }
             playerInfluence = 0;
         }
 
-        //TODO: gestire professorTie
-
-        if (parity == true) {
+        if (parity == true){
             return oldIslandKing;
-        } else {
+        }
+        else {
             return newIslandKing;
         }
     }
