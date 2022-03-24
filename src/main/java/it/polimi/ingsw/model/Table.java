@@ -7,8 +7,7 @@ import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Tower;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
-import netscape.javascript.JSObject;
-import org.json.simple.parser.JSONParser;
+//import org.json.simple.parser.JSONParser;
 
 import java.util.*;
 
@@ -179,7 +178,7 @@ public class Table {
 
 
     protected void setupAssistantCards(){
-        JSONParser parser = new JSONParser();
+        //JSONParser parser = new JSONParser();
 
         //TODO LEGGERE JSON E INSTANZIARE LE CARTE CON I VALORI LETTI
     }

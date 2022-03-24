@@ -32,17 +32,6 @@ class PlayerTest {
         deck = null;
     }
 
-    /**
-     * test to see if player's schoolBoard is created correctly
-     */
-    @Test
-    void correctSchoolBoard(){
-        assertFalse(player.getSchoolBoard().getTowers().getTowers().isEmpty());
-        assertEquals(8, player.getSchoolBoard().getTowers().getTowers().size());
-        assertEquals(player, player.getSchoolBoard().getPlayer());
-        assertEquals(ColorT.BLACK, player.getSchoolBoard().getTowers().getTowers().get(0).getOwner().getTowerColor());
-    }
-
     @Test
     void getUsername() {
         assertEquals("nickname", player.getUsername());

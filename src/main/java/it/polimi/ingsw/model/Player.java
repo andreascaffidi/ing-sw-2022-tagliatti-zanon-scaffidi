@@ -26,7 +26,6 @@ public class Player {
         this.username = username;
         this.towerColor = towerColor;
         this.assistantDeck = assistantDeck;
-        this.schoolBoard = null;
         this.discardPile = new ArrayList<Assistant>();
         this.tagTeam = tagTeam;
     }
@@ -70,5 +69,9 @@ public class Player {
     public void addToDiscardPile(Assistant assistant){
         this.discardPile.add(assistant);
         this.assistantDeck.remove(assistant);
+    }
+
+    public void setTowerColor(ColorT towerColor) {
+        this.towerColor = towerColor;
     }
 }

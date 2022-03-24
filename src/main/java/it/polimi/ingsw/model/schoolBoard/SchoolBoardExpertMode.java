@@ -9,6 +9,6 @@ public class SchoolBoardExpertMode extends SchoolBoard{
 
     public SchoolBoardExpertMode(PlayerExpertMode player){
         super(player);
-        diningRoomExpertMode = new DiningRoomExpertMode(player);
+        diningRoomExpertMode = new DiningRoomExpertMode();
     }
 }
