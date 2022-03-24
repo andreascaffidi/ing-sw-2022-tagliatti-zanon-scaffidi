@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 
 import java.util.*;
 
-public abstract class Table {
+public class Table {
 
     public static final int NUM_OF_ISLANDS = 12;
     public static final int NUM_OF_STUDENTS_PER_COLOR = 26;
@@ -25,7 +25,7 @@ public abstract class Table {
     protected MotherNature motherNature;
     private List<Cloud> clouds;
     protected List<SchoolBoard> boards;
-    private Player[] players;
+    private List<Player> players;
     private Player currentPlayer;
     private List<Professor> professors;
 
@@ -39,12 +39,13 @@ public abstract class Table {
 
         this.bag = new Bag();
         this.numberOfPlayers = players.size();
+        this.players = players;
 
         this.setupStudents();
 
         //todo: forse conviene lasciare una lista per i giocatori
         //PARTE DEL PUNTO 8
-        this.setupPlayers(players);
+        //this.setupPlayers(players);
 
         //PUNTO 1-2-3-5
         this.setupIslands();
@@ -55,9 +56,15 @@ public abstract class Table {
         //PUNTO 6
         this.setupProfessors();
 
+        /*
         //PUNTO 7
         for(int i = 0; i < this.numberOfPlayers; i++){
             this.boards.add(new SchoolBoard(players.get(i)));
+        }*/
+
+        //PUNTO 7
+        for (int i = 0; i < this.numberOfPlayers; i++){
+            this.boards.add(players.get(i).getSchoolBoard());
         }
 
         //TODO PUNTO 9 INTERAZIONE GIOCATORE ma forse è indifferente la scelta del mago
@@ -68,6 +75,7 @@ public abstract class Table {
         this.setupSchoolboards();
     }
 
+    /*
     protected void setupPlayers(List<Player>players){
         this.players = new Player[numberOfPlayers];
         for (int i = 0; i<this.numberOfPlayers; i++){
@@ -75,7 +83,7 @@ public abstract class Table {
             players.get(i).setTowerColor(ColorT.values()[i]);
             this.players[i] = players.get(i);
         }
-    }
+    }*/
 
     protected void setupIslands(){
         this.islands = new ArrayList<Island>();
@@ -167,15 +175,7 @@ public abstract class Table {
     public void moveMotherNature(int movement){
         int id = this.motherNatureIsland().getId();
         this.motherNatureIsland().setMotherNature(false);
-        //FIXME implementare con modulo
-        for (int i = 0; i < movement; i++){
-            if (id == this.islands.size()){
-                id = 0;
-            }
-            else {
-                id++;
-            }
-        }
+        id = (id + movement) % this.islands.size();
         this.setMotherNature(this.getIsland(id));
     }
 
@@ -237,10 +237,10 @@ public abstract class Table {
     //TODO: testare perche non sono convinto ahahah
     public Player getPlayerWithMaxTowers(){
         Map<Player,Integer> towers = new HashMap<>();
-        for(int i = 0; i< this.players.length; i++) {
+        for(int i = 0; i< this.players.size(); i++) {
             for (Island island : islands) {
-                if (island.getTower().getOwner() == this.players[i]) {
-                    towers.replace(players[i],towers.get(players[i]),towers.get(players[i])+1);
+                if (island.getTower().getOwner() == this.players.get(i)) {
+                    towers.replace(players.get(i),towers.get(players.get(i)),towers.get(players.get(i))+1);
                 }
             }
         }
@@ -335,7 +335,7 @@ public abstract class Table {
         return clonedIslands;
     }
 
-    public Player[] getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 }

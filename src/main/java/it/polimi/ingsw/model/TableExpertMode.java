@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.islands.IslandExpertMode;
 import it.polimi.ingsw.model.pawns.MotherNature;
 import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
+import it.polimi.ingsw.model.schoolBoard.SchoolBoardExpertMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +27,15 @@ public class TableExpertMode extends Table{
 
 
     private List<IslandExpertMode> islands;
-    private PlayerExpertMode[] players;               //aggiunto l'attributo players
+    private List<PlayerExpertMode> players;               //aggiunto l'attributo players
+
+    protected List<SchoolBoardExpertMode> boards;       //aggiunto
 
 
 
-    public TableExpertMode(List<Player> players){
-        super(players);
+    public TableExpertMode(List<PlayerExpertMode> players){
+        super();
+        this.players = players;
         this.bank = NUM_OF_COINS - players.size()*NUM_OF_COINS_SETUP;
         this.characterCards = new Character[NUM_OF_CHARACTER_CARDS];
         this.setupCharacterCards(); //todo:fare implementazione
@@ -40,14 +44,19 @@ public class TableExpertMode extends Table{
         this.numberOfPlayers = players.size();
 
         this.setupStudents();
-        this.setupPlayers(players);
+        //this.setupPlayers(players);
         this.setupIslands();
         this.setupClouds();
         this.setupProfessors();
 
+        /*
         //todo:schoolboardexpertmode
         for(int i = 0; i < this.numberOfPlayers; i++){
             this.boards.add(new SchoolBoard(players.get(i)));
+        }*/
+
+        for (int i = 0; i < this.numberOfPlayers; i++){
+            this.boards.add(players.get(i).getSchoolBoard());
         }
 
         this.setupAssistantCards();
@@ -56,6 +65,7 @@ public class TableExpertMode extends Table{
 
     }
 
+    /*
     @Override
     //FIXME: esegue il cast ma non è bellissimo
     protected void setupPlayers(List<Player>players){
@@ -65,7 +75,7 @@ public class TableExpertMode extends Table{
             players.get(i).setTowerColor(ColorT.values()[i]);
             this.players[i] = (PlayerExpertMode) players.get(i);
         }
-    }
+    }*/
 
     @Override
     protected void setupIslands(){
@@ -143,18 +153,18 @@ public class TableExpertMode extends Table{
             oldIslandKing = island.getTower().getOwner();
         }
 
-        for (PlayerExpertMode p : this.getPlayers()) {
+        for (PlayerExpertMode p : this.getPlayersExpertMode()) {
             for (ColorS c : ColorS.values()) {
                 Professor pr = this.getProfessor(c);
                 if (c != this.noInfluenceColor && pr.getOwner().equals(p)) {
-                    playerInfluence = playerInfluence + island.numStudent(pr.getColor());
+                    playerInfluence = playerInfluence + island.numStudent(c);
                 }
             }
             if (p.equals(oldIslandKing) && island.isCountTowers()) {
                 playerInfluence = playerInfluence + island.getNumOfTowers();
             }
 
-            if (p.isAdditionalInfluence()){        //sarebbe meglio mettere l'attributo sul playerExpertMode
+            if (p.isAdditionalInfluence()){
                 playerInfluence+=2;
             }
 
@@ -167,8 +177,6 @@ public class TableExpertMode extends Table{
             }
             playerInfluence = 0;
         }
-
-        //TODO: gestire professorTie
 
         if (parity == true){
             return oldIslandKing;
@@ -193,12 +201,12 @@ public class TableExpertMode extends Table{
 
     //TODO: implementare
     public PlayerExpertMode getCurrentPlayer(){
-        return new PlayerExpertMode("Prova",null,null,0);
+        return new PlayerExpertMode("Prova",null,1,ColorT.BLACK);
     }
 
     // TODO: Copia
-    public PlayerExpertMode[] getPlayers() {
-        return players;
+    public List<PlayerExpertMode> getPlayersExpertMode() {
+        return this.players;
     }
 
 }
