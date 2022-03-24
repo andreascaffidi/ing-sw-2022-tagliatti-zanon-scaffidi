@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.exceptions.GetCoinException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.cards.TypeOfCard;
@@ -27,7 +28,11 @@ public class Character10 implements TypeOfCard {
         }
         for (Student s : entranceStudentsChosen){
             table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(s);
-            table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(s);
+            try {
+                table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(s);
+            }catch(GetCoinException exception){
+                table.getCurrentPlayer().addCoins(1);
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.exceptions.GetCoinException;
 import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.cards.TypeOfCard;
 import it.polimi.ingsw.model.pawns.Student;
@@ -21,7 +22,12 @@ public class Character11 implements TypeOfCard {
     public void effect(TableExpertMode table)
     {
         //notify view scegli studente carta
-        table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(studentChosen);
+        try{
+            table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(studentChosen);
+        }catch(
+        GetCoinException exception){
+            table.getCurrentPlayer().addCoins(1);
+        }
         this.students.add(table.getBag().drawStudent());
     }
 

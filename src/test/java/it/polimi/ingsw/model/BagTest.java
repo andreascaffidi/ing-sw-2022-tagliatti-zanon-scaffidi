@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BagTest {
 
     Bag bag = new Bag();
-
+/*
     @org.junit.jupiter.api.Test
     void addStudent() {
         Bag bag = new Bag();
@@ -21,7 +21,7 @@ class BagTest {
         bag.addStudent(student2);
         for(Student s: bag.getStudents())
         {
-            assertEquals()
+            assertEquals();
         }
         assertEquals(student1, bag.getStudents().get(0));
         assertEquals(student2, bag.getStudents().get(1));
@@ -48,4 +48,6 @@ class BagTest {
         drawStudent() = getStudent
         getStudent(student2) ==
     }
+    */
+
 }
