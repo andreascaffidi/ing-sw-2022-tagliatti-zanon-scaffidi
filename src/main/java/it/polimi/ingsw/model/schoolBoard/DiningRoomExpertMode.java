@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.schoolBoard;
 
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.PlayerExpertMode;
+import it.polimi.ingsw.exceptions.GetCoinException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 
@@ -9,23 +8,19 @@ import java.util.ArrayList;
 
 public class DiningRoomExpertMode extends DiningRoom{
 
-    private PlayerExpertMode player;
-
-    public DiningRoomExpertMode(PlayerExpertMode player)
+    public DiningRoomExpertMode()
     {
         super();
-        this.player = player;
     }
 
-    public void addStudent(Student student) {
+    @Override
+    public void addStudent(Student student) throws GetCoinException {
         super.addStudent(student);
-        if(getLine(student.getColor()).size() % 3 == 0)
+        int position = getLine(student.getColor()).size();
+        if(position == 3 || position == 6 || position == 9)
         {
-            this.player.addCoins(1);
+            throw new GetCoinException("Reached position "+position+". You get a coin!");
         }
     }
 
-    public Student removeStudent(ColorS color){
-        return super.getLine(color).remove(super.getLine(color).size()-1);
-    }
 }
