@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.schoolBoard;
 
+import it.polimi.ingsw.exceptions.GetCoinException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 
@@ -12,16 +13,14 @@ public class DiningRoomExpertMode extends DiningRoom{
         super();
     }
 
-    public void addStudent(Student student) {
+    @Override
+    public void addStudent(Student student) throws GetCoinException {
         super.addStudent(student);
-        if(getLine(student.getColor()).size() == 3 || getLine(student.getColor()).size() == 6 || getLine(student.getColor()).size() == 9)
+        int position = getLine(student.getColor()).size();
+        if(position == 3 || position == 6 || position == 9)
         {
-
-            //TODO: chiamare il controller per incrementare le monete del player
+            throw new GetCoinException("Reached position "+position+". You get a coin!");
         }
     }
 
-    public Student removeStudent(ColorS color){
-        return super.getLine(color).remove(super.getLine(color).size()-1);
-    }
 }

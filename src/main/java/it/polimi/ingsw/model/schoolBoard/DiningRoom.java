@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.schoolBoard;
+import it.polimi.ingsw.exceptions.GetCoinException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 
@@ -36,7 +37,7 @@ public class DiningRoom {
         }
     }
 
-    public void addStudent(Student student){
+    public void addStudent(Student student) throws GetCoinException {
         switch (student.getColor())
         {
             case BLUE:

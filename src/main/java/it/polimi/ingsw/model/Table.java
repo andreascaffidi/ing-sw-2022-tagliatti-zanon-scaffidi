@@ -5,16 +5,24 @@ import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.MotherNature;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Professor;
+import it.polimi.ingsw.model.pawns.Tower;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
+import netscape.javascript.JSObject;
+import org.json.simple.parser.JSONParser;
 
 import java.util.*;
 
-public abstract class Table {
+public class Table {
 
     public static final int NUM_OF_ISLANDS = 12;
     public static final int NUM_OF_STUDENTS_PER_COLOR = 26;
     public static final int NUM_OF_STUDENTS_SETUP = 2;
-    public static final int NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW = 7;
+
+    //parametri che variano in base al numero di giocatori
+    public static int NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW;
+    public static int NUM_OF_TOWER_AT_SETUP;
+    public static int NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD;
+
 
 
     protected Bag bag;
@@ -35,18 +43,31 @@ public abstract class Table {
     }
 
     public Table(List<Player> players){
-        this();
-
         this.bag = new Bag();
         this.numberOfPlayers = players.size();
+        switch (numberOfPlayers){
+            case 2 :
+            case 4 :
+                NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW = 7;
+                NUM_OF_TOWER_AT_SETUP = 8;
+                NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD = 3;
+                break;
+            case 3:
+                NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW = 9;
+                NUM_OF_TOWER_AT_SETUP = 6;
+                NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD = 4;
+                break;
+
+            default:
+                throw new RuntimeException("Too much players");
+        }
 
         this.setupStudents();
 
-        //todo: forse conviene lasciare una lista per i giocatori
         //PARTE DEL PUNTO 8
         this.setupPlayers(players);
 
-        //PUNTO 1-2-3-5
+        //PUNTO 1-2-3-4
         this.setupIslands();
 
         //PUNTO 5
@@ -55,16 +76,13 @@ public abstract class Table {
         //PUNTO 6
         this.setupProfessors();
 
-        //PUNTO 7
-        for(int i = 0; i < this.numberOfPlayers; i++){
-            this.boards.add(new SchoolBoard(players.get(i)));
-        }
+        //PUNTO 7 DOPO
 
-        //TODO PUNTO 9 INTERAZIONE GIOCATORE ma forse è indifferente la scelta del mago
-        //scegliere mago
+
+        //PUNTO 9
         this.setupAssistantCards();
 
-        //PUNTO 10
+        //PUNTO 7 - 10
         this.setupSchoolboards();
     }
 
@@ -102,6 +120,7 @@ public abstract class Table {
 
         for(int i = 0; i<this.islands.size(); i++){
             if(i != motherNatureIslandIndex && i != oppositeIslandIndex) {
+                this.islands.get(i).addStudent(bag.drawStudent());
                 this.islands.get(i).addStudent(bag.drawStudent());
             }
         }
@@ -142,16 +161,26 @@ public abstract class Table {
     }
 
     protected void setupSchoolboards(){
-        for(int i = 0; i < this.boards.size(); i++){
-            List<Student> studentsToAdd = new ArrayList<Student>();
+        for(int i = 0; i < this.numberOfPlayers; i++){
+            Player player = this.players[i];
+            SchoolBoard schoolBoard = new SchoolBoard(player);
             for(int j=0; j<NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW; j++){
-                this.boards.get(i).getEntrance().addStudent(this.bag.drawStudent());
+                schoolBoard.getEntrance().addStudent(this.bag.drawStudent());
             }
+            //piazzo le torri solo se i giocatori sono 3 o meno oppure 4 ma in questo caso solo ai primi 2 giocatori
+            if(this.numberOfPlayers <= 3 || (this.numberOfPlayers == 4 && i < 3)){
+                for(int j=0;i<NUM_OF_TOWER_AT_SETUP;j++){
+                    schoolBoard.getTowers().addTower(new Tower(player.getTowerColor(),player));
+                }
+            }
+            this.boards.add(schoolBoard);
         }
     }
 
 
     protected void setupAssistantCards(){
+        JSONParser parser = new JSONParser();
+
         //TODO LEGGERE JSON E INSTANZIARE LE CARTE CON I VALORI LETTI
     }
 
@@ -336,6 +365,26 @@ public abstract class Table {
     }
 
     public Player[] getPlayers() {
-        return players;
+        Player[] playersReturn = new Player[this.numberOfPlayers];
+        for (int i = 0; i < this.numberOfPlayers; i++) {
+            playersReturn[i] = this.players[i];
+        }
+        return playersReturn;
+    }
+
+
+    /**
+     *  Method to call during Planning phase, it place on a selected cloud the correct number of
+     *  Students depending on the number of players
+     * @param cloud
+     */
+    public void addStudentsToCloud(Cloud cloud){
+        for(int i=0; i < NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD; i++){
+            cloud.addStudent(this.getBag().drawStudent());
+        }
+    }
+
+    public List<Cloud> getClouds() {
+        return clouds;
     }
 }
