@@ -58,7 +58,6 @@ public class Player {
         if(!(o instanceof Player))
             return false;
         Player p = (Player)o;
-
         return this.username == p.username;
     }
 

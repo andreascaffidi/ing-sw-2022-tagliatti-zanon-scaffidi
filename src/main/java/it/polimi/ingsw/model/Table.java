@@ -85,7 +85,6 @@ public class Table {
         this.setupSchoolboards();
     }
 
-
     protected void setupPlayers(List<Player>players){
         this.players = new Player[numberOfPlayers];
         for (int i = 0; i<this.numberOfPlayers; i++){

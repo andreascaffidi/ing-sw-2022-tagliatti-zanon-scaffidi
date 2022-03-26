@@ -52,11 +52,15 @@ class BagTest {
         }
     }
 
+    //fixme: da dove spunta?
+    /*
     @Test
     void isShuffled(){
         bag.addStudents(students);
         assertNotEquals(students, bag.getStudents());
     }
+    */
+
 
     @Test
     void drawStudent() {

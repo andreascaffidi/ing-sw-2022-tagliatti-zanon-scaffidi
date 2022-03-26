@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.exceptions.GetCoinException;
 import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.cards.TypeOfCard;
 import it.polimi.ingsw.model.pawns.Student;
