@@ -15,6 +15,12 @@ public class Character12 implements TypeOfCard {
         this.color = null;
     }
 
+    /**
+     * every Player should return three Students of the color chosen from their DiningRoom to the Bag
+     * if any Player has less than 3 Students of that color, places all their Students into the Bag
+     * @param table
+     */
+
     @Override
     public void effect(TableExpertMode table)
     {
@@ -29,6 +35,11 @@ public class Character12 implements TypeOfCard {
         }
     }
 
+    /**
+     * doesn't need setup
+     * @param table
+     */
+
     @Override
     public void setup(TableExpertMode table) {
 
@@ -36,5 +47,9 @@ public class Character12 implements TypeOfCard {
 
     public void setColor(ColorS color) {
         this.color = color;
+    }
+
+    public ColorS getColor() {
+        return color;
     }
 }

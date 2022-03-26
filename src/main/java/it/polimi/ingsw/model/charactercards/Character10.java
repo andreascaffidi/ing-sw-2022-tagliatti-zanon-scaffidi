@@ -17,6 +17,10 @@ public class Character10 implements TypeOfCard {
         this.dinnerRoomStudentsChosen = null;
     }
 
+    /**
+     * exchanges up to 2 chosen Students between the Entrance and the DiningRoom of the SchoolBoard of the CurrentPlayer
+     * @param table
+     */
     @Override
     public void effect(TableExpertMode table)
     {
@@ -33,6 +37,10 @@ public class Character10 implements TypeOfCard {
         }
     }
 
+    /**
+     * doesn't need setup
+     * @param table
+     */
     @Override
     public void setup(TableExpertMode table) {
 
@@ -44,5 +52,13 @@ public class Character10 implements TypeOfCard {
 
     public void setEntranceStudentsChosen(List<Student> entranceStudentsChosen) {
         this.entranceStudentsChosen = entranceStudentsChosen;
+    }
+
+    public List<Student> getEntranceStudentsChosen() {
+        return entranceStudentsChosen;
+    }
+
+    public List<Student> getDinnerRoomStudentsChosen() {
+        return dinnerRoomStudentsChosen;
     }
 }

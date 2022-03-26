@@ -11,6 +11,10 @@ public class Character4 implements TypeOfCard {
         this.additionalMovements=0;
     }
 
+    /**
+     * adds zero, one or two steps to the movement of motherNature
+     * @param table
+     */
     @Override
     public void effect(TableExpertMode table)
     {
@@ -24,6 +28,11 @@ public class Character4 implements TypeOfCard {
         table.moveMotherNature(this.additionalMovements);
     }
 
+    /**
+     * doesn't need setup
+     * @param table
+     */
+
     @Override
     public void setup(TableExpertMode table) {
 
@@ -31,5 +40,9 @@ public class Character4 implements TypeOfCard {
 
     public void setAdditionalMovements(int additionalMovements) {
         this.additionalMovements = additionalMovements;
+    }
+
+    public int getAdditionalMovements() {
+        return additionalMovements;
     }
 }

@@ -23,13 +23,25 @@ public class Character {
         return cost;
     }
 
+    /**
+     * increments the cost of the card
+     */
     public void incrementCost(){
         this.cost++;
     }
 
+    /**
+     * activates the effect of the Character
+     * @param table
+     */
     public void activate(TableExpertMode table){
         typeOfCard.effect(table);
     }
+
+    /**
+     * sets up the Character
+     * @param table
+     */
 
     public void setup(TableExpertMode table){
         typeOfCard.setup(table);

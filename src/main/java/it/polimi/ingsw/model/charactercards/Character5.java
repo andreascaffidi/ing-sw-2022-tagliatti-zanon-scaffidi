@@ -14,6 +14,13 @@ public class Character5 implements TypeOfCard {
         this.numOfEntryTile = 0;
     }
 
+    /**
+     * If the number of NoEntry tiles placed on the Islands is <4, sets the boolean attribute entryTile of a chosen Island = true
+     * and increments the number of NoEntry tiles placed.
+     * else does nothing.
+     * @param table
+     */
+
     @Override
     public void effect(TableExpertMode table)
     {
@@ -25,6 +32,11 @@ public class Character5 implements TypeOfCard {
         }
     }
 
+    /**
+     * doesn't need setup
+     * @param table
+     */
+
     @Override
     public void setup(TableExpertMode table)
     {
@@ -33,5 +45,17 @@ public class Character5 implements TypeOfCard {
 
     public void setIslandChosen(int islandChosen) {
         this.islandChosen = islandChosen;
+    }
+
+    public int getIslandChosen() {
+        return islandChosen;
+    }
+
+    public int getNumOfEntryTile() {
+        return numOfEntryTile;
+    }
+
+    public void setNumOfEntryTile(int numOfEntryTile) {
+        this.numOfEntryTile = numOfEntryTile;
     }
 }

@@ -18,6 +18,12 @@ public class Character11 implements TypeOfCard {
         this.studentChosen = null;
     }
 
+    /**
+     * takes one chosen Student from the Card and places it in the DiningRoom of the CurrentPlayer
+     * then draws a Student from the Bag and places it on this Card
+     * @param table
+     */
+
     @Override
     public void effect(TableExpertMode table)
     {
@@ -25,6 +31,11 @@ public class Character11 implements TypeOfCard {
         table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(studentChosen);
         this.students.add(table.getBag().drawStudent());
     }
+
+    /**
+     * places 4 students on the Card
+     * @param table
+     */
 
     @Override
     public void setup(TableExpertMode table) {
@@ -36,5 +47,13 @@ public class Character11 implements TypeOfCard {
 
     public void setStudentChosen(Student studentChosen) {
         this.studentChosen = studentChosen;
+    }
+
+    public Student getStudentChosen() {
+        return studentChosen;
+    }
+
+    public List<Student> getStudents() {
+        return students;
     }
 }

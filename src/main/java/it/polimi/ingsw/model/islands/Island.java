@@ -26,7 +26,7 @@ public class Island {
     }
 
     /**
-     * Adds a student to the island
+     * adds a Student to the island
      * @param student
      */
     public void addStudent(Student student){
@@ -34,7 +34,7 @@ public class Island {
     }
 
     /**
-     * adds a list of students to the island
+     * adds a list of Student to the island
      * @param students
      */
     public void addStudents(List<Student> students){
@@ -46,7 +46,7 @@ public class Island {
     }
 
     /**
-     * Counts the number of students with a specific color on the island
+     * Counts the number of Student with a specific color on the Island
      * @param color
      * @return number of student
      */
@@ -82,7 +82,7 @@ public class Island {
 
     //FIXME: VERIFICARE QUESTO METODO
     /**
-     * change island id when a new group of island is created
+     * changes Island id when a new group of Island is created
      * @param decrement
      */
     public void changeId(int decrement){

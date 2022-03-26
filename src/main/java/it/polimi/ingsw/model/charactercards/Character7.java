@@ -21,6 +21,10 @@ public class Character7 implements TypeOfCard {
         this.entranceStudentChosen=null;
     }
 
+    /**
+     * replaces the chosen Students on the card with the same number of chosen Students in the entrance of the CurrentPlayer
+     * @param table
+     */
     @Override
     public void effect(TableExpertMode table)
     {
@@ -37,6 +41,11 @@ public class Character7 implements TypeOfCard {
 
     }
 
+    /**
+     * adds Students on the CharacterCard
+     * @param table
+     */
+
     @Override
     public void setup(TableExpertMode table) {
         for(int i = 0; i < NUM_OF_STUDENTS; i++)
@@ -51,5 +60,21 @@ public class Character7 implements TypeOfCard {
 
     public void setEntranceStudentChosen(List<Student> entranceStudentChosen) {
         this.entranceStudentChosen = entranceStudentChosen;
+    }
+
+    public List<Student> getCardStudents() {
+        return cardStudents;
+    }
+
+    public void setCardStudents(List<Student> cardStudents) {
+        this.cardStudents = cardStudents;
+    }
+
+    public List<Student> getCardStudentsChosen() {
+        return cardStudentsChosen;
+    }
+
+    public List<Student> getEntranceStudentChosen() {
+        return entranceStudentChosen;
     }
 }

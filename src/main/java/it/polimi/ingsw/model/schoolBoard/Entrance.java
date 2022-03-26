@@ -13,9 +13,19 @@ public class Entrance {
         return students;
     }
 
+    /**
+     * adds a Student to the Entrance
+     * @param student
+     */
+
     public void addStudent(Student student){
         students.add(student);
     }
+
+    /**
+     * removes a Student from the Entrance
+     * @param student
+     */
 
     public void removeStudent(Student student){
         students.remove(student);

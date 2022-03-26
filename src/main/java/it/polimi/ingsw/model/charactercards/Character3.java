@@ -15,6 +15,10 @@ public class Character3 implements TypeOfCard {
     }
 
 
+    /**
+     * calculates supremacy on the chosen Island and eventually changes the Owner
+     * @param table
+     */
     @Override
     public void effect(TableExpertMode table)
     {
@@ -30,6 +34,10 @@ public class Character3 implements TypeOfCard {
         }
     }
 
+    /**
+     * doesn't need setup
+     * @param table
+     */
     @Override
     public void setup(TableExpertMode table) {
 
@@ -37,5 +45,9 @@ public class Character3 implements TypeOfCard {
 
     public void setIslandChosen(int islandChosen) {
         this.islandChosen = islandChosen;
+    }
+
+    public int getIslandChosen() {
+        return this.islandChosen;
     }
 }

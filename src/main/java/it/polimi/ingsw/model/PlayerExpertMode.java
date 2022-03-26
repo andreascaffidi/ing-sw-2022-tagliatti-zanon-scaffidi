@@ -20,7 +20,7 @@ public class PlayerExpertMode extends Player{
     }
 
     /**
-     * Add coins to the amount of coins of the player
+     * adds a coin to the coins of the player
      * @param coins
      */
     public void addCoins(int coins){
@@ -28,7 +28,7 @@ public class PlayerExpertMode extends Player{
     }
 
     /**
-     * Subtract cost from the amount of coins of the player
+     * subtracts the cost of the played Card from the amount of coins of the player
      * @param cost
      */
     public void pay(int cost){
@@ -38,7 +38,6 @@ public class PlayerExpertMode extends Player{
     public int getCoins() {
         return coins;
     }
-
 
     public void setAdditionalInfluence(boolean additionalInfluence) {
         this.additionalInfluence = additionalInfluence;

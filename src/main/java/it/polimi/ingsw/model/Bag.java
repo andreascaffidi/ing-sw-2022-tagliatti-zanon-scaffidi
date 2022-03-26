@@ -20,7 +20,7 @@ public class Bag {
         return this.students;
     }
 
-    /** Add a student to the bag
+    /** adds a student to the bag
      *
      * @param student the student to add
      */
@@ -31,7 +31,7 @@ public class Bag {
         Collections.shuffle(students);
     }
 
-    /** Add a list of  students to the bag and then shuffle the,
+    /** adds a list of Student to the bag and then shuffles the Collection of Students,
      *
      * @param student the student to add
      */
@@ -43,7 +43,7 @@ public class Bag {
     }
 
     /**
-     * Return and removes a studnet from the bag
+     * returns and removes a student from the bag
      * @return Student
      */
     public Student drawStudent(){

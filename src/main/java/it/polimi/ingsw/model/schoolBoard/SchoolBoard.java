@@ -10,7 +10,6 @@ public class SchoolBoard {
     private DiningRoom diningRoom;
     private ProfessorTable professorTable;
     private Towers towers;
-
     public SchoolBoard(Player player){
         this.player = player;
         this.entrance = new Entrance();

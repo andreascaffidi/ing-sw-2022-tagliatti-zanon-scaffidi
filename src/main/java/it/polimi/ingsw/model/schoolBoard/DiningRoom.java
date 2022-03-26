@@ -20,6 +20,12 @@ public class DiningRoom {
         this.pinkLine = new ArrayList<Student>();
     }
 
+    /**
+     * returns the Line of the given Color
+     * @param color
+     * @return
+     */
+
     public List<Student> getLine(ColorS color)
     {
         switch (color) {
@@ -37,17 +43,38 @@ public class DiningRoom {
         throw new RuntimeException();
     }
 
+    /**
+     * adds a Student to the chosen line
+     * @param student
+     */
+
     public void addStudent(Student student){
         this.getLine(student.getColor()).add(student);
     }
 
+    /**
+     * returns the number of students for that Color on the line
+     * @param color
+     * @return
+     */
     public int getNumberOfStudentsPerColor(ColorS color){
         return this.getLine(color).size();
     }
 
+    /**
+     * delete given Student from the Line
+     * @param s
+     */
+
     public void removeStudent(Student s) {
        this.getLine(s.getColor()).remove(s);
     }
+
+    /**
+     * delete a Student from the line of the given Color
+     * @param color
+     * @return
+     */
 
     public Student removeStudent(ColorS color){
        return this.getLine(color).remove(this.getLine(color).size()-1);

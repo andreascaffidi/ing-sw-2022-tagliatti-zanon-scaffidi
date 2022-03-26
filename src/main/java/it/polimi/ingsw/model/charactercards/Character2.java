@@ -10,11 +10,19 @@ public class Character2 implements TypeOfCard {
 
     }
 
+    /**
+     * sets boolean attribute of Table ProfessorTie = true
+     * @param table
+     */
     @Override
     public void effect(TableExpertMode table){
         table.setProfessorTie(true);
     }
 
+    /**
+     * doesn't need setup
+     * @param table
+     */
     @Override
     public void setup(TableExpertMode table){
 

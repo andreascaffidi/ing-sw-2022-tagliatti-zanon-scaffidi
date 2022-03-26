@@ -15,13 +15,29 @@ public class ProfessorTable {
         return professors;
     }
 
+    /**
+     * adds Professor to ProfessorTable
+     * @param professor
+     */
+
     public void addProfessor(Professor professor){
         professors.add(professor);
     }
 
+    /**
+     * removes Professor to ProfessorTable
+     * @param professor
+     */
+
     public void removeProfessor(Professor professor){
         professors.remove(professor);
     }
+
+    /**
+     * checks if the ProfessorTable has the Professor of the given Color
+     * @param color
+     * @return
+     */
 
     public boolean hasProfessor(ColorS color){
         for(Professor p: this.professors)

@@ -31,7 +31,7 @@ public class TableExpertMode extends Table {
 
 
     public TableExpertMode(List<Player> players) {
-        super(players);
+        super();
         this.bank = NUM_OF_COINS - players.size() * NUM_OF_COINS_SETUP;
         this.characterCards = new Character[NUM_OF_CHARACTER_CARDS];
         this.setupCharacterCards(); //todo:fare implementazione
@@ -140,6 +140,9 @@ public class TableExpertMode extends Table {
         this.professorTie = professorTie;
     }
 
+    public boolean isProfessorTie() {
+        return professorTie;
+    }
 
     public Player getSupremacy(IslandExpertMode island) {
         if (island.isEntryTile()) return island.getTower().getOwner();
@@ -211,4 +214,6 @@ public class TableExpertMode extends Table {
         }
         return playersReturn;
     }
+
+
 }

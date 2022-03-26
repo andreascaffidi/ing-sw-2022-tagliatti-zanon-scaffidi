@@ -11,6 +11,9 @@ import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 
 import java.util.*;
 
+/**
+ * Table Class for match control
+ */
 public class Table {
 
     public static final int NUM_OF_ISLANDS = 12;
@@ -85,6 +88,11 @@ public class Table {
         this.setupSchoolboards();
     }
 
+    /**
+     * sets up the Players depending on the number of Players
+     * @param players
+     */
+
     protected void setupPlayers(List<Player>players){
         this.players = new Player[numberOfPlayers];
         for (int i = 0; i<this.numberOfPlayers; i++){
@@ -97,6 +105,10 @@ public class Table {
             }
         }
     }
+
+    /**
+     * sets up the 12 Islands and motherNature
+     */
 
     protected void setupIslands(){
         this.islands = new ArrayList<Island>();
@@ -133,6 +145,10 @@ public class Table {
         this.bag.addStudents(students);
     }
 
+    /**
+     * sets up the Clouds dependently on the number of Players
+     */
+
     protected void setupClouds(){
         this.clouds = new ArrayList<>();
         // The number of clouds is the same as the number of players
@@ -142,7 +158,7 @@ public class Table {
     }
 
     /**
-     * Creates all 130 students and shuffle them
+     * creates all 130 students and shuffles them
      */
     protected void setupStudents(){
         this.students = new ArrayList<Student>();
@@ -155,7 +171,7 @@ public class Table {
     }
 
     /**
-     * Creates all professors, one for each color
+     * creates all Professor, one for each Color
      */
     protected void setupProfessors(){
         this.professors = new ArrayList<>();
@@ -163,6 +179,10 @@ public class Table {
             professors.add(new Professor(color));
         }
     }
+
+    /**
+     * sets up the SchoolBoards, one for each Player
+     */
 
     protected void setupSchoolboards(){
         this.boards = new ArrayList<>();
@@ -184,6 +204,9 @@ public class Table {
     }
 
 
+    /**
+     * sets up the AssistantCards, 10 for every Player
+     */
     protected void setupAssistantCards(){
         //JSONParser parser = new JSONParser();
 
@@ -191,7 +214,7 @@ public class Table {
     }
 
     /**
-     * Set the current island of mother nature
+     * sets the current Island of motherNature
      * @param motherNatureIsland
      */
     public void setMotherNature(Island motherNatureIsland){
@@ -200,6 +223,10 @@ public class Table {
         this.motherNature.setIsland(motherNatureIsland);
     }
 
+    /**
+     * moves motherNature
+     * @param movement
+     */
     public void moveMotherNature(int movement){
         int id = this.motherNatureIsland().getId();
         id = (id + movement) % this.islands.size();
@@ -224,8 +251,8 @@ public class Table {
 
 
     /**
-     * create a group of island from a list of islands: add all the students, set the tower, remove the islands and change
-     * all island ids.
+     * creates an IslandGroup from a list of islands: adds all the students, sets the tower, removes the old Islands and changes
+     * all the Islands ids.
      * @param islands : islands to merge
      */
     public void newIslandGroup(List<Island> islands){
@@ -250,12 +277,21 @@ public class Table {
     }
 
 
+    /**
+     * unifies Islands
+     * @return
+     */
     //TODO metodo ricorsivo che ritorna le isole da unire
     public List<Island> canIUnify(){
         return new ArrayList<>();
     }
 
 
+    /**
+     * finds the Island where motherNature is
+     * @return
+     */
+    //TODO: testare il funzionamento
     public Island motherNatureIsland(){
         return this.islands.stream().filter(island -> island.isMotherNature())
                 .findFirst().orElseThrow(() -> new RuntimeException("Mother Nature not found"));

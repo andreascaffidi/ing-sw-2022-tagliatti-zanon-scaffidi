@@ -23,7 +23,7 @@ public class Character1 implements TypeOfCard {
     }
 
     /**
-     * take a student from the card and place on an island
+     * takes a student from the Character and places it on an Island
      * @param table
      */
     @Override
@@ -36,7 +36,7 @@ public class Character1 implements TypeOfCard {
     }
 
     /**
-     * draw 4 student from the bag and place on the card
+     * draws 4 student from the bag and places them on the Card
      * @param table
      */
     @Override
@@ -48,11 +48,23 @@ public class Character1 implements TypeOfCard {
         }
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
     public void setIslandChosen(int islandChosen) {
         this.islandChosen = islandChosen;
     }
 
+    public int getIslandChosen() {
+        return islandChosen;
+    }
+
     public void setStudentChosen(Student studentChosen) {
         this.studentChosen = studentChosen;
+    }
+
+    public Student getStudentChosen() {
+        return studentChosen;
     }
 }

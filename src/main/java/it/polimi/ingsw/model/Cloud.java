@@ -10,9 +10,19 @@ public class Cloud {
         this.students = new ArrayList<Student>();
     }
 
+    /**
+     * adds Student to the Cloud
+     * @param student
+     */
+
     public void addStudent(Student student){
         this.students.add(student);
     }
+
+    /**
+     * takes all Students from the Cloud
+     * @return
+     */
 
     public List<Student> takeAllStudents(){
         List<Student> clonedList =  new ArrayList<Student>(this.students);

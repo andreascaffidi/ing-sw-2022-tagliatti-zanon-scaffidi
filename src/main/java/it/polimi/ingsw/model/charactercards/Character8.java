@@ -12,15 +12,32 @@ public class Character8 implements TypeOfCard {
         this.player=null;
     }
 
+    /**
+     * sets boolean attribute AdditionalInfluence of CurrentPlayer = true
+     * @param table
+     */
+
     @Override
     public void effect(TableExpertMode table)
     {
         table.getCurrentPlayer().setAdditionalInfluence(true);
     }
 
+    /**
+     * doesn't need setup
+     * @param table
+     */
+
     @Override
     public void setup(TableExpertMode table) {
 
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 }

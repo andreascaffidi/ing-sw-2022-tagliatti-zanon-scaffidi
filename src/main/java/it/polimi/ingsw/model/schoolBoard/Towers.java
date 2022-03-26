@@ -13,10 +13,19 @@ public class Towers {
         return towers;
     }
 
+    /**
+     * adds Tower to Towers
+     * @param tower
+     */
+
     public void addTower(Tower tower){
         towers.add(tower);
     }
 
+    /**
+     * removes Tower from the last position of Towers
+     * @return
+     */
     public Tower removeLastTower(){
         return towers.remove(towers.size()-1);
     }
