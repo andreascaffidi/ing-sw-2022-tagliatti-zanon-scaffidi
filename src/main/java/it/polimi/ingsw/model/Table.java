@@ -240,6 +240,7 @@ public class Table {
                 i.changeId(islands.size()-1);
             }
         }
+
         this.islands.add(islandGroup);
     }
 

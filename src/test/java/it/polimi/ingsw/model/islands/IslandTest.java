@@ -105,6 +105,7 @@ class IslandTest {
             assertTrue(students.contains(s));
         }
     }
+
     @Test
     void setTower() {
         Player player = new Player("Test");
@@ -134,6 +135,7 @@ class IslandTest {
         island.setNumOfTowers(randomId);
         assertEquals(randomId,island.getNumOfTowers());
     }
+
 
     //FIXME: VERIFICARE QUESTO METODO
     @Test
