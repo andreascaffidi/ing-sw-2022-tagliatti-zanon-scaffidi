@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.charactercards;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.PlayerExpertMode;
 import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
@@ -20,14 +21,16 @@ class Character3Test {
 
     private Character3 character;
     private TableExpertMode table;
-    private Player player1;
-    private Player player2;
-    private List<Player> players;
+    private PlayerExpertMode player1;
+    private PlayerExpertMode player2;
+    private List<PlayerExpertMode> players;
 
     @BeforeEach
     void init() {
         character = new Character3();
-        players = new ArrayList<Player>();
+        players = new ArrayList<PlayerExpertMode>();
+        player1 = new PlayerExpertMode("1");
+        player2 = new PlayerExpertMode("2");
         players.add(player1);
         players.add(player2);
         table = new TableExpertMode(players);
@@ -49,9 +52,9 @@ class Character3Test {
         assumeFalse(table.getIsland(islandChosen).isMotherNature());
 
         //di conseguenza l'owner dell'isola dovrà essere null
-        if(table.getSupremacy(table.getIsland(islandChosen)).equals(null))
+        if(table.getSupremacy(table.getIsland(islandChosen))==null)
         {
-            assertEquals(table.getIsland(islandChosen).getTower().getOwner(), null);
+            assertNull(table.getIsland(islandChosen).getTower().getOwner());
         }
 
         //dopo la chiamata del metodo

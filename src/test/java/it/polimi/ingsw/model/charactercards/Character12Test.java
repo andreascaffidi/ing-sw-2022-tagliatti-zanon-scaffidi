@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.charactercards;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.PlayerExpertMode;
 import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.enums.ColorS;
@@ -17,15 +18,17 @@ class Character12Test {
 
     private Character12 character;
     private TableExpertMode table;
-    private Player player1;
-    private Player player2;
-    private List<Player> players;
+    private PlayerExpertMode player1;
+    private PlayerExpertMode player2;
+    private List<PlayerExpertMode> players;
 
     @BeforeEach
     void init() {
         character = new Character12();
         character.setColor(ColorS.BLUE);
-        players = new ArrayList<Player>();
+        players = new ArrayList<>();
+        player1 = new PlayerExpertMode("1");
+        player2 = new PlayerExpertMode("2");
         players.add(player1);
         players.add(player2);
         table = new TableExpertMode(players);

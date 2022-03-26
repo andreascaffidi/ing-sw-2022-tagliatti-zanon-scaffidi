@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.charactercards;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.PlayerExpertMode;
 import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
@@ -19,21 +20,23 @@ class Character6Test {
 
     private Character6 character;
     private TableExpertMode table;
-    private Player player1;
-    private Player player2;
-    private List<Player> players;
+    private PlayerExpertMode player1;
+    private PlayerExpertMode player2;
+    private List<PlayerExpertMode> players;
 
     @BeforeEach
     void init() {
         character = new Character6();
-        players = new ArrayList<Player>();
+        players = new ArrayList<PlayerExpertMode>();
+        player1 = new PlayerExpertMode("1");
+        player2 = new PlayerExpertMode("2");
         players.add(player1);
         players.add(player2);
         table = new TableExpertMode(players);
     }
 
     @Test
-    void effect(TableExpertMode table) {
+    void effect() {
 
         //l'isola scelta è la 3
         character.setIslandChosen(3);
@@ -62,7 +65,7 @@ class Character6Test {
         player1.getSchoolBoard().getProfessorTable().addProfessor(blueProfessor);
         player2.getSchoolBoard().getProfessorTable().addProfessor(redProfessor);
 
-        effect(this.table);
+        character.effect(this.table);
 
         //dovrebbe vincere il player1 per le torri ma invece vince il player2
         assertEquals(this.table.getSupremacy(this.table.getIsland(3)), player2);

@@ -25,8 +25,6 @@ public class Table {
     public int NUM_OF_TOWER_AT_SETUP;
     public int NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD;
 
-
-
     protected Bag bag;
     protected int numberOfPlayers;
     protected List<Student> students;

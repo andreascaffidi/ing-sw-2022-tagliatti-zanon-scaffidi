@@ -13,6 +13,11 @@ public class PlayerExpertMode extends Player{
     private boolean additionalInfluence;
     private SchoolBoardExpertMode schoolBoardExpertMode;
 
+    public PlayerExpertMode(String username){
+        super(username);
+
+    }
+
     public PlayerExpertMode(String username, List<Assistant> assistantDeck, int tagTeam, ColorT towerColor) {
         super(username, assistantDeck, tagTeam, towerColor);
         this.coins = NUM_OF_COINS_SETUP;
@@ -45,6 +50,11 @@ public class PlayerExpertMode extends Player{
 
     public boolean isAdditionalInfluence() {
         return additionalInfluence;
+    }
+
+
+    public void setSchoolBoard(SchoolBoardExpertMode schoolBoardExpertMode) {
+        this.schoolBoardExpertMode = schoolBoardExpertMode;
     }
 
     @Override

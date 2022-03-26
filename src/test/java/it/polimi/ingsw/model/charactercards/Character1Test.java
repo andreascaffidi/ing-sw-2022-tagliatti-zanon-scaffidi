@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.charactercards;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.PlayerExpertMode;
 import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
@@ -16,16 +17,16 @@ class Character1Test {
 
     private Character1 character;
     private TableExpertMode table;
-    private Player player1;
-    private Player player2;
-    private List<Player> players;
+    private PlayerExpertMode player1;
+    private PlayerExpertMode player2;
+    private List<PlayerExpertMode> players;
 
     @BeforeEach
     void init() {
         character = new Character1();
-        players = new ArrayList<Player>();
-        player1 = new Player("1");
-        player2 = new Player("2");
+        players = new ArrayList<PlayerExpertMode>();
+        player1 = new PlayerExpertMode("1");
+        player2 = new PlayerExpertMode("2");
         players.add(player1);
         players.add(player2);
         table = new TableExpertMode(players);
@@ -53,7 +54,7 @@ class Character1Test {
     }
 
     @Test
-    void setup(TableExpertMode table) {
+    void setup() {
         //aggiungo 4 Students alla Bag
         Student student1 = new Student(ColorS.BLUE);
         Student student2 = new Student(ColorS.BLUE);
@@ -64,7 +65,7 @@ class Character1Test {
         this.table.getBag().addStudent(student3);
         this.table.getBag().addStudent(student4);
 
-        setup(this.table);
+        character.setup(this.table);
 
         //dopo la chiamata di setup assumo che quei 4 studenti siano sulla card
         assertTrue(character.getStudents().contains(student1));

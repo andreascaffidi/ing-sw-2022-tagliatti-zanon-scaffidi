@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.cards.TypeOfCard;
 import it.polimi.ingsw.model.pawns.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Character7 implements TypeOfCard {
@@ -16,9 +17,9 @@ public class Character7 implements TypeOfCard {
 
 
     public Character7() {
-        this.cardStudents=null;
-        this.cardStudentsChosen=null;
-        this.entranceStudentChosen=null;
+        this.cardStudents=new ArrayList<>();
+        this.cardStudentsChosen=new ArrayList<>();
+        this.entranceStudentChosen=new ArrayList<>();
     }
 
     /**

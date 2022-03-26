@@ -17,7 +17,7 @@ public class Character1 implements TypeOfCard {
     private Student studentChosen;
 
     public Character1() {
-        this.students = null;
+        this.students = new ArrayList<>();
         this.islandChosen = 0;
         this.studentChosen = null;
     }

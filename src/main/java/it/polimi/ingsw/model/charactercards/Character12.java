@@ -27,10 +27,11 @@ public class Character12 implements TypeOfCard {
         //Chi avesse meno di 3 studenti di quel colore, rimetterà tutti quelli che ha
         //notify view scegli colore
         for (Player p : table.getPlayers()){
-            for (int i = 0; i < NUM_OF_STUDENTS; i++){
+
+            for (int i = 0; i < Integer.min(NUM_OF_STUDENTS, p.getSchoolBoard().getDiningRoom().getLine(color).size()); i++){
                 //TODO: implementare expert mode di schoolboard
-                Student student = p.getSchoolBoard().getDiningRoom().removeStudent(color);
-                table.getBag().addStudent(student);
+                    Student student = p.getSchoolBoard().getDiningRoom().removeStudent(color);
+                    table.getBag().addStudent(student);
             }
         }
     }

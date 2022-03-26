@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.charactercards;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.PlayerExpertMode;
 import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
@@ -16,30 +17,37 @@ class Character10Test {
 
     private Character10 character;
     private TableExpertMode table;
-    private Player player1;
-    private Player player2;
-    private List<Player> players;
+    private PlayerExpertMode player1;
+    private PlayerExpertMode player2;
+    private List<PlayerExpertMode> players;
 
     @BeforeEach
     void init() {
         character = new Character10();
-        players = new ArrayList<Player>();
+        players = new ArrayList<PlayerExpertMode>();
+        player1 = new PlayerExpertMode("1");
+        player2 = new PlayerExpertMode("2");
         players.add(player1);
         players.add(player2);
         table = new TableExpertMode(players);
     }
 
     @Test
-    void effect(TableExpertMode table) {
+    void effect() {
         //creo una lista di students
         List<Student> students= new ArrayList<Student>();
         Student student = new Student(ColorS.BLUE);
         students.add(student);
 
+        List<Student> students2= new ArrayList<Student>();
+        Student student2 = new Student(ColorS.BLUE);
+        students2.add(student2);
+
         //scelgo di toglierli alla Entrance (quindi sono lì)
         character.setEntranceStudentsChosen(students);
+        character.setDinnerRoomStudentsChosen(students2);
         //una volta chiamato l'effect
-        effect(this.table);
+        character.effect(this.table);
         //li ho spostati sulla DinnerRoom e non sono più nella Entrance
         assertEquals(character.getDinnerRoomStudentsChosen(), students);
         assertFalse(character.getEntranceStudentsChosen().contains(students));
@@ -48,7 +56,7 @@ class Character10Test {
         //scelgo di toglierli dalla DinnerRoom (quindi sono lì)
         character.setDinnerRoomStudentsChosen(students);
         //una volta chiamato l'effect
-        effect(this.table);
+        character.effect(this.table);
         //li ho spostati sulla Entrance e non sono più nella DinnerRoom
         assertEquals(character.getEntranceStudentsChosen(), students);
         assertFalse(character.getEntranceStudentsChosen().contains(students));

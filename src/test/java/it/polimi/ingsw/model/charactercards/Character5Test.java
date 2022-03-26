@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.charactercards;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.PlayerExpertMode;
 import it.polimi.ingsw.model.TableExpertMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,22 +15,24 @@ class Character5Test {
 
     private Character5 character;
     private TableExpertMode table;
-    private Player player1;
-    private Player player2;
-    private List<Player> players;
+    private PlayerExpertMode player1;
+    private PlayerExpertMode player2;
+    private List<PlayerExpertMode> players;
     private static final int MAX_ENTRY_TILE = 4;
 
     @BeforeEach
     void init() {
         character = new Character5();
-        players = new ArrayList<Player>();
+        players = new ArrayList<PlayerExpertMode>();
+        player1 = new PlayerExpertMode("1");
+        player2 = new PlayerExpertMode("2");
         players.add(player1);
         players.add(player2);
         table = new TableExpertMode(players);
     }
 
     @Test
-    void effect(TableExpertMode table) {
+    void effect() {
         //l'isola scelta è la numero 1
         character.setIslandChosen(1);
 
@@ -37,7 +40,7 @@ class Character5Test {
         character.setNumOfEntryTile(1);
 
         //se chiamo l'effetto allora
-        effect(this.table);
+        character.effect(this.table);
 
         //nell'isola scelta entrytile è true
         assertTrue(table.getIsland(character.getIslandChosen()).isEntryTile());
@@ -55,7 +58,7 @@ class Character5Test {
         if(!table.getIsland(character.getIslandChosen()).isEntryTile())
         {
             //dopo aver chiamato il metodo
-            effect(this.table);
+            character.effect(this.table);
 
             //non cambia nulla sull'isola scelta
             assertFalse(table.getIsland(character.getIslandChosen()).isEntryTile());
