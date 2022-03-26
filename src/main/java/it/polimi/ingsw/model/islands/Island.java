@@ -81,6 +81,7 @@ public class Island {
         this.numOfTowers = numOfTowers;
     }
 
+    //FIXME: VERIFICARE QUESTO METODO
     /**
      * change island id when a new group of island is created
      * @param decrement

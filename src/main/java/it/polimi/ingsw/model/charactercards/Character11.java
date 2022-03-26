@@ -22,12 +22,7 @@ public class Character11 implements TypeOfCard {
     public void effect(TableExpertMode table)
     {
         //notify view scegli studente carta
-        try{
-            table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(studentChosen);
-        }catch(
-        GetCoinException exception){
-            table.getCurrentPlayer().addCoins(1);
-        }
+        table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(studentChosen);
         this.students.add(table.getBag().drawStudent());
     }
 

@@ -168,8 +168,8 @@ public class Table {
                 schoolBoard.getEntrance().addStudent(this.bag.drawStudent());
             }
             //piazzo le torri solo se i giocatori sono 3 o meno oppure 4 ma in questo caso solo ai primi 2 giocatori
-            if(this.numberOfPlayers <= 3 || (this.numberOfPlayers == 4 && i < 3)){
-                for(int j=0;i<NUM_OF_TOWER_AT_SETUP;j++){
+            if(this.numberOfPlayers < 4 || (this.numberOfPlayers == 4 && i < 2)){
+                for(int j=0;j<NUM_OF_TOWER_AT_SETUP;j++){
                     schoolBoard.getTowers().addTower(new Tower(player.getTowerColor(),player));
                 }
             }
@@ -193,10 +193,10 @@ public class Table {
         this.motherNature.setIsland(motherNatureIsland);
     }
 
-    public void moveMotherNature(int movement){
+    public void moveMotherNature(int movements){
         int id = this.motherNatureIsland().getId();
         this.motherNatureIsland().setMotherNature(false);
-        id = (id + movement) % this.islands.size();
+        id = (id + movements) % this.islands.size();
         this.setMotherNature(this.getIsland(id));
     }
 

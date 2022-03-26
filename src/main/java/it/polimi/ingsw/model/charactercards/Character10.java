@@ -28,11 +28,8 @@ public class Character10 implements TypeOfCard {
         }
         for (Student s : entranceStudentsChosen){
             table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(s);
-            try {
                 table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(s);
-            }catch(GetCoinException exception){
                 table.getCurrentPlayer().addCoins(1);
-            }
         }
     }
 
