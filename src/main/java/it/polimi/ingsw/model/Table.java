@@ -18,9 +18,9 @@ public class Table {
     public static final int NUM_OF_STUDENTS_SETUP = 2;
 
     //parametri che variano in base al numero di giocatori
-    public static int NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW;
-    public static int NUM_OF_TOWER_AT_SETUP;
-    public static int NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD;
+    public int NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW;
+    public int NUM_OF_TOWER_AT_SETUP;
+    public int NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD;
 
 
 
@@ -85,12 +85,17 @@ public class Table {
         this.setupSchoolboards();
     }
 
+
     protected void setupPlayers(List<Player>players){
         this.players = new Player[numberOfPlayers];
         for (int i = 0; i<this.numberOfPlayers; i++){
-            //Assegno un colore al giocatore
-            players.get(i).setTowerColor(ColorT.values()[i]);
             this.players[i] = players.get(i);
+            if(this.numberOfPlayers < 4){
+                this.players[i].setTowerColor(ColorT.values()[i]);
+            }
+            else{
+                this.players[i].setTowerColor(ColorT.values()[players.get(i).getTagTeam()-1]);
+            }
         }
     }
 
@@ -103,7 +108,9 @@ public class Table {
         // aggiungo al sacchetto 2 studenti per colore e li tolgo dal totale: PUNTO 3 SETUP REGOLE
         for (ColorS color : ColorS.values()) {
             for (int i=0;i<NUM_OF_STUDENTS_SETUP; i++){
-                this.bag.addStudent(this.students.remove(this.students.size()));
+                Student studentToAdd = this.students.stream().filter(s -> s.getColor()==color).findFirst().orElseThrow(()->new RuntimeException("Student not found"));
+                this.students.remove(studentToAdd);
+                this.bag.addStudent(studentToAdd);
             }
         }
 
@@ -119,7 +126,6 @@ public class Table {
 
         for(int i = 0; i<this.islands.size(); i++){
             if(i != motherNatureIslandIndex && i != oppositeIslandIndex) {
-                this.islands.get(i).addStudent(bag.drawStudent());
                 this.islands.get(i).addStudent(bag.drawStudent());
             }
         }
@@ -160,15 +166,17 @@ public class Table {
     }
 
     protected void setupSchoolboards(){
+        this.boards = new ArrayList<>();
         for(int i = 0; i < this.numberOfPlayers; i++){
             Player player = this.players[i];
             SchoolBoard schoolBoard = new SchoolBoard(player);
+            this.players[i].setSchoolBoard(schoolBoard);
             for(int j=0; j<NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW; j++){
                 schoolBoard.getEntrance().addStudent(this.bag.drawStudent());
             }
             //piazzo le torri solo se i giocatori sono 3 o meno oppure 4 ma in questo caso solo ai primi 2 giocatori
-            if(this.numberOfPlayers <= 3 || (this.numberOfPlayers == 4 && i < 3)){
-                for(int j=0;i<NUM_OF_TOWER_AT_SETUP;j++){
+            if(this.numberOfPlayers <= 3 || (this.numberOfPlayers == 4 && i < 2)){
+                for(int j=0;j<NUM_OF_TOWER_AT_SETUP;j++){
                     schoolBoard.getTowers().addTower(new Tower(player.getTowerColor(),player));
                 }
             }
@@ -188,13 +196,13 @@ public class Table {
      * @param motherNatureIsland
      */
     public void setMotherNature(Island motherNatureIsland){
+        this.motherNature.getIsland().setMotherNature(false);
         motherNatureIsland.setMotherNature(true);
         this.motherNature.setIsland(motherNatureIsland);
     }
 
     public void moveMotherNature(int movement){
         int id = this.motherNatureIsland().getId();
-        this.motherNatureIsland().setMotherNature(false);
         id = (id + movement) % this.islands.size();
         this.setMotherNature(this.getIsland(id));
     }
@@ -222,7 +230,7 @@ public class Table {
      * @param islands : islands to merge
      */
     public void newIslandGroup(List<Island> islands){
-        int id_min = islands.stream().map(Island::getId).reduce(0, (id1, id2) -> id1 < id2 ? id1 : id2);
+        int id_min = islands.stream().map(Island::getId).reduce(12, (id1, id2) -> id1 < id2 ? id1 : id2);
         int id_max = islands.stream().map(Island::getId).reduce(0, (id1, id2) -> id1 > id2 ? id1 : id2);
         Island islandGroup = new Island(id_min);
         for (Island i : islands){
@@ -248,41 +256,65 @@ public class Table {
         return new ArrayList<>();
     }
 
-    //TODO: testare il funzionamento
+
     public Island motherNatureIsland(){
         return this.islands.stream().filter(island -> island.isMotherNature())
                 .findFirst().orElseThrow(() -> new RuntimeException("Mother Nature not found"));
     }
 
-    //TODO: testare perche non sono convinto ahahah
-    public Player getPlayerWithMaxTowers(){
-        Map<Player,Integer> towers = new HashMap<>();
-        for(int i = 0; i< this.players.length; i++) {
-            for (Island island : islands) {
-                if (island.getTower().getOwner() == this.players[i]) {
-                    towers.replace(players[i],towers.get(players[i]),towers.get(players[i])+1);
-                }
+    //TODO: sarebbe meglio creare l'eccezione parità
+    //il giocatore che ha costruito il maggior numero di torri è anche quello che ne ha il minor numero su towers
+    public Player getPlayerWithMinTowers(){
+        int minTower = 9, numOfTower = 0;
+        boolean parity = false;
+        Player winner = null;
+        for (Player p : this.players){
+            numOfTower = p.getSchoolBoard().getTowers().getTowers().size();
+            if (numOfTower < minTower){
+                minTower = numOfTower;
+                winner = p;
+                parity = false;
+            }
+            else if (numOfTower == minTower){
+                parity = true;
             }
         }
-        return Collections.max(towers.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
-    }
-    //TODO: testare perchè non sono convinto, come sopra; più che altro perche ritorno la chiave della mappa
-    // che credo non sia lo stesso oggetto player in players
-    // (un po come nei foreach)
-    public Player getPlayerWithMaxProfessor(){
-        Map<Player,Integer> professors = new HashMap<>();
-        for(int i = 0; i< this.boards.size(); i++) {
-            int nProfessor = boards.get(i).getProfessorTable().getProfessors().size();
-            professors.put(boards.get(i).getPlayer(),nProfessor);
+        if (parity){
+            throw new RuntimeException("There's a parity");
         }
-        return Collections.max(professors.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
+        else{
+            return winner;
+        }
+    }
+
+    //todo: sarebbe meglio creare l'eccezione parità
+    public Player getPlayerWithMaxProfessor(){
+        int maxProf = 0, numOfProf = 0;
+        boolean parity = false;
+        Player winner = null;
+        for (Player p : this.players){
+            numOfProf = p.getSchoolBoard().getProfessorTable().getProfessors().size();
+            if (numOfProf > maxProf){
+                maxProf = numOfProf;
+                winner = p;
+                parity = false;
+            }
+            else if (numOfProf == maxProf){
+                parity = true;
+            }
+        }
+        if (parity){
+            throw new RuntimeException("There's a parity");
+        }
+        else{
+            return winner;
+        }
     }
 
 
-    //TODO: testare il funzionamento
     public Player professorOwner(ColorS color){
-        return this.boards.stream().filter(board -> board.getProfessorTable().hasProfessor(color))
-                .findFirst().orElseThrow(() -> new RuntimeException("Professor owner not found")).getPlayer();
+        return this.professors.stream().filter(pr -> pr.getColor()==color)
+                .findFirst().orElseThrow(() -> new RuntimeException("Professor owner not found")).getOwner();
     }
 
     public Bag getBag() {
@@ -301,6 +333,7 @@ public class Table {
         throw new RuntimeException("Island not found");
     }
 
+    //todo: sarebbe meglio creare l'eccezione parità
     /**
      * Calculates the influence of every player on the island and returns the player who has the highest influence:
      * for each player checks if he has a specific professor and in that case increments a counter (that calculates influence)
@@ -324,7 +357,7 @@ public class Table {
 
         for (Player p : players) {
             for (Professor pr : professors) {
-                if (pr.getOwner().equals(p)) {
+                if (p.equals(pr.getOwner())) {
                     playerInfluence = playerInfluence + island.numStudent(pr.getColor());
                 }
             }
@@ -378,4 +411,9 @@ public class Table {
     public List<Cloud> getClouds() {
         return clouds;
     }
+
+    public MotherNature getMotherNature() {
+        return motherNature;
+    }
+
 }

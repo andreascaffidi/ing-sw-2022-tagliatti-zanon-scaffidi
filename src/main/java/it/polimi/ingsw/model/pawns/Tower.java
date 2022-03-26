@@ -15,4 +15,8 @@ public class Tower {
     public Player getOwner() {
         return owner;
     }
+
+    public ColorT getColor() {
+        return color;
+    }
 }

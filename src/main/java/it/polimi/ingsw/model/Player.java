@@ -74,4 +74,8 @@ public class Player {
     public void setTowerColor(ColorT towerColor) {
         this.towerColor = towerColor;
     }
+
+    public void setSchoolBoard(SchoolBoard schoolBoard) {
+        this.schoolBoard = schoolBoard;
+    }
 }
