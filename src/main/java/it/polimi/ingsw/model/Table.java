@@ -229,9 +229,9 @@ public class Table {
      * @param islands : islands to merge
      */
     public void newIslandGroup(List<Island> islands){
-        int id_min = islands.stream().map(Island::getId).reduce(12, (id1, id2) -> id1 < id2 ? id1 : id2);
-        int id_max = islands.stream().map(Island::getId).reduce(0, (id1, id2) -> id1 > id2 ? id1 : id2);
-        Island islandGroup = new Island(id_min);
+        int idMin = islands.stream().map(Island::getId).reduce(12, (id1, id2) -> id1 < id2 ? id1 : id2);
+        int idMax = islands.stream().map(Island::getId).reduce(0, (id1, id2) -> id1 > id2 ? id1 : id2);
+        Island islandGroup = new Island(idMin);
         for (Island i : islands){
             this.islands.remove(i);
             if (i.isMotherNature()){
@@ -242,11 +242,11 @@ public class Table {
         islandGroup.setTower(islands.get(0).getTower());
         islandGroup.setNumOfTowers(islands.size());
         for (Island i : this.islands){
-            if (i.getId() > id_max){
+            if (i.getId() > idMax){
                 i.changeId(islands.size()-1);
             }
         }
-        this.islands.add(islandGroup);
+        this.islands.add(idMin, islandGroup);
     }
 
 
@@ -262,6 +262,7 @@ public class Table {
     }
 
     //TODO: sarebbe meglio creare l'eccezione parità
+    //todo: sistemare per 4 giocatori
     //il giocatore che ha costruito il maggior numero di torri è anche quello che ne ha il minor numero su towers
     public Player getPlayerWithMinTowers(){
         int minTower = 9, numOfTower = 0;
