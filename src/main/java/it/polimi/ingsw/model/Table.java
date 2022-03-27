@@ -279,9 +279,41 @@ public class Table {
      * unifies Islands
      * @return
      */
+    /*
+    data un isola ritorna le isole che possono essere unite a lei
+     */
+
+
     //TODO metodo ricorsivo che ritorna le isole da unire
-    public List<Island> canIUnify(){
-        return new ArrayList<>();
+    public List<Island> canIUnify(Island island){
+        List<Island> islandsToUnify = new ArrayList<>();
+        int i = this.islands.indexOf(island);
+        islandsToUnify.add(this.islands.get(i));
+        //scorro indietro
+        int prevIndex = (i-1<0) ? (i-1) % this.islands.size()+this.islands.size() : (i-1) % this.islands.size();
+        while(
+                this.islands.get(i).getTower() !=null &&
+                this.islands.get(prevIndex).getTower() !=null &&
+                this.islands.get(i).getTower().getOwner().equals(this.islands.get(prevIndex).getTower().getOwner())
+        ){
+            islandsToUnify.add(this.islands.get(prevIndex));
+            i = prevIndex;
+            prevIndex = (i-1<0) ? (i-1) % this.islands.size()+this.islands.size() : (i-1) % this.islands.size();
+
+        }
+        //scorro avanti
+        i = this.islands.indexOf(island);
+        int nextIndex = ++i % this.islands.size();
+        while(
+                this.islands.get(i).getTower() !=null &&
+                this.islands.get(nextIndex).getTower() !=null &&
+                this.islands.get(i).getTower().getOwner().equals(this.islands.get(nextIndex).getTower().getOwner())
+        ){
+            islandsToUnify.add(this.islands.get(nextIndex));
+            i = nextIndex;
+            nextIndex = ++i % this.islands.size();
+        }
+        return islandsToUnify;
     }
 
 

@@ -63,6 +63,8 @@ class PlayerTest {
         assertTrue(player2.equals(player));
         Player player3 = new Player("username");
         assertFalse(player3.equals(player2));
+
+        assertFalse(player3.equals(new Object()));
     }
 
     @Test
