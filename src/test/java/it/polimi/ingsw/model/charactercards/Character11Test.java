@@ -48,7 +48,9 @@ class Character11Test {
         character.getStudents().add(student2);
 
         //1 lo aggiungo nella bag
-        table.getBag().addStudent(student3);
+        List<Student> students = new ArrayList<Student>();
+        students.add(student3);
+        table.getBag().setStudents(students);
 
         //lo studente scelto è student1
         character.setStudentChosen(student1);
@@ -57,6 +59,7 @@ class Character11Test {
 
         //lo studente scelto sarà nella dining room del currentplayer
         assertTrue(player1.getSchoolBoard().getDiningRoom().getLine(student1.getColor()).contains(student1));
+
         //e non sarà più sulla carta
         assertFalse(character.getStudents().contains(student1));
 
@@ -81,6 +84,14 @@ class Character11Test {
         table.getBag().addStudent(student3);
         table.getBag().addStudent(student4);
 
+        List<Student> students = new ArrayList<Student>();
+        students.add(student1);
+        students.add(student2);
+        students.add(student3);
+        students.add(student4);
+
+        table.getBag().setStudents(students);
+
         character.setup(table);
 
         //dovrebbero essere sulla carta
@@ -90,10 +101,10 @@ class Character11Test {
         assertTrue(character.getStudents().contains(student4));
 
         //e non dovrebbero essere più nella bag
-        assertFalse(character.getStudents().contains(student1));
-        assertFalse(character.getStudents().contains(student2));
-        assertFalse(character.getStudents().contains(student3));
-        assertFalse(character.getStudents().contains(student4));
+        assertFalse(table.getBag().getStudents().contains(student1));
+        assertFalse(table.getBag().getStudents().contains(student2));
+        assertFalse(table.getBag().getStudents().contains(student3));
+        assertFalse(table.getBag().getStudents().contains(student4));
     }
 
     @Test

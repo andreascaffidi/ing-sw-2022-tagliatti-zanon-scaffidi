@@ -28,10 +28,41 @@ public class Character12 implements TypeOfCard {
         //notify view scegli colore
         for (Player p : table.getPlayers()){
 
-            for (int i = 0; i < Integer.min(NUM_OF_STUDENTS, p.getSchoolBoard().getDiningRoom().getLine(color).size()); i++){
-                //TODO: implementare expert mode di schoolboard
+            if(p.getSchoolBoard().getDiningRoom().getLine(color).size() < NUM_OF_STUDENTS)
+            {
+                for(int i = 0; i < p.getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).size(); i++)
+                {
+                    table.getBag().addStudent(p.getSchoolBoard().getDiningRoom().removeStudent(ColorS.BLUE));
+                }
+
+                for(int i = 0; i < p.getSchoolBoard().getDiningRoom().getLine(ColorS.YELLOW).size(); i++)
+                {
+                    table.getBag().addStudent(p.getSchoolBoard().getDiningRoom().removeStudent(ColorS.YELLOW));
+                }
+
+                for(int i = 0; i < p.getSchoolBoard().getDiningRoom().getLine(ColorS.RED).size(); i++)
+                {
+                    table.getBag().addStudent(p.getSchoolBoard().getDiningRoom().removeStudent(ColorS.RED));;
+                }
+
+                for(int i = 0; i < p.getSchoolBoard().getDiningRoom().getLine(ColorS.PINK).size(); i++)
+                {
+                    table.getBag().addStudent(p.getSchoolBoard().getDiningRoom().removeStudent(ColorS.PINK));;
+                }
+
+                for(int i = 0; i < p.getSchoolBoard().getDiningRoom().getLine(ColorS.GREEN).size(); i++)
+                {
+                    table.getBag().addStudent(p.getSchoolBoard().getDiningRoom().removeStudent(ColorS.GREEN));;
+                }
+            }
+
+            else
+            {
+                for (int i = 0; i < NUM_OF_STUDENTS; i++){
                     Student student = p.getSchoolBoard().getDiningRoom().removeStudent(color);
                     table.getBag().addStudent(student);
+                }
+
             }
         }
     }

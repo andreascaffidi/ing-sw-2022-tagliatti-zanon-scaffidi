@@ -20,6 +20,10 @@ public class Bag {
         return this.students;
     }
 
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
     /** adds a student to the bag
      *
      * @param student the student to add

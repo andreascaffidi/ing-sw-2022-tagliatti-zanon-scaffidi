@@ -30,16 +30,18 @@ class Character4Test {
         table = new TableExpertMode(players);
     }
 
+    //TODO: sistemare situazione del fatto che se passo un numero di step > 2 va effettivamente avanti
     @Test
     void effect() {
+        table.setMotherNature(table.getIsland(0));
         //setto il movimento addizionale a 1
-        character.setAdditionalMovements(1);
+        character.setAdditionalMovements(2);
 
         //chiamo l'effetto
         character.effect(this.table);
 
         //dopo aver chiamato l'effetto, motherNature deve essersi spostata di 1
-        assertEquals(table.motherNatureIsland().getId(), 1);
+        assertEquals(2, table.motherNatureIsland().getId());
     }
 
     @Test

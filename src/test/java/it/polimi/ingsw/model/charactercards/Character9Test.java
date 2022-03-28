@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//TODO: problema con il calcolo dell'influenza
 class Character9Test {
 
     private Character9 character;
@@ -38,6 +39,7 @@ class Character9Test {
         //scelgo di escludere il colore rosso
         character.setColor(ColorS.RED);
 
+        System.out.println(character.getColor());
         //creo studenti e professori
         Professor blueProfessor = new Professor(ColorS.BLUE);
         Professor redProfessor = new Professor(ColorS.RED);
@@ -48,20 +50,24 @@ class Character9Test {
         Student student5 = new Student(ColorS.RED);
 
         //all'isola aggiungo 3 studenti rossi e 2 blu
-        this.table.getIsland(3).addStudent(student1);
-        this.table.getIsland(3).addStudent(student2);
-        this.table.getIsland(3).addStudent(student3);
-        this.table.getIsland(3).addStudent(student4);
-        this.table.getIsland(3).addStudent(student5);
+        this.table.getIsland(4).addStudent(student1);
+        this.table.getIsland(4).addStudent(student2);
+        this.table.getIsland(4).addStudent(student3);
+        this.table.getIsland(4).addStudent(student4);
+        this.table.getIsland(4).addStudent(student5);
 
         //a player1 do il blu e a player2 do il rosso
         player1.getSchoolBoard().getProfessorTable().addProfessor(blueProfessor);
         player2.getSchoolBoard().getProfessorTable().addProfessor(redProfessor);
 
+        Player winner = table.getSupremacy(table.getIsland(4));
+
         character.effect(this.table);
 
+        winner = table.getSupremacy(table.getIsland(4));
+
         //dovrebbe vincere il player2 ma vince il player1
-        assertEquals(player1,this.table.getSupremacy(this.table.getIsland(3)));
+        assertEquals(player1, winner);
     }
 
     @Test
