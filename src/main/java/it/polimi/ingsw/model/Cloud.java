@@ -14,6 +14,7 @@ public class Cloud {
      * adds Student to the Cloud
      * @param student
      */
+
     public void addStudent(Student student){
         this.students.add(student);
     }
@@ -22,6 +23,7 @@ public class Cloud {
      * takes all Students from the Cloud
      * @return
      */
+
     public List<Student> takeAllStudents(){
         List<Student> clonedList =  new ArrayList<Student>(this.students);
         this.students = new ArrayList<Student>();

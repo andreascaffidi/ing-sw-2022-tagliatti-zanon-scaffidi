@@ -1,15 +1,13 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Cloud;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.cards.Assistant;
-import it.polimi.ingsw.model.enums.Wizards;
+import it.polimi.ingsw.model.enums.Wizard;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Tower;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Controller {
 
@@ -18,7 +16,7 @@ public class Controller {
     private RoundPhases roundPhase;
     private TurnPhases turnPhase;
 
-    private Map<Player, Integer> playerValues;
+    private Map<Player, Integer[]> playerParams;
 
 
     public Controller(List<Player> players){
@@ -38,7 +36,7 @@ public class Controller {
 
         public void setupPlanning(){
             this.roundPhase = RoundPhases.PLANNING;
-            this.playerValues = new HashMap<>();
+            this.playerParams = new HashMap<>();
 
             for(int i = 0; i<table.getClouds().size();i++){
                 table.addStudentsToCloud(table.getClouds().get(i));
@@ -54,9 +52,9 @@ public class Controller {
             }
            //todo: implementare
 
-            Assistant card = new Assistant(0,0, Wizards.WIZARD_1);
+            Assistant card = new Assistant(0,0, Wizard.WIZARD_1);
             Integer[] params = new Integer[]{card.getValue(),card.getMotherNatureMovements()};
-            this.playerValues.put(player, card.getValue());
+            this.playerParams.put(player, params);
         }
 
         public void setupAction(){
@@ -65,28 +63,10 @@ public class Controller {
             //this.turnPhase = TurnPhases.WAITING_FOR_MOVE_STUDENTS;
         }
 
+
+
         private void nextPlayer(){
-            Player currentPlayer = table.getCurrentPlayer();
-
-            Integer currentValue = playerValues.get(currentPlayer);
-
-            List<Integer> mapValues = new ArrayList<>(playerValues.values());
-            List<Integer> values =  new ArrayList<>();
-
-            for(Integer currValue : mapValues){
-                values.add(currValue);
-            }
-
-            values = values.stream().filter(el -> el > currentValue).collect(Collectors.toList());
-            Collections.sort(values);
-            Integer nextValue = values.get(0);
-
-            for(Player player: playerValues.keySet()){
-                if(playerValues.get(player) == nextValue){
-                    table.setCurrentPlayer(player);
-                }
-            }
-
+            //table.setCurrentPlayer();
         }
 
         /*
@@ -107,6 +87,7 @@ public class Controller {
                 table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(students.get(i));
                 //in caso è isola dobbiamo capire quale isola è
             }
+
         }
 
         private void replaceProfessors(){
@@ -116,8 +97,6 @@ public class Controller {
 
         //FASE 2
         public void moveMotherNature(int movements){
-            this.turnPhase = TurnPhases.MOVE_MOTHER_NATURE;
-
             this.table.moveMotherNature(movements);
 
             Tower oldTower = this.table.motherNatureIsland().getTower();
@@ -134,16 +113,8 @@ public class Controller {
         }
 
         //FASE 3
-        public void chooseCloud(int cloudIndex){
-            this.turnPhase = TurnPhases.GET_STUDENTS_FROM_CLOUD;
+        public void chooseCloud(){
 
-
-            Cloud cloud = table.getClouds().get(cloudIndex);
-            for(Student student : cloud.takeAllStudents()){
-                table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(student);
-            }
-
-            this.nextPlayer();
         }
 
 

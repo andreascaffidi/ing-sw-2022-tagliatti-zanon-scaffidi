@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.Assistant;
 import it.polimi.ingsw.model.enums.ColorT;
-import it.polimi.ingsw.model.enums.Wizards;
+import it.polimi.ingsw.model.enums.Wizard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class PlayerExpertModeTest {
 
     @BeforeEach
     void init() {
-        List<Assistant> deck = new ArrayList<Assistant>(Arrays.asList(new Assistant(1,1, Wizards.WIZARD_1)));
+        List<Assistant> deck = new ArrayList<Assistant>(Arrays.asList(new Assistant(1,1, Wizard.WIZARD_1)));
         player = new PlayerExpertMode("username",deck,1, ColorT.BLACK);
     }
 

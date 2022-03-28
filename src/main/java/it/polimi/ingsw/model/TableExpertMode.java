@@ -8,11 +8,11 @@ import it.polimi.ingsw.model.islands.IslandExpertMode;
 import it.polimi.ingsw.model.pawns.MotherNature;
 import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Tower;
+import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoardExpertMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import static it.polimi.ingsw.model.PlayerExpertMode.NUM_OF_COINS_SETUP;
@@ -28,22 +28,16 @@ public class TableExpertMode extends Table {
 
 
     private List<IslandExpertMode> islands;
-    private PlayerExpertMode[] players;
-
-    //TODO; inizializzare
-    private Map<Player,Integer> playersCoins;
-    private Map<Player, Boolean> playersAdditionalInfluence;
-
-    private Map<Island, Boolean> entryTiles;
-    private Map<Island, Boolean> countTowers;
-
+    private PlayerExpertMode[] players;               //aggiunto l'attributo players
 
 
     public TableExpertMode(List<PlayerExpertMode> players) {
         super();
         this.bank = NUM_OF_COINS - players.size() * NUM_OF_COINS_SETUP;
         this.characterCards = new Character[NUM_OF_CHARACTER_CARDS];
-        this.setupCharacterCards(); //todo: fare implementazione
+        this.setupCharacterCards(); //todo:fare implementazione
+
+
 
         this.bag = new Bag();
         this.numberOfPlayers = players.size();
@@ -53,13 +47,9 @@ public class TableExpertMode extends Table {
         this.setupIslands();
         this.setupClouds();
         this.setupProfessors();
+
         this.setupAssistantCards();
         this.setupSchoolboards();
-    }
-
-    //TODO implementazione
-    private void setupMaps(){
-
     }
 
     //FIXME: esegue il cast ma non è bellissimo
