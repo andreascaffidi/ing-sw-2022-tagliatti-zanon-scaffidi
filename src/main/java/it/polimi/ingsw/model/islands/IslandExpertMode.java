@@ -26,4 +26,5 @@ public class IslandExpertMode extends Island{
     public boolean isEntryTile() {
         return entryTile;
     }
+
 }

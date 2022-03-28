@@ -43,36 +43,41 @@ class Character12Test {
         Student student2 = new Student(ColorS.BLUE);
         Student student3 = new Student(ColorS.BLUE);
         Student student7 = new Student(ColorS.BLUE);
+
         player1.getSchoolBoard().getDiningRoom().addStudent(student1);
         player1.getSchoolBoard().getDiningRoom().addStudent(student2);
         player1.getSchoolBoard().getDiningRoom().addStudent(student3);
         player1.getSchoolBoard().getDiningRoom().addStudent(student7);
+
         character.effect(table);
-        assertFalse(player1.getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).contains(student1));
+
+        assertTrue(player1.getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).contains(student1));
         assertFalse(player1.getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).contains(student2));
         assertFalse(player1.getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).contains(student3));
-        assertTrue(player1.getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).contains(student7));
-        assertTrue(table.getBag().getStudents().contains(student1));
+        assertFalse(player1.getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).contains(student7));
+
+        assertFalse(table.getBag().getStudents().contains(student1));
         assertTrue(table.getBag().getStudents().contains(student2));
         assertTrue(table.getBag().getStudents().contains(student3));
-        assertFalse(table.getBag().getStudents().contains(student7));
+        assertTrue(table.getBag().getStudents().contains(student7));
 
         //Player2 ha 2 studenti BLU e 1 ROSSO,
         //quindi quando chiamo effect(), devo metterli tutti nella bag e nessuno rimane in schoolboard
 
         Student student4 = new Student(ColorS.BLUE);
-        Student student5 = new Student(ColorS.BLUE);
-        Student student6 = new Student(ColorS.RED);
-        player2.getSchoolBoard().getDiningRoom().addStudent(student4);
-        player2.getSchoolBoard().getDiningRoom().addStudent(student5);
-        player2.getSchoolBoard().getDiningRoom().addStudent(student6);
+        Student student5 = new Student(ColorS.RED);
+
+        player1.getSchoolBoard().getDiningRoom().addStudent(student4);
+        player1.getSchoolBoard().getDiningRoom().addStudent(student5);
+
         character.effect(table);
-        assertFalse(player2.getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).contains(student4));
-        assertFalse(player2.getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).contains(student5));
-        assertFalse(player2.getSchoolBoard().getDiningRoom().getLine(ColorS.RED).contains(student6));
+
+        assertFalse(player1.getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).contains(student4));
+        assertFalse(player1.getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).contains(student5));
+
         assertTrue(table.getBag().getStudents().contains(student4));
         assertTrue(table.getBag().getStudents().contains(student5));
-        assertTrue(table.getBag().getStudents().contains(student6));
+
     }
 
     @Test

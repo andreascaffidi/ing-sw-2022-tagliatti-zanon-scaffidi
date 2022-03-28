@@ -43,23 +43,21 @@ class Character10Test {
         Student student2 = new Student(ColorS.BLUE);
         students2.add(student2);
 
+        table.setCurrentPlayer(player1);
+
         //scelgo di toglierli alla Entrance (quindi sono lì)
         character.setEntranceStudentsChosen(students);
         character.setDinnerRoomStudentsChosen(students2);
-        //una volta chiamato l'effect
-        character.effect(this.table);
-        //li ho spostati sulla DinnerRoom e non sono più nella Entrance
-        assertEquals(character.getDinnerRoomStudentsChosen(), students);
-        assertFalse(character.getEntranceStudentsChosen().contains(students));
 
-        character.setDinnerRoomStudentsChosen(null);
-        //scelgo di toglierli dalla DinnerRoom (quindi sono lì)
-        character.setDinnerRoomStudentsChosen(students);
         //una volta chiamato l'effect
         character.effect(this.table);
-        //li ho spostati sulla Entrance e non sono più nella DinnerRoom
-        assertEquals(character.getEntranceStudentsChosen(), students);
-        assertFalse(character.getEntranceStudentsChosen().contains(students));
+
+        //li ho spostati sulla DinnerRoom e non sono più nella Entrance
+        assertTrue(table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().containsAll(students2));
+        assertFalse(table.getCurrentPlayer().getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).containsAll(students2));
+
+        assertFalse(table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().containsAll(students));
+        assertTrue(table.getCurrentPlayer().getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).containsAll(students));
     }
 
     //no setup

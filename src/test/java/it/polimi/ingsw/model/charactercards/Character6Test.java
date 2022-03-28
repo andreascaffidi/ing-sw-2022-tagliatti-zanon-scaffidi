@@ -67,8 +67,10 @@ class Character6Test {
 
         character.effect(this.table);
 
+        assertFalse(table.getIsland(3).isCountTowers());
+
         //dovrebbe vincere il player1 per le torri ma invece vince il player2
-        assertEquals(this.table.getSupremacy(this.table.getIsland(3)), player2);
+        assertEquals(player2, this.table.getSupremacy(this.table.getIsland(3)));
     }
 
     @Test
