@@ -1,24 +1,14 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.exceptions.ParityTowersException;
-import it.polimi.ingsw.model.cards.Assistant;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
-import it.polimi.ingsw.model.enums.Wizards;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.MotherNature;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Tower;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
+//import org.json.simple.parser.JSONParser;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -47,9 +37,6 @@ public class Table {
     private Player currentPlayer;
     private List<Professor> professors;
 
-    protected List<Assistant> assistants;
-
-
     //TODO: impementare parti comuni
     public Table(){
 
@@ -65,7 +52,6 @@ public class Table {
                 NUM_OF_TOWER_AT_SETUP = 8;
                 NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD = 3;
                 break;
-
             case 3:
                 NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW = 9;
                 NUM_OF_TOWER_AT_SETUP = 6;
@@ -91,6 +77,7 @@ public class Table {
         this.setupProfessors();
 
         //PUNTO 7 DOPO
+
 
         //PUNTO 9
         this.setupAssistantCards();
@@ -218,32 +205,9 @@ public class Table {
     /**
      * sets up the AssistantCards, 10 for every Player
      */
-    public void setupAssistantCards(){
-        JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("assets/assistants.json"))
-        {
-            //Read JSON file
-            Object obj = jsonParser.parse(reader);
+    protected void setupAssistantCards(){
+        //JSONParser parser = new JSONParser();
 
-            JSONArray cards = (JSONArray) obj;
-            System.out.println(cards);
-
-            this.assistants = new ArrayList<>();
-
-            for(Wizards wizard : Wizards.values()){
-                cards.forEach( object ->{
-                    JSONObject card =  (JSONObject) object;
-                    this.assistants.add(new Assistant(((Long)card.get("value")).intValue(), ((Long)card.get("movement")).intValue(), wizard));
-                });
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         //TODO LEGGERE JSON E INSTANZIARE LE CARTE CON I VALORI LETTI
     }
 
@@ -304,7 +268,7 @@ public class Table {
         islandGroup.setNumOfTowers(islands.size());
         for (Island i : this.islands){
             if (i.getId() > idMax){
-                i.changeId(islands.size()-1);
+                i.changeId( islands.size()-1);
             }
         }
         this.islands.add(idMin, islandGroup);
@@ -320,12 +284,11 @@ public class Table {
      */
 
 
-    //TODO ricontrollare
+    //TODO metodo ricorsivo che ritorna le isole da unire
     public List<Island> canIUnify(Island island){
         List<Island> islandsToUnify = new ArrayList<>();
         int i = this.islands.indexOf(island);
         islandsToUnify.add(this.islands.get(i));
-
         //scorro indietro
         int prevIndex = (i-1<0) ? (i-1) % this.islands.size()+this.islands.size() : (i-1) % this.islands.size();
         while(
@@ -367,7 +330,7 @@ public class Table {
     //TODO: sarebbe meglio creare l'eccezione parità
     //todo: sistemare per 4 giocatori
     //il giocatore che ha costruito il maggior numero di torri è anche quello che ne ha il minor numero su towers
-    public Player getPlayerWithMinTowers() throws ParityTowersException {
+    public Player getPlayerWithMinTowers(){
         int minTower = 9, numOfTower = 0;
         boolean parity = false;
         Player winner = null;
@@ -383,7 +346,7 @@ public class Table {
             }
         }
         if (parity){
-            throw new ParityTowersException("There's a parity");
+            throw new RuntimeException("There's a parity");
         }
         else{
             return winner;

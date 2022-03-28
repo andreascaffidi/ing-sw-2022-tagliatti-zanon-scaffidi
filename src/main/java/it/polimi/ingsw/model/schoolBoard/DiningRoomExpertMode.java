@@ -13,7 +13,6 @@ public class DiningRoomExpertMode extends DiningRoom{
         super();
     }
 
-    //TODO implementare da qualceh altra parte es controller expert
     public void addStudent(Student student) throws GetCoinException {
         super.addStudent(student);
         int position = getLine(student.getColor()).size();

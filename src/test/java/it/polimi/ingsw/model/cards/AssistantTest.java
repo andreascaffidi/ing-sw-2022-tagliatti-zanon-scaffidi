@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.model.enums.Wizards;
+import it.polimi.ingsw.model.enums.Wizard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ class AssistantTest {
 
     @BeforeEach
     void init(){
-        assistant = new Assistant(10,3, Wizards.WIZARD_1);
+        assistant = new Assistant(10,3,Wizard.WIZARD_1);
     }
 
     @Test
@@ -35,7 +35,7 @@ class AssistantTest {
 
     @Test
     void getWizard() {
-        assertEquals(Wizards.WIZARD_1, assistant.getWizard());
+        assertEquals(Wizard.WIZARD_1, assistant.getWizard());
     }
 
     @AfterEach
