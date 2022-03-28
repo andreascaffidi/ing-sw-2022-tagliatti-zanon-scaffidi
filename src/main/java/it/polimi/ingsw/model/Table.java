@@ -304,7 +304,7 @@ public class Table {
         islandGroup.setNumOfTowers(islands.size());
         for (Island i : this.islands){
             if (i.getId() > idMax){
-                i.changeId(islands.size()-1);
+                i.changeId( islands.size()-1);
             }
         }
         this.islands.add(idMin, islandGroup);
