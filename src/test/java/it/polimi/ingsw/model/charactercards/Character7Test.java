@@ -38,8 +38,6 @@ class Character7Test {
     @Test
     void effect() {
 
-        table.setCurrentPlayer(player1);
-
         //creo 3 studenti blu e 2 rossi
         Student student1 = new Student(ColorS.BLUE);
         Student student2 = new Student(ColorS.BLUE);
@@ -53,7 +51,6 @@ class Character7Test {
         character.getCardStudents().add(student3);
 
         //scelgo 2 studenti della carta (BLU)
-        character.getCardStudentsChosen().add(student1);
         character.getCardStudentsChosen().add(student2);
 
         //scelgo 2 studenti dell'entrata (ROSSI)
@@ -72,13 +69,13 @@ class Character7Test {
         assertTrue(character.getCardStudents().contains(student4));
         assertTrue(character.getCardStudents().contains(student5));
 
-        //l'entrata contenga gli studenti blu
-        assertTrue(table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().contains(student1));
-        assertTrue(table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().contains(student2));
+        //l'entrata non contenga più gli studenti rossi
+        assertTrue(character.getEntranceStudentChosen().contains(student1));
+        assertTrue(character.getEntranceStudentChosen().contains(student2));
 
-        //ma non quelli rossi
-        assertFalse(table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().contains(student4));
-        assertFalse(table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().contains(student5));
+        //ma quelli blu
+        assertFalse(character.getEntranceStudentChosen().contains(student4));
+        assertFalse(character.getEntranceStudentChosen().contains(student5));
     }
 
     @Test
@@ -96,16 +93,6 @@ class Character7Test {
         this.table.getBag().addStudent(student4);
         this.table.getBag().addStudent(student5);
         this.table.getBag().addStudent(student6);
-
-        List<Student> students = new ArrayList<Student>();
-        students.add(student1);
-        students.add(student2);
-        students.add(student3);
-        students.add(student4);
-        students.add(student5);
-        students.add(student6);
-
-        table.getBag().setStudents(students);
 
         character.setup(this.table);
 

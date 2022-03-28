@@ -42,11 +42,9 @@ public class Character1 implements TypeOfCard {
     @Override
     public void setup(TableExpertMode table)
     {
-        Student student;
         for(int i = 0; i < NUM_OF_STUDENTS; i++)
         {
-            student = table.getBag().drawStudent();
-            this.students.add(student);
+            this.students.add(table.getBag().drawStudent());
         }
     }
 

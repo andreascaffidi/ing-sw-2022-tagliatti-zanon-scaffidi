@@ -181,7 +181,6 @@ public class TableExpertMode extends Table {
                     playerInfluence = playerInfluence + island.numStudent(c);
                 }
             }
-
             if (p.equals(oldIslandKing) && island.isCountTowers()) {
                 playerInfluence = playerInfluence + island.getNumOfTowers();
             }

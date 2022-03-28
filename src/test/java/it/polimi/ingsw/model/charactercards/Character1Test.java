@@ -60,32 +60,12 @@ class Character1Test {
         Student student2 = new Student(ColorS.BLUE);
         Student student3 = new Student(ColorS.BLUE);
         Student student4 = new Student(ColorS.BLUE);
-
         this.table.getBag().addStudent(student1);
         this.table.getBag().addStudent(student2);
         this.table.getBag().addStudent(student3);
         this.table.getBag().addStudent(student4);
 
-        assertTrue(this.table.getBag().getStudents().contains(student1));
-        assertTrue(this.table.getBag().getStudents().contains(student2));
-        assertTrue(this.table.getBag().getStudents().contains(student3));
-        assertTrue(this.table.getBag().getStudents().contains(student4));
-
-        List<Student> students = new ArrayList<Student>();
-        students.add(student1);
-        students.add(student2);
-        students.add(student3);
-        students.add(student4);
-
-        table.getBag().setStudents(students);
-
         character.setup(this.table);
-
-        //e non siano più nella Bag
-        assertFalse(this.table.getBag().getStudents().contains(student1));
-        assertFalse(this.table.getBag().getStudents().contains(student2));
-        assertFalse(this.table.getBag().getStudents().contains(student3));
-        assertFalse(this.table.getBag().getStudents().contains(student4));
 
         //dopo la chiamata di setup assumo che quei 4 studenti siano sulla card
         assertTrue(character.getStudents().contains(student1));
@@ -93,12 +73,17 @@ class Character1Test {
         assertTrue(character.getStudents().contains(student3));
         assertTrue(character.getStudents().contains(student4));
 
+        //e non siano più nella Bag
+        assertFalse(this.table.getBag().getStudents().contains(student1));
+        assertFalse(this.table.getBag().getStudents().contains(student2));
+        assertFalse(this.table.getBag().getStudents().contains(student3));
+        assertFalse(this.table.getBag().getStudents().contains(student4));
     }
 
     @Test
     void setAndGetIslandChosen() {
         character.setIslandChosen(1);
-        assertEquals(1, character.getIslandChosen());
+        assertEquals(character.getStudentChosen(), 1);
     }
 
     @Test
