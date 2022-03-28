@@ -2,9 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.Assistant;
 import it.polimi.ingsw.model.enums.ColorT;
-import it.polimi.ingsw.model.enums.Wizard;
-import it.polimi.ingsw.model.pawns.Tower;
-import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
+import it.polimi.ingsw.model.enums.Wizards;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +17,9 @@ class PlayerTest {
 
     @BeforeEach
     void init() {
-        Assistant a1 = new Assistant(1,2, Wizard.WIZARD_1);
-        Assistant a2 = new Assistant(2,3,Wizard.WIZARD_1);
-        Assistant a3 = new Assistant(3,3,Wizard.WIZARD_1);
+        Assistant a1 = new Assistant(1,2, Wizards.WIZARD_1);
+        Assistant a2 = new Assistant(2,3, Wizards.WIZARD_1);
+        Assistant a3 = new Assistant(3,3, Wizards.WIZARD_1);
         deck = new ArrayList<Assistant>(Arrays.asList(a1,a2,a3));
         player = new Player("nickname", deck, 1, ColorT.BLACK);
     }
@@ -63,6 +61,8 @@ class PlayerTest {
         assertTrue(player2.equals(player));
         Player player3 = new Player("username");
         assertFalse(player3.equals(player2));
+
+        assertFalse(player3.equals(new Object()));
     }
 
     @Test

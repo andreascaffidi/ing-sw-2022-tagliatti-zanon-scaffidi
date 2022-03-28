@@ -40,7 +40,7 @@ public class DiningRoom {
             case PINK:
                 return pinkLine;
         }
-        throw new RuntimeException();
+        throw new RuntimeException("Color not found");
     }
 
     /**
