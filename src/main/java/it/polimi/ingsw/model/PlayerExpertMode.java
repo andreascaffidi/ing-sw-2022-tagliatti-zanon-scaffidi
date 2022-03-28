@@ -9,8 +9,11 @@ import java.util.List;
 
 public class PlayerExpertMode extends Player{
     public static final int NUM_OF_COINS_SETUP = 1;
+
+    //
     private int coins;
     private boolean additionalInfluence;
+
     private SchoolBoardExpertMode schoolBoardExpertMode;
 
     public PlayerExpertMode(String username){
@@ -28,6 +31,7 @@ public class PlayerExpertMode extends Player{
      * adds a coin to the coins of the player
      * @param coins
      */
+    //Todo implementare in tableexpermode
     public void addCoins(int coins){
         this.coins += coins;
     }
@@ -36,6 +40,7 @@ public class PlayerExpertMode extends Player{
      * subtracts the cost of the played Card from the amount of coins of the player
      * @param cost
      */
+    //Todo implementare in tableexpermode
     public void pay(int cost){
         this.coins -= cost;
     }

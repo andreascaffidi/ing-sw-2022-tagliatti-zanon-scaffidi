@@ -1,0 +1,51 @@
+[
+    {
+        "value": 1,
+        "movement": 1
+    },
+
+    {
+        "value": 2,
+        "movement": 1
+    },
+
+    {
+        "value": 3,
+        "movement": 2
+    },
+
+    {
+        "value": 4,
+        "movement": 2
+    },
+
+    {
+        "value": 5,
+        "movement": 3
+    },
+
+    {
+        "value": 6,
+        "movement": 3
+    },
+
+    {
+        "value": 7,
+        "movement": 4
+    },
+
+    {
+        "value": 8,
+        "movement": 4
+    },
+
+    {
+        "value": 9,
+        "movement": 5
+    },
+
+    {
+        "value": 10,
+        "movement": 5
+    }
+]
