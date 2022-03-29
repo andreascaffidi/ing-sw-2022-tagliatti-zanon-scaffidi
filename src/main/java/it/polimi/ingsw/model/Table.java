@@ -25,22 +25,17 @@ public class Table {
     public int NUM_OF_TOWER_AT_SETUP;
     public int NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD;
 
-    protected Bag bag;
-    protected int numberOfPlayers;
-    protected List<Student> students;
+    private Bag bag;
+    private int numberOfPlayers;
+    private List<Student> students;
 
     private List<Island> islands;
-    protected MotherNature motherNature;
+    private MotherNature motherNature;
     private List<Cloud> clouds;
-    protected List<SchoolBoard> boards;
+    private List<SchoolBoard> boards;
     private Player[] players;
     private Player currentPlayer;
     private List<Professor> professors;
-
-    //TODO: impementare parti comuni
-    public Table(){
-
-    }
 
     public Table(List<Player> players){
         this.bag = new Bag();
@@ -91,7 +86,7 @@ public class Table {
      * @param players
      */
 
-    protected void setupPlayers(List<Player>players){
+    private void setupPlayers(List<Player>players){
         this.players = new Player[numberOfPlayers];
         for (int i = 0; i<this.numberOfPlayers; i++){
             this.players[i] = players.get(i);
@@ -108,7 +103,7 @@ public class Table {
      * sets up the 12 Islands and motherNature
      */
 
-    protected void setupIslands(){
+    private void setupIslands(){
         this.islands = new ArrayList<Island>();
         for (int i = 0; i < NUM_OF_ISLANDS; i++){
             this.islands.add(new Island(i));
@@ -147,7 +142,7 @@ public class Table {
      * sets up the Clouds dependently on the number of Players
      */
 
-    protected void setupClouds(){
+    private void setupClouds(){
         this.clouds = new ArrayList<>();
         // The number of clouds is the same as the number of players
         for(int i = 0; i < this.numberOfPlayers; i++){
@@ -158,7 +153,7 @@ public class Table {
     /**
      * creates all 130 students and shuffles them
      */
-    protected void setupStudents(){
+    private void setupStudents(){
         this.students = new ArrayList<Student>();
         for (ColorS color : ColorS.values()) {
             for (int i=0;i<NUM_OF_STUDENTS_PER_COLOR; i++){
@@ -171,7 +166,7 @@ public class Table {
     /**
      * creates all Professor, one for each Color
      */
-    protected void setupProfessors(){
+    private void setupProfessors(){
         this.professors = new ArrayList<>();
         for (ColorS color : ColorS.values()) {
             professors.add(new Professor(color));
@@ -182,7 +177,7 @@ public class Table {
      * sets up the SchoolBoards, one for each Player
      */
 
-    protected void setupSchoolboards(){
+    private void setupSchoolboards(){
         this.boards = new ArrayList<>();
         for(int i = 0; i < this.numberOfPlayers; i++){
             Player player = this.players[i];
@@ -205,7 +200,7 @@ public class Table {
     /**
      * sets up the AssistantCards, 10 for every Player
      */
-    protected void setupAssistantCards(){
+    private void setupAssistantCards(){
         //JSONParser parser = new JSONParser();
 
         //TODO LEGGERE JSON E INSTANZIARE LE CARTE CON I VALORI LETTI
@@ -378,7 +373,7 @@ public class Table {
     }
 
 
-    public Player professorOwner(ColorS color){
+    public Player getProfessorOwner(ColorS color){
         return this.professors.stream().filter(pr -> pr.getColor()==color)
                 .findFirst().orElseThrow(() -> new RuntimeException("Professor owner not found")).getOwner();
     }
@@ -413,39 +408,52 @@ public class Table {
      * @return player who has the highest influence on the island
      */
     public Player getSupremacy(Island island) {
-        Player oldIslandKing = null, newIslandKing = null;
-        int playerInfluence = 0, maxInfluence = 0;
+        Player newIslandKing = null;
+        int[] playerInfluence = new int[this.numberOfPlayers];
+        int maxInfluence = 0;
         boolean parity = false;
 
-        if (island.getTower() != null) {
-            oldIslandKing = island.getTower().getOwner();
+        for (int i = 0; i < this.numberOfPlayers; i++) {
+            playerInfluence[i] = getInfluence(island, this.players[i]);
         }
 
-        for (Player p : players) {
-            for (Professor pr : professors) {
-                if (p.equals(pr.getOwner())) {
-                    playerInfluence = playerInfluence + island.numStudent(pr.getColor());
-                }
-            }
-            if (p.equals(oldIslandKing)) {
-                playerInfluence = playerInfluence + island.getNumOfTowers();
-            }
-            if (playerInfluence > maxInfluence) {
-                maxInfluence = playerInfluence;
-                newIslandKing = p;
+        //assumo che il player 0 sia il leader della squadra 1 (pari)
+        if (this.numberOfPlayers == 4) {
+            playerInfluence[0] += playerInfluence[2];
+            playerInfluence[1] += playerInfluence[3];
+            playerInfluence[2] = 0;
+            playerInfluence[3] = 0;
+        }
+
+        for (int i = 0; i < this.numberOfPlayers; i++) {
+            if (playerInfluence[i] > maxInfluence) {
+                maxInfluence = playerInfluence[i];
+                newIslandKing = this.players[i];
                 parity = false;
-            } else if (playerInfluence == maxInfluence){
+            } else if (playerInfluence[i] == maxInfluence) {
                 parity = true;
             }
-            playerInfluence = 0;
         }
 
         if (parity == true){
-            return oldIslandKing;
+            return island.getTower().getOwner();
         }
         else {
             return newIslandKing;
         }
+    }
+
+    protected int getInfluence(Island island, Player player){
+        int influence = 0;
+        for (Professor pr : this.professors){
+            if (pr.getOwner()==player){
+                influence += island.numStudent(pr.getColor());
+            }
+            if (island.getTower() != null && player.equals(island.getTower().getOwner())){
+                influence += island.getNumOfTowers();
+            }
+        }
+        return influence;
     }
 
     public  List<Island> getIslands() {
@@ -480,6 +488,15 @@ public class Table {
 
     public MotherNature getMotherNature() {
         return motherNature;
+    }
+
+    //metodo chiamato ogni volta che si sposta uno studente sulla propria sala
+    public void setProfessorOwner(ColorS color, Player currentPlayer){
+        int currentPlayerProf = currentPlayer.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color);
+        Player oldOwner = this.getProfessorOwner(color);
+        if (oldOwner == null || currentPlayerProf > oldOwner.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color)){
+            this.getProfessor(color).setOwner(currentPlayer);
+        }
     }
 
 }

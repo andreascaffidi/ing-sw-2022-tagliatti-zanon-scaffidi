@@ -1,23 +1,7 @@
 package it.polimi.ingsw.model.charactercards;
 
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.PlayerExpertMode;
-import it.polimi.ingsw.model.TableExpertMode;
-import it.polimi.ingsw.model.enums.ColorS;
-import it.polimi.ingsw.model.enums.ColorT;
-import it.polimi.ingsw.model.pawns.Professor;
-import it.polimi.ingsw.model.pawns.Student;
-import it.polimi.ingsw.model.pawns.Tower;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class Character8Test {
-    private Character8 character;
+    /*private Character8 character;
     private TableExpertMode table;
     private PlayerExpertMode player1;
     private PlayerExpertMode player2;
@@ -74,5 +58,5 @@ class Character8Test {
     {
         character.setPlayer(player1);
         assertEquals(character.getPlayer(), player1);
-    }
+    }*/
 }

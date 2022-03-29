@@ -367,10 +367,10 @@ class TableTest {
     }
 
     @Test
-    void professorOwner() {
+    void getProfessorOwner() {
         Professor prof = table2p.getProfessor(ColorS.BLUE);
         prof.setOwner(two.get(1));
-        assertEquals(two.get(1), table2p.professorOwner(ColorS.BLUE));
+        assertEquals(two.get(1), table2p.getProfessorOwner(ColorS.BLUE));
     }
 
     @Test

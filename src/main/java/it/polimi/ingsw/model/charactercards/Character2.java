@@ -16,7 +16,7 @@ public class Character2 implements TypeOfCard {
      */
     @Override
     public void effect(TableExpertMode table){
-        table.setProfessorTie(true);
+        table.setProfessorTie(table.getCurrentPlayer(), true);
     }
 
     /**

@@ -1,19 +1,8 @@
 package it.polimi.ingsw.model.charactercards;
 
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.PlayerExpertMode;
-import it.polimi.ingsw.model.TableExpertMode;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class Character5Test {
 
-    private Character5 character;
+    /*private Character5 character;
     private TableExpertMode table;
     private PlayerExpertMode player1;
     private PlayerExpertMode player2;
@@ -83,6 +72,6 @@ class Character5Test {
     void setAndGetNumOfEntryTile() {
         character.setNumOfEntryTile(1);
         assertEquals(character.getNumOfEntryTile(),1);
-    }
+    }*/
 
 }

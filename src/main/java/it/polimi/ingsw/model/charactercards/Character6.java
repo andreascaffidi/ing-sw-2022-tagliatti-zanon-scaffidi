@@ -19,7 +19,7 @@ public class Character6 implements TypeOfCard {
     public void effect(TableExpertMode table)
     {
         //notify view scegliere isola
-        table.getIsland(islandChosen).setCountTowers(false);
+        table.setCountTowers(table.getIsland(islandChosen), false);
     }
 
     /**

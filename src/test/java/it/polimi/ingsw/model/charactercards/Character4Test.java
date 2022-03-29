@@ -1,19 +1,7 @@
 package it.polimi.ingsw.model.charactercards;
 
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.PlayerExpertMode;
-import it.polimi.ingsw.model.TableExpertMode;
-import it.polimi.ingsw.model.islands.Island;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class Character4Test {
-    private Character4 character;
+    /*private Character4 character;
     private TableExpertMode table;
     private PlayerExpertMode player1;
     private PlayerExpertMode player2;
@@ -51,5 +39,5 @@ class Character4Test {
     void setAndGetAdditionalMovements() {
         character.setAdditionalMovements(1);
         assertEquals(character.getAdditionalMovements(), 1);
-    }
+    }*/
 }
