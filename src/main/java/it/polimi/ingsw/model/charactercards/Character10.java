@@ -31,8 +31,8 @@ public class Character10 extends Character {
         }
         for (Student s : entranceStudentsChosen){
             table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(s);
-                table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(s);
-                table.addCoins(table.getCurrentPlayer(), 1);
+            table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(s);
+            table.addCoins(table.getCurrentPlayer(), 1);
         }
     }
 
@@ -45,8 +45,8 @@ public class Character10 extends Character {
 
     }
 
-    public void setDinnerRoomStudentsChosen(List<Student> dinnerRoomStudentsChosen) {
-        this.diningRoomStudentsChosen = dinnerRoomStudentsChosen;
+    public void setDiningRoomStudentsChosen(List<Student> diningRoomStudentsChosen) {
+        this.diningRoomStudentsChosen = diningRoomStudentsChosen;
     }
 
     public void setEntranceStudentsChosen(List<Student> entranceStudentsChosen) {
@@ -57,7 +57,7 @@ public class Character10 extends Character {
         return entranceStudentsChosen;
     }
 
-    public List<Student> getDinnerRoomStudentsChosen() {
+    public List<Student> getDiningRoomStudentsChosen() {
         return diningRoomStudentsChosen;
     }
 }

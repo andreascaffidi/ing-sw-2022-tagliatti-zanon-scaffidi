@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.enums.ColorS;
@@ -63,8 +64,8 @@ class Character6Test {
         this.table.getIsland(3).setTower(new Tower(ColorT.BLACK, player1));
 
         //a player1 do il blu e a player2 do il rosso
-        player1.getSchoolBoard().getProfessorTable().addProfessor(blueProfessor);
-        player2.getSchoolBoard().getProfessorTable().addProfessor(redProfessor);
+        table.setProfessorOwner(ColorS.BLUE, player1);
+        table.setProfessorOwner(ColorS.RED, player2);
 
         character.effect(this.table);
 
@@ -72,7 +73,11 @@ class Character6Test {
 
         //TODO: sistemare la getSupremacy
         //dovrebbe vincere il player1 per le torri ma invece vince il player2
-        assertEquals(this.table.getSupremacy(this.table.getIsland(3)), player2);
+        try {
+            assertEquals(this.table.getSupremacy(this.table.getIsland(3)), player2);
+        } catch (ParityException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

@@ -30,6 +30,7 @@ public class Character11 extends Character {
     {
         //notify view scegli studente carta
         table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(studentChosen);
+        this.students.remove(studentChosen);
         this.students.add(table.getBag().drawStudent());
     }
 

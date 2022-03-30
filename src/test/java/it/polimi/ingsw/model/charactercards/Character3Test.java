@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.enums.ColorS;
@@ -41,7 +42,8 @@ class Character3Test {
     @Test
     void effect() {
 
-        int islandChosen = 4;
+        int islandChosen = 2;
+        table.setCurrentPlayer(player2);
 
         //aggiungo sull'isola due student BLU
         table.getIsland(islandChosen).addStudent(new Student(ColorS.BLUE));
@@ -61,8 +63,8 @@ class Character3Test {
 
         //aggiungo sull'isola una torre di player2
 
-        System.out.println(table.getIsland(4).getNumOfTowers());
-        table.getIsland(4).setTower(new Tower(ColorT.BLACK, player2));
+        System.out.println(table.getIsland(2).getNumOfTowers());
+        table.getIsland(2).setTower(new Tower(ColorT.BLACK, player2));
 
         //assumo che l'isola scelta non abbia sopra madre natura
         character.setIslandChosen(islandChosen);
@@ -80,7 +82,11 @@ class Character3Test {
         //TODO: rivedere calcolo supremazia
 
         //la supremazia dovrà essere del player1
-        assertEquals(player1, table.getSupremacy(table.getIsland(islandChosen)));
+        try {
+            assertEquals(player1, table.getSupremacy(table.getIsland(islandChosen)));
+        } catch (ParityException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

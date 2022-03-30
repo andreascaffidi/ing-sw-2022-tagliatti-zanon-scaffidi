@@ -25,14 +25,19 @@ public class Character12 extends Character {
     @Override
     public void effect(TableExpertMode table)
     {
-        //Chi avesse meno di 3 studenti di quel colore, rimetterà tutti quelli che ha
-        //notify view scegli colore
-        for (Player p : table.getPlayers()){
-
-            for (int i = 0; i < Integer.min(NUM_OF_STUDENTS, p.getSchoolBoard().getDiningRoom().getLine(color).size()); i++){
-                //TODO: implementare expert mode di schoolboard
+        for (Player p : table.getPlayers())
+        {
+            if (p.getSchoolBoard().getDiningRoom().getLine(this.color).size() < NUM_OF_STUDENTS) {
+                int n = p.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(this.color);
+                for (int i = 0; i < n; i++) {
+                    table.getBag().addStudent(p.getSchoolBoard().getDiningRoom().removeStudent(this.color));
+                }
+            } else {
+                for (int i = 0; i < NUM_OF_STUDENTS; i++) {
                     Student student = p.getSchoolBoard().getDiningRoom().removeStudent(color);
                     table.getBag().addStudent(student);
+                }
+
             }
         }
     }

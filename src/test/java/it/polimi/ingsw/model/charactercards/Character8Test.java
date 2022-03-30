@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.enums.ColorS;
@@ -34,7 +35,7 @@ class Character8Test {
 
     @Test
     void effect() {
-       table.setCurrentPlayer(player2);
+       table.setCurrentPlayer(player1);
 
         //creo studenti e professori
         Professor blueProfessor = new Professor(ColorS.BLUE);
@@ -53,13 +54,22 @@ class Character8Test {
         this.table.getIsland(3).addStudent(student5);
 
         //a player1 do il blu e a player2 do il rosso
-        player1.getSchoolBoard().getProfessorTable().addProfessor(blueProfessor);
-        player2.getSchoolBoard().getProfessorTable().addProfessor(redProfessor);
+        table.setProfessorOwner(ColorS.BLUE, player1);
+        table.setProfessorOwner(ColorS.RED, player2);
 
         character.effect(this.table);
 
+        Player winner = new Player("ciao");
+
         //dovrebbe vincere il player2 ma vince il player1
-        assertEquals(this.table.getSupremacy(this.table.getIsland(3)), player1);
+        try {
+            assertEquals(player1, this.table.getSupremacy(this.table.getIsland(3)));
+            winner = this.table.getSupremacy(this.table.getIsland(3));
+        } catch (ParityException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(player1, winner);
     }
 
     @Test
