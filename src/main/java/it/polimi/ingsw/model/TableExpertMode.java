@@ -1,8 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.Assistant;
 import it.polimi.ingsw.model.cards.Character;
+import it.polimi.ingsw.model.cards.TypeOfCard;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
+import it.polimi.ingsw.model.enums.Wizards;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.islands.IslandExpertMode;
 import it.polimi.ingsw.model.pawns.MotherNature;
@@ -10,7 +13,14 @@ import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Tower;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoardExpertMode;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,7 +35,7 @@ public class TableExpertMode extends Table {
     private Character[] characterCards;
     private boolean professorTie;
     private ColorS noInfluenceColor;
-
+    private ArrayList<Character> characters;
 
     private List<IslandExpertMode> islands;
     private PlayerExpertMode[] players;               //aggiunto l'attributo players
@@ -102,7 +112,25 @@ public class TableExpertMode extends Table {
     }
 
     protected void setupCharacterCards() {
-        //todo leggere il json e instanziare carte
+        JSONParser jsonParser = new JSONParser();
+        try (FileReader reader = new FileReader("assets/characters.json"))
+        {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+            JSONArray cards = (JSONArray) obj;
+            this.characters = new ArrayList<>();
+            cards.forEach( object ->{
+                JSONObject card =  (JSONObject) object;
+                this.characters.add(new Character(((String)card.get("name")), ((Long)card.get("cost")).intValue(),null));
+            });
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

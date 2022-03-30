@@ -240,9 +240,6 @@ public class Table {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        //TODO LEGGERE JSON E INSTANZIARE LE CARTE CON I VALORI LETTI
-
     }
 
     /**
