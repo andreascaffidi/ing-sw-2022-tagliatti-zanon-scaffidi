@@ -3,7 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.cards.Assistant;
-import it.polimi.ingsw.model.enums.Wizard;
+import it.polimi.ingsw.model.enums.Wizards;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Tower;
 
@@ -52,7 +52,7 @@ public class Controller {
             }
            //todo: implementare
 
-            Assistant card = new Assistant(0,0, Wizard.WIZARD_1);
+            Assistant card = new Assistant(0,0, Wizards.WIZARD_1);
             Integer[] params = new Integer[]{card.getValue(),card.getMotherNatureMovements()};
             this.playerParams.put(player, params);
         }
