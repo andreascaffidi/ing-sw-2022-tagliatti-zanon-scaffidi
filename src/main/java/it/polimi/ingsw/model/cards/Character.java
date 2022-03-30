@@ -1,18 +1,15 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.TableExpertMode;
 
-public class Character {
+public abstract class Character {
 
     private String name;
     private int cost;
-    private TypeOfCard typeOfCard;
 
-    public Character(String name, int cost, TypeOfCard typeOfCard){
+    public Character(String name, int cost){
         this.name = name;
         this.cost = cost;
-        this.typeOfCard = typeOfCard;
     }
 
     public String getName() {
@@ -31,19 +28,14 @@ public class Character {
     }
 
     /**
-     * activates the effect of the Character
+     * activates the effect of the Card
      * @param table
      */
-    public void activate(TableExpertMode table){
-        typeOfCard.effect(table);
-    }
+    public abstract void effect(TableExpertMode table);
 
     /**
-     * sets up the Character
+     * sets up the Card
      * @param table
      */
-
-    public void setup(TableExpertMode table){
-        typeOfCard.setup(table);
-    }
+    public abstract void setup(TableExpertMode table);
 }

@@ -4,8 +4,17 @@ import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.cards.Character;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
-import it.polimi.ingsw.model.pawns.Professor;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.*;
 
 
@@ -24,6 +33,7 @@ public class TableExpertMode extends Table {
 
     private Map<Island, Boolean> entryTile;
     private Map<Island, Boolean> countTowers;
+    private ArrayList<Character> characters;
 
 
     public TableExpertMode(List<Player> players) {
@@ -51,9 +61,29 @@ public class TableExpertMode extends Table {
 
     }
 
-
     private void setupCharacterCards() {
-        //todo leggere il json e instanziare carte
+
+        /*
+        JSONParser jsonParser = new JSONParser();
+        try (FileReader reader = new FileReader("assets/characters.json"))
+        {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+            JSONArray cards = (JSONArray) obj;
+            this.characters = new ArrayList<>();
+            cards.forEach( object ->{
+                JSONObject card =  (JSONObject) object;
+                this.characters.add(new Character(((String)card.get("name")), ((Long)card.get("cost")).intValue(),null));
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        */
+
     }
 
     public void deposit(int coins) {
