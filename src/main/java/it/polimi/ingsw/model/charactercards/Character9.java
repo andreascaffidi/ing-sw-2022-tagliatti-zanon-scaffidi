@@ -1,14 +1,15 @@
 package it.polimi.ingsw.model.charactercards;
 
 import it.polimi.ingsw.model.TableExpertMode;
-import it.polimi.ingsw.model.cards.TypeOfCard;
+import it.polimi.ingsw.model.cards.Character;
 import it.polimi.ingsw.model.enums.ColorS;
 
-public class Character9 implements TypeOfCard {
+public class Character9 extends Character {
 
     private ColorS color;
 
     public Character9() {
+        super("Character9",3);
         this.color=null;
     }
 

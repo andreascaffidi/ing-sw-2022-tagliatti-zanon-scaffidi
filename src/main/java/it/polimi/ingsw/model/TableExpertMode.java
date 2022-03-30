@@ -61,6 +61,8 @@ public class TableExpertMode extends Table {
     }
 
     private void setupCharacterCards() {
+
+        /*
         JSONParser jsonParser = new JSONParser();
         try (FileReader reader = new FileReader("assets/characters.json"))
         {
@@ -72,7 +74,6 @@ public class TableExpertMode extends Table {
                 JSONObject card =  (JSONObject) object;
                 this.characters.add(new Character(((String)card.get("name")), ((Long)card.get("cost")).intValue(),null));
             });
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -80,6 +81,8 @@ public class TableExpertMode extends Table {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        */
+
     }
 
     public void deposit(int coins) {

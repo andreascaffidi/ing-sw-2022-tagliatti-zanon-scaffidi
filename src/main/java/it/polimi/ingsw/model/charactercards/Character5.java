@@ -1,15 +1,16 @@
 package it.polimi.ingsw.model.charactercards;
 
 import it.polimi.ingsw.model.TableExpertMode;
-import it.polimi.ingsw.model.cards.TypeOfCard;
+import it.polimi.ingsw.model.cards.Character;
 
-public class Character5 implements TypeOfCard {
+public class Character5 extends Character {
 
     private int islandChosen;
     private int numOfEntryTile;
     private static final int MAX_ENTRY_TILE = 4;
 
     public Character5() {
+        super("Character5",2);
         this.islandChosen = 0;
         this.numOfEntryTile = 0;
     }

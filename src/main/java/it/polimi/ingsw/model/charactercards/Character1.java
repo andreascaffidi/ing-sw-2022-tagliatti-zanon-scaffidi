@@ -1,12 +1,11 @@
 package it.polimi.ingsw.model.charactercards;
 
-import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.TableExpertMode;
-import it.polimi.ingsw.model.cards.TypeOfCard;
+import it.polimi.ingsw.model.cards.Character;
 import it.polimi.ingsw.model.pawns.Student;
 import java.util.*;
 
-public class Character1 implements TypeOfCard {
+public class Character1 extends Character {
 
     private static final int NUM_OF_STUDENTS = 4;
 
@@ -17,6 +16,7 @@ public class Character1 implements TypeOfCard {
     private Student studentChosen;
 
     public Character1() {
+        super("Character1", 1);
         this.students = new ArrayList<>();
         this.islandChosen = 0;
         this.studentChosen = null;

@@ -1,14 +1,13 @@
 package it.polimi.ingsw.model.charactercards;
 
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
-import it.polimi.ingsw.model.cards.TypeOfCard;
+import it.polimi.ingsw.model.cards.Character;
 
-public class Character8 implements TypeOfCard {
+public class Character8 extends Character {
 
 
     public Character8() {
-
+        super("Character8",2);
     }
 
     /**

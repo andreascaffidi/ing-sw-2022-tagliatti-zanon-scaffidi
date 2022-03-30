@@ -2,16 +2,17 @@ package it.polimi.ingsw.model.charactercards;
 
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
-import it.polimi.ingsw.model.cards.TypeOfCard;
+import it.polimi.ingsw.model.cards.Character;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 
-public class Character12 implements TypeOfCard {
+public class Character12 extends Character {
 
     private static final int NUM_OF_STUDENTS = 3;
     private ColorS color;
 
     public Character12() {
+        super("Character12",3);
         this.color = null;
     }
 
