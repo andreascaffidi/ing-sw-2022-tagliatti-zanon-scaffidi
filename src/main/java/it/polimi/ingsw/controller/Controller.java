@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exceptions.LastTowerVictoryException;
+import it.polimi.ingsw.model.Cloud;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.cards.Assistant;
@@ -16,7 +18,9 @@ public class Controller {
     private RoundPhases roundPhase;
     private TurnPhases turnPhase;
 
-    private Map<Player, Integer[]> playerParams;
+    private Map<Player, Integer> playerValues;
+    private Object[][] orderedPlayers;
+
 
 
     public Controller(List<Player> players){
@@ -24,19 +28,21 @@ public class Controller {
         int randomPlayerIndex = new Random().nextInt(players.size());
         this.table.setCurrentPlayer(players.get(randomPlayerIndex));
         this.roundPhase = RoundPhases.PLANNING;
+        this.orderedPlayers = new Object[players.size()][players.size()];
     }
 
 
-    /*
-        INIZIO ROUND
-            FASE PIANIFICAZIONE
-                -   per ogni giocatore si pascano 3 studenti e si piazzano su una nuvola
-                -   ogni giocatore scehlie carta assistente
+    /*  INIZIO ROUND
+        FASE PIANIFICAZIONE
+            -   per ogni giocatore si pascano 3 studenti e si piazzano su una nuvola
+            -   ogni giocatore scehlie carta assistente
     */
+
+
 
         public void setupPlanning(){
             this.roundPhase = RoundPhases.PLANNING;
-            this.playerParams = new HashMap<>();
+            this.playerValues = new TreeMap<>();
 
             for(int i = 0; i<table.getClouds().size();i++){
                 table.addStudentsToCloud(table.getClouds().get(i));
@@ -51,10 +57,15 @@ public class Controller {
                 throw new RuntimeException("");
             }
            //todo: implementare
-
             Assistant card = new Assistant(0,0, Wizards.WIZARD_1);
+            player.addToDiscardPile(card);
             Integer[] params = new Integer[]{card.getValue(),card.getMotherNatureMovements()};
-            this.playerParams.put(player, params);
+
+
+            this.playerValues.put(player, card.getValue());
+
+
+            this.nextPlayer();
         }
 
         public void setupAction(){
@@ -64,9 +75,19 @@ public class Controller {
         }
 
 
-
+        //FIXME: da gestire il caso 2 giocatori giochino 2 carte con lo stesso valore
         private void nextPlayer(){
-            //table.setCurrentPlayer();
+            int currentValue = table.getCurrentPlayer().getDiscardPile().get(0).getValue();
+            int minValue = 11;
+            Player nextPlayer = null;
+            for(Player player : table.getPlayers()){
+                if(player.getDiscardPile().get(0).getValue() < minValue && player.getDiscardPile().get(0).getValue() > currentValue) {
+                    minValue = player.getDiscardPile().get(0).getValue();
+                    nextPlayer = player;
+                }
+            }
+            if(nextPlayer == null) this.endRound();
+            table.setCurrentPlayer(nextPlayer);
         }
 
         /*
@@ -85,41 +106,71 @@ public class Controller {
                 table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(students.get(i));
                 //da fare if e decidere destinazione
                 table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(students.get(i));
+                table.setProfessorOwner(students.get(i).getColor(),table.getCurrentPlayer());
                 //in caso è isola dobbiamo capire quale isola è
             }
-
-        }
-
-        private void replaceProfessors(){
-
         }
 
 
         //FASE 2
         public void moveMotherNature(int movements){
+            this.turnPhase = TurnPhases.MOVE_MOTHER_NATURE;
+
             this.table.moveMotherNature(movements);
 
             Tower oldTower = this.table.motherNatureIsland().getTower();
             Player oldIslandKing = oldTower.getOwner();
 
-            Player newIslandKing = this.table.getSupremacy(this.table.motherNatureIsland());
-            if(!newIslandKing.equals(oldIslandKing)){
-                if(oldIslandKing != null){
-                    oldIslandKing.getSchoolBoard().getTowers().addTower(oldTower);
+            try {
+                Player newIslandKing = this.table.getSupremacy(this.table.motherNatureIsland());
+                if(!newIslandKing.equals(oldIslandKing)){
+                    if(oldIslandKing != null){
+                        oldIslandKing.getSchoolBoard().getTowers().addTower(oldTower);
+                    }
+                    Tower newTower = newIslandKing.getSchoolBoard().getTowers().removeLastTower();
+
+
+                    if(table.getCurrentPlayer().getSchoolBoard().getTowers().getTowers().size() == 0){
+                        throw new LastTowerVictoryException("Last tower placed");
+                    }
+
+                    this.table.motherNatureIsland().setTower(newTower);
                 }
-                Tower newTower = newIslandKing.getSchoolBoard().getTowers().removeLastTower();
-                this.table.motherNatureIsland().setTower(newTower);
+            }catch (LastTowerVictoryException e){
+                this.endGame();
+            }
+            catch (Exception e){
+                //todo:
             }
         }
 
-        //FASE 3
-        public void chooseCloud(){
 
+
+    //FASE 3
+        public void chooseCloud(int cloudIndex){
+            this.turnPhase = TurnPhases.GET_STUDENTS_FROM_CLOUD;
+            Cloud cloud = table.getClouds().get(cloudIndex);
+            for(Student student : cloud.takeAllStudents()){
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(student);
+            }
+            this.nextPlayer();
         }
 
 
         private void endRound(){
+            if(roundPhase == RoundPhases.ACTION){
+                this.setupPlanning();
+            }
+            if(roundPhase == RoundPhases.PLANNING){
+                roundPhase = RoundPhases.ACTION;
+                turnPhase = TurnPhases.MOVE_STUDENTS; //WAITING_FOR_MOVE_STUDENTS_MESSAGE
+            }
 
+        }
+
+        //FIXME: implementare per bene
+        private void endGame() {
+            Player winner = table.getCurrentPlayer();
         }
 
 
