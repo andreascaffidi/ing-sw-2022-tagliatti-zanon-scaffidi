@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Tower;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
+import it.polimi.ingsw.model.cards.Assistant;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
