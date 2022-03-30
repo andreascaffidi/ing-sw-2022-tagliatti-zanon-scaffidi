@@ -1,14 +1,13 @@
 package it.polimi.ingsw.model.charactercards;
 
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
-import it.polimi.ingsw.model.cards.TypeOfCard;
+import it.polimi.ingsw.model.cards.Character;
 import it.polimi.ingsw.model.pawns.Student;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Character7 implements TypeOfCard {
+public class Character7 extends Character {
 
     private List<Student> cardStudents;
     private static final int NUM_OF_STUDENTS = 6;
@@ -17,6 +16,7 @@ public class Character7 implements TypeOfCard {
 
 
     public Character7() {
+        super("Character7",1);
         this.cardStudents=new ArrayList<>();
         this.cardStudentsChosen=new ArrayList<>();
         this.entranceStudentChosen=new ArrayList<>();

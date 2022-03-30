@@ -1,18 +1,17 @@
 package it.polimi.ingsw.model.charactercards;
 
-import it.polimi.ingsw.exceptions.GetCoinException;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
-import it.polimi.ingsw.model.cards.TypeOfCard;
+import it.polimi.ingsw.model.cards.Character;
 import it.polimi.ingsw.model.pawns.Student;
 
 import java.util.List;
 
-public class Character10 implements TypeOfCard {
+public class Character10 extends Character {
 
     private List<Student> entranceStudentsChosen;
     private List<Student> diningRoomStudentsChosen;
     public Character10() {
+        super("Character10",1);
         this.entranceStudentsChosen = null;
         this.diningRoomStudentsChosen = null;
     }
