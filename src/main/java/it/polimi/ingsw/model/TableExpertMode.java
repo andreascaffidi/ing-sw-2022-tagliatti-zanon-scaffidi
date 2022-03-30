@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.cards.Character;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
@@ -117,7 +118,7 @@ public class TableExpertMode extends Table {
     }
 
     @Override
-    public Player getSupremacy(Island island) {
+    public Player getSupremacy (Island island)throws ParityException {
         if (this.isEntryTile(island)){
             return island.getTower().getOwner();
         }
@@ -133,12 +134,12 @@ public class TableExpertMode extends Table {
             if (c != noInfluenceColor && this.getProfessor(c).getOwner()==player){
                 influence += island.numStudent(c);
             }
-            if (island.getTower() != null && player.equals(island.getTower().getOwner()) && countTowers.get(island)){
-                influence += island.getNumOfTowers();
-            }
-            if (this.isAdditionalInfluence(player)){
-                influence += 2;
-            }
+        }
+        if (island.getTower() != null && player.equals(island.getTower().getOwner()) && countTowers.get(island)){
+            influence += island.getNumOfTowers();
+        }
+        if (this.isAdditionalInfluence(player)){
+            influence += 2;
         }
         return influence;
     }

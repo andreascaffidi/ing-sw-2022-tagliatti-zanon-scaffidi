@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.cards.Assistant;
@@ -102,13 +103,18 @@ public class Controller {
             Tower oldTower = this.table.motherNatureIsland().getTower();
             Player oldIslandKing = oldTower.getOwner();
 
-            Player newIslandKing = this.table.getSupremacy(this.table.motherNatureIsland());
-            if(!newIslandKing.equals(oldIslandKing)){
-                if(oldIslandKing != null){
-                    oldIslandKing.getSchoolBoard().getTowers().addTower(oldTower);
+            try {
+                Player newIslandKing = this.table.getSupremacy(this.table.motherNatureIsland());
+                if (!newIslandKing.equals(oldIslandKing)) {
+                    if (oldIslandKing != null) {
+                        oldIslandKing.getSchoolBoard().getTowers().addTower(oldTower);
+                    }
+                    Tower newTower = newIslandKing.getSchoolBoard().getTowers().removeLastTower();
+                    this.table.motherNatureIsland().setTower(newTower);
                 }
-                Tower newTower = newIslandKing.getSchoolBoard().getTowers().removeLastTower();
-                this.table.motherNatureIsland().setTower(newTower);
+            }
+            catch (ParityException e){
+                System.out.println(e.getMessage());
             }
         }
 

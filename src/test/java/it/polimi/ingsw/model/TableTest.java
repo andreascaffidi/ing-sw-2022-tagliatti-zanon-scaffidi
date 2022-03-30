@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.islands.Island;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Tower;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -351,19 +353,18 @@ class TableTest {
     }
 
     @Test
-    void getPlayerWithMinTowers() {
+    void getPlayerWithMinTowers() throws ParityException {
         table2p.getPlayers()[0].getSchoolBoard().getTowers().getTowers().remove(0);
         assertEquals(two.get(0), table2p.getPlayerWithMinTowers());
-
-        //todo: testare caso di parità
+        table2p.getPlayers()[1].getSchoolBoard().getTowers().getTowers().remove(0);
+        Exception exception = assertThrows(ParityException.class, () -> table2p.getPlayerWithMinTowers());
+        assertEquals("there's a parity", exception.getMessage());
     }
 
     @Test
     void getPlayerWithMaxProfessor() {
         table2p.getPlayers()[0].getSchoolBoard().getProfessorTable().addProfessor(new Professor(ColorS.BLUE));
         assertEquals(two.get(0), table2p.getPlayerWithMaxProfessor());
-
-        //todo: testare caso di parità
     }
 
     @Test
@@ -384,14 +385,56 @@ class TableTest {
     }
 
     @Test
-    void getSupremacy() {
-        List<Student> students = new ArrayList<>(Arrays.asList(new Student(ColorS.YELLOW), new Student(ColorS.YELLOW), new Student(ColorS.YELLOW), new Student(ColorS.BLUE)));
+    void getSupremacy() throws ParityException{
+        List<Student> students = new ArrayList<>(Arrays.asList(new Student(ColorS.YELLOW), new Student(ColorS.YELLOW), new Student(ColorS.BLUE)));
+
+        //using mother nature island because there aren't any students at the beginning of the match
+        int index2p = table2p.getMotherNature().getIsland().getId();
+
+        //case 2 players
         table2p.getProfessor(ColorS.BLUE).setOwner(two.get(0));
         table2p.getProfessor(ColorS.YELLOW).setOwner(two.get(1));
-        table2p.getIsland(3).addStudents(students);
-        assertEquals(two.get(1), table2p.getSupremacy(table2p.getIsland(3)));
+        table2p.getIsland(index2p).addStudents(students);
+        assertEquals(two.get(1), table2p.getSupremacy(table2p.getIsland(index2p)));
 
-        //todo: testare caso di parità
+        //parity case
+        table2p.getIsland(index2p).addStudent(new Student(ColorS.BLUE));
+        Exception exception = assertThrows(ParityException.class, () -> table2p.getSupremacy(table2p.getIsland(index2p)));
+        assertEquals("there's a parity", exception.getMessage());
+
+        //case 3 players
+        int index3p = table3p.getMotherNature().getIsland().getId();
+        students.add(new Student(ColorS.GREEN));
+        table3p.getProfessor(ColorS.BLUE).setOwner(three.get(0));
+        table3p.getProfessor(ColorS.YELLOW).setOwner(three.get(1));
+        table3p.getProfessor(ColorS.GREEN).setOwner(three.get(2));
+        table3p.getIsland(index3p).addStudents(students);
+        assertEquals(three.get(1), table3p.getSupremacy(table3p.getIsland(index3p)));
+
+        //parity case
+        table3p.getIsland(index3p).addStudent(new Student(ColorS.GREEN));
+        exception = assertThrows(ParityException.class, () -> table3p.getSupremacy(table3p.getIsland(index3p)));
+        assertEquals("there's a parity", exception.getMessage());
+
+        //case 4 players
+        int index4p = table4p.getMotherNature().getIsland().getId();
+        students.add(new Student(ColorS.YELLOW));
+        students.add(new Student(ColorS.YELLOW));
+        students.add(new Student(ColorS.RED));
+        students.add(new Student(ColorS.RED));
+        students.add(new Student(ColorS.BLUE));
+        table4p.getProfessor(ColorS.BLUE).setOwner(four.get(0));
+        table4p.getProfessor(ColorS.GREEN).setOwner(four.get(2));
+        table4p.getProfessor(ColorS.RED).setOwner(four.get(2));
+        table4p.getProfessor(ColorS.YELLOW).setOwner(four.get(1));
+        table4p.getProfessor(ColorS.PINK).setOwner(four.get(3));
+        table4p.getIsland(index4p).addStudents(students);
+        assertEquals(four.get(0), table4p.getSupremacy(table4p.getIsland(index4p)));
+
+        //parity case
+        table4p.getIsland(index4p).addStudent(new Student(ColorS.PINK));
+        exception = assertThrows(ParityException.class, () -> table4p.getSupremacy(table4p.getIsland(index4p)));
+        assertEquals("there's a parity", exception.getMessage());
     }
 
     @Test
@@ -420,4 +463,27 @@ class TableTest {
     void getClouds(){
         assertTrue(true, "tested in other methods");
     }
+
+    @Test
+    void setProfessorOwner(){
+        table2p.getPlayers()[0].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));
+        table2p.getPlayers()[0].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));
+        table2p.getPlayers()[0].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));
+        table2p.setProfessorOwner(ColorS.YELLOW, table2p.getPlayers()[0]);
+        assertEquals(two.get(0), table2p.getProfessorOwner(ColorS.YELLOW));
+
+        table2p.getPlayers()[1].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));
+        table2p.getPlayers()[1].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));
+        table2p.setProfessorOwner(ColorS.YELLOW, table2p.getPlayers()[1]);
+        assertEquals(two.get(0), table2p.getProfessorOwner(ColorS.YELLOW));
+
+        table2p.getPlayers()[1].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));
+        table2p.setProfessorOwner(ColorS.YELLOW, table2p.getPlayers()[1]);
+        assertEquals(two.get(0), table2p.getProfessorOwner(ColorS.YELLOW));
+
+        table2p.getPlayers()[1].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));
+        table2p.setProfessorOwner(ColorS.YELLOW, table2p.getPlayers()[1]);
+        assertEquals(two.get(1), table2p.getProfessorOwner(ColorS.YELLOW));
+    }
+
 }

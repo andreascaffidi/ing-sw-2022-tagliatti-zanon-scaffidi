@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.islands.Island;
@@ -316,60 +317,49 @@ public class Table {
      * finds the Island where motherNature is
      * @return
      */
-    //TODO: testare il funzionamento
     public Island motherNatureIsland(){
         return this.islands.stream().filter(island -> island.isMotherNature())
                 .findFirst().orElseThrow(() -> new RuntimeException("Mother Nature not found"));
     }
 
-    //TODO: sarebbe meglio creare l'eccezione parità
-    //todo: sistemare per 4 giocatori
+
     //il giocatore che ha costruito il maggior numero di torri è anche quello che ne ha il minor numero su towers
-    public Player getPlayerWithMinTowers(){
+    public Player getPlayerWithMinTowers() throws ParityException {
         int minTower = 9, numOfTower = 0;
         boolean parity = false;
         Player winner = null;
-        for (Player p : this.players){
-            numOfTower = p.getSchoolBoard().getTowers().getTowers().size();
-            if (numOfTower < minTower){
-                minTower = numOfTower;
-                winner = p;
-                parity = false;
-            }
-            else if (numOfTower == minTower){
-                parity = true;
+        for (int i = 0; i < this.numberOfPlayers; i++){
+            if (this.numberOfPlayers < 4 || (this.numberOfPlayers == 4 && i < 2)) {
+                numOfTower = this.players[i].getSchoolBoard().getTowers().getTowers().size();
+                if (numOfTower < minTower) {
+                    minTower = numOfTower;
+                    winner = this.players[i];
+                    parity = false;
+                } else if (numOfTower == minTower) {
+                    parity = true;
+                }
             }
         }
         if (parity){
-            throw new RuntimeException("There's a parity");
+            throw new ParityException("there's a parity");
         }
         else{
             return winner;
         }
     }
 
-    //todo: sarebbe meglio creare l'eccezione parità
+    //in teoria non si può mai verificare il caso in cui ci sia una parità di professori tra giocatori
     public Player getPlayerWithMaxProfessor(){
         int maxProf = 0, numOfProf = 0;
-        boolean parity = false;
         Player winner = null;
         for (Player p : this.players){
             numOfProf = p.getSchoolBoard().getProfessorTable().getProfessors().size();
             if (numOfProf > maxProf){
                 maxProf = numOfProf;
                 winner = p;
-                parity = false;
-            }
-            else if (numOfProf == maxProf){
-                parity = true;
             }
         }
-        if (parity){
-            throw new RuntimeException("There's a parity");
-        }
-        else{
-            return winner;
-        }
+        return winner;
     }
 
 
@@ -394,20 +384,13 @@ public class Table {
         throw new RuntimeException("Island not found");
     }
 
-    //todo: sarebbe meglio creare l'eccezione parità
     /**
-     * Calculates the influence of every player on the island and returns the player who has the highest influence:
-     * for each player checks if he has a specific professor and in that case increments a counter (that calculates influence)
-     * of the number of students on the island with the same color of the specific professor. If the player in exam is the
-     * owner of the tower/s on the island/s, increments influence of the number of towers on the island. If the calculated
-     * influence is bigger than the highest influence, it becomes the highest influence; else if they are equals a boolean
-     * flag "parity" turns on. At the end if there's a parity of the highest influence calculated, the method returns
-     * the old owner of the tower (if there isn't a tower it returns null); else it returns the player who has the
-     * highest influence.
+     * Calculate the player who has the greatest influence on the island, throws ParityException if there's
+     * a parity of the max influence
      * @param island
      * @return player who has the highest influence on the island
      */
-    public Player getSupremacy(Island island) {
+    public Player getSupremacy(Island island) throws ParityException {
         Player newIslandKing = null;
         int[] playerInfluence = new int[this.numberOfPlayers];
         int maxInfluence = 0;
@@ -435,8 +418,8 @@ public class Table {
             }
         }
 
-        if (parity == true){
-            return island.getTower().getOwner();
+        if (parity){
+            throw new ParityException("there's a parity");
         }
         else {
             return newIslandKing;
@@ -449,9 +432,9 @@ public class Table {
             if (pr.getOwner()==player){
                 influence += island.numStudent(pr.getColor());
             }
-            if (island.getTower() != null && player.equals(island.getTower().getOwner())){
-                influence += island.getNumOfTowers();
-            }
+        }
+        if (island.getTower() != null && player.equals(island.getTower().getOwner())){
+            influence += island.getNumOfTowers();
         }
         return influence;
     }
