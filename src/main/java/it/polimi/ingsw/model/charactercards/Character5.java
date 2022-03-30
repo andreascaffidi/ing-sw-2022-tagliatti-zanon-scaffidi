@@ -26,7 +26,7 @@ public class Character5 implements TypeOfCard {
     {
         //notify view scegliere isola
         if (this.numOfEntryTile < MAX_ENTRY_TILE){
-            table.getIsland(islandChosen).setEntryTile(true);
+            table.setEntryTile(table.getIsland(islandChosen),true);
             this.numOfEntryTile++;
             //todo: numOfEntryTile va decrementato in quache modo
         }

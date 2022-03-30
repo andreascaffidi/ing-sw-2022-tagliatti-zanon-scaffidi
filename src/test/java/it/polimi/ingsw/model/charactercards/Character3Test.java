@@ -1,25 +1,12 @@
 package it.polimi.ingsw.model.charactercards;
 
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.PlayerExpertMode;
-import it.polimi.ingsw.model.TableExpertMode;
-import it.polimi.ingsw.model.enums.ColorS;
-import it.polimi.ingsw.model.islands.Island;
-import it.polimi.ingsw.model.pawns.Professor;
-import it.polimi.ingsw.model.pawns.Student;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+//import static org.junit.Assume.assumeFalse;
+//import static org.junit.Assume.assumeTrue;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
-import static org.junit.jupiter.api.Assertions.*;
 
 class Character3Test {
 
-    private Character3 character;
+    /*private Character3 character;
     private TableExpertMode table;
     private PlayerExpertMode player1;
     private PlayerExpertMode player2;
@@ -49,7 +36,7 @@ class Character3Test {
 
         //assumo che l'isola scelta non abbia sopra madre natura
         character.setIslandChosen(islandChosen);
-        assumeFalse(table.getIsland(islandChosen).isMotherNature());
+        //assumeFalse(table.getIsland(islandChosen).isMotherNature());
 
         //di conseguenza l'owner dell'isola dovrà essere null
         if(table.getSupremacy(table.getIsland(islandChosen))==null)
@@ -95,5 +82,5 @@ class Character3Test {
     void setAndGetIslandChosen() {
         character.setIslandChosen(3);
         assertEquals(character.getIslandChosen(), 3);
-    }
+    }*/
 }

@@ -11,10 +11,10 @@ import java.util.List;
 public class Character10 implements TypeOfCard {
 
     private List<Student> entranceStudentsChosen;
-    private List<Student> dinnerRoomStudentsChosen;
+    private List<Student> diningRoomStudentsChosen;
     public Character10() {
         this.entranceStudentsChosen = null;
-        this.dinnerRoomStudentsChosen = null;
+        this.diningRoomStudentsChosen = null;
     }
 
     /**
@@ -26,14 +26,14 @@ public class Character10 implements TypeOfCard {
     {
         //TODO: rivedere l'implementazione
         //notify view scegliere studenti sala e studenti ingresso
-        for (Student s : dinnerRoomStudentsChosen){
+        for (Student s : diningRoomStudentsChosen){
             table.getCurrentPlayer().getSchoolBoard().getDiningRoom().removeStudent(s);
             table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(s);
         }
         for (Student s : entranceStudentsChosen){
             table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(s);
                 table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(s);
-                table.getCurrentPlayer().addCoins(1);
+                table.addCoins(table.getCurrentPlayer(), 1);
         }
     }
 
@@ -47,7 +47,7 @@ public class Character10 implements TypeOfCard {
     }
 
     public void setDinnerRoomStudentsChosen(List<Student> dinnerRoomStudentsChosen) {
-        this.dinnerRoomStudentsChosen = dinnerRoomStudentsChosen;
+        this.diningRoomStudentsChosen = dinnerRoomStudentsChosen;
     }
 
     public void setEntranceStudentsChosen(List<Student> entranceStudentsChosen) {
@@ -59,6 +59,6 @@ public class Character10 implements TypeOfCard {
     }
 
     public List<Student> getDinnerRoomStudentsChosen() {
-        return dinnerRoomStudentsChosen;
+        return diningRoomStudentsChosen;
     }
 }

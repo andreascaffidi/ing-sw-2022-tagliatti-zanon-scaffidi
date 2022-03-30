@@ -6,10 +6,9 @@ import it.polimi.ingsw.model.cards.TypeOfCard;
 
 public class Character8 implements TypeOfCard {
 
-    private Player player;
 
     public Character8() {
-        this.player=null;
+
     }
 
     /**
@@ -20,7 +19,7 @@ public class Character8 implements TypeOfCard {
     @Override
     public void effect(TableExpertMode table)
     {
-        table.getCurrentPlayer().setAdditionalInfluence(true);
+        table.setAdditionalInfluence(table.getCurrentPlayer(),true);
     }
 
     /**
@@ -33,11 +32,4 @@ public class Character8 implements TypeOfCard {
 
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
 }

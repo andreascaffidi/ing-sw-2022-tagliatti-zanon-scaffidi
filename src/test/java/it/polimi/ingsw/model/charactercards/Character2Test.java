@@ -1,22 +1,8 @@
 package it.polimi.ingsw.model.charactercards;
 
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.PlayerExpertMode;
-import it.polimi.ingsw.model.TableExpertMode;
-import it.polimi.ingsw.model.cards.Character;
-import it.polimi.ingsw.model.enums.ColorS;
-import it.polimi.ingsw.model.pawns.Professor;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class Character2Test {
 
-    private Character2 character;
+    /*private Character2 character;
     private TableExpertMode table;
     private PlayerExpertMode player1;
     private PlayerExpertMode player2;
@@ -47,5 +33,5 @@ class Character2Test {
     @Test
     void setup() {
         assertTrue(true, "not needed");
-    }
+    }*/
 }
