@@ -32,10 +32,12 @@ public class TableExpertMode extends Table {
         this.additionalInfluence = new HashMap<>();
         this.entryTile = new HashMap<>();
         this.countTowers = new HashMap<>();
+        this.professorTie = new HashMap<>();
 
         for (int i = 0; i < this.getPlayers().length; i++){
             this.playerCoins.put(this.getPlayers()[i], NUM_OF_COINS_SETUP);
             this.additionalInfluence.put(this.getPlayers()[i], false);
+            this.professorTie.put(this.getPlayers()[i], false);
         }
 
         for (int i = 0; i < this.getIslands().size(); i++){
@@ -127,7 +129,7 @@ public class TableExpertMode extends Table {
     }
 
     @Override
-    protected int getInfluence(Island island, Player player) {
+    public int getInfluence(Island island, Player player) {
         int influence = 0;
         for (ColorS c : ColorS.values()){
             if (c != noInfluenceColor && this.getProfessor(c).getOwner()==player){

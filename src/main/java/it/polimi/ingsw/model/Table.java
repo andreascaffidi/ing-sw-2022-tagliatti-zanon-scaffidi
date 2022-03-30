@@ -443,15 +443,17 @@ public class Table {
         }
     }
 
-    protected int getInfluence(Island island, Player player){
+    public int getInfluence(Island island, Player player){
         int influence = 0;
-        for (Professor pr : this.professors){
-            if (pr.getOwner()==player){
+        for (Professor pr : this.professors)
+        {
+            if (pr.getOwner().equals(player)) {
                 influence += island.numStudent(pr.getColor());
             }
-            if (island.getTower() != null && player.equals(island.getTower().getOwner())){
+        }
+        if (island.getTower() != null && player.equals(island.getTower().getOwner()))
+        {
                 influence += island.getNumOfTowers();
-            }
         }
         return influence;
     }

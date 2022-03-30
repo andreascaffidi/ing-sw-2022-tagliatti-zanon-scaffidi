@@ -14,6 +14,9 @@ public class Bag {
         this.students = new ArrayList<Student>();
     }
 
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
 
     public List<Student> getStudents()
     {

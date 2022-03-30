@@ -1,22 +1,33 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.pawns.Student;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class Character7Test {
 
-    /*private Character7 character;
+    private Character7 character;
     private TableExpertMode table;
-    private PlayerExpertMode player1;
-    private PlayerExpertMode player2;
-    private List<PlayerExpertMode> players;
+    private Player player1;
+    private Player player2;
+    private List<Player> players;
 
     @BeforeEach
     void init() {
         character = new Character7();
         players = new ArrayList<>();
-        player1 = new PlayerExpertMode("1");
-        player2 = new PlayerExpertMode("2");
+        player1 = new Player("1");
+        player2 = new Player("2");
         players.add(player1);
         players.add(player2);
         table = new TableExpertMode(players);
@@ -25,10 +36,13 @@ class Character7Test {
     @Test
     void effect() {
 
+        table.setCurrentPlayer(player1);
+
         //creo 3 studenti blu e 2 rossi
         Student student1 = new Student(ColorS.BLUE);
         Student student2 = new Student(ColorS.BLUE);
         Student student3 = new Student(ColorS.BLUE);
+
         Student student4 = new Student(ColorS.RED);
         Student student5 = new Student(ColorS.RED);
 
@@ -38,6 +52,7 @@ class Character7Test {
         character.getCardStudents().add(student3);
 
         //scelgo 2 studenti della carta (BLU)
+        character.getCardStudentsChosen().add(student1);
         character.getCardStudentsChosen().add(student2);
 
         //scelgo 2 studenti dell'entrata (ROSSI)
@@ -51,18 +66,19 @@ class Character7Test {
         //la carta non contenga più gli studenti BLU
         assertFalse(character.getCardStudents().contains(student1));
         assertFalse(character.getCardStudents().contains(student2));
+        assertTrue(character.getCardStudents().contains(student3));
 
         //ma contenga quelli rossi
         assertTrue(character.getCardStudents().contains(student4));
         assertTrue(character.getCardStudents().contains(student5));
 
         //l'entrata non contenga più gli studenti rossi
-        assertTrue(character.getEntranceStudentChosen().contains(student1));
-        assertTrue(character.getEntranceStudentChosen().contains(student2));
+        assertFalse(table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().contains(student4));
+        assertFalse(table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().contains(student5));
 
         //ma quelli blu
-        assertFalse(character.getEntranceStudentChosen().contains(student4));
-        assertFalse(character.getEntranceStudentChosen().contains(student5));
+        assertTrue(table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().contains(student1));
+        assertTrue(table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().contains(student2));
     }
 
     @Test
@@ -74,12 +90,17 @@ class Character7Test {
         Student student4 = new Student(ColorS.BLUE);
         Student student5 = new Student(ColorS.BLUE);
         Student student6 = new Student(ColorS.BLUE);
-        this.table.getBag().addStudent(student1);
-        this.table.getBag().addStudent(student2);
-        this.table.getBag().addStudent(student3);
-        this.table.getBag().addStudent(student4);
-        this.table.getBag().addStudent(student5);
-        this.table.getBag().addStudent(student6);
+
+        List<Student> students = new ArrayList<Student>();
+
+        students.add(student1);
+        students.add(student2);
+        students.add(student3);
+        students.add(student4);
+        students.add(student5);
+        students.add(student6);
+
+        table.getBag().setStudents(students);
 
         character.setup(this.table);
 
@@ -131,5 +152,5 @@ class Character7Test {
         students.add(student2);
         character.setCardStudents(students);
         assertEquals(character.getCardStudents(), students);
-    }*/
+    }
 }

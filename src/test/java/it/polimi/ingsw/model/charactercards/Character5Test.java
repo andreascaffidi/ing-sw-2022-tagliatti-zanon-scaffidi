@@ -1,20 +1,30 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TableExpertMode;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
 class Character5Test {
 
-    /*private Character5 character;
+    private Character5 character;
     private TableExpertMode table;
-    private PlayerExpertMode player1;
-    private PlayerExpertMode player2;
-    private List<PlayerExpertMode> players;
+    private Player player1;
+    private Player player2;
+    private List<Player> players;
     private static final int MAX_ENTRY_TILE = 4;
 
     @BeforeEach
     void init() {
         character = new Character5();
-        players = new ArrayList<PlayerExpertMode>();
-        player1 = new PlayerExpertMode("1");
-        player2 = new PlayerExpertMode("2");
+        players = new ArrayList<Player>();
+        player1 = new Player("1");
+        player2 = new Player("2");
         players.add(player1);
         players.add(player2);
         table = new TableExpertMode(players);
@@ -32,34 +42,33 @@ class Character5Test {
         character.effect(this.table);
 
         //nell'isola scelta entrytile è true
-        assertTrue(table.getIsland(character.getIslandChosen()).isEntryTile());
+        assertTrue(table.isEntryTile(table.getIsland(character.getIslandChosen())));
 
         //e incremento il numero di entrytiles piazzati
         assertEquals(character.getNumOfEntryTile(), 2);
+
+        //TODO: su quell'isola non posso calcolare l'influenza e nemmeno piazzare torri
 
         //se invece metto il numero di entrytiles a 4
         character.setNumOfEntryTile(4);
 
         //se rimetto l'entry tile dell'isola scelta a false
-        table.getIsland(character.getIslandChosen()).setEntryTile(false);
+        table.setEntryTile(table.getIsland(character.getIslandChosen()), false);
 
-        //e non ho un entrytile sull'isola scelta
-        if(!table.getIsland(character.getIslandChosen()).isEntryTile())
-        {
-            //dopo aver chiamato il metodo
-            character.effect(this.table);
+        //e provo a mettere un entrytile sull'isola scelta
+        // dopo aver chiamato il metodo
+        character.effect(this.table);
 
-            //non cambia nulla sull'isola scelta
-            assertFalse(table.getIsland(character.getIslandChosen()).isEntryTile());
+        //non cambia nulla sull'isola scelta
+        assertFalse(table.isEntryTile(table.getIsland(character.getIslandChosen())));
 
-            //e non varia il numero di entrytiles globali
-            assertEquals(character.getNumOfEntryTile(), 4);
-        }
+        //e non varia il numero di entrytiles globali
+        assertEquals(character.getNumOfEntryTile(), 4);
     }
 
     @Test
     void setup() {
-        assertTrue(true, "not needed");
+        assertTrue("not needed", true);
     }
 
     @Test
@@ -72,6 +81,6 @@ class Character5Test {
     void setAndGetNumOfEntryTile() {
         character.setNumOfEntryTile(1);
         assertEquals(character.getNumOfEntryTile(),1);
-    }*/
+    }
 
 }

@@ -23,7 +23,6 @@ public class Character3 implements TypeOfCard {
     public void effect(TableExpertMode table)
     {
         //notify view scegli un isola
-
         Island island = table.getIsland(islandChosen);
         Player king = table.getSupremacy(island);
         if (!king.equals(table.getIsland(islandChosen).getTower().getOwner())) {

@@ -1,18 +1,32 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.pawns.Professor;
+import it.polimi.ingsw.model.pawns.Student;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class Character8Test {
-    /*private Character8 character;
+    private Character8 character;
     private TableExpertMode table;
-    private PlayerExpertMode player1;
-    private PlayerExpertMode player2;
-    private List<PlayerExpertMode> players;
+    private Player player1;
+    private Player player2;
+    private List<Player> players;
 
     @BeforeEach
     void init() {
         character = new Character8();
-        players = new ArrayList<PlayerExpertMode>();
-        player1 = new PlayerExpertMode("1");
-        player2 = new PlayerExpertMode("2");
+        players = new ArrayList<Player>();
+        player1 = new Player("1");
+        player2 = new Player("2");
         players.add(player1);
         players.add(player2);
         table = new TableExpertMode(players);
@@ -20,7 +34,7 @@ class Character8Test {
 
     @Test
     void effect() {
-       character.setPlayer(player2);
+       table.setCurrentPlayer(player2);
 
         //creo studenti e professori
         Professor blueProfessor = new Professor(ColorS.BLUE);
@@ -52,11 +66,4 @@ class Character8Test {
     void setup() {
         assertTrue(true, "not needed");
     }
-
-    @Test
-    void setAndGetPlayer()
-    {
-        character.setPlayer(player1);
-        assertEquals(character.getPlayer(), player1);
-    }*/
 }

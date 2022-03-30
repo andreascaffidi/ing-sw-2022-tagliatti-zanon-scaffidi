@@ -1,19 +1,36 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.enums.ColorT;
+import it.polimi.ingsw.model.pawns.Professor;
+import it.polimi.ingsw.model.pawns.Student;
+import it.polimi.ingsw.model.pawns.Tower;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class Character6Test {
 
-    /*private Character6 character;
+    private Character6 character;
     private TableExpertMode table;
-    private PlayerExpertMode player1;
-    private PlayerExpertMode player2;
-    private List<PlayerExpertMode> players;
+    private Player player1;
+    private Player player2;
+    private List<Player> players;
 
     @BeforeEach
     void init() {
         character = new Character6();
-        players = new ArrayList<PlayerExpertMode>();
-        player1 = new PlayerExpertMode("1");
-        player2 = new PlayerExpertMode("2");
+        players = new ArrayList<Player>();
+        player1 = new Player("1");
+        player2 = new Player("2");
         players.add(player1);
         players.add(player2);
         table = new TableExpertMode(players);
@@ -51,6 +68,9 @@ class Character6Test {
 
         character.effect(this.table);
 
+        assertFalse(table.isCountTowers(table.getIsland(3)));
+
+        //TODO: sistemare la getSupremacy
         //dovrebbe vincere il player1 per le torri ma invece vince il player2
         assertEquals(this.table.getSupremacy(this.table.getIsland(3)), player2);
     }
@@ -64,5 +84,5 @@ class Character6Test {
     void setAndGetIslandChosen() {
         character.setIslandChosen(3);
         assertEquals(character.getIslandChosen(), 3);
-    }*/
+    }
 }

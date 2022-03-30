@@ -1,19 +1,31 @@
 package it.polimi.ingsw.model.charactercards;
 
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.pawns.Student;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
 class Character1Test {
 
-    /*private Character1 character;
+    private Character1 character;
     private TableExpertMode table;
-    private PlayerExpertMode player1;
-    private PlayerExpertMode player2;
-    private List<PlayerExpertMode> players;
+    private Player player1;
+    private Player player2;
+    private List<Player> players;
 
     @BeforeEach
     void init() {
         character = new Character1();
-        players = new ArrayList<PlayerExpertMode>();
-        player1 = new PlayerExpertMode("1");
-        player2 = new PlayerExpertMode("2");
+        players = new ArrayList<Player>();
+        player1 = new Player("1");
+        player2 = new Player("2");
         players.add(player1);
         players.add(player2);
         table = new TableExpertMode(players);
@@ -21,23 +33,41 @@ class Character1Test {
 
     @Test
     void effect() {
-        //setto IslandChosen ad 1
-        //aggiungo student alla carta
-        //decido di selezionare student come studentChosen
-        character.setIslandChosen(1);
-        Student student = new Student(ColorS.BLUE);
-        character.getStudents().add(student);
-        character.setStudentChosen(student);
+        //setup della bag
+        Student student3 = new Student(ColorS.BLUE);
 
+        List<Student> students = new ArrayList<Student>();
+
+        students.add(student3);
+
+        this.table.getBag().setStudents(students);
+
+        //creo lo studente
+        Student student1 = new Student(ColorS.BLUE);
+        Student student2 = new Student(ColorS.BLUE);
+
+        //setto IslandChosen a 1
+        character.setIslandChosen(1);
+
+        //aggiungo lo student alla carta
+        character.getStudents().add(student1);
+        character.getStudents().add(student2);
+
+        //setto lo studente scelto
+        character.setStudentChosen(student1);
+
+        //dopo l'effetto mi aspetto che
         character.effect(this.table);
 
-        //dopo l'effetto mi aspetto che:
+        //l'island scelta contenga lo studente scelto
+        assertTrue(table.getIsland(1).getStudents().contains(student1));
 
-        //l'island scelta contenga student
-        assertTrue(table.getIsland(1).getStudents().contains(student));
+        //la carta non contenga più lo studente scelto
+        assertFalse(character.getStudents().contains(student1));
 
-        //la carta non contenga più lo student
-        assertFalse(character.getStudents().contains(student));
+        //poi dalla bag estraggo un altro student e lo metto sulla carta
+        assertTrue(character.getStudents().contains(student3));
+        assertFalse(table.getBag().getStudents().contains(student3));
     }
 
     @Test
@@ -47,10 +77,15 @@ class Character1Test {
         Student student2 = new Student(ColorS.BLUE);
         Student student3 = new Student(ColorS.BLUE);
         Student student4 = new Student(ColorS.BLUE);
-        this.table.getBag().addStudent(student1);
-        this.table.getBag().addStudent(student2);
-        this.table.getBag().addStudent(student3);
-        this.table.getBag().addStudent(student4);
+
+        List<Student> students = new ArrayList<Student>();
+
+        students.add(student1);
+        students.add(student2);
+        students.add(student3);
+        students.add(student4);
+
+        this.table.getBag().setStudents(students);
 
         character.setup(this.table);
 
@@ -70,7 +105,7 @@ class Character1Test {
     @Test
     void setAndGetIslandChosen() {
         character.setIslandChosen(1);
-        assertEquals(character.getStudentChosen(), 1);
+        assertEquals(1, character.getIslandChosen());
     }
 
     @Test
@@ -78,5 +113,5 @@ class Character1Test {
         Student studentChosen = new Student(ColorS.BLUE);
         character.setStudentChosen(studentChosen);
         assertEquals(character.getStudentChosen(), studentChosen);
-    }*/
+    }
 }
