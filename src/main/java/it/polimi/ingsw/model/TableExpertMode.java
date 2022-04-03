@@ -2,27 +2,22 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.cards.Character;
+import it.polimi.ingsw.model.charactercards.*;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
 
 
 public class TableExpertMode extends Table {
-    private final int NUM_OF_CHARACTER_CARDS = 3;
+    private final int NUM_OF_CHARACTER_CARDS=12;
+    private final int NUM_OF_CHARACTER_CARDS_2 = 3;
     private final int NUM_OF_COINS = 20;
     private final int NUM_OF_COINS_SETUP = 1;
     private final int NUM_OF_ENTRY_TILE = 4;
+
 
     private int bank;
     private int numOfEntryTile;
@@ -61,34 +56,25 @@ public class TableExpertMode extends Table {
 
         this.numOfEntryTile = NUM_OF_ENTRY_TILE;
         this.bank = NUM_OF_COINS - players.size() * NUM_OF_COINS_SETUP;
-        this.characterCards = new Character[NUM_OF_CHARACTER_CARDS];
+        this.characterCards = new Character[NUM_OF_CHARACTER_CARDS_2];
         this.setupCharacterCards(); //todo:fare implementazione
 
     }
 
     private void setupCharacterCards() {
-
-        /*
-        JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("assets/characters.json"))
-        {
-            //Read JSON file
-            Object obj = jsonParser.parse(reader);
-            JSONArray cards = (JSONArray) obj;
-            this.characters = new ArrayList<>();
-            cards.forEach( object ->{
-                JSONObject card =  (JSONObject) object;
-                this.characters.add(new Character(((String)card.get("name")), ((Long)card.get("cost")).intValue(),null));
-            });
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        */
-
+        this.characters = new ArrayList<>();
+        this.characters.add(new Character1());
+        this.characters.add(new Character2());
+        this.characters.add(new Character3());
+        this.characters.add(new Character4());
+        this.characters.add(new Character5());
+        this.characters.add(new Character6());
+        this.characters.add(new Character7());
+        this.characters.add(new Character8());
+        this.characters.add(new Character9());
+        this.characters.add(new Character10());
+        this.characters.add(new Character11());
+        this.characters.add(new Character12());
     }
 
     private void deposit(int coins) {

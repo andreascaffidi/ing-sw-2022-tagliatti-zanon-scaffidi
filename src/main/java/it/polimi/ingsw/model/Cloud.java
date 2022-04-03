@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.exceptions.CloudNotValidException;
 import it.polimi.ingsw.model.pawns.Student;
 
 import java.util.*;
@@ -33,4 +34,6 @@ public class Cloud {
     public List<Student> getStudents() {
         return this.students;
     }
+
+
 }
