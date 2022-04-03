@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.exceptions.ParityException;
+import it.polimi.ingsw.controller.RoundPhases;
+import it.polimi.ingsw.controller.TurnPhases;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.enums.Wizards;
@@ -34,6 +36,9 @@ public class Table {
     public int NUM_OF_TOWER_AT_SETUP;
     public int NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD;
 
+    private RoundPhases roundPhase;
+    private TurnPhases turnPhase;
+
     private Bag bag;
     private int numberOfPlayers;
     private List<Student> students;
@@ -47,9 +52,12 @@ public class Table {
     private List<Professor> professors;
     private ArrayList<Assistant> assistants;
 
+    private Queue<Player> tunrPriority;
+
     public Table(List<Player> players){
         this.bag = new Bag();
         this.numberOfPlayers = players.size();
+        this.tunrPriority = new PriorityQueue<>();
         switch (numberOfPlayers){
             case 2 :
             case 4 :
@@ -216,19 +224,14 @@ public class Table {
         {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
-
             JSONArray cards = (JSONArray) obj;
-            System.out.println(cards);
-
             this.assistants = new ArrayList<>();
-
             for(Wizards wizard : Wizards.values()){
                 cards.forEach( object ->{
                     JSONObject card =  (JSONObject) object;
                     this.assistants.add(new Assistant(((Long)card.get("value")).intValue(), ((Long)card.get("movement")).intValue(), wizard));
                 });
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -512,5 +515,107 @@ public class Table {
             this.getProfessor(color).setOwner(currentPlayer);
         }
     }
+
+
+
+    public void setupPlanning(){
+        this.roundPhase = RoundPhases.PLANNING;
+
+        for(int i = 0; i<this.getClouds().size();i++){
+            this.addStudentsToCloud(this.getClouds().get(i));
+        }
+        this.turnPhase = TurnPhases.PLAY_ASSISTANT;
+    }
+
+    private void endRound(){
+        if(roundPhase == RoundPhases.ACTION){
+            this.setupPlanning();
+        }
+        if(roundPhase == RoundPhases.PLANNING){
+            roundPhase = RoundPhases.ACTION;
+            turnPhase = TurnPhases.MOVE_STUDENTS; //WAITING_FOR_MOVE_STUDENTS_MESSAGE
+        }
+    }
+
+    public RoundPhases getRoundPhase() {
+        return roundPhase;
+    }
+
+    public void playAssistant(Assistant card) throws AssistantNotPlayableException{
+        int value = card.getValue();
+        List<Assistant> playable = new ArrayList<>(getCurrentPlayer().getAssistantDeck());
+        for(Player player : players){
+            int valueToRemove = player.getDiscardPile().peek().getValue();
+            try {
+                playable.remove(getCurrentPlayer().getAssistant(valueToRemove));
+            } catch (AssistantNotFoundException e) {
+               //do nothing
+            }
+        }
+        if(playable.contains(card) || playable.size() == 0){
+            if(playable.size() == 0){
+                for(Player player : players){
+                    if(player.getDiscardPile().peek().getValue() == card.getValue()){
+                        tunrPriority.add(player);
+                    }
+                }
+            }
+            getCurrentPlayer().addToDiscardPile(card);
+        }
+        else {
+            throw new AssistantNotPlayableException();
+        }
+    }
+
+
+    /*
+        federico 1 7
+        andre   2  7
+        lucrezia 5
+        peppino 7
+     */
+
+
+    //FIXME: da gestire il caso 2 giocatori giochino 2 carte con lo stesso valore
+    public void nextPlayer(){
+        int currentValue = this.getCurrentPlayer().getDiscardPile().get(0).getValue();
+        int minValue = 11;
+        Player nextPlayer = null;
+        for(Player player : this.getPlayers()){
+            if(player.getDiscardPile().peek().getValue() < minValue && player.getDiscardPile().peek().getValue() > currentValue) {
+                minValue = player.getDiscardPile().peek().getValue();
+                nextPlayer = player;
+            }
+        }
+        if(nextPlayer == null) this.endRound();
+        this.setCurrentPlayer(nextPlayer);
+    }
+
+    //TODO
+    public void setupAction(){
+        this.roundPhase = RoundPhases.ACTION;
+        //this.turnPhase = TurnPhases.WAITING_FOR_MOVE_STUDENTS;
+    }
+
+
+    public void validIsland(int idIsland) throws IslandNotValidException {
+        if(idIsland >= islands.size() || idIsland < 0)
+            throw new IslandNotValidException();
+    }
+
+    public void validCloud(int cloudIndex) throws CloudNotValidException {
+        if(cloudIndex >= clouds.size() ||
+                cloudIndex < 0 ||
+                clouds.get(cloudIndex).getStudents().isEmpty()
+        ){
+            throw new CloudNotValidException();
+        }
+    }
+
+    //FIXME: implementare per bene
+    public void endGame() {
+        Player winner = getCurrentPlayer();
+    }
+
 
 }

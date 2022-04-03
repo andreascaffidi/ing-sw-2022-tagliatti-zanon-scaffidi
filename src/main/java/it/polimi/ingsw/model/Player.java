@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.exceptions.AssistantNotFoundException;
 import it.polimi.ingsw.model.cards.Assistant;
 import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
@@ -9,10 +10,10 @@ public class Player {
     private String username;
     private List<Assistant> assistantDeck;
     private SchoolBoard schoolBoard;
-    private List<Assistant> discardPile;
+   // private List<Assistant> discardPile;
     private int tagTeam;
     private ColorT towerColor;
-
+    private Stack<Assistant> discardPile;
     public Player(String username) {
         this.username = username;
     }
@@ -26,7 +27,7 @@ public class Player {
         this.username = username;
         this.towerColor = towerColor;
         this.assistantDeck = assistantDeck;
-        this.discardPile = new ArrayList<Assistant>();
+        this.discardPile = new Stack<>();
         this.tagTeam = tagTeam;
     }
 
@@ -42,7 +43,7 @@ public class Player {
         return schoolBoard;
     }
 
-    public List<Assistant> getDiscardPile() {
+    public Stack<Assistant> getDiscardPile() {
         return discardPile;
     }
 
@@ -58,15 +59,23 @@ public class Player {
         if(!(o instanceof Player))
             return false;
         Player p = (Player)o;
-        return this.username == p.username;
+        return this.username.equals(p.username);
     }
 
     public ColorT getTowerColor() {
         return towerColor;
     }
 
+    public Assistant getAssistant(int value) throws AssistantNotFoundException {
+        for(Assistant assistant : assistantDeck){
+            if(assistant.getValue() == value)
+                return assistant;
+        }
+        throw new AssistantNotFoundException();
+    }
+
     public void addToDiscardPile(Assistant assistant){
-        this.discardPile.add(assistant);
+        this.discardPile.push(assistant);
         this.assistantDeck.remove(assistant);
     }
 

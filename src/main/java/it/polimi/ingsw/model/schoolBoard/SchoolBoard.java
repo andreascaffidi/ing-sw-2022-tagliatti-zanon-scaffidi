@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.schoolBoard;
 
+import it.polimi.ingsw.exceptions.IslandNotValidException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Tower;
@@ -37,5 +38,7 @@ public class SchoolBoard {
     public Towers getTowers() {
         return towers;
     }
+
+
 
 }

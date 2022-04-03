@@ -1,4 +1,6 @@
 package it.polimi.ingsw.model.schoolBoard;
+import it.polimi.ingsw.exceptions.IslandNotValidException;
+import it.polimi.ingsw.exceptions.StudentIndexOutOfBoundsException;
 import it.polimi.ingsw.model.pawns.Student;
 import java.util.*;
 
@@ -29,5 +31,10 @@ public class Entrance {
 
     public void removeStudent(Student student){
         students.remove(student);
+    }
+
+    public void validStudentIndex(int studentIndex) throws StudentIndexOutOfBoundsException {
+        if(studentIndex >= students.size() || studentIndex < 0)
+            throw new StudentIndexOutOfBoundsException();
     }
 }
