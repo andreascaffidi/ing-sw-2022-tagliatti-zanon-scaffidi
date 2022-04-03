@@ -6,13 +6,10 @@ import it.polimi.ingsw.model.cards.Character;
 public class Character5 extends Character {
 
     private int islandChosen;
-    private int numOfEntryTile;
-    private static final int MAX_ENTRY_TILE = 4;
 
     public Character5() {
         super("Character5",2);
         this.islandChosen = 0;
-        this.numOfEntryTile = 0;
     }
 
     /**
@@ -26,10 +23,9 @@ public class Character5 extends Character {
     public void effect(TableExpertMode table)
     {
         //notify view scegliere isola
-        if (this.numOfEntryTile < MAX_ENTRY_TILE){
+        if (table.getNumOfEntryTile() > 0){
             table.setEntryTile(table.getIsland(islandChosen),true);
-            this.numOfEntryTile++;
-            //todo: numOfEntryTile va decrementato in quache modo
+            table.decrementEntryTile();
         }
     }
 
@@ -52,11 +48,4 @@ public class Character5 extends Character {
         return islandChosen;
     }
 
-    public int getNumOfEntryTile() {
-        return numOfEntryTile;
-    }
-
-    public void setNumOfEntryTile(int numOfEntryTile) {
-        this.numOfEntryTile = numOfEntryTile;
-    }
 }

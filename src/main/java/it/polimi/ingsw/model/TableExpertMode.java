@@ -22,8 +22,10 @@ public class TableExpertMode extends Table {
     private final int NUM_OF_CHARACTER_CARDS = 3;
     private final int NUM_OF_COINS = 20;
     private final int NUM_OF_COINS_SETUP = 1;
+    private final int NUM_OF_ENTRY_TILE = 4;
 
     private int bank;
+    private int numOfEntryTile;
     private Character[] characterCards;
     private ColorS noInfluenceColor;
 
@@ -43,10 +45,12 @@ public class TableExpertMode extends Table {
         this.additionalInfluence = new HashMap<>();
         this.entryTile = new HashMap<>();
         this.countTowers = new HashMap<>();
+        this.professorTie = new HashMap<>();
 
         for (int i = 0; i < this.getPlayers().length; i++){
             this.playerCoins.put(this.getPlayers()[i], NUM_OF_COINS_SETUP);
             this.additionalInfluence.put(this.getPlayers()[i], false);
+            this.professorTie.put(this.getPlayers()[i], false);
         }
 
         for (int i = 0; i < this.getIslands().size(); i++){
@@ -55,6 +59,7 @@ public class TableExpertMode extends Table {
         }
 
 
+        this.numOfEntryTile = NUM_OF_ENTRY_TILE;
         this.bank = NUM_OF_COINS - players.size() * NUM_OF_COINS_SETUP;
         this.characterCards = new Character[NUM_OF_CHARACTER_CARDS];
         this.setupCharacterCards(); //todo:fare implementazione
@@ -86,23 +91,35 @@ public class TableExpertMode extends Table {
 
     }
 
-    public void deposit(int coins) {
+    private void deposit(int coins) {
         this.bank += coins;
+    }
+
+    private void withdraw(int coins){
+        this.bank -= coins;
+    }
+
+    public int getBank(){
+        return this.bank;
     }
 
     public void addCoins(Player player, Integer coinsToAdd){
         Integer coins = this.playerCoins.get(player);
         this.playerCoins.put(player, coins + coinsToAdd);
+        withdraw(coinsToAdd);
     }
 
     public void pay(Player player, Integer coinsToPay){
         Integer coins = this.playerCoins.get(player);
         this.playerCoins.put(player, coins - coinsToPay);
+        deposit(coinsToPay);
     }
 
     public void setAdditionalInfluence(Player player, boolean additionalInfluence){
         this.additionalInfluence.put(player, additionalInfluence);
     }
+
+    public int getPlayerCoins(Player player){return this.playerCoins.get(player);}
 
     public boolean isAdditionalInfluence(Player player){
         return this.additionalInfluence.get(player);
@@ -128,12 +145,24 @@ public class TableExpertMode extends Table {
         this.noInfluenceColor = noInfluenceColor;
     }
 
+    public ColorS getNoInfluenceColor() {
+        return this.noInfluenceColor;
+    }
+
     public void setProfessorTie(Player player, boolean professorTie) {
         this.professorTie.put(player, professorTie);
     }
 
     public boolean isProfessorTie(Player player) {
         return this.professorTie.get(player);
+    }
+
+    public void decrementEntryTile(){
+        this.numOfEntryTile--;
+    }
+
+    public int getNumOfEntryTile() {
+        return this.numOfEntryTile;
     }
 
     public void resetCardsEffect() {
@@ -150,6 +179,8 @@ public class TableExpertMode extends Table {
     @Override
     public Player getSupremacy (Island island)throws ParityException {
         if (this.isEntryTile(island)){
+            this.setEntryTile(island, false);
+            this.numOfEntryTile++;
             return island.getTower().getOwner();
         }
         else{

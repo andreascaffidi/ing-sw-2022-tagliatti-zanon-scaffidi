@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Table Class for match control
@@ -218,7 +219,6 @@ public class Table {
             Object obj = jsonParser.parse(reader);
 
             JSONArray cards = (JSONArray) obj;
-            System.out.println(cards);
 
             this.assistants = new ArrayList<>();
 
@@ -227,6 +227,12 @@ public class Table {
                     JSONObject card =  (JSONObject) object;
                     this.assistants.add(new Assistant(((Long)card.get("value")).intValue(), ((Long)card.get("movement")).intValue(), wizard));
                 });
+            }
+            //FIXME: in teoria è il player a scegliere un mago
+            for (int i = 0; i < this.numberOfPlayers; i++){
+                Wizards wizard = Wizards.values()[i];
+                List<Assistant> assistants = this.assistants.stream().filter(a -> a.getWizard()==wizard).collect(Collectors.toList());
+                this.players[i].getAssistantDeck().addAll(assistants);
             }
 
         } catch (FileNotFoundException e) {

@@ -23,13 +23,12 @@ public class Controller {
     private Object[][] orderedPlayers;
 
 
-
-    public Controller(List<Player> players){
-        this.table = new Table(players);
-        int randomPlayerIndex = new Random().nextInt(players.size());
-        this.table.setCurrentPlayer(players.get(randomPlayerIndex));
+    public Controller(Table table){
+        this.table = table;
+        int randomPlayerIndex = new Random().nextInt(table.getPlayers().length);
+        this.table.setCurrentPlayer(table.getPlayers()[randomPlayerIndex]);
         this.roundPhase = RoundPhases.PLANNING;
-        this.orderedPlayers = new Object[players.size()][players.size()];
+        this.orderedPlayers = new Object[table.getPlayers().length][table.getPlayers().length];
     }
 
 

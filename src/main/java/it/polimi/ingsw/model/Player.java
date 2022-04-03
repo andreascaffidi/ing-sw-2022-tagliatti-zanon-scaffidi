@@ -15,11 +15,15 @@ public class Player {
 
     public Player(String username) {
         this.username = username;
+        this.assistantDeck = new ArrayList<>();
+        this.discardPile = new ArrayList<>();
     }
 
     public Player(String username, int tagTeam) {
         this.username = username;
         this.tagTeam = tagTeam;
+        this.assistantDeck = new ArrayList<>();
+        this.discardPile = new ArrayList<>();
     }
 
     public Player(String username, List<Assistant> assistantDeck, int tagTeam, ColorT towerColor) {
