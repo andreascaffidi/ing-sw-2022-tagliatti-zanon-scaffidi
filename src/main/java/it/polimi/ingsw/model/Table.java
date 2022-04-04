@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.exceptions.ParityException;
+import it.polimi.ingsw.controller.RoundPhases;
+import it.polimi.ingsw.controller.TurnPhases;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.enums.Wizards;
@@ -19,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Table Class for match control
@@ -34,6 +37,8 @@ public class Table {
     public int NUM_OF_TOWER_AT_SETUP;
     public int NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD;
 
+    private TurnManager turnManager;
+
     private Bag bag;
     private int numberOfPlayers;
     private List<Student> students;
@@ -47,7 +52,9 @@ public class Table {
     private List<Professor> professors;
     private ArrayList<Assistant> assistants;
 
+
     public Table(List<Player> players){
+        this.turnManager = new TurnManager(players);
         this.bag = new Bag();
         this.numberOfPlayers = players.size();
         switch (numberOfPlayers){
@@ -216,17 +223,20 @@ public class Table {
         {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
-
             JSONArray cards = (JSONArray) obj;
-            System.out.println(cards);
 
             this.assistants = new ArrayList<>();
-
             for(Wizards wizard : Wizards.values()){
                 cards.forEach( object ->{
                     JSONObject card =  (JSONObject) object;
                     this.assistants.add(new Assistant(((Long)card.get("value")).intValue(), ((Long)card.get("movement")).intValue(), wizard));
                 });
+            }
+            //FIXME: in teoria è il player a scegliere un mago
+            for (int i = 0; i < this.numberOfPlayers; i++){
+                Wizards wizard = Wizards.values()[i];
+                List<Assistant> assistants = this.assistants.stream().filter(a -> a.getWizard()==wizard).collect(Collectors.toList());
+                this.players[i].getAssistantDeck().addAll(assistants);
             }
 
         } catch (FileNotFoundException e) {
@@ -275,6 +285,7 @@ public class Table {
     }
 
 
+    //potrebbe essere metodo private
     /**
      * creates an IslandGroup from a list of islands: adds all the students, sets the tower, removes the old Islands and changes
      * all the Islands ids.
@@ -311,6 +322,7 @@ public class Table {
      */
 
 
+    //potrebbe essere metodo private
     //TODO metodo ricorsivo che ritorna le isole da unire
     public List<Island> canIUnify(Island island){
         List<Island> islandsToUnify = new ArrayList<>();
@@ -354,6 +366,7 @@ public class Table {
     }
 
 
+    //potrebbe essere metodo private
     //il giocatore che ha costruito il maggior numero di torri è anche quello che ne ha il minor numero su towers
     public Player getPlayerWithMinTowers() throws ParityException {
         int minTower = 9, numOfTower = 0;
@@ -379,6 +392,7 @@ public class Table {
         }
     }
 
+    //potrebbe essere metodo private
     //in teoria non si può mai verificare il caso in cui ci sia una parità di professori tra giocatori
     public Player getPlayerWithMaxProfessor(){
         int maxProf = 0, numOfProf = 0;
@@ -415,6 +429,7 @@ public class Table {
         throw new RuntimeException("Island not found");
     }
 
+    //potrebbe essere metodo private
     /**
      * Calculate the player who has the greatest influence on the island, throws ParityException if there's
      * a parity of the max influence
@@ -484,6 +499,36 @@ public class Table {
         return playersReturn;
     }
 
+    /**
+     * Process an island: calculate the king, substitute the towers and create new island group
+     * @param island to process
+     */
+    public void processIsland(Island island){
+        try{
+            Player oldIslandKing = island.getTower().getOwner();
+            Player newIslandKing = this.getSupremacy(island);
+            if (!newIslandKing.equals(oldIslandKing)){
+                if (oldIslandKing != null){
+                    oldIslandKing.getSchoolBoard().getTowers().addTower(island.getTower());
+                }
+                island.setTower(newIslandKing.getSchoolBoard().getTowers().removeLastTower());
+                if (newIslandKing.getSchoolBoard().getTowers().getTowers().size() == 0){
+                    throw new EndGameException("Last tower placed");
+                }
+            }
+            if (this.canIUnify(island).size() > 1) {
+                this.newIslandGroup(this.canIUnify(island));
+            }
+            if (this.islands.size() <= 3){
+                throw new EndGameException("3 islands remained");
+            }
+        } catch(ParityException e){
+            //do nothing
+        } catch (EndGameException e) {
+            this.endGame();
+        }
+    }
+
 
     /**
      *  Method to call during Planning phase, it place on a selected cloud the correct number of
@@ -511,6 +556,59 @@ public class Table {
         if (oldOwner == null || currentPlayerProf > oldOwner.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color)){
             this.getProfessor(color).setOwner(currentPlayer);
         }
+    }
+
+
+    public void playAssistant(Assistant card) throws AssistantNotPlayableException{
+        int value = card.getValue();
+        List<Assistant> playable = new ArrayList<>(getCurrentPlayer().getAssistantDeck());
+        for(Player player : players){
+            int valueToRemove = player.getDiscardPile().peek().getValue();
+            try {
+                playable.remove(getCurrentPlayer().getAssistant(valueToRemove));
+            } catch (AssistantNotFoundException e) {
+                //non si dovrebbe mai verificare
+                //do nothing
+            }
+        }
+        if(playable.contains(card) || playable.size() == 0){
+            getCurrentPlayer().addToDiscardPile(card);
+            turnManager.orderPlayer(getCurrentPlayer());
+        }
+        else {
+            throw new AssistantNotPlayableException();
+        }
+    }
+
+
+    public void nextPlayer(){
+        setCurrentPlayer(turnManager.nextPlayer());
+    }
+
+
+    public void validIsland(int idIsland) throws IslandNotValidException {
+        if(idIsland >= islands.size() || idIsland < 0)
+            throw new IslandNotValidException();
+    }
+
+    public void validCloud(int cloudIndex) throws CloudNotValidException {
+        if(cloudIndex >= clouds.size() ||
+                cloudIndex < 0 ||
+                clouds.get(cloudIndex).getStudents().isEmpty()
+        ){
+            throw new CloudNotValidException();
+        }
+    }
+
+
+    public void endGame() {
+        Player winner = null;
+        try {
+            winner = this.getPlayerWithMinTowers();
+        }catch (ParityException e){
+            winner = this.getPlayerWithMaxProfessor();
+        }
+        //TODO
     }
 
 }

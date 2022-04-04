@@ -3,7 +3,9 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
+import it.polimi.ingsw.model.enums.Wizards;
 import it.polimi.ingsw.model.islands.Island;
+import it.polimi.ingsw.model.pawns.MotherNature;
 import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Tower;
@@ -50,6 +52,16 @@ class TableTest {
         table2p = null;
         table3p = null;
         table4p = null;
+        two = null;
+        three = null;
+        four = null;
+    }
+
+    @Test
+    void moreThanFourPlayers(){
+        List<Player> players = new ArrayList<>(Arrays.asList(new Player("1"), new Player("2"), new Player("3"), new Player("4"), new Player("5")));
+        Exception e = assertThrows(RuntimeException.class, () -> new Table(players));
+        System.out.println(e.getMessage());
     }
 
     @Test
@@ -223,6 +235,47 @@ class TableTest {
 
     @Test
     void setupAssistantCards() {
+        int motherNatureMov = 0;
+
+        //for each player check number and values of the assistant cards
+        for (int i = 0; i < table2p.getPlayers().length; i++){
+            assertEquals(10, table2p.getPlayers()[i].getAssistantDeck().size());
+            for (int j = 0; j < table2p.getPlayers()[i].getAssistantDeck().size(); j++){
+                if (j % 2 == 0){
+                    motherNatureMov++;
+                }
+                assertEquals(Wizards.values()[i], table2p.getPlayers()[i].getAssistantDeck().get(j).getWizard());
+                assertEquals(j + 1, table2p.getPlayers()[i].getAssistantDeck().get(j).getValue());
+                assertEquals(motherNatureMov, table2p.getPlayers()[i].getAssistantDeck().get(j).getMotherNatureMovements());
+            }
+            motherNatureMov = 0;
+        }
+
+        for (int i = 0; i < table3p.getPlayers().length; i++){
+            assertEquals(10, table3p.getPlayers()[i].getAssistantDeck().size());
+            for (int j = 0; j < table3p.getPlayers()[i].getAssistantDeck().size(); j++){
+                if (j % 2 == 0){
+                    motherNatureMov++;
+                }
+                assertEquals(Wizards.values()[i], table3p.getPlayers()[i].getAssistantDeck().get(j).getWizard());
+                assertEquals(j + 1, table3p.getPlayers()[i].getAssistantDeck().get(j).getValue());
+                assertEquals(motherNatureMov, table3p.getPlayers()[i].getAssistantDeck().get(j).getMotherNatureMovements());
+            }
+            motherNatureMov = 0;
+        }
+
+        for (int i = 0; i < table4p.getPlayers().length; i++){
+            assertEquals(10, table4p.getPlayers()[i].getAssistantDeck().size());
+            for (int j = 0; j < table4p.getPlayers()[i].getAssistantDeck().size(); j++){
+                if (j % 2 == 0){
+                    motherNatureMov++;
+                }
+                assertEquals(Wizards.values()[i], table4p.getPlayers()[i].getAssistantDeck().get(j).getWizard());
+                assertEquals(j + 1, table4p.getPlayers()[i].getAssistantDeck().get(j).getValue());
+                assertEquals(motherNatureMov, table4p.getPlayers()[i].getAssistantDeck().get(j).getMotherNatureMovements());
+            }
+            motherNatureMov = 0;
+        }
     }
 
     @Test
@@ -328,10 +381,8 @@ class TableTest {
 
     @Test
     void canIUnify() {
-        Player player1= new Player("test");
-        Player player2= new Player("test2");
-        Tower tower1 = new Tower(ColorT.BLACK,player1);
-        Tower tower2 = new Tower(ColorT.WHITE,player2);
+        Tower tower1 = new Tower(ColorT.BLACK,two.get(0));
+        Tower tower2 = new Tower(ColorT.WHITE,two.get(1));
         List<Island> expIslandsToUnify = new ArrayList<>();
         expIslandsToUnify.add(this.table2p.getIslands().get(0));
         expIslandsToUnify.add(this.table2p.getIslands().get(1));
@@ -341,6 +392,12 @@ class TableTest {
         this.table2p.getIslands().get(2).setTower(tower1);
         this.table2p.getIslands().get(11).setTower(tower2);
         List<Island> islandsToUnify = this.table2p.canIUnify(this.table2p.getIslands().get(0));
+        for(Island i : islandsToUnify){
+            assertTrue(expIslandsToUnify.contains(i));
+        }
+        this.table2p.getIslands().get(11).setTower(tower1);
+        expIslandsToUnify.add(this.table2p.getIslands().get(11));
+        islandsToUnify = this.table2p.canIUnify(this.table2p.getIslands().get(0));
         for(Island i : islandsToUnify){
             assertTrue(expIslandsToUnify.contains(i));
         }
@@ -382,6 +439,8 @@ class TableTest {
     @Test
     void getIsland() {
         assertEquals(table2p.getIslands().get(10), table2p.getIsland(10));
+        Exception e = assertThrows(RuntimeException.class, () -> table2p.getIsland(13));
+        System.out.println(e.getMessage());
     }
 
     @Test
@@ -435,6 +494,10 @@ class TableTest {
         table4p.getIsland(index4p).addStudent(new Student(ColorS.PINK));
         exception = assertThrows(ParityException.class, () -> table4p.getSupremacy(table4p.getIsland(index4p)));
         assertEquals("there's a parity", exception.getMessage());
+
+        //old owner case
+        table4p.getIsland(index4p).setTower(new Tower(ColorT.BLACK, four.get(1)));
+        assertEquals(four.get(1), table4p.getSupremacy(table4p.getIsland(index4p)));
     }
 
     @Test

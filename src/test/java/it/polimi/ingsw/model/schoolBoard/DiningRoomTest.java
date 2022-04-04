@@ -39,7 +39,8 @@ class DiningRoomTest {
 
     @Test
     void getLine() {
-        Assertions.assertThrows(RuntimeException.class,()->diningRoom.getLine(null));
+        Exception e = assertThrows(RuntimeException.class,()->diningRoom.getLine(null));
+        System.out.println(e.getMessage());
     }
 
     @Test
