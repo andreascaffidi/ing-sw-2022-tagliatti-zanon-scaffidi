@@ -75,7 +75,7 @@ public class Player {
             if(assistant.getValue() == value)
                 return assistant;
         }
-        throw new AssistantNotFoundException();
+        throw new AssistantNotFoundException("Assistant not found");
     }
 
     public void addToDiscardPile(Assistant assistant){

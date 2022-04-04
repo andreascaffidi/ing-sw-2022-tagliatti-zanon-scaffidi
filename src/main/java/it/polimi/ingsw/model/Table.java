@@ -563,12 +563,14 @@ public class Table {
         int value = card.getValue();
         List<Assistant> playable = new ArrayList<>(getCurrentPlayer().getAssistantDeck());
         for(Player player : players){
-            int valueToRemove = player.getDiscardPile().peek().getValue();
-            try {
-                playable.remove(getCurrentPlayer().getAssistant(valueToRemove));
-            } catch (AssistantNotFoundException e) {
-                //non si dovrebbe mai verificare
-                //do nothing
+            if(!player.getDiscardPile().isEmpty()) {
+                int valueToRemove = player.getDiscardPile().peek().getValue();
+                try {
+                    playable.remove(getCurrentPlayer().getAssistant(valueToRemove));
+                } catch (AssistantNotFoundException e) {
+                    //non si dovrebbe mai verificare
+                    //do nothing
+                }
             }
         }
         if(playable.contains(card) || playable.size() == 0){

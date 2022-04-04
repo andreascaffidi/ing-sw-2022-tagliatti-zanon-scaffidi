@@ -20,8 +20,8 @@ public class Controller {
 
     private Table table;
 
-    public Controller(List<Player> players){
-        this.table = new Table(players);
+    public Controller(Table table){
+        this.table = table;
     }
 
 
@@ -37,7 +37,7 @@ public class Controller {
             table.playAssistant(table.getCurrentPlayer().getAssistant(message.getValue()));
             table.nextPlayer();
         }catch (WrongPlayerException e){
-            //TODO
+            System.out.println(e.getMessage());
         }catch (AssistantNotFoundException e){
             //TODO
         }catch (AssistantNotPlayableException e){
