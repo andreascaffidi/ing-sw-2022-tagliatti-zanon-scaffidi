@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.charactercards;
+/*package it.polimi.ingsw.model.charactercards;
 
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
@@ -36,7 +36,7 @@ class Character5Test {
         character.setIslandChosen(1);
 
         //il numero di entrytiles è 1
-        character.setNumOfEntryTile(1);
+        table.setEntryTile(table.getIsland(1), 1);
 
         //se chiamo l'effetto allora
         character.effect(this.table);
@@ -83,4 +83,4 @@ class Character5Test {
         assertEquals(character.getNumOfEntryTile(),1);
     }
 
-}
+}*/
