@@ -26,18 +26,7 @@ public class Character3 extends Character {
     {
         //notify view scegli un isola
         Island island = table.getIsland(islandChosen);
-        try {
-            Player king = table.getSupremacy(island);
-            if (!king.equals(table.getIsland(islandChosen).getTower().getOwner())) {
-                Tower newTower = king.getSchoolBoard().getTowers().removeLastTower();
-                Tower oldTower = table.getIsland(islandChosen).getTower();
-                table.getIsland(islandChosen).setTower(newTower);
-                oldTower.getOwner().getSchoolBoard().getTowers().addTower(oldTower);
-            }
-        }
-        catch (ParityException e) {
-            System.out.println(e.getMessage());
-        }
+        table.processIsland(island);
     }
 
     /**

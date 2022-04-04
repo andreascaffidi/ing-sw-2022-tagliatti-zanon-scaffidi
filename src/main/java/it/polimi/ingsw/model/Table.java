@@ -37,8 +37,7 @@ public class Table {
     public int NUM_OF_TOWER_AT_SETUP;
     public int NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD;
 
-    private RoundPhases roundPhase;
-    private TurnPhases turnPhase;
+    private TurnManager turnManager;
 
     private Bag bag;
     private int numberOfPlayers;
@@ -53,12 +52,11 @@ public class Table {
     private List<Professor> professors;
     private ArrayList<Assistant> assistants;
 
-    private Queue<Player> tunrPriority;
 
     public Table(List<Player> players){
+        this.turnManager = new TurnManager(players);
         this.bag = new Bag();
         this.numberOfPlayers = players.size();
-        this.tunrPriority = new PriorityQueue<>();
         switch (numberOfPlayers){
             case 2 :
             case 4 :
@@ -287,6 +285,7 @@ public class Table {
     }
 
 
+    //potrebbe essere metodo private
     /**
      * creates an IslandGroup from a list of islands: adds all the students, sets the tower, removes the old Islands and changes
      * all the Islands ids.
@@ -323,6 +322,7 @@ public class Table {
      */
 
 
+    //potrebbe essere metodo private
     //TODO metodo ricorsivo che ritorna le isole da unire
     public List<Island> canIUnify(Island island){
         List<Island> islandsToUnify = new ArrayList<>();
@@ -366,6 +366,7 @@ public class Table {
     }
 
 
+    //potrebbe essere metodo private
     //il giocatore che ha costruito il maggior numero di torri è anche quello che ne ha il minor numero su towers
     public Player getPlayerWithMinTowers() throws ParityException {
         int minTower = 9, numOfTower = 0;
@@ -391,6 +392,7 @@ public class Table {
         }
     }
 
+    //potrebbe essere metodo private
     //in teoria non si può mai verificare il caso in cui ci sia una parità di professori tra giocatori
     public Player getPlayerWithMaxProfessor(){
         int maxProf = 0, numOfProf = 0;
@@ -427,6 +429,7 @@ public class Table {
         throw new RuntimeException("Island not found");
     }
 
+    //potrebbe essere metodo private
     /**
      * Calculate the player who has the greatest influence on the island, throws ParityException if there's
      * a parity of the max influence
@@ -496,6 +499,36 @@ public class Table {
         return playersReturn;
     }
 
+    /**
+     * Process an island: calculate the king, substitute the towers and create new island group
+     * @param island to process
+     */
+    public void processIsland(Island island){
+        try{
+            Player oldIslandKing = island.getTower().getOwner();
+            Player newIslandKing = this.getSupremacy(island);
+            if (!newIslandKing.equals(oldIslandKing)){
+                if (oldIslandKing != null){
+                    oldIslandKing.getSchoolBoard().getTowers().addTower(island.getTower());
+                }
+                island.setTower(newIslandKing.getSchoolBoard().getTowers().removeLastTower());
+                if (newIslandKing.getSchoolBoard().getTowers().getTowers().size() == 0){
+                    throw new EndGameException("Last tower placed");
+                }
+            }
+            if (this.canIUnify(island).size() > 1) {
+                this.newIslandGroup(this.canIUnify(island));
+            }
+            if (this.islands.size() <= 3){
+                throw new EndGameException("3 islands remained");
+            }
+        } catch(ParityException e){
+            //do nothing
+        } catch (EndGameException e) {
+            this.endGame();
+        }
+    }
+
 
     /**
      *  Method to call during Planning phase, it place on a selected cloud the correct number of
@@ -526,30 +559,6 @@ public class Table {
     }
 
 
-
-    public void setupPlanning(){
-        this.roundPhase = RoundPhases.PLANNING;
-
-        for(int i = 0; i<this.getClouds().size();i++){
-            this.addStudentsToCloud(this.getClouds().get(i));
-        }
-        this.turnPhase = TurnPhases.PLAY_ASSISTANT;
-    }
-
-    private void endRound(){
-        if(roundPhase == RoundPhases.ACTION){
-            this.setupPlanning();
-        }
-        if(roundPhase == RoundPhases.PLANNING){
-            roundPhase = RoundPhases.ACTION;
-            turnPhase = TurnPhases.MOVE_STUDENTS; //WAITING_FOR_MOVE_STUDENTS_MESSAGE
-        }
-    }
-
-    public RoundPhases getRoundPhase() {
-        return roundPhase;
-    }
-
     public void playAssistant(Assistant card) throws AssistantNotPlayableException{
         int value = card.getValue();
         List<Assistant> playable = new ArrayList<>(getCurrentPlayer().getAssistantDeck());
@@ -558,18 +567,13 @@ public class Table {
             try {
                 playable.remove(getCurrentPlayer().getAssistant(valueToRemove));
             } catch (AssistantNotFoundException e) {
-               //do nothing
+                //non si dovrebbe mai verificare
+                //do nothing
             }
         }
         if(playable.contains(card) || playable.size() == 0){
-            if(playable.size() == 0){
-                for(Player player : players){
-                    if(player.getDiscardPile().peek().getValue() == card.getValue()){
-                        tunrPriority.add(player);
-                    }
-                }
-            }
             getCurrentPlayer().addToDiscardPile(card);
+            turnManager.orderPlayer(getCurrentPlayer());
         }
         else {
             throw new AssistantNotPlayableException();
@@ -577,33 +581,8 @@ public class Table {
     }
 
 
-    /*
-        federico 1 7
-        andre   2  7
-        lucrezia 5
-        peppino 7
-     */
-
-
-    //FIXME: da gestire il caso 2 giocatori giochino 2 carte con lo stesso valore
     public void nextPlayer(){
-        int currentValue = this.getCurrentPlayer().getDiscardPile().get(0).getValue();
-        int minValue = 11;
-        Player nextPlayer = null;
-        for(Player player : this.getPlayers()){
-            if(player.getDiscardPile().peek().getValue() < minValue && player.getDiscardPile().peek().getValue() > currentValue) {
-                minValue = player.getDiscardPile().peek().getValue();
-                nextPlayer = player;
-            }
-        }
-        if(nextPlayer == null) this.endRound();
-        this.setCurrentPlayer(nextPlayer);
-    }
-
-    //TODO
-    public void setupAction(){
-        this.roundPhase = RoundPhases.ACTION;
-        //this.turnPhase = TurnPhases.WAITING_FOR_MOVE_STUDENTS;
+        setCurrentPlayer(turnManager.nextPlayer());
     }
 
 
@@ -621,10 +600,15 @@ public class Table {
         }
     }
 
-    //FIXME: implementare per bene
-    public void endGame() {
-        Player winner = getCurrentPlayer();
-    }
 
+    public void endGame() {
+        Player winner = null;
+        try {
+            winner = this.getPlayerWithMinTowers();
+        }catch (ParityException e){
+            winner = this.getPlayerWithMaxProfessor();
+        }
+        //TODO
+    }
 
 }

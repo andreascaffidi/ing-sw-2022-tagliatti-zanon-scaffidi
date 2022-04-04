@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.AssistantNotFoundException;
+import it.polimi.ingsw.exceptions.MovementNotValidException;
 import it.polimi.ingsw.model.cards.Assistant;
 import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
@@ -10,21 +11,20 @@ public class Player {
     private String username;
     private List<Assistant> assistantDeck;
     private SchoolBoard schoolBoard;
-   // private List<Assistant> discardPile;
     private int tagTeam;
     private ColorT towerColor;
     private Stack<Assistant> discardPile;
     public Player(String username) {
         this.username = username;
         this.assistantDeck = new ArrayList<>();
-        this.discardPile = new ArrayList<>();
+        this.discardPile = new Stack<>();
     }
 
     public Player(String username, int tagTeam) {
         this.username = username;
         this.tagTeam = tagTeam;
         this.assistantDeck = new ArrayList<>();
-        this.discardPile = new ArrayList<>();
+        this.discardPile = new Stack<>();
     }
 
     public Player(String username, List<Assistant> assistantDeck, int tagTeam, ColorT towerColor) {
@@ -89,5 +89,11 @@ public class Player {
 
     public void setSchoolBoard(SchoolBoard schoolBoard) {
         this.schoolBoard = schoolBoard;
+    }
+
+    public void validMovement(int movement) throws MovementNotValidException {
+        if (movement <= 0 || movement > this.discardPile.peek().getMotherNatureMovements()){
+            throw new MovementNotValidException();
+        }
     }
 }
