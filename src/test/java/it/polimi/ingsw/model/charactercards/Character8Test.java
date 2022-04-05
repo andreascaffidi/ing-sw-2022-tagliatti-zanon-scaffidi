@@ -47,11 +47,12 @@ class Character8Test {
         Student student5 = new Student(ColorS.RED);
 
         //all'isola aggiungo 3 studenti rossi e 2 blu
-        this.table.getIsland(3).addStudent(student1);
-        this.table.getIsland(3).addStudent(student2);
-        this.table.getIsland(3).addStudent(student3);
-        this.table.getIsland(3).addStudent(student4);
-        this.table.getIsland(3).addStudent(student5);
+        int index = this.table.motherNatureIsland().getId();
+        this.table.getIsland(index).addStudent(student1);
+        this.table.getIsland(index).addStudent(student2);
+        this.table.getIsland(index).addStudent(student3);
+        this.table.getIsland(index).addStudent(student4);
+        this.table.getIsland(index).addStudent(student5);
 
         //a player1 do il blu e a player2 do il rosso
         table.setProfessorOwner(ColorS.BLUE, player1);
@@ -63,8 +64,8 @@ class Character8Test {
 
         //dovrebbe vincere il player2 ma vince il player1
         try {
-            assertEquals(player1, this.table.getSupremacy(this.table.getIsland(3)));
-            winner = this.table.getSupremacy(this.table.getIsland(3));
+            assertEquals(player1, this.table.getSupremacy(this.table.getIsland(index)));
+            winner = this.table.getSupremacy(this.table.getIsland(index));
         } catch (ParityException e) {
             e.printStackTrace();
         }

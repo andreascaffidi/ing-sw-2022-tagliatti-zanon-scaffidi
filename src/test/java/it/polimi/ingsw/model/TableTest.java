@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.ParityException;
+import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.model.cards.Assistant;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.enums.Wizards;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.model.pawns.MotherNature;
 import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Tower;
+import it.polimi.ingsw.network.messages.PlayAssistantMessage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -511,6 +513,45 @@ class TableTest {
     }
 
     @Test
+    void processIsland(){
+        table2p.getIsland(0).setTower(table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower());
+        table2p.getIsland(1).setTower(table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower());
+        table2p.getIsland(2).setTower(table2p.getPlayers()[1].getSchoolBoard().getTowers().removeLastTower());
+        table2p.getIsland(2).addStudents(new ArrayList<>(Arrays.asList(new Student(ColorS.BLUE), new Student(ColorS.BLUE))));
+        table2p.setProfessorOwner(ColorS.BLUE, table2p.getPlayers()[0]);
+        table2p.processIsland(table2p.getIsland(2));
+        assertEquals(10, table2p.getIslands().size());
+
+        //test end game case: player with no towers (tbd)
+        table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower();
+        table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower();
+        table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower();
+        table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower();
+        table2p.getIsland(1).addStudents(new ArrayList<>(Arrays.asList(new Student(ColorS.BLUE), new Student(ColorS.BLUE))));
+        table2p.processIsland(table2p.getIsland(1));
+        System.out.println(table2p.getPlayers()[0].getSchoolBoard().getTowers().getTowers().size());
+        assertTrue(table2p.getPlayers()[0].getSchoolBoard().getTowers().getTowers().isEmpty());
+
+
+        //test end game case: 3 islands remained (tbd)
+        table3p.getIsland(0).setTower(table3p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower());
+        table3p.getIsland(1).setTower(table3p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower());
+        table3p.getIsland(2).setTower(table3p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower());
+        table3p.getIsland(3).setTower(table3p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower());
+        table3p.getIsland(4).setTower(table3p.getPlayers()[1].getSchoolBoard().getTowers().removeLastTower());
+        table3p.getIsland(5).setTower(table3p.getPlayers()[1].getSchoolBoard().getTowers().removeLastTower());
+        table3p.getIsland(6).setTower(table3p.getPlayers()[1].getSchoolBoard().getTowers().removeLastTower());
+        table3p.getIsland(7).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowers().removeLastTower());
+        table3p.getIsland(8).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowers().removeLastTower());
+        table3p.getIsland(9).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowers().removeLastTower());
+        table3p.getIsland(10).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowers().removeLastTower());
+        table3p.getIsland(11).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowers().removeLastTower());
+        table3p.processIsland(table3p.getIsland(7));
+        table3p.processIsland(table3p.getIsland(4));
+        table3p.processIsland(table3p.getIsland(0));
+    }
+
+    @Test
     void addStudentsToCloud(){
         table2p.addStudentsToCloud(table2p.getClouds().get(0));
         assertEquals(3, table2p.getClouds().get(0).getStudents().size());
@@ -524,6 +565,11 @@ class TableTest {
 
     @Test
     void getClouds(){
+        assertTrue(true, "tested in other methods");
+    }
+
+    @Test
+    void getMotherNature(){
         assertTrue(true, "tested in other methods");
     }
 
@@ -549,4 +595,74 @@ class TableTest {
         assertEquals(two.get(1), table2p.getProfessorOwner(ColorS.YELLOW));
     }
 
+    @Test
+    void playAssistant() throws AssistantNotFoundException, AssistantNotPlayableException {
+        table2p.setCurrentPlayer(table2p.getPlayers()[0]);
+        table2p.playAssistant(table2p.getPlayers()[0].getAssistant(3));
+        assertEquals(3, table2p.getPlayers()[0].getDiscardPile().peek().getValue());
+        table2p.setCurrentPlayer(table2p.getPlayers()[1]);
+        Exception e = assertThrows(AssistantNotPlayableException.class, () -> table2p.playAssistant(table2p.getPlayers()[1].getAssistant(3)));
+        assertEquals("Not playable assistant", e.getMessage());
+
+        //case all assistant already played
+        table3p.setCurrentPlayer(table3p.getPlayers()[0]);
+        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(1));
+        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(2));
+        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(3));
+        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(4));
+        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(5));
+        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(6));
+        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(7));
+        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(8));
+
+        table3p.setCurrentPlayer(table3p.getPlayers()[1]);
+        table3p.playAssistant(table3p.getPlayers()[1].getAssistant(9));
+        table3p.setCurrentPlayer(table3p.getPlayers()[2]);
+        table3p.playAssistant(table3p.getPlayers()[2].getAssistant(10));
+
+        table3p.setCurrentPlayer(table3p.getPlayers()[0]);
+        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(10));
+        assertEquals(10, table3p.getPlayers()[0].getDiscardPile().peek().getValue());
+    }
+
+    @Test
+    void nextPlayer(){
+        table2p.nextPlayer();
+        assertEquals(table2p.getPlayers()[1], table2p.getCurrentPlayer());
+
+        table3p.nextPlayer();
+        assertEquals(table3p.getPlayers()[1], table3p.getCurrentPlayer());
+
+        table4p.nextPlayer();
+        assertEquals(table4p.getPlayers()[1], table4p.getCurrentPlayer());
+    }
+
+    @Test
+    void validIsland(){
+        Exception exception = assertThrows(IslandNotValidException.class, () -> table2p.validIsland(13));
+        assertEquals("Not valid Island", exception.getMessage());
+
+        Exception exception1 = assertThrows(IslandNotValidException.class, () -> table2p.validIsland(-1));
+        assertEquals("Not valid Island", exception1.getMessage());
+    }
+
+    @Test
+    void validCloud(){
+        Exception exception = assertThrows(CloudNotValidException.class, () -> table2p.validCloud(3));
+        assertEquals("Not valid cloud", exception.getMessage());
+
+        Exception exception1 = assertThrows(CloudNotValidException.class, () -> table2p.validCloud(-1));
+        assertEquals("Not valid cloud", exception1.getMessage());
+    }
+
+    //TODO: implement endgame
+    @Test
+    void endGame(){
+        table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower();
+        table2p.endGame();
+
+        //case of parity
+        table2p.getPlayers()[1].getSchoolBoard().getTowers().removeLastTower();
+        table2p.endGame();
+    }
 }

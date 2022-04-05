@@ -93,7 +93,7 @@ public class Player {
 
     public void validMovement(int movement) throws MovementNotValidException {
         if (movement <= 0 || movement > this.discardPile.peek().getMotherNatureMovements()){
-            throw new MovementNotValidException();
+            throw new MovementNotValidException("Not valid movement");
         }
     }
 }

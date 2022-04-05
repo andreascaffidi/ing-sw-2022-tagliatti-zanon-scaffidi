@@ -1,6 +1,4 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.controller.RoundPhases;
-import it.polimi.ingsw.controller.TurnPhases;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
@@ -56,6 +54,7 @@ public class Table {
     public Table(List<Player> players){
         this.turnManager = new TurnManager(players);
         this.bag = new Bag();
+        this.currentPlayer = players.get(0);
         this.numberOfPlayers = players.size();
         switch (numberOfPlayers){
             case 2 :
@@ -342,7 +341,7 @@ public class Table {
         }
         //scorro avanti
         i = this.islands.indexOf(island);
-        int nextIndex = ++i % this.islands.size();
+        int nextIndex = (i+1) % this.islands.size();
         while(
                 this.islands.get(i).getTower() !=null &&
                 this.islands.get(nextIndex).getTower() !=null &&
@@ -350,7 +349,7 @@ public class Table {
         ){
             islandsToUnify.add(this.islands.get(nextIndex));
             i = nextIndex;
-            nextIndex = ++i % this.islands.size();
+            nextIndex = (i+1) % this.islands.size();
         }
         return islandsToUnify;
     }
@@ -505,11 +504,10 @@ public class Table {
      */
     public void processIsland(Island island){
         try{
-            Player oldIslandKing = island.getTower().getOwner();
             Player newIslandKing = this.getSupremacy(island);
-            if (!newIslandKing.equals(oldIslandKing)){
-                if (oldIslandKing != null){
-                    oldIslandKing.getSchoolBoard().getTowers().addTower(island.getTower());
+            if (island.getTower() == null || !newIslandKing.equals(island.getTower().getOwner())){
+                if (island.getTower() != null){
+                    island.getTower().getOwner().getSchoolBoard().getTowers().addTower(island.getTower());
                 }
                 island.setTower(newIslandKing.getSchoolBoard().getTowers().removeLastTower());
                 if (newIslandKing.getSchoolBoard().getTowers().getTowers().size() == 0){
@@ -562,13 +560,12 @@ public class Table {
     public void playAssistant(Assistant card) throws AssistantNotPlayableException{
         int value = card.getValue();
         List<Assistant> playable = new ArrayList<>(getCurrentPlayer().getAssistantDeck());
-        for(Player player : players){
-            if(!player.getDiscardPile().isEmpty()) {
+        for(Player player : players) {
+            if (!player.getDiscardPile().isEmpty()) {
                 int valueToRemove = player.getDiscardPile().peek().getValue();
                 try {
                     playable.remove(getCurrentPlayer().getAssistant(valueToRemove));
                 } catch (AssistantNotFoundException e) {
-                    //non si dovrebbe mai verificare
                     //do nothing
                 }
             }
@@ -578,7 +575,7 @@ public class Table {
             turnManager.orderPlayer(getCurrentPlayer());
         }
         else {
-            throw new AssistantNotPlayableException();
+            throw new AssistantNotPlayableException("Not playable assistant");
         }
     }
 
@@ -590,7 +587,7 @@ public class Table {
 
     public void validIsland(int idIsland) throws IslandNotValidException {
         if(idIsland >= islands.size() || idIsland < 0)
-            throw new IslandNotValidException();
+            throw new IslandNotValidException("Not valid Island");
     }
 
     public void validCloud(int cloudIndex) throws CloudNotValidException {
@@ -598,7 +595,7 @@ public class Table {
                 cloudIndex < 0 ||
                 clouds.get(cloudIndex).getStudents().isEmpty()
         ){
-            throw new CloudNotValidException();
+            throw new CloudNotValidException("Not valid cloud");
         }
     }
 

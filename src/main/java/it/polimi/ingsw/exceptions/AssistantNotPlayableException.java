@@ -1,7 +1,7 @@
 package it.polimi.ingsw.exceptions;
 
 public class AssistantNotPlayableException extends Exception{
-    public AssistantNotPlayableException() {
-
+    public AssistantNotPlayableException(String message) {
+        super(message);
     }
 }

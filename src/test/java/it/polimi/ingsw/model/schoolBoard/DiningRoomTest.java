@@ -1,10 +1,8 @@
 package it.polimi.ingsw.model.schoolBoard;
 
-import it.polimi.ingsw.exceptions.GetCoinException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

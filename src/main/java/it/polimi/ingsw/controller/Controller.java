@@ -37,17 +37,20 @@ public class Controller {
             table.playAssistant(table.getCurrentPlayer().getAssistant(message.getValue()));
             table.nextPlayer();
         }catch (WrongPlayerException e){
-            System.out.println(e.getMessage());
+            //TODO
+            System.out.println("WrongPlayerException");
         }catch (AssistantNotFoundException e){
             //TODO
+            System.out.println("AssistantNotFoundException");
         }catch (AssistantNotPlayableException e){
             //TODO
+            System.out.println("AssistantNotPlayableException");
         }
     }
 
     private void checkPlayer(String username){
         if(!username.equals(table.getCurrentPlayer().getUsername()))
-            throw new WrongPlayerException("Ma ce la fai?");
+            throw new WrongPlayerException("It isn't your turn");
     }
 
 
@@ -62,10 +65,13 @@ public class Controller {
             table.getIsland(idIsland).addStudent(student);
         }catch (WrongPlayerException e){
             //TODO
+            System.out.println("WrongPlayerException");
         } catch (IslandNotValidException e) {
             //TODO
+            System.out.println("IslandNotValidException");
         } catch (StudentIndexOutOfBoundsException e) {
             //TODO
+            System.out.println("StudentIndexOutOfBoundsException");
         }
     }
 
@@ -79,8 +85,10 @@ public class Controller {
             table.setProfessorOwner(student.getColor(), table.getCurrentPlayer());
         }catch (WrongPlayerException e){
             //TODO
+            System.out.println("WrongPlayerException");
         } catch (StudentIndexOutOfBoundsException e) {
             //TODO
+            System.out.println("StudentIndexOutOfBoundsException");
         }
     }
 
@@ -94,8 +102,10 @@ public class Controller {
             table.processIsland(table.motherNatureIsland());
         } catch (WrongPlayerException e){
             //TODO
+            System.out.println("WrongPlayerException");
         } catch (MovementNotValidException e){
             //TODO
+            System.out.println("MovementNotValidException");
         }
     }
 
@@ -113,9 +123,10 @@ public class Controller {
             table.nextPlayer();
         }catch (WrongPlayerException e){
             //TODO
+            System.out.println("WrongPlayerException");
         }catch (CloudNotValidException e){
             //TODO
+            System.out.println("CloudNotValidException");
         }
     }
-
 }
