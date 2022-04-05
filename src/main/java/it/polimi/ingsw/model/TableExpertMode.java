@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidCharacterException;
 import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.cards.Character;
 import it.polimi.ingsw.model.charactercards.*;
@@ -21,7 +22,6 @@ public class TableExpertMode extends Table {
 
     private int bank;
     private int numOfEntryTile;
-    private Character[] characterCards;
     private ColorS noInfluenceColor;
 
     private Map<Player, Integer> playerCoins;
@@ -30,8 +30,7 @@ public class TableExpertMode extends Table {
 
     private Map<Island, Boolean> entryTile;
     private Map<Island, Boolean> countTowers;
-    private ArrayList<Character> characters;
-
+    private ArrayList<Integer> characters = new ArrayList<>();
 
     public TableExpertMode(List<Player> players) {
         super(players);
@@ -56,25 +55,19 @@ public class TableExpertMode extends Table {
 
         this.numOfEntryTile = NUM_OF_ENTRY_TILE;
         this.bank = NUM_OF_COINS - players.size() * NUM_OF_COINS_SETUP;
-        this.characterCards = new Character[NUM_OF_CHARACTER_CARDS_2];
         this.setupCharacterCards(); //todo:fare implementazione
 
     }
 
     private void setupCharacterCards() {
-        this.characters = new ArrayList<>();
-        this.characters.add(new Character1());
-        this.characters.add(new Character2());
-        this.characters.add(new Character3());
-        this.characters.add(new Character4());
-        this.characters.add(new Character5());
-        this.characters.add(new Character6());
-        this.characters.add(new Character7());
-        this.characters.add(new Character8());
-        this.characters.add(new Character9());
-        this.characters.add(new Character10());
-        this.characters.add(new Character11());
-        this.characters.add(new Character12());
+        while (characters.size() < 3)
+        {
+            int random = new Random().nextInt(NUM_OF_CHARACTER_CARDS);
+            if(!characters.contains(random))
+            {
+                characters.add(random);
+            }
+        }
     }
 
     private void deposit(int coins) {
@@ -205,6 +198,17 @@ public class TableExpertMode extends Table {
         }
     }
 
+    public ArrayList<Integer> getCharacters() {
+        return characters;
+    }
+
     //todo: implementare metodo per aggiungere un coin ai player che hanno occupato le posizioni di schoolboard
 
+    public void validCharacter(int id) throws InvalidCharacterException
+    {
+        if(!this.getCharacters().contains(id))
+        {
+            throw new InvalidCharacterException("Invalid Character");
+        }
+    }
 }
