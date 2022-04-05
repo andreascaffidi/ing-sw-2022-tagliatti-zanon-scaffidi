@@ -35,6 +35,6 @@ public class Entrance {
 
     public void validStudentIndex(int studentIndex) throws StudentIndexOutOfBoundsException {
         if(studentIndex >= students.size() || studentIndex < 0)
-            throw new StudentIndexOutOfBoundsException();
+            throw new StudentIndexOutOfBoundsException("Student not found");
     }
 }

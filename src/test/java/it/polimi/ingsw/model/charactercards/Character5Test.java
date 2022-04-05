@@ -1,4 +1,4 @@
-/*package it.polimi.ingsw.model.charactercards;
+package it.polimi.ingsw.model.charactercards;
 
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
@@ -35,8 +35,9 @@ class Character5Test {
         //l'isola scelta è la numero 1
         character.setIslandChosen(1);
 
-        //il numero di entrytiles è 1
-        table.setEntryTile(table.getIsland(1), 1);
+        //il numero di entrytiles è 3
+        table.decrementEntryTile();
+        assertEquals(table.getNumOfEntryTile(), 3);
 
         //se chiamo l'effetto allora
         character.effect(this.table);
@@ -44,13 +45,15 @@ class Character5Test {
         //nell'isola scelta entrytile è true
         assertTrue(table.isEntryTile(table.getIsland(character.getIslandChosen())));
 
-        //e incremento il numero di entrytiles piazzati
-        assertEquals(character.getNumOfEntryTile(), 2);
+        //e decremento il numero di entrytiles presenti sul tavolo
+        assertEquals(table.getNumOfEntryTile(), 2);
 
         //TODO: su quell'isola non posso calcolare l'influenza e nemmeno piazzare torri
 
-        //se invece metto il numero di entrytiles a 4
-        character.setNumOfEntryTile(4);
+        //se invece metto il numero di entrytiles a 0
+        table.decrementEntryTile();
+        table.decrementEntryTile();
+        assertEquals(table.getNumOfEntryTile(), 0);
 
         //se rimetto l'entry tile dell'isola scelta a false
         table.setEntryTile(table.getIsland(character.getIslandChosen()), false);
@@ -63,7 +66,7 @@ class Character5Test {
         assertFalse(table.isEntryTile(table.getIsland(character.getIslandChosen())));
 
         //e non varia il numero di entrytiles globali
-        assertEquals(character.getNumOfEntryTile(), 4);
+        assertEquals(table.getNumOfEntryTile(), 0);
     }
 
     @Test
@@ -77,10 +80,4 @@ class Character5Test {
         assertEquals(character.getIslandChosen(),1);
     }
 
-    @Test
-    void setAndGetNumOfEntryTile() {
-        character.setNumOfEntryTile(1);
-        assertEquals(character.getNumOfEntryTile(),1);
-    }
-
-}*/
+}

@@ -75,7 +75,7 @@ public class Player {
             if(assistant.getValue() == value)
                 return assistant;
         }
-        throw new AssistantNotFoundException();
+        throw new AssistantNotFoundException("Assistant not found");
     }
 
     public void addToDiscardPile(Assistant assistant){
@@ -93,7 +93,7 @@ public class Player {
 
     public void validMovement(int movement) throws MovementNotValidException {
         if (movement <= 0 || movement > this.discardPile.peek().getMotherNatureMovements()){
-            throw new MovementNotValidException();
+            throw new MovementNotValidException("Not valid movement");
         }
     }
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.RoundPhases;
+import it.polimi.ingsw.model.enums.RoundPhases;
 
 import java.util.*;
 
@@ -13,9 +13,9 @@ public class TurnManager {
     public TurnManager(List<Player> players){
         this.phase = RoundPhases.PLANNING;
         this.clockwise = players;
-        this.planningTurn = new ArrayList<>();
+        this.planningTurn = new ArrayList<>(players);
+        this.planningTurn.remove(0);
         this.actionTurn = new PriorityQueue<>(4, new PlayerComparator());
-        newPlanningTurn(players.get(0));
     }
 
     public void orderPlayer(Player player){
