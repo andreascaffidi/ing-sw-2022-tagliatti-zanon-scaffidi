@@ -556,7 +556,6 @@ public class Table {
         }
     }
 
-
     public void playAssistant(Assistant card) throws AssistantNotPlayableException{
         int value = card.getValue();
         List<Assistant> playable = new ArrayList<>(getCurrentPlayer().getAssistantDeck());
@@ -579,11 +578,9 @@ public class Table {
         }
     }
 
-
     public void nextPlayer(){
         setCurrentPlayer(turnManager.nextPlayer());
     }
-
 
     public void validIsland(int idIsland) throws IslandNotValidException {
         if(idIsland >= islands.size() || idIsland < 0)
@@ -598,7 +595,6 @@ public class Table {
             throw new CloudNotValidException("Not valid cloud");
         }
     }
-
 
     public void endGame() {
         Player winner = null;

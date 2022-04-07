@@ -32,7 +32,7 @@ public class Character10 extends Character {
         for (Student s : entranceStudentsChosen){
             table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(s);
             table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(s);
-            table.addCoins(table.getCurrentPlayer(), 1);
+            //table.addCoins(table.getCurrentPlayer(), 1);
         }
     }
 
