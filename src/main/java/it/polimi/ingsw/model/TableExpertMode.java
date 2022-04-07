@@ -1,16 +1,19 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.CardNotFoundException;
 import it.polimi.ingsw.exceptions.InvalidCharacterException;
 import it.polimi.ingsw.exceptions.ParityException;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.Character;
 import it.polimi.ingsw.model.charactercards.*;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
+import it.polimi.ingsw.model.pawns.Student;
 
+import javax.smartcardio.CardNotPresentException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
-
 
 public class TableExpertMode extends Table {
     private final int NUM_OF_CHARACTER_CARDS=12;
@@ -31,6 +34,8 @@ public class TableExpertMode extends Table {
     private Map<Island, Boolean> entryTile;
     private Map<Island, Boolean> countTowers;
     private ArrayList<Integer> characters = new ArrayList<>();
+
+    private List<Card> cards = new ArrayList<>();
 
     public TableExpertMode(List<Player> players) {
         super(players);
@@ -66,8 +71,44 @@ public class TableExpertMode extends Table {
             if(!characters.contains(random))
             {
                 characters.add(random);
+                setup(random);
             }
         }
+
+    }
+
+    private void setup(int card)
+    {
+        List<Student> students = new ArrayList<>();
+
+        if(card == 1 || card == 11)
+        {
+            for(int i = 0; i < 4; i++)
+            {
+                students.add(this.getBag().drawStudent());
+            }
+        }
+
+        if(card == 7)
+        {
+            for(int i = 0; i < 6; i++)
+            {
+                students.add(this.getBag().drawStudent());
+            }
+        }
+
+        cards.add(new Card(students, card));
+
+    }
+
+    public Card getCard(int character) throws CardNotFoundException {
+        for(Card card : cards)
+        {
+            if(card.getCharacter() == character) {
+                return card;
+            }
+        }
+        throw new CardNotFoundException("Card not found");
     }
 
     private void deposit(int coins) {
