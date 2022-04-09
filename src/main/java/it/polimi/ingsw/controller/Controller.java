@@ -2,19 +2,14 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Cloud;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.pawns.Student;
-import it.polimi.ingsw.model.pawns.Tower;
+import it.polimi.ingsw.network.ControllerExecute;
 import it.polimi.ingsw.network.Message;
-import it.polimi.ingsw.network.messages.ChooseCloudMessage;
-import it.polimi.ingsw.network.messages.MoveMotherNatureMessage;
-import it.polimi.ingsw.network.messages.MoveStudentMessage;
-import it.polimi.ingsw.network.messages.PlayAssistantMessage;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import it.polimi.ingsw.network.requestMessage.ChooseCloudMessage;
+import it.polimi.ingsw.network.requestMessage.MoveMotherNatureMessage;
+import it.polimi.ingsw.network.requestMessage.MoveStudentMessage;
+import it.polimi.ingsw.network.requestMessage.PlayAssistantMessage;
 
 public class Controller {
 
@@ -25,9 +20,10 @@ public class Controller {
     }
 
 
-
+    //TODO: proibire al metodo di eseguire messaggi per esperti (nella remote view)
     public void update(Message message){
-        message.getTypeOfMessage().execute(this,message.getUsername());
+        ControllerExecute controller = (ControllerExecute) message.getRequestMessage();
+        controller.execute(this, message.getUsername());
     }
 
 
@@ -69,7 +65,7 @@ public class Controller {
         } catch (IslandNotValidException e) {
             //TODO
             System.out.println("IslandNotValidException");
-        } catch (StudentIndexOutOfBoundsException e) {
+        } catch (InvalidEntranceStudentException e) {
             //TODO
             System.out.println("StudentIndexOutOfBoundsException");
         }
@@ -86,7 +82,7 @@ public class Controller {
         }catch (WrongPlayerException e){
             //TODO
             System.out.println("WrongPlayerException");
-        } catch (StudentIndexOutOfBoundsException e) {
+        } catch (InvalidEntranceStudentException e) {
             //TODO
             System.out.println("StudentIndexOutOfBoundsException");
         }

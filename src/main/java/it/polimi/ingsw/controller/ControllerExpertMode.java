@@ -1,11 +1,18 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.model.effects.Effect;
+import it.polimi.ingsw.model.effects.CountTowersEffect;
+import it.polimi.ingsw.model.effects.AdditionalInfluenceEffect;
+import it.polimi.ingsw.model.effects.NoInfluenceColorEffect;
 import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
+import it.polimi.ingsw.network.ControllerExecuteExpertMode;
 import it.polimi.ingsw.network.Message;
-import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.requestMessage.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +21,8 @@ public class ControllerExpertMode extends Controller{
 
     private TableExpertMode table;
 
+
+    //FIXME: gestione controllerExpertMode
     public ControllerExpertMode(TableExpertMode table)
     {
         super(table);
@@ -21,10 +30,21 @@ public class ControllerExpertMode extends Controller{
     }
 
     @Override
+    public void update(Message message){
+        if (message.isExpertMode()){
+            ControllerExecuteExpertMode controller = (ControllerExecuteExpertMode) message.getRequestMessage();
+            controller.execute(this, message.getUsername());
+        }
+        else
+        {
+            super.update(message);
+        }
+    }
+
+    @Override
     public void moveStudentToDining(MoveStudentMessage message, String username){
+        ColorS color = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(message.getStudentIndex()-1).getColor();
         super.moveStudentToDining(message, username);
-        //devo recuperare il colore dello studente spostato -> color
-        ColorS color = ColorS.RED;
         if (table.getCurrentPlayer().getSchoolBoard().getDiningRoom().getLine(color).size() % 3 == 0){
             table.addCoins(table.getCurrentPlayer(), 1);
         }
@@ -33,13 +53,13 @@ public class ControllerExpertMode extends Controller{
     public void payCharacter1(PayCharacter1Message message, String username)
     {
         try {
-            table.validCharacter(1);
-            table.validIsland(message.getIslandId());
-            table.getCard(1).validStudent(message.getStudentId());
-            Student student = table.getCard(1).getStudents().remove(message.getStudentId());
+            table.validCharacter(message.getCharacter());
+            table.validIsland(message.getIslandId()-1);
+            table.getCardWithStudents(message.getCharacter()).validStudent(message.getStudentId()-1);
+            Student student = table.getCardWithStudents(message.getCharacter()).getStudents().remove(message.getStudentId()-1);
             table.getIsland(message.getIslandId()).addStudent(student);
-            table.getCard(1).getStudents().add(table.getBag().drawStudent());
-
+            table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
+            pay(message.getCharacter());
         }catch(InvalidCharacterException e)
         {
             //TODO
@@ -55,8 +75,11 @@ public class ControllerExpertMode extends Controller{
             //TODO
             System.out.println(e.getMessage());
         }
-        catch(InvalidStudentException e)
+        catch(InvalidCardStudentException e)
         {
+            //TODO
+            System.out.println(e.getMessage());
+        } catch (NotEnoughCoinsException e) {
             //TODO
             System.out.println(e.getMessage());
         }
@@ -64,9 +87,10 @@ public class ControllerExpertMode extends Controller{
 
     public void payCharacter2(PayCharacter2Message message, String username){
         try {
-            table.validCharacter(2);
-
-        }catch(InvalidCharacterException e)
+            table.validCharacter(message.getCharacter());
+            table.setProfessorTie(table.getCurrentPlayer(), true);
+            pay(message.getCharacter());
+        }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
             //TODO
             System.out.println(e.getMessage());
@@ -75,93 +99,117 @@ public class ControllerExpertMode extends Controller{
 
     public void payCharacter3(PayCharacter3Message message, String username){
         try {
-            table.validCharacter(3);
-
-        }catch(InvalidCharacterException e)
+            table.validCharacter(message.getCharacter());
+            table.validIsland(message.getIslandId()-1);
+            table.processIsland(table.getIsland(message.getIslandId()-1));
+            pay(message.getCharacter());
+        }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
             //TODO
             System.out.println(e.getMessage());
+        } catch (IslandNotValidException e) {
+            e.printStackTrace();
         }
     }
 
     public void payCharacter4(PayCharacter4Message message, String username){
         try {
-            table.validCharacter(4);
-
-        }catch(InvalidCharacterException e)
+            table.validCharacter(message.getCharacter());
+            table.validAdditionalMovement(message.getAdditionalMovement());
+            table.moveMotherNature(message.getAdditionalMovement());
+            pay(message.getCharacter());
+        }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
             //TODO
             System.out.println(e.getMessage());
+        } catch (InvalidAdditionalMovementException e) {
+            e.printStackTrace();
         }
     }
 
     public void payCharacter5(PayCharacter5Message message, String username){
         try {
-            table.validCharacter(5);
-
-        }catch(InvalidCharacterException e)
+            table.validCharacter(message.getCharacter());
+            table.validIsland(message.getIslandId()-1);
+            Island island = table.getIsland(message.getIslandId()-1);
+            table.validNoEntryTile(island);
+            table.setNoEntryTile(island, true);
+            pay(message.getCharacter());
+        }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
             //TODO
             System.out.println(e.getMessage());
+        } catch (IslandNotValidException e) {
+            e.printStackTrace();
+        } catch (InvalidNoEntryTileException e) {
+            e.printStackTrace();
+        } catch (TooManyNoEntryTileException e) {
+            e.printStackTrace();
         }
     }
 
     public void payCharacter6(PayCharacter6Message message, String username){
         try {
-            table.validCharacter(6);
-
-        }catch(InvalidCharacterException e)
+            table.validCharacter(message.getCharacter());
+            table.validIsland(message.getIslandId()-1);
+            table.addInfluenceEffect(new Effect(new CountTowersEffect(table.getIsland(message.getIslandId()-1))));
+            pay(message.getCharacter());
+        }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
             //TODO
             System.out.println(e.getMessage());
+        } catch (IslandNotValidException e) {
+            e.printStackTrace();
         }
     }
 
     public void payCharacter7(PayCharacter7Message message, String username){
         try {
-            table.validCharacter(7);
-
-            List<Integer> cardStudentsChosen = new ArrayList<>();
-            List<Integer> entranceStudentChosen = new ArrayList<>();
-
-            cardStudentsChosen.add(message.getCardStudent1());
-            cardStudentsChosen.add(message.getCardStudent2());
-            cardStudentsChosen.add(message.getCardStudent3());
-
-            entranceStudentChosen.add(message.getEntranceStudent1());
-            entranceStudentChosen.add(message.getEntranceStudent2());
-            entranceStudentChosen.add(message.getEntranceStudent3());
-
-            for (int s : cardStudentsChosen){
-                table.getCard(7).validStudent(s);
-                Student student = table.getCard(7).getStudents().remove(s);
-                table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(student);
-            }
-            for (int s : entranceStudentChosen){
-                table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(s);
-                Student student = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().remove(s);
-                table.getCard(7).getStudents().add(student);
-
+            //verify all indexes' validity
+            table.validCharacter(message.getCharacter());
+            for (int i = 0; i < message.getCardStudents().size(); i++) {
+                table.getCardWithStudents(message.getCharacter()).validStudent(message.getCardStudents().get(i));
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(message.getEntranceStudents().get(i));
             }
 
-        }catch(InvalidCharacterException e)
+            List<Student> cardStudents = new ArrayList<>();
+            List<Student> entranceStudents = new ArrayList<>();
+
+            //pick the students with the assigned indexes
+            for (int i = 0; i < message.getCardStudents().size(); i++) {
+                Student cardStudent = table.getCardWithStudents(message.getCharacter()).getStudents().get(i);
+                Student entranceStudent = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(i);
+                cardStudents.add(cardStudent);
+                entranceStudents.add(entranceStudent);
+            }
+
+            //switch selected students
+            for (int i = 0; i < message.getCardStudents().size(); i++) {
+                table.getCardWithStudents(message.getCharacter()).getStudents().remove(cardStudents.get(i));
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(cardStudents.get(i));
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(entranceStudents.get(i));
+                table.getCardWithStudents(message.getCharacter()).getStudents().add(entranceStudents.get(i));
+            }
+            pay(message.getCharacter());
+        }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
             //TODO
             System.out.println(e.getMessage());
         } catch (CardNotFoundException e) {
             e.printStackTrace();
-        } catch (InvalidStudentException e) {
+        } catch (InvalidCardStudentException e) {
             e.printStackTrace();
-        } catch (StudentIndexOutOfBoundsException e) {
+        } catch (InvalidEntranceStudentException e) {
             e.printStackTrace();
         }
     }
 
     public void payCharacter8(PayCharacter8Message message, String username){
         try {
-            table.validCharacter(8);
-
-        }catch(InvalidCharacterException e)
+            table.validCharacter(message.getCharacter());
+            table.addInfluenceEffect(new Effect(new AdditionalInfluenceEffect(table.getCurrentPlayer())));
+            pay(message.getCharacter());
+        }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
             //TODO
             System.out.println(e.getMessage());
@@ -170,77 +218,107 @@ public class ControllerExpertMode extends Controller{
 
     public void payCharacter9(PayCharacter9Message message, String username){
         try {
-            table.validCharacter(9);
-
-        }catch(InvalidCharacterException e)
+            table.validCharacter(message.getCharacter());
+            ColorS color = ColorS.parseToColor(message.getColor());
+            table.addInfluenceEffect(new Effect(new NoInfluenceColorEffect(color)));
+            pay(message.getCharacter());
+        }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
             //TODO
             System.out.println(e.getMessage());
+        } catch (ColorNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
-    /*public void payCharacter10(PayCharacter10Message message, String username){
+    public void payCharacter10(PayCharacter10Message message, String username){
         try {
-            table.validCharacter(10);
-            List<Integer> diningStudentsChosen = new ArrayList<>();
-            List<Integer> entranceStudentChosen = new ArrayList<>();
-
-            diningStudentsChosen.add(message.getDiningStudent1());
-            diningStudentsChosen.add(message.getDiningStudent2());
-
-            entranceStudentChosen.add(message.getEntranceStudent1());
-            entranceStudentChosen.add(message.getEntranceStudent2());
-
-            for (int s : diningStudentsChosen){
-                Student student = table.getCurrentPlayer().getSchoolBoard().getDiningRoom().getLine().remove(s);
-                table.getCurrentPlayer().getSchoolBoard().getDiningRoom().g
-                table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(student);
+            //verify all validity
+            table.validCharacter(message.getCharacter());
+            for (int i = 0; i < message.getDiningStudents().size(); i++) {
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(message.getEntranceStudents().get(i));
             }
-            for (int s : entranceStudentChosen){
-                table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(s);
-                Student student = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().remove(s);
-                table.getCard(7).getStudents().add(student);
+            table.getCurrentPlayer().getSchoolBoard().getDiningRoom().validColors(message.getDiningStudents());
 
+            List<Student> entranceStudents = new ArrayList<>();
+
+            //pick the students with the assigned indexes
+            for (int i = 0; i < message.getEntranceStudents().size(); i++) {
+                Student entranceStudent = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(i);
+                entranceStudents.add(entranceStudent);
             }
 
+            //switch selected students
+            for (int i = 0; i < message.getDiningStudents().size(); i++) {
+                Student diningStudent = table.getCurrentPlayer().getSchoolBoard().getDiningRoom().removeStudent(ColorS.parseToColor(message.getDiningStudents().get(i)));
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(diningStudent);
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(entranceStudents.get(i));
+                table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(entranceStudents.get(i));
+            }
+            pay(message.getCharacter());
         }catch(InvalidCharacterException e)
         {
             //TODO
             System.out.println(e.getMessage());
-        } catch (CardNotFoundException e) {
+        } catch (InvalidEntranceStudentException e) {
             e.printStackTrace();
-        } catch (InvalidStudentException e) {
-            e.printStackTrace();
-        } catch (StudentIndexOutOfBoundsException e) {
-            e.printStackTrace();
+        } catch (NotEnoughCoinsException ex) {
+            ex.printStackTrace();
+        } catch (ColorNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (InvalidColorsException ex) {
+            ex.printStackTrace();
         }
-
-        }catch(InvalidCharacterException e)
-        {
-            //TODO
-            System.out.println(e.getMessage());
-        }
-    }*/
+    }
 
     public void payCharacter11(PayCharacter11Message message, String username){
         try {
-            table.validCharacter(11);
-
-        }catch(InvalidCharacterException e)
+            table.validCharacter(message.getCharacter());
+            table.getCardWithStudents(message.getCharacter()).validStudent(message.getStudentId()-1);
+            Student student = table.getCardWithStudents(message.getCharacter()).getStudents().remove(message.getStudentId()-1);
+            table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(student);
+            table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
+            pay(message.getCharacter());
+        }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
             //TODO
             System.out.println(e.getMessage());
+        } catch (CardNotFoundException | InvalidCardStudentException ex) {
+            ex.printStackTrace();
         }
     }
 
     public void payCharacter12(PayCharacter12Message message, String username){
         try {
-            table.validCharacter(12);
+            table.validCharacter(message.getCharacter());
+            ColorS color = ColorS.parseToColor(message.getColor());
+            for (Player p : table.getPlayers()) {
+                if (p.getSchoolBoard().getDiningRoom().getLine(color).size() < 3) {
+                    int n = p.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color);
+                    for (int i = 0; i < n; i++) {
+                        table.getBag().addStudent(p.getSchoolBoard().getDiningRoom().removeStudent(color));
+                    }
+                } else {
+                    for (int i = 0; i < 3; i++) {
+                        Student student = p.getSchoolBoard().getDiningRoom().removeStudent(color);
+                        table.getBag().addStudent(student);
+                    }
 
-        }catch(InvalidCharacterException e)
+                }
+            }
+            pay(message.getCharacter());
+        }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
             //TODO
             System.out.println(e.getMessage());
+        } catch (ColorNotFoundException ex) {
+            ex.printStackTrace();
         }
+    }
+
+    private void pay(int character) {
+        int cost = table.getCharacters().get(character);
+        table.pay(table.getCurrentPlayer(), cost);
+        table.incrementCardCost(character);
     }
 }

@@ -1,19 +1,15 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.cards.Assistant;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.enums.Wizards;
 import it.polimi.ingsw.model.islands.Island;
-import it.polimi.ingsw.model.pawns.MotherNature;
 import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Tower;
-import it.polimi.ingsw.network.messages.PlayAssistantMessage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;

@@ -1,108 +1,112 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.CardNotFoundException;
-import it.polimi.ingsw.exceptions.InvalidCharacterException;
-import it.polimi.ingsw.exceptions.ParityException;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.Character;
-import it.polimi.ingsw.model.charactercards.*;
+import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.model.cards.CardWithStudents;
+import it.polimi.ingsw.model.effects.Effect;
+import it.polimi.ingsw.model.effects.InfluenceEffect;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import javax.smartcardio.CardNotPresentException;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
 
 public class TableExpertMode extends Table {
     private final int NUM_OF_CHARACTER_CARDS=12;
-    private final int NUM_OF_CHARACTER_CARDS_2 = 3;
+    private final int NUM_OF_CHARACTER_CHOSEN = 3;
     private final int NUM_OF_COINS = 20;
     private final int NUM_OF_COINS_SETUP = 1;
-    private final int NUM_OF_ENTRY_TILE = 4;
+    private final int MAX_NO_ENTRY_TILES = 4;
 
 
     private int bank;
-    private int numOfEntryTile;
-    private ColorS noInfluenceColor;
+    private int numOfNoEntryTiles;
+
+    private List<Effect> influenceEffects;
 
     private Map<Player, Integer> playerCoins;
-    private Map<Player, Boolean> additionalInfluence;
     private Map<Player, Boolean> professorTie;
 
-    private Map<Island, Boolean> entryTile;
-    private Map<Island, Boolean> countTowers;
-    private ArrayList<Integer> characters = new ArrayList<>();
+    private Map<Island, Boolean> noEntryTiles;
 
-    private List<Card> cards = new ArrayList<>();
+    private Map<Integer, Integer> characters;
+    private List<CardWithStudents> cards;
 
     public TableExpertMode(List<Player> players) {
         super(players);
 
+        this.influenceEffects = new ArrayList<>();
+
         this.playerCoins = new HashMap<>();
-        this.additionalInfluence = new HashMap<>();
-        this.entryTile = new HashMap<>();
-        this.countTowers = new HashMap<>();
+        this.noEntryTiles = new HashMap<>();
         this.professorTie = new HashMap<>();
 
         for (int i = 0; i < this.getPlayers().length; i++){
             this.playerCoins.put(this.getPlayers()[i], NUM_OF_COINS_SETUP);
-            this.additionalInfluence.put(this.getPlayers()[i], false);
             this.professorTie.put(this.getPlayers()[i], false);
         }
 
         for (int i = 0; i < this.getIslands().size(); i++){
-            this.entryTile.put(this.getIslands().get(i), false);
-            this.countTowers.put(this.getIslands().get(i), true);
+            this.noEntryTiles.put(this.getIslands().get(i), false);
         }
 
-
-        this.numOfEntryTile = NUM_OF_ENTRY_TILE;
         this.bank = NUM_OF_COINS - players.size() * NUM_OF_COINS_SETUP;
-        this.setupCharacterCards(); //todo:fare implementazione
+        this.setupCharacterCards();
 
     }
 
     private void setupCharacterCards() {
-        while (characters.size() < 3)
+        JSONParser jsonParser = new JSONParser();
+        try (FileReader reader = new FileReader("assets/characters.json"))
         {
-            int random = new Random().nextInt(NUM_OF_CHARACTER_CARDS);
-            if(!characters.contains(random))
-            {
-                characters.add(random);
-                setup(random);
-            }
-        }
+            Object obj = jsonParser.parse(reader);
+            JSONArray cards = (JSONArray) obj;
 
+            this.characters = new HashMap<>();
+            this.cards = new ArrayList<>();
+            while (characters.size() < NUM_OF_CHARACTER_CHOSEN)
+            {
+                int character = new Random().nextInt(NUM_OF_CHARACTER_CARDS);
+                if(!characters.containsKey(character)) {
+                    for (Object o : cards){
+                        JSONObject card =  (JSONObject) o;
+                        if ((int)card.get("id")==character){
+                            int cost = (int)card.get("cost");
+                            this.characters.put(character, cost);
+                            setupStudentsOnCard(character, (int)card.get("studentsOnCard"));
+                        }
+                    }
+
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void setup(int card)
+    private void setupStudentsOnCard(int card, int numOfStudents)
     {
         List<Student> students = new ArrayList<>();
-
-        if(card == 1 || card == 11)
-        {
-            for(int i = 0; i < 4; i++)
-            {
-                students.add(this.getBag().drawStudent());
-            }
+        for(int i = 0; i < numOfStudents; i++){
+            students.add(this.getBag().drawStudent());
         }
-
-        if(card == 7)
-        {
-            for(int i = 0; i < 6; i++)
-            {
-                students.add(this.getBag().drawStudent());
-            }
-        }
-
-        cards.add(new Card(students, card));
-
+        cards.add(new CardWithStudents(students, card));
     }
 
-    public Card getCard(int character) throws CardNotFoundException {
-        for(Card card : cards)
+    public CardWithStudents getCardWithStudents(int character) throws CardNotFoundException {
+        for(CardWithStudents card : cards)
         {
             if(card.getCharacter() == character) {
                 return card;
@@ -135,38 +139,20 @@ public class TableExpertMode extends Table {
         deposit(coinsToPay);
     }
 
-    public void setAdditionalInfluence(Player player, boolean additionalInfluence){
-        this.additionalInfluence.put(player, additionalInfluence);
+    public void incrementCardCost(int character){
+        int cost = this.characters.get(character);
+        this.characters.put(character, cost + 1);
     }
 
     public int getPlayerCoins(Player player){return this.playerCoins.get(player);}
 
-    public boolean isAdditionalInfluence(Player player){
-        return this.additionalInfluence.get(player);
+    public void setNoEntryTile(Island island, boolean entryTile) {
+        this.noEntryTiles.put(island, entryTile);
+        this.numOfNoEntryTiles++;
     }
 
-    public void setEntryTile(Island island, boolean entryTile) {
-        this.entryTile.put(island, entryTile);
-    }
-
-    public void setCountTowers(Island island, boolean countTowers) {
-        this.countTowers.put(island, countTowers);
-    }
-
-    public boolean isEntryTile(Island island){
-        return this.entryTile.get(island);
-    }
-
-    public boolean isCountTowers(Island island){
-        return this.countTowers.get(island);
-    }
-
-    public void setNoInfluenceColor(ColorS noInfluenceColor) {
-        this.noInfluenceColor = noInfluenceColor;
-    }
-
-    public ColorS getNoInfluenceColor() {
-        return this.noInfluenceColor;
+    public boolean isNoEntryTile(Island island){
+        return this.noEntryTiles.get(island);
     }
 
     public void setProfessorTie(Player player, boolean professorTie) {
@@ -177,30 +163,24 @@ public class TableExpertMode extends Table {
         return this.professorTie.get(player);
     }
 
-    public void decrementEntryTile(){
-        this.numOfEntryTile--;
+    public void addInfluenceEffect(Effect effect){
+        this.influenceEffects.add(effect);
     }
 
-    public int getNumOfEntryTile() {
-        return this.numOfEntryTile;
-    }
-
-    public void resetCardsEffect() {
-        this.noInfluenceColor = null;
-        for (int i = 0; i < this.getIslands().size(); i++) {
-            this.setCountTowers(this.getIslands().get(i), true);
-        }
+    public void resetEffects() {
+        this.influenceEffects.clear();
         for (int i = 0; i < this.getPlayers().length; i++){
-            this.setAdditionalInfluence(this.getPlayers()[i], false);
             this.setProfessorTie(this.getPlayers()[i], false);
         }
     }
 
+    //FIXME: separare gli effetti
+
     @Override
     public Player getSupremacy (Island island)throws ParityException {
-        if (this.isEntryTile(island)){
-            this.setEntryTile(island, false);
-            this.numOfEntryTile++;
+        if (this.isNoEntryTile(island)){
+            this.setNoEntryTile(island, false);
+            this.numOfNoEntryTiles--;
             return island.getTower().getOwner();
         }
         else{
@@ -209,18 +189,11 @@ public class TableExpertMode extends Table {
     }
 
     @Override
-    public int getInfluence(Island island, Player player) {
-        int influence = 0;
-        for (ColorS c : ColorS.values()){
-            if (c != noInfluenceColor && this.getProfessor(c).getOwner()==player){
-                influence += island.numStudent(c);
-            }
-        }
-        if (island.getTower() != null && player.equals(island.getTower().getOwner()) && countTowers.get(island)){
-            influence += island.getNumOfTowers();
-        }
-        if (this.isAdditionalInfluence(player)){
-            influence += 2;
+    public int getInfluence(Island island, Player player){
+        int influence = super.getInfluence(island, player);
+        for (Effect e : this.influenceEffects){
+            InfluenceEffect influenceEffect = (InfluenceEffect) e.getTypeOfEffect();
+            influence = influenceEffect.influenceEffect(influence, island, player);
         }
         return influence;
     }
@@ -239,17 +212,32 @@ public class TableExpertMode extends Table {
         }
     }
 
-    public ArrayList<Integer> getCharacters() {
-        return characters;
+    public Map<Integer, Integer> getCharacters() {
+        return this.characters;
     }
 
-    //todo: implementare metodo per aggiungere un coin ai player che hanno occupato le posizioni di schoolboard
-
-    public void validCharacter(int id) throws InvalidCharacterException
-    {
-        if(!this.getCharacters().contains(id))
-        {
+    public void validCharacter(int id) throws InvalidCharacterException, NotEnoughCoinsException {
+        //todo: solo se non si è giocato nessun altro character nello stesso round (penso nella remote view)
+        if(this.playerCoins.get(getCurrentPlayer()) < this.characters.get(id)){
+            throw new NotEnoughCoinsException("You don't have enough coins");
+        }
+        if(!this.characters.containsKey(id)) {
             throw new InvalidCharacterException("Invalid Character");
+        }
+    }
+
+    public void validAdditionalMovement(int movement) throws InvalidAdditionalMovementException {
+        if (movement > 2 || movement <= 0){
+            throw new InvalidAdditionalMovementException("Invalid additional movement");
+        }
+    }
+
+    public void validNoEntryTile(Island island) throws TooManyNoEntryTileException, InvalidNoEntryTileException {
+        if (this.numOfNoEntryTiles >= MAX_NO_ENTRY_TILES){
+            throw new TooManyNoEntryTileException("No more no-entry tile placeable");
+        }
+        if (this.noEntryTiles.get(island)){
+            throw new InvalidNoEntryTileException("Invalid no-entry tile position");
         }
     }
 }

@@ -1,0 +1,39 @@
+package it.polimi.ingsw.network.requestMessage;
+
+import it.polimi.ingsw.controller.ControllerExpertMode;
+import it.polimi.ingsw.network.ControllerExecuteExpertMode;
+
+import java.util.*;
+
+public class PayCharacter10Message implements RequestMessageExpertMode, ControllerExecuteExpertMode {
+
+    private int character;
+    private List<String> diningStudents;
+    private List<Integer>  entranceStudents;
+
+    //TODO: implementare sulla view un metodo che verifichi che le due liste siano della stessa lunghezza
+    // e che non si ripetano gli indici della stessa lista
+    public PayCharacter10Message(List<String> diningStudents, List<Integer> entranceStudents) {
+        this.character = 10;
+        this.diningStudents = diningStudents;
+        this.entranceStudents = entranceStudents;
+    }
+
+    public int getCharacter() {
+        return character;
+    }
+
+    public List<String> getDiningStudents() {
+        return diningStudents;
+    }
+
+    public List<Integer> getEntranceStudents() {
+        return entranceStudents;
+    }
+
+
+    @Override
+    public void execute(ControllerExpertMode controller, String username) {
+        controller.payCharacter10(this, username);
+    }
+}

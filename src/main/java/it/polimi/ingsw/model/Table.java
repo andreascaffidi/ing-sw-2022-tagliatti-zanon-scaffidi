@@ -556,17 +556,13 @@ public class Table {
         }
     }
 
-    public void playAssistant(Assistant card) throws AssistantNotPlayableException{
+    public void playAssistant(Assistant card) throws AssistantNotPlayableException, AssistantNotFoundException {
         int value = card.getValue();
         List<Assistant> playable = new ArrayList<>(getCurrentPlayer().getAssistantDeck());
         for(Player player : players) {
             if (!player.getDiscardPile().isEmpty()) {
                 int valueToRemove = player.getDiscardPile().peek().getValue();
-                try {
-                    playable.remove(getCurrentPlayer().getAssistant(valueToRemove));
-                } catch (AssistantNotFoundException e) {
-                    //do nothing
-                }
+                playable.remove(getCurrentPlayer().getAssistant(valueToRemove));
             }
         }
         if(playable.contains(card) || playable.size() == 0){

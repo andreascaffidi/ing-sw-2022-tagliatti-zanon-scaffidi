@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TableExpertModeTest {
-
+/*
     private TableExpertMode table2p;
     private TableExpertMode table3p;
     private TableExpertMode table4p;
@@ -201,5 +201,5 @@ class TableExpertModeTest {
         table2p.setProfessorOwner(ColorS.YELLOW, table2p.getPlayers()[1]);
         assertEquals(two.get(1), table2p.getProfessorOwner(ColorS.YELLOW));
     }
-
+*/
 }

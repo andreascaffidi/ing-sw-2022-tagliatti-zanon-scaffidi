@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.messages;
 
+import it.polimi.ingsw.network.requestMessage.PlayAssistantMessage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

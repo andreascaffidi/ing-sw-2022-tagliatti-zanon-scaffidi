@@ -1,4 +1,6 @@
 package it.polimi.ingsw.model.schoolBoard;
+import it.polimi.ingsw.exceptions.ColorNotFoundException;
+import it.polimi.ingsw.exceptions.InvalidColorsException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 
@@ -77,5 +79,17 @@ public class DiningRoom {
 
     public Student removeStudent(ColorS color){
        return this.getLine(color).remove(this.getLine(color).size()-1);
+    }
+
+    public void validColors(List<String> colors) throws InvalidColorsException, ColorNotFoundException {
+        int minStudent = 1;
+        if (colors.size() == 2 && ColorS.parseToColor(colors.get(0)) == ColorS.parseToColor(colors.get(1))){
+            minStudent = 2;
+        }
+        for (String color : colors) {
+            if (this.getLine(ColorS.parseToColor(color)).size() < minStudent) {
+                throw new InvalidColorsException("Invalid colors");
+            }
+        }
     }
 }
