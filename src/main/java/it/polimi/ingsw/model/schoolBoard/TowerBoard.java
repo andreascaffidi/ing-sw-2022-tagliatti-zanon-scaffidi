@@ -2,10 +2,10 @@ package it.polimi.ingsw.model.schoolBoard;
 import it.polimi.ingsw.model.pawns.Tower;
 import java.util.*;
 
-public class Towers {
+public class TowerBoard {
     private List<Tower> towers;
 
-    public Towers(){
+    public TowerBoard(){
         towers = new ArrayList<Tower>();
     }
 

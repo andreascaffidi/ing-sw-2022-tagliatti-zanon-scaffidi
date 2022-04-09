@@ -205,7 +205,7 @@ public class Table {
             //piazzo le torri solo se i giocatori sono 3 o meno oppure 4 ma in questo caso solo ai primi 2 giocatori
             if(this.numberOfPlayers <= 3 || (this.numberOfPlayers == 4 && i < 2)){
                 for(int j=0;j<NUM_OF_TOWER_AT_SETUP;j++){
-                    schoolBoard.getTowers().addTower(new Tower(player.getTowerColor(),player));
+                    schoolBoard.getTowerBoard().addTower(new Tower(player.getTowerColor(),player));
                 }
             }
             this.boards.add(schoolBoard);
@@ -373,7 +373,7 @@ public class Table {
         Player winner = null;
         for (int i = 0; i < this.numberOfPlayers; i++){
             if (this.numberOfPlayers < 4 || (this.numberOfPlayers == 4 && i < 2)) {
-                numOfTower = this.players[i].getSchoolBoard().getTowers().getTowers().size();
+                numOfTower = this.players[i].getSchoolBoard().getTowerBoard().getTowers().size();
                 if (numOfTower < minTower) {
                     minTower = numOfTower;
                     winner = this.players[i];
@@ -507,10 +507,10 @@ public class Table {
             Player newIslandKing = this.getSupremacy(island);
             if (island.getTower() == null || !newIslandKing.equals(island.getTower().getOwner())){
                 if (island.getTower() != null){
-                    island.getTower().getOwner().getSchoolBoard().getTowers().addTower(island.getTower());
+                    island.getTower().getOwner().getSchoolBoard().getTowerBoard().addTower(island.getTower());
                 }
-                island.setTower(newIslandKing.getSchoolBoard().getTowers().removeLastTower());
-                if (newIslandKing.getSchoolBoard().getTowers().getTowers().size() == 0){
+                island.setTower(newIslandKing.getSchoolBoard().getTowerBoard().removeLastTower());
+                if (newIslandKing.getSchoolBoard().getTowerBoard().getTowers().size() == 0){
                     throw new EndGameException("Last tower placed");
                 }
             }

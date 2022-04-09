@@ -203,30 +203,30 @@ class TableTest {
 
         //test correct number of towers on each player's TowersBoard and test the same tower color for each tower (for each type of table)
         for (int i=0; i<table2p.getPlayers().length; i++){
-            assertEquals(8, table2p.getPlayers()[i].getSchoolBoard().getTowers().getTowers().size());
+            assertEquals(8, table2p.getPlayers()[i].getSchoolBoard().getTowerBoard().getTowers().size());
             for (int j=0; j<8; j++){
-                assertEquals(table2p.getPlayers()[i].getTowerColor(), table2p.getPlayers()[i].getSchoolBoard().getTowers().getTowers().get(j).getColor());
+                assertEquals(table2p.getPlayers()[i].getTowerColor(), table2p.getPlayers()[i].getSchoolBoard().getTowerBoard().getTowers().get(j).getColor());
             }
         }
 
         for (int i=0; i<table3p.getPlayers().length; i++){
-            assertEquals(6, table3p.getPlayers()[i].getSchoolBoard().getTowers().getTowers().size());
+            assertEquals(6, table3p.getPlayers()[i].getSchoolBoard().getTowerBoard().getTowers().size());
             for (int j=0; j<6; j++){
-                assertEquals(table3p.getPlayers()[i].getTowerColor(), table3p.getPlayers()[i].getSchoolBoard().getTowers().getTowers().get(j).getColor());
+                assertEquals(table3p.getPlayers()[i].getTowerColor(), table3p.getPlayers()[i].getSchoolBoard().getTowerBoard().getTowers().get(j).getColor());
             }
         }
 
         //test case 4 players is different
         for (int i=0; i<table4p.getPlayers().length; i++){
             if (i<2) {
-                assertEquals(8, table4p.getPlayers()[i].getSchoolBoard().getTowers().getTowers().size());
+                assertEquals(8, table4p.getPlayers()[i].getSchoolBoard().getTowerBoard().getTowers().size());
                 for (int j=0; j<8; j++){
-                    assertEquals(table4p.getPlayers()[i].getTowerColor(), table4p.getPlayers()[i].getSchoolBoard().getTowers().getTowers().get(j).getColor());
+                    assertEquals(table4p.getPlayers()[i].getTowerColor(), table4p.getPlayers()[i].getSchoolBoard().getTowerBoard().getTowers().get(j).getColor());
                 }
             }
             else
             {
-                assertEquals(0, table4p.getPlayers()[i].getSchoolBoard().getTowers().getTowers().size());
+                assertEquals(0, table4p.getPlayers()[i].getSchoolBoard().getTowerBoard().getTowers().size());
             }
         }
     }
@@ -409,9 +409,9 @@ class TableTest {
 
     @Test
     void getPlayerWithMinTowers() throws ParityException {
-        table2p.getPlayers()[0].getSchoolBoard().getTowers().getTowers().remove(0);
+        table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().getTowers().remove(0);
         assertEquals(two.get(0), table2p.getPlayerWithMinTowers());
-        table2p.getPlayers()[1].getSchoolBoard().getTowers().getTowers().remove(0);
+        table2p.getPlayers()[1].getSchoolBoard().getTowerBoard().getTowers().remove(0);
         Exception exception = assertThrows(ParityException.class, () -> table2p.getPlayerWithMinTowers());
         assertEquals("there's a parity", exception.getMessage());
     }
@@ -510,38 +510,38 @@ class TableTest {
 
     @Test
     void processIsland(){
-        table2p.getIsland(0).setTower(table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower());
-        table2p.getIsland(1).setTower(table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower());
-        table2p.getIsland(2).setTower(table2p.getPlayers()[1].getSchoolBoard().getTowers().removeLastTower());
+        table2p.getIsland(0).setTower(table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower());
+        table2p.getIsland(1).setTower(table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower());
+        table2p.getIsland(2).setTower(table2p.getPlayers()[1].getSchoolBoard().getTowerBoard().removeLastTower());
         table2p.getIsland(2).addStudents(new ArrayList<>(Arrays.asList(new Student(ColorS.BLUE), new Student(ColorS.BLUE))));
         table2p.setProfessorOwner(ColorS.BLUE, table2p.getPlayers()[0]);
         table2p.processIsland(table2p.getIsland(2));
         assertEquals(10, table2p.getIslands().size());
 
         //test end game case: player with no towers (tbd)
-        table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower();
-        table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower();
-        table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower();
-        table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower();
+        table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower();
+        table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower();
+        table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower();
+        table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower();
         table2p.getIsland(1).addStudents(new ArrayList<>(Arrays.asList(new Student(ColorS.BLUE), new Student(ColorS.BLUE))));
         table2p.processIsland(table2p.getIsland(1));
-        System.out.println(table2p.getPlayers()[0].getSchoolBoard().getTowers().getTowers().size());
-        assertTrue(table2p.getPlayers()[0].getSchoolBoard().getTowers().getTowers().isEmpty());
+        System.out.println(table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().getTowers().size());
+        assertTrue(table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().getTowers().isEmpty());
 
 
         //test end game case: 3 islands remained (tbd)
-        table3p.getIsland(0).setTower(table3p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower());
-        table3p.getIsland(1).setTower(table3p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower());
-        table3p.getIsland(2).setTower(table3p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower());
-        table3p.getIsland(3).setTower(table3p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower());
-        table3p.getIsland(4).setTower(table3p.getPlayers()[1].getSchoolBoard().getTowers().removeLastTower());
-        table3p.getIsland(5).setTower(table3p.getPlayers()[1].getSchoolBoard().getTowers().removeLastTower());
-        table3p.getIsland(6).setTower(table3p.getPlayers()[1].getSchoolBoard().getTowers().removeLastTower());
-        table3p.getIsland(7).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowers().removeLastTower());
-        table3p.getIsland(8).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowers().removeLastTower());
-        table3p.getIsland(9).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowers().removeLastTower());
-        table3p.getIsland(10).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowers().removeLastTower());
-        table3p.getIsland(11).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowers().removeLastTower());
+        table3p.getIsland(0).setTower(table3p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower());
+        table3p.getIsland(1).setTower(table3p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower());
+        table3p.getIsland(2).setTower(table3p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower());
+        table3p.getIsland(3).setTower(table3p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower());
+        table3p.getIsland(4).setTower(table3p.getPlayers()[1].getSchoolBoard().getTowerBoard().removeLastTower());
+        table3p.getIsland(5).setTower(table3p.getPlayers()[1].getSchoolBoard().getTowerBoard().removeLastTower());
+        table3p.getIsland(6).setTower(table3p.getPlayers()[1].getSchoolBoard().getTowerBoard().removeLastTower());
+        table3p.getIsland(7).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowerBoard().removeLastTower());
+        table3p.getIsland(8).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowerBoard().removeLastTower());
+        table3p.getIsland(9).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowerBoard().removeLastTower());
+        table3p.getIsland(10).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowerBoard().removeLastTower());
+        table3p.getIsland(11).setTower(table3p.getPlayers()[2].getSchoolBoard().getTowerBoard().removeLastTower());
         table3p.processIsland(table3p.getIsland(7));
         table3p.processIsland(table3p.getIsland(4));
         table3p.processIsland(table3p.getIsland(0));
@@ -654,11 +654,11 @@ class TableTest {
     //TODO: implement endgame
     @Test
     void endGame(){
-        table2p.getPlayers()[0].getSchoolBoard().getTowers().removeLastTower();
+        table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower();
         table2p.endGame();
 
         //case of parity
-        table2p.getPlayers()[1].getSchoolBoard().getTowers().removeLastTower();
+        table2p.getPlayers()[1].getSchoolBoard().getTowerBoard().removeLastTower();
         table2p.endGame();
     }
 }

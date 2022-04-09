@@ -1,22 +1,19 @@
 package it.polimi.ingsw.model.schoolBoard;
 
-import it.polimi.ingsw.exceptions.IslandNotValidException;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.islands.Island;
-import it.polimi.ingsw.model.pawns.Tower;
 
 public class SchoolBoard {
     private Player player;
     private Entrance entrance;
     private DiningRoom diningRoom;
     private ProfessorTable professorTable;
-    private Towers towers;
+    private TowerBoard towerBoard;
     public SchoolBoard(Player player){
         this.player = player;
         this.entrance = new Entrance();
         this.diningRoom = new DiningRoom();
         this.professorTable = new ProfessorTable();
-        this.towers = new Towers();
+        this.towerBoard = new TowerBoard();
     }
 
     public Player getPlayer() {
@@ -35,8 +32,8 @@ public class SchoolBoard {
         return professorTable;
     }
 
-    public Towers getTowers() {
-        return towers;
+    public TowerBoard getTowerBoard() {
+        return towerBoard;
     }
 
 

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.schoolBoard;
 
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.pawns.Tower;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +35,6 @@ class SchoolBoardTest {
 
     @Test
     void getTowers() {
-        assertInstanceOf(Towers.class,schoolBoard.getTowers());
+        assertInstanceOf(TowerBoard.class,schoolBoard.getTowerBoard());
     }
 }

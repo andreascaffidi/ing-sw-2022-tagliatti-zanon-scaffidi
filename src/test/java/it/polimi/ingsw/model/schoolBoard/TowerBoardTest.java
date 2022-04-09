@@ -10,38 +10,38 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TowersTest {
+class TowerBoardTest {
 
-    private Towers towers;
+    private TowerBoard towerBoard;
     private List<Tower> towerList;
 
     @BeforeEach
     void init(){
-        towers = new Towers();
+        towerBoard = new TowerBoard();
         Player player = new Player("username");
         towerList = new ArrayList<Tower>(Arrays.asList(new Tower(ColorT.BLACK, player), new Tower(ColorT.BLACK, player)));
     }
 
     @AfterEach
     void tearDown(){
-        towers = null;
+        towerBoard = null;
         towerList = null;
     }
 
     @Test
     void addAndGetTowers() {
         for (Tower t : towerList){
-            towers.addTower(t);
+            towerBoard.addTower(t);
         }
-        assertEquals(towerList, towers.getTowers());
+        assertEquals(towerList, towerBoard.getTowers());
     }
 
     @Test
     void removeLastTower() {
         for (Tower t : towerList){
-            towers.addTower(t);
+            towerBoard.addTower(t);
         }
-        assertEquals(towerList.get(1), towers.removeLastTower());
-        assertFalse(towers.getTowers().contains(towerList.get(1)));
+        assertEquals(towerList.get(1), towerBoard.removeLastTower());
+        assertFalse(towerBoard.getTowers().contains(towerList.get(1)));
     }
 }
