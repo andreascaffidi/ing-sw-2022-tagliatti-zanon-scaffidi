@@ -6,27 +6,32 @@ import it.polimi.ingsw.model.pawns.Student;
 
 import java.util.*;
 
+/**
+ * school board's dining room
+ */
 public class DiningRoom {
-    private List<Student> greenLine;
-    private List<Student> redLine;
-    private List<Student> yellowLine;
-    private List<Student> blueLine;
-    private List<Student> pinkLine;
+    private final List<Student> greenLine;
+    private final List<Student> redLine;
+    private final List<Student> yellowLine;
+    private final List<Student> blueLine;
+    private final List<Student> pinkLine;
 
+    /**
+     * builds dining room
+     */
     public DiningRoom() {
-        this.greenLine = new ArrayList<Student>();
-        this.redLine = new ArrayList<Student>();
-        this.yellowLine = new ArrayList<Student>();
-        this.blueLine = new ArrayList<Student>();
-        this.pinkLine = new ArrayList<Student>();
+        this.greenLine = new ArrayList<>();
+        this.redLine = new ArrayList<>();
+        this.yellowLine = new ArrayList<>();
+        this.blueLine = new ArrayList<>();
+        this.pinkLine = new ArrayList<>();
     }
 
     /**
-     * returns the Line of the given Color
-     * @param color
-     * @return
+     * gets line of the given color
+     * @param color line color
+     * @return line of given color
      */
-
     public List<Student> getLine(ColorS color)
     {
         switch (color) {
@@ -45,42 +50,37 @@ public class DiningRoom {
     }
 
     /**
-     * adds a Student to the chosen line
-     * @param student
+     * adds a student to the dining room
+     * @param student student to add
      */
-
     public void addStudent(Student student){
         this.getLine(student.getColor()).add(student);
     }
 
     /**
-     * returns the number of students for that Color on the line
-     * @param color
-     * @return
+     * gets the number of students on color line
+     * @param color line color
+     * @return number of students on color line
      */
     public int getNumberOfStudentsPerColor(ColorS color){
         return this.getLine(color).size();
     }
 
     /**
-     * delete given Student from the Line
-     * @param s
+     * removes student from the dining room
+     * @param color student color
+     * @return removed student
      */
-
-    public void removeStudent(Student s) {
-       this.getLine(s.getColor()).remove(s);
-    }
-
-    /**
-     * delete a Student from the line of the given Color
-     * @param color
-     * @return
-     */
-
     public Student removeStudent(ColorS color){
        return this.getLine(color).remove(this.getLine(color).size()-1);
     }
 
+    /**
+     * checks colors validity
+     * @param colors colors to check
+     * @throws InvalidColorsException invalid chosen colors
+     * @throws ColorNotFoundException color not allowed
+     */
     public void validColors(List<String> colors) throws InvalidColorsException, ColorNotFoundException {
         int minStudent = 1;
         if (colors.size() == 2 && ColorS.parseToColor(colors.get(0)) == ColorS.parseToColor(colors.get(1))){

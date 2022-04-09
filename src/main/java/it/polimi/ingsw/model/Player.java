@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 import java.util.*;
 
 public class Player {
+
     private String username;
     private List<Assistant> assistantDeck;
     private SchoolBoard schoolBoard;

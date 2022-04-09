@@ -75,15 +75,6 @@ class DiningRoomTest {
     }
 
     @Test
-    void removeStudent() {
-        for (Student s : blueStudents){
-            diningRoom.addStudent(s);
-        }
-        diningRoom.removeStudent(blueStudents.get(0));
-        assertFalse(diningRoom.getLine(ColorS.BLUE).contains(blueStudents.get(0)));
-    }
-
-    @Test
     void removeStudentByColor() {
         for (Student s : yellowStudents) {
             diningRoom.addStudent(s);

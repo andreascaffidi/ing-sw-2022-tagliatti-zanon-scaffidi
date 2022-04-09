@@ -1,41 +1,55 @@
 package it.polimi.ingsw.model.schoolBoard;
 
-import it.polimi.ingsw.model.Player;
-
+/**
+ * school board
+ */
 public class SchoolBoard {
-    private Player player;
-    private Entrance entrance;
-    private DiningRoom diningRoom;
-    private ProfessorTable professorTable;
-    private TowerBoard towerBoard;
-    public SchoolBoard(Player player){
-        this.player = player;
+
+    private final Entrance entrance;
+    private final DiningRoom diningRoom;
+    private final ProfessorTable professorTable;
+    private final TowerBoard towerBoard;
+
+    /**
+     * builds player's school board
+     */
+    public SchoolBoard(){
         this.entrance = new Entrance();
         this.diningRoom = new DiningRoom();
         this.professorTable = new ProfessorTable();
         this.towerBoard = new TowerBoard();
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
+    /**
+     * gets school board entrance
+     * @return school board entrance
+     */
     public Entrance getEntrance() {
         return entrance;
     }
 
+    /**
+     * gets school board dining room
+     * @return school board dining room
+     */
     public DiningRoom getDiningRoom() {
         return diningRoom;
     }
 
+    /**
+     * gets school board professor table
+     * @return school board professor table
+     */
     public ProfessorTable getProfessorTable() {
         return professorTable;
     }
 
+    /**
+     * gets school board tower board
+     * @return school board tower board
+     */
     public TowerBoard getTowerBoard() {
         return towerBoard;
     }
-
-
 
 }

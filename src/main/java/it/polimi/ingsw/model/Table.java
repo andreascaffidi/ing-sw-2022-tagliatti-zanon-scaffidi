@@ -197,7 +197,7 @@ public class Table {
         this.boards = new ArrayList<>();
         for(int i = 0; i < this.numberOfPlayers; i++){
             Player player = this.players[i];
-            SchoolBoard schoolBoard = new SchoolBoard(player);
+            SchoolBoard schoolBoard = new SchoolBoard();
             this.players[i].setSchoolBoard(schoolBoard);
             for(int j=0; j<NUM_OF_STUDENTS_PER_ENTRANCE_TO_DRAW; j++){
                 schoolBoard.getEntrance().addStudent(this.bag.drawStudent());
@@ -553,6 +553,8 @@ public class Table {
         Player oldOwner = this.getProfessorOwner(color);
         if (oldOwner == null || currentPlayerProf > oldOwner.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color)){
             this.getProfessor(color).setOwner(currentPlayer);
+            this.currentPlayer.getSchoolBoard().getProfessorTable().addProfessor(this.getProfessor(color));
+            //TODO: implementare aggiunta e rimozione dei professori dal professor table
         }
     }
 

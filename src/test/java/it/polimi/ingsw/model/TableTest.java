@@ -175,17 +175,14 @@ class TableTest {
         //test SchoolBoard created for each player (for each type of table)
         for (int i=0; i<table2p.getPlayers().length; i++){
             assertNotNull(table2p.getPlayers()[i].getSchoolBoard());
-            assertEquals(two.get(i), table2p.getPlayers()[i].getSchoolBoard().getPlayer());
         }
 
         for (int i=0; i<table3p.getPlayers().length; i++){
             assertNotNull(table3p.getPlayers()[i].getSchoolBoard());
-            assertEquals(three.get(i), table3p.getPlayers()[i].getSchoolBoard().getPlayer());
         }
 
         for (int i=0; i<table4p.getPlayers().length; i++){
             assertNotNull(table4p.getPlayers()[i].getSchoolBoard());
-            assertEquals(four.get(i), table4p.getPlayers()[i].getSchoolBoard().getPlayer());
         }
 
         //test number of students on each player's entrance (for each type of table)
