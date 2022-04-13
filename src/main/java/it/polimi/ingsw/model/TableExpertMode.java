@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.cards.CardWithStudents;
 import it.polimi.ingsw.model.effects.Effect;
 import it.polimi.ingsw.model.effects.InfluenceEffect;
+import it.polimi.ingsw.model.effects.ProfessorOwnerEffect;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
@@ -30,10 +31,9 @@ public class TableExpertMode extends Table {
     private int bank;
     private int numOfNoEntryTiles;
 
-    private List<Effect> influenceEffects;
+    private Effect currentEffect;
 
     private Map<Player, Integer> playerCoins;
-    private Map<Player, Boolean> professorTie;
 
     private Map<Island, Boolean> noEntryTiles;
 
@@ -43,15 +43,11 @@ public class TableExpertMode extends Table {
     public TableExpertMode(List<Player> players) {
         super(players);
 
-        this.influenceEffects = new ArrayList<>();
-
         this.playerCoins = new HashMap<>();
         this.noEntryTiles = new HashMap<>();
-        this.professorTie = new HashMap<>();
 
         for (int i = 0; i < this.getPlayers().length; i++){
             this.playerCoins.put(this.getPlayers()[i], NUM_OF_COINS_SETUP);
-            this.professorTie.put(this.getPlayers()[i], false);
         }
 
         for (int i = 0; i < this.getIslands().size(); i++){
@@ -78,10 +74,10 @@ public class TableExpertMode extends Table {
                 if(!characters.containsKey(character)) {
                     for (Object o : cards){
                         JSONObject card =  (JSONObject) o;
-                        if ((int)card.get("id")==character){
-                            int cost = (int)card.get("cost");
+                        if (((Long)card.get("id")).intValue()==character){
+                            int cost = ((Long)card.get("cost")).intValue();
                             this.characters.put(character, cost);
-                            setupStudentsOnCard(character, (int)card.get("studentsOnCard"));
+                            setupStudentsOnCard(character, ((Long)card.get("studentsOnCard")).intValue());
                         }
                     }
 
@@ -139,6 +135,7 @@ public class TableExpertMode extends Table {
         deposit(coinsToPay);
     }
 
+    //TODO: ho scoperto che il costo viene incrementato solo la prima volta
     public void incrementCardCost(int character){
         int cost = this.characters.get(character);
         this.characters.put(character, cost + 1);
@@ -155,27 +152,20 @@ public class TableExpertMode extends Table {
         return this.noEntryTiles.get(island);
     }
 
-    public void setProfessorTie(Player player, boolean professorTie) {
-        this.professorTie.put(player, professorTie);
+    public void setCurrentEffect(Effect effect){
+        this.currentEffect = effect;
     }
 
-    public boolean isProfessorTie(Player player) {
-        return this.professorTie.get(player);
+    public void resetCurrentEffect() {
+        this.currentEffect = null;
     }
 
-    public void addInfluenceEffect(Effect effect){
-        this.influenceEffects.add(effect);
-    }
-
-    public void resetEffects() {
-        this.influenceEffects.clear();
-        for (int i = 0; i < this.getPlayers().length; i++){
-            this.setProfessorTie(this.getPlayers()[i], false);
-        }
-    }
-
-    //FIXME: separare gli effetti
-
+    /**
+     * returns the player who has the greatest influence on the island. If there's a NoEntryTile, returns the old owner of the island
+     * @param island island on which calculate supremacy
+     * @return player with the greatest supremacy or old owner if there's a NoEntryTile
+     * @throws ParityException if there's a parity of the max influence
+     */
     @Override
     public Player getSupremacy (Island island)throws ParityException {
         if (this.isNoEntryTile(island)){
@@ -188,28 +178,41 @@ public class TableExpertMode extends Table {
         }
     }
 
+    /**
+     * creates an IslandGroup from a list of islands: adds all the students, sets the tower, removes the old Islands and changes
+     * all the Islands IDs. If there's a NoEntryTile on an island to merge, adds the NoEntryTile to the new island group
+     * @param islands : islands to merge
+     */
     @Override
-    public int getInfluence(Island island, Player player){
+    public void newIslandGroup(List<Island> islands){
+        super.newIslandGroup(islands);
+        int idMin = islands.stream().map(Island::getId).reduce(12, (id1, id2) -> id1 < id2 ? id1 : id2);
+        for (Island i : islands){
+            if (noEntryTiles.get(i)){
+                this.setNoEntryTile(this.getIsland(idMin), true);
+                this.setNoEntryTile(i, false);
+            }
+        }
+    }
+
+    @Override
+    protected int getInfluence(Island island, Player player){
         int influence = super.getInfluence(island, player);
-        for (Effect e : this.influenceEffects){
-            InfluenceEffect influenceEffect = (InfluenceEffect) e.getTypeOfEffect();
+        if (this.currentEffect != null){
+            InfluenceEffect influenceEffect = (InfluenceEffect) this.currentEffect.getTypeOfEffect();
             influence = influenceEffect.influenceEffect(influence, island, player);
         }
         return influence;
     }
 
     @Override
-    public void setProfessorOwner(ColorS color, Player currentPlayer){
-        if (isProfessorTie(currentPlayer)) {
-            int currentPlayerProf = currentPlayer.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color);
-            Player oldOwner = this.getProfessorOwner(color);
-            if (oldOwner == null || currentPlayerProf >= oldOwner.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color)) {
-                this.getProfessor(color).setOwner(currentPlayer);
-            }
+    protected int getNumberOfStudents(ColorS color, Player currentPlayer){
+        int number = super.getNumberOfStudents(color, currentPlayer);
+        if (this.currentEffect != null){
+            ProfessorOwnerEffect professorOwnerEffect = (ProfessorOwnerEffect) this.currentEffect.getTypeOfEffect();
+            number = professorOwnerEffect.professorOwnerEffect(number, color, currentPlayer);
         }
-        else {
-            super.setProfessorOwner(color, currentPlayer);
-        }
+        return number;
     }
 
     public Map<Integer, Integer> getCharacters() {
@@ -218,11 +221,11 @@ public class TableExpertMode extends Table {
 
     public void validCharacter(int id) throws InvalidCharacterException, NotEnoughCoinsException {
         //todo: solo se non si è giocato nessun altro character nello stesso round (penso nella remote view)
-        if(this.playerCoins.get(getCurrentPlayer()) < this.characters.get(id)){
-            throw new NotEnoughCoinsException("You don't have enough coins");
-        }
         if(!this.characters.containsKey(id)) {
             throw new InvalidCharacterException("Invalid Character");
+        }
+        if(this.playerCoins.get(getCurrentPlayer()) < this.characters.get(id)){
+            throw new NotEnoughCoinsException("You don't have enough coins");
         }
     }
 

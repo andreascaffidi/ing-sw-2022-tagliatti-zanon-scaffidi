@@ -287,7 +287,7 @@ public class Table {
     //potrebbe essere metodo private
     /**
      * creates an IslandGroup from a list of islands: adds all the students, sets the tower, removes the old Islands and changes
-     * all the Islands ids.
+     * all the Islands IDs.
      * @param islands : islands to merge
      */
     public void newIslandGroup(List<Island> islands){
@@ -549,11 +549,15 @@ public class Table {
 
     //metodo chiamato ogni volta che si sposta uno studente sulla propria sala
     public void setProfessorOwner(ColorS color, Player currentPlayer){
-        int currentPlayerProf = currentPlayer.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color);
+        int currentPlayerProf = getNumberOfStudents(color, currentPlayer);
         Player oldOwner = this.getProfessorOwner(color);
         if (oldOwner == null || currentPlayerProf > oldOwner.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color)){
             this.getProfessor(color).setOwner(currentPlayer);
         }
+    }
+
+    protected int getNumberOfStudents(ColorS color, Player currentPlayer){
+        return currentPlayer.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color);
     }
 
     public void playAssistant(Assistant card) throws AssistantNotPlayableException, AssistantNotFoundException {

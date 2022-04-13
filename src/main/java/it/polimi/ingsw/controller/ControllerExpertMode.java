@@ -3,10 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
-import it.polimi.ingsw.model.effects.Effect;
-import it.polimi.ingsw.model.effects.CountTowersEffect;
-import it.polimi.ingsw.model.effects.AdditionalInfluenceEffect;
-import it.polimi.ingsw.model.effects.NoInfluenceColorEffect;
+import it.polimi.ingsw.model.effects.*;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
@@ -42,11 +39,22 @@ public class ControllerExpertMode extends Controller{
     }
 
     @Override
+    public void chooseCloud(ChooseCloudMessage message, String username){
+        super.chooseCloud(message, username);
+        table.resetCurrentEffect();
+    }
+
+    @Override
     public void moveStudentToDining(MoveStudentMessage message, String username){
-        ColorS color = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(message.getStudentIndex()-1).getColor();
-        super.moveStudentToDining(message, username);
-        if (table.getCurrentPlayer().getSchoolBoard().getDiningRoom().getLine(color).size() % 3 == 0){
-            table.addCoins(table.getCurrentPlayer(), 1);
+        try {
+            ColorS color = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(message.getStudentIndex()-1).getColor();
+            super.moveStudentToDining(message, username);
+            if (table.getCurrentPlayer().getSchoolBoard().getDiningRoom().getLine(color).size() % 3 == 0){
+                table.addCoins(table.getCurrentPlayer(), 1);
+            }
+        } catch (IndexOutOfBoundsException e){
+            //TODO:
+            System.out.println("StudentIndexOutOfBoundsException");
         }
     }
 
@@ -88,7 +96,7 @@ public class ControllerExpertMode extends Controller{
     public void payCharacter2(PayCharacter2Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
-            table.setProfessorTie(table.getCurrentPlayer(), true);
+            table.setCurrentEffect(new Effect(new ProfessorTieEffect(table.getCurrentPlayer())));
             pay(message.getCharacter());
         }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
@@ -152,7 +160,7 @@ public class ControllerExpertMode extends Controller{
         try {
             table.validCharacter(message.getCharacter());
             table.validIsland(message.getIslandId()-1);
-            table.addInfluenceEffect(new Effect(new CountTowersEffect(table.getIsland(message.getIslandId()-1))));
+            table.setCurrentEffect(new Effect(new CountTowersEffect(table.getIsland(message.getIslandId()-1))));
             pay(message.getCharacter());
         }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
@@ -207,7 +215,7 @@ public class ControllerExpertMode extends Controller{
     public void payCharacter8(PayCharacter8Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
-            table.addInfluenceEffect(new Effect(new AdditionalInfluenceEffect(table.getCurrentPlayer())));
+            table.setCurrentEffect(new Effect(new AdditionalInfluenceEffect(table.getCurrentPlayer())));
             pay(message.getCharacter());
         }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
@@ -220,7 +228,7 @@ public class ControllerExpertMode extends Controller{
         try {
             table.validCharacter(message.getCharacter());
             ColorS color = ColorS.parseToColor(message.getColor());
-            table.addInfluenceEffect(new Effect(new NoInfluenceColorEffect(color)));
+            table.setCurrentEffect(new Effect(new NoInfluenceColorEffect(color)));
             pay(message.getCharacter());
         }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
@@ -254,6 +262,7 @@ public class ControllerExpertMode extends Controller{
                 table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(diningStudent);
                 table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(entranceStudents.get(i));
                 table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(entranceStudents.get(i));
+                table.setProfessorOwner(entranceStudents.get(i).getColor(), table.getCurrentPlayer());
             }
             pay(message.getCharacter());
         }catch(InvalidCharacterException e)

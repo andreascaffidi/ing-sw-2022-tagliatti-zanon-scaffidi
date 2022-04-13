@@ -19,4 +19,13 @@ class MessageTest {
         Message message = new Message(new PlayAssistantMessage(2), "user");
         assertEquals("user", message.getUsername());
     }
+
+
+    @Test
+    void isExpertMode(){
+        Message message = new Message(new PlayAssistantMessage(2), "user", true);
+        Message message2 = new Message(new PlayAssistantMessage(2), "user");
+        assertTrue(message.isExpertMode());
+        assertFalse(message2.isExpertMode());
+    }
 }

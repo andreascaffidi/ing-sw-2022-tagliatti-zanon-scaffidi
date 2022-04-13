@@ -3,9 +3,10 @@ package it.polimi.ingsw.network.requestMessage;
 import it.polimi.ingsw.controller.ControllerExpertMode;
 import it.polimi.ingsw.network.ControllerExecuteExpertMode;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class PayCharacter10Message implements RequestMessageExpertMode, ControllerExecuteExpertMode {
+public class PayCharacter10Message implements RequestMessage, ControllerExecuteExpertMode, Serializable {
 
     private int character;
     private List<String> diningStudents;
