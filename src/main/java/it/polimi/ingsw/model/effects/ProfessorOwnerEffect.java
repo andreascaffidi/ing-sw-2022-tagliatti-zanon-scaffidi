@@ -4,5 +4,5 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.enums.ColorS;
 
 public interface ProfessorOwnerEffect {
-    void professorOwnerEffect(ColorS color, Player player);
+    int professorOwnerEffect(int students, ColorS color, Player player);
 }

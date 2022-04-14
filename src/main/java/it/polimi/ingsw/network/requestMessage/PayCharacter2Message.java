@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.requestMessage;
 import it.polimi.ingsw.controller.ControllerExpertMode;
 import it.polimi.ingsw.network.ControllerExecuteExpertMode;
 
-public class PayCharacter2Message implements RequestMessageExpertMode, ControllerExecuteExpertMode {
+public class PayCharacter2Message implements RequestMessage, ControllerExecuteExpertMode {
 
     private int character;
 

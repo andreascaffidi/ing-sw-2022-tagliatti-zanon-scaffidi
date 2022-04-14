@@ -3,7 +3,9 @@ package it.polimi.ingsw.network.requestMessage;
 import it.polimi.ingsw.controller.ControllerExpertMode;
 import it.polimi.ingsw.network.ControllerExecuteExpertMode;
 
-public class PayCharacter4Message implements RequestMessageExpertMode, ControllerExecuteExpertMode {
+import java.io.Serializable;
+
+public class PayCharacter4Message implements RequestMessage, ControllerExecuteExpertMode, Serializable {
 
     private int character;
     private int additionalMovement;
