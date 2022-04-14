@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.schoolBoard;
 
+import it.polimi.ingsw.exceptions.ColorNotFoundException;
+import it.polimi.ingsw.exceptions.InvalidCardStudentException;
+import it.polimi.ingsw.exceptions.InvalidColorsException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 import org.junit.jupiter.api.AfterEach;
@@ -19,6 +22,8 @@ class DiningRoomTest {
     private List<Student> greenStudents;
     private List<Student> pinkStudents;
 
+    List<String> col;
+
     @BeforeEach
     void init(){
         diningRoom = new DiningRoom();
@@ -37,7 +42,7 @@ class DiningRoomTest {
 
     @Test
     void getLine() {
-        Exception e = assertThrows(RuntimeException.class,()->diningRoom.getLine(null));
+        Exception e = assertThrows(RuntimeException.class,()-> diningRoom.getLine(null));
         System.out.println(e.getMessage());
     }
 
@@ -81,6 +86,18 @@ class DiningRoomTest {
         }
         diningRoom.removeStudent(ColorS.YELLOW);
         assertFalse(diningRoom.getLine(ColorS.YELLOW).contains(yellowStudents.get(yellowStudents.size()-1)));
+    }
+
+    @Test
+    public void validColors(List<String> colors) throws InvalidColorsException, ColorNotFoundException {
+        String col1 = "yellow";
+        String col2 = "black";
+        col.add(col1);
+        col.add(col2);
+
+        Exception exception = new InvalidColorsException("Invalid Color");
+        exception = assertThrows(InvalidColorsException.class, () -> this.validColors(col));
+        assertEquals("Invalid Color", exception.getMessage());
     }
 
     @AfterEach

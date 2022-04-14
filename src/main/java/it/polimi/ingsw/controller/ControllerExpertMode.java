@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.effects.*;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
+import it.polimi.ingsw.network.ControllerExecute;
 import it.polimi.ingsw.network.ControllerExecuteExpertMode;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.network.requestMessage.*;
@@ -65,7 +66,7 @@ public class ControllerExpertMode extends Controller{
             table.validIsland(message.getIslandId()-1);
             table.getCardWithStudents(message.getCharacter()).validStudent(message.getStudentId()-1);
             Student student = table.getCardWithStudents(message.getCharacter()).getStudents().remove(message.getStudentId()-1);
-            table.getIsland(message.getIslandId()).addStudent(student);
+            table.getIsland(message.getIslandId() - 1).addStudent(student);
             table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
             pay(message.getCharacter());
         }catch(InvalidCharacterException e)
