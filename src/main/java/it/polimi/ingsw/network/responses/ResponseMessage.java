@@ -1,4 +1,10 @@
 package it.polimi.ingsw.network.responses;
 
-public interface ResponseMessage {
+import it.polimi.ingsw.network.client.Client;
+
+import java.io.Serializable;
+
+public interface ResponseMessage extends Serializable {
+    void execute(Client client);
 }
+

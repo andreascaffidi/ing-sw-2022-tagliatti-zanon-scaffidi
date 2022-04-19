@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.schoolBoard;
+import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Professor;
 import java.util.*;
 
@@ -37,5 +38,10 @@ public class ProfessorTable {
      */
     public void removeProfessor(Professor professor){
         professors.remove(professor);
+    }
+
+    public boolean hasProfessor(ColorS noInfluenceColor) {
+        //TODO
+        return true;
     }
 }

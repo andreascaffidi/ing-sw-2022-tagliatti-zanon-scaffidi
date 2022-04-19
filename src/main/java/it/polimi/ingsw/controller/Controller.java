@@ -10,7 +10,6 @@ import it.polimi.ingsw.network.requests.messages.ChooseCloudMessage;
 import it.polimi.ingsw.network.requests.messages.MoveMotherNatureMessage;
 import it.polimi.ingsw.network.requests.messages.MoveStudentMessage;
 import it.polimi.ingsw.network.requests.messages.PlayAssistantMessage;
-import it.polimi.ingsw.network.responses.messages.MoveStudentToIslandErrorMessage;
 import it.polimi.ingsw.network.responses.ResponseMessage;
 import it.polimi.ingsw.view.View;
 
@@ -66,8 +65,8 @@ public class Controller {
             //TODO
             System.out.println("WrongPlayerException");
         } catch (IslandNotValidException e) {
-            ResponseMessage errorMessage = new MoveStudentToIslandErrorMessage(e.getMessage());
-            view.invalidInput(errorMessage);
+            //ResponseMessage errorMessage = new MoveStudentToIslandErrorMessage(e.getMessage());
+            //view.invalidInput(errorMessage);
         } catch (InvalidEntranceStudentException e) {
             //TODO
             System.out.println("StudentIndexOutOfBoundsException");
