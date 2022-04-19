@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.requestMessage;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.network.ControllerExecute;
+import it.polimi.ingsw.view.View;
 
 public class ChooseCloudMessage implements RequestMessage, ControllerExecute {
     private int id;
@@ -14,7 +15,7 @@ public class ChooseCloudMessage implements RequestMessage, ControllerExecute {
         return this.id;
     }
     @Override
-    public void execute(Controller controller, String username) {
-        controller.chooseCloud(this,username);
+    public void execute(Controller controller, String username, View view) {
+        controller.chooseCloud(this, username, view);
     }
 }

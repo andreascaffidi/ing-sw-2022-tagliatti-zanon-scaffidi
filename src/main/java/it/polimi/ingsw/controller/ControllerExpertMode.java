@@ -8,8 +8,9 @@ import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.network.ControllerExecuteExpertMode;
-import it.polimi.ingsw.network.Message;
+import it.polimi.ingsw.network.ControllerMessage;
 import it.polimi.ingsw.network.requestMessage.*;
+import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +28,10 @@ public class ControllerExpertMode extends Controller{
     }
 
     @Override
-    public void update(Message message){
+    public void update(ControllerMessage message){
         if (message.isExpertMode()){
             ControllerExecuteExpertMode controller = (ControllerExecuteExpertMode) message.getRequestMessage();
-            controller.execute(this, message.getUsername());
+            controller.execute(this, message.getUsername(), message.getView());
         }
         else
         {
@@ -39,16 +40,17 @@ public class ControllerExpertMode extends Controller{
     }
 
     @Override
-    public void chooseCloud(ChooseCloudMessage message, String username){
-        super.chooseCloud(message, username);
+    public void chooseCloud(ChooseCloudMessage message, String username, View view){
+        super.chooseCloud(message, username, view);
         table.resetCurrentEffect();
     }
 
+    //FIXME: non funziona l'override
     @Override
-    public void moveStudentToDining(MoveStudentMessage message, String username){
+    public void moveStudentToDining(MoveStudentMessage message, String username, View view){
         try {
             ColorS color = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(message.getStudentIndex()-1).getColor();
-            super.moveStudentToDining(message, username);
+            super.moveStudentToDining(message, username, view);
             if (table.getCurrentPlayer().getSchoolBoard().getDiningRoom().getLine(color).size() % 3 == 0){
                 table.addCoins(table.getCurrentPlayer(), 1);
             }
@@ -58,14 +60,14 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter1(PayCharacter1Message message, String username)
+    public void payCharacter1(PayCharacter1Message message, String username, View view)
     {
         try {
             table.validCharacter(message.getCharacter());
             table.validIsland(message.getIslandId()-1);
             table.getCardWithStudents(message.getCharacter()).validStudent(message.getStudentId()-1);
             Student student = table.getCardWithStudents(message.getCharacter()).getStudents().remove(message.getStudentId()-1);
-            table.getIsland(message.getIslandId()).addStudent(student);
+            table.getIsland(message.getIslandId()-1).addStudent(student);
             table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
             pay(message.getCharacter());
         }catch(InvalidCharacterException e)
@@ -93,7 +95,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter2(PayCharacter2Message message, String username){
+    public void payCharacter2(PayCharacter2Message message, String username, View view){
         try {
             table.validCharacter(message.getCharacter());
             table.setCurrentEffect(new Effect(new ProfessorTieEffect(table.getCurrentPlayer())));
@@ -105,7 +107,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter3(PayCharacter3Message message, String username){
+    public void payCharacter3(PayCharacter3Message message, String username, View view){
         try {
             table.validCharacter(message.getCharacter());
             table.validIsland(message.getIslandId()-1);
@@ -120,7 +122,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter4(PayCharacter4Message message, String username){
+    public void payCharacter4(PayCharacter4Message message, String username, View view){
         try {
             table.validCharacter(message.getCharacter());
             table.validAdditionalMovement(message.getAdditionalMovement());
@@ -135,7 +137,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter5(PayCharacter5Message message, String username){
+    public void payCharacter5(PayCharacter5Message message, String username, View view){
         try {
             table.validCharacter(message.getCharacter());
             table.validIsland(message.getIslandId()-1);
@@ -156,7 +158,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter6(PayCharacter6Message message, String username){
+    public void payCharacter6(PayCharacter6Message message, String username, View view){
         try {
             table.validCharacter(message.getCharacter());
             table.validIsland(message.getIslandId()-1);
@@ -171,7 +173,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter7(PayCharacter7Message message, String username){
+    public void payCharacter7(PayCharacter7Message message, String username, View view){
         try {
             //verify all indexes' validity
             table.validCharacter(message.getCharacter());
@@ -212,7 +214,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter8(PayCharacter8Message message, String username){
+    public void payCharacter8(PayCharacter8Message message, String username, View view){
         try {
             table.validCharacter(message.getCharacter());
             table.setCurrentEffect(new Effect(new AdditionalInfluenceEffect(table.getCurrentPlayer())));
@@ -224,7 +226,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter9(PayCharacter9Message message, String username){
+    public void payCharacter9(PayCharacter9Message message, String username, View view){
         try {
             table.validCharacter(message.getCharacter());
             ColorS color = ColorS.parseToColor(message.getColor());
@@ -239,7 +241,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter10(PayCharacter10Message message, String username){
+    public void payCharacter10(PayCharacter10Message message, String username, View view){
         try {
             //verify all validity
             table.validCharacter(message.getCharacter());
@@ -280,7 +282,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter11(PayCharacter11Message message, String username){
+    public void payCharacter11(PayCharacter11Message message, String username, View view){
         try {
             table.validCharacter(message.getCharacter());
             table.getCardWithStudents(message.getCharacter()).validStudent(message.getStudentId()-1);
@@ -297,7 +299,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter12(PayCharacter12Message message, String username){
+    public void payCharacter12(PayCharacter12Message message, String username, View view){
         try {
             table.validCharacter(message.getCharacter());
             ColorS color = ColorS.parseToColor(message.getColor());

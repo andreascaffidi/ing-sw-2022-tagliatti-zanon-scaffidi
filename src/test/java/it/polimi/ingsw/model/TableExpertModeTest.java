@@ -1,12 +1,15 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.ParityException;
+import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.model.effects.*;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
+import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Tower;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -16,7 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TableExpertModeTest {
-/*
+
     private TableExpertMode table2p;
     private TableExpertMode table3p;
     private TableExpertMode table4p;
@@ -36,9 +39,9 @@ class TableExpertModeTest {
         p7 = new Player("player7", 1);
         p8 = new Player("player8", 2);
         p9 = new Player("player9", 2);
-        two = new ArrayList<Player>(Arrays.asList(p1,p2));
-        three = new ArrayList<Player>(Arrays.asList(p3,p4,p5));
-        four = new ArrayList<Player>(Arrays.asList(p6,p7,p8,p9));
+        two = new ArrayList<>(Arrays.asList(p1,p2));
+        three = new ArrayList<>(Arrays.asList(p3,p4,p5));
+        four = new ArrayList<>(Arrays.asList(p6,p7,p8,p9));
         table2p = new TableExpertMode(two);
         table3p = new TableExpertMode(three);
         table4p = new TableExpertMode(four);
@@ -55,8 +58,39 @@ class TableExpertModeTest {
     }
 
 
-    @Test
+    @RepeatedTest(20)
     void setupCharacterCards() {
+        assertEquals(3, table2p.getCharacters().size());
+        assertEquals(3, table3p.getCharacters().size());
+        assertEquals(3, table4p.getCharacters().size());
+
+        for (int i = 1; i < 13; i++){
+            if(table2p.getCharacters().containsKey(i)){
+                int price = i % 3 == 0 ? 3 : (i % 3);
+                assertEquals(price, table2p.getCharacters().get(i));
+            }
+        }
+    }
+
+    @RepeatedTest(20)
+    void setupStudentsOnCard() throws CardNotFoundException {
+        if(table2p.getCharacters().containsKey(1)){
+            assertEquals(4, table2p.getCardWithStudents(1).getStudents().size());
+        }
+        if(table2p.getCharacters().containsKey(7)){
+            assertEquals(6, table2p.getCardWithStudents(7).getStudents().size());
+        }
+        if(table2p.getCharacters().containsKey(11)){
+            assertEquals(4, table2p.getCardWithStudents(11).getStudents().size());
+        }
+        if(table2p.getCharacters().containsKey(3)){
+            assertThrows(CardNotFoundException.class, () -> table2p.getCardWithStudents(3));
+        }
+    }
+
+    @Test
+    void getCardWithStudent(){
+        assertTrue(true, "tested in other methods");
     }
 
     @Test
@@ -96,48 +130,15 @@ class TableExpertModeTest {
     }
 
     @Test
-    void resetCardsEffect() {
-        table2p.setAdditionalInfluence(two.get(0), true);
-        table2p.setCountTowers(table2p.motherNatureIsland(), false);
-        table2p.setProfessorTie(two.get(1), true);
-        table2p.setNoInfluenceColor(ColorS.BLUE);
-        assertTrue(table2p.isAdditionalInfluence(two.get(0)));
-        assertFalse(table2p.isCountTowers(table2p.motherNatureIsland()));
-        assertTrue(table2p.isProfessorTie(two.get(1)));
-        assertEquals(ColorS.BLUE, table2p.getNoInfluenceColor());
-        table2p.resetCardsEffect();
-        assertFalse(table2p.isAdditionalInfluence(two.get(0)));
-        assertTrue(table2p.isCountTowers(table2p.motherNatureIsland()));
-        assertFalse(table2p.isProfessorTie(two.get(1)));
-        assertNull(table2p.getNoInfluenceColor());
+    void incrementCardCost(){
+        table2p.getCharacters().put(20, 2);
+        table2p.incrementCardCost(20);
+        assertEquals(3, table2p.getCharacters().get(20));
+    }
 
-        table3p.setAdditionalInfluence(three.get(0), true);
-        table3p.setCountTowers(table3p.motherNatureIsland(), false);
-        table3p.setProfessorTie(three.get(2), true);
-        table3p.setNoInfluenceColor(ColorS.YELLOW);
-        assertTrue(table3p.isAdditionalInfluence(three.get(0)));
-        assertFalse(table3p.isCountTowers(table3p.motherNatureIsland()));
-        assertTrue(table3p.isProfessorTie(three.get(2)));
-        assertEquals(ColorS.YELLOW, table3p.getNoInfluenceColor());
-        table3p.resetCardsEffect();
-        assertFalse(table3p.isAdditionalInfluence(three.get(0)));
-        assertTrue(table3p.isCountTowers(table3p.motherNatureIsland()));
-        assertFalse(table3p.isProfessorTie(three.get(2)));
-        assertNull(table3p.getNoInfluenceColor());
-
-        table4p.setAdditionalInfluence(four.get(1), true);
-        table4p.setCountTowers(table4p.motherNatureIsland(), false);
-        table4p.setProfessorTie(four.get(2), true);
-        table4p.setNoInfluenceColor(ColorS.RED);
-        assertTrue(table4p.isAdditionalInfluence(four.get(1)));
-        assertFalse(table4p.isCountTowers(table4p.motherNatureIsland()));
-        assertTrue(table4p.isProfessorTie(four.get(2)));
-        assertEquals(ColorS.RED, table4p.getNoInfluenceColor());
-        table4p.resetCardsEffect();
-        assertFalse(table4p.isAdditionalInfluence(four.get(1)));
-        assertTrue(table4p.isCountTowers(table4p.motherNatureIsland()));
-        assertFalse(table4p.isProfessorTie(four.get(2)));
-        assertNull(table4p.getNoInfluenceColor());
+    @Test
+    void setAndResetCurrentEffect(){
+        assertTrue(true, "tested in other methods");
     }
 
     @Test
@@ -148,26 +149,27 @@ class TableExpertModeTest {
         table2p.motherNatureIsland().addStudent(new Student(ColorS.BLUE));
         table2p.motherNatureIsland().addStudent(new Student(ColorS.BLUE));
         table2p.motherNatureIsland().addStudent(new Student(ColorS.BLUE));
-        table2p.setEntryTile(table2p.motherNatureIsland(), true);
-        table2p.decrementEntryTile();
-        assertEquals(3, table2p.getNumOfEntryTile());
+        table2p.setNoEntryTile(table2p.motherNatureIsland(), true);
+        assertTrue(table2p.isNoEntryTile(table2p.motherNatureIsland()));
         assertEquals(oldKing, table2p.getSupremacy(table2p.motherNatureIsland()));
-        assertEquals(4, table2p.getNumOfEntryTile());
-        assertFalse(table2p.isEntryTile(table2p.motherNatureIsland()));
+        assertFalse(table2p.isNoEntryTile(table2p.motherNatureIsland()));
 
         List<Student> students = new ArrayList<>(Arrays.asList(new Student(ColorS.YELLOW), new Student(ColorS.YELLOW), new Student(ColorS.BLUE)));
 
+        table3p.getPlayers()[0].getSchoolBoard().getProfessorTable().addProfessor(table3p.getProfessor(ColorS.BLUE));
+        table3p.getPlayers()[1].getSchoolBoard().getProfessorTable().addProfessor(table3p.getProfessor(ColorS.YELLOW));
         table3p.getProfessor(ColorS.BLUE).setOwner(three.get(0));
         table3p.getProfessor(ColorS.YELLOW).setOwner(three.get(1));
+
         table3p.motherNatureIsland().addStudents(students);
         assertEquals(three.get(1), table3p.getSupremacy(table3p.motherNatureIsland()));
-        table3p.setAdditionalInfluence(three.get(0), true);
+        table3p.setCurrentEffect(new Effect(new AdditionalInfluenceEffect(three.get(0))));
         assertEquals(three.get(0), table3p.getSupremacy(table3p.motherNatureIsland()));
-        table3p.setAdditionalInfluence(three.get(0), false);
+        table3p.resetCurrentEffect();
         assertEquals(three.get(1), table3p.getSupremacy(table3p.motherNatureIsland()));
-        table3p.setNoInfluenceColor(ColorS.YELLOW);
+        table3p.setCurrentEffect(new Effect(new NoInfluenceColorEffect(ColorS.YELLOW)));
         assertEquals(three.get(0), table3p.getSupremacy(table3p.motherNatureIsland()));
-        table3p.resetCardsEffect();
+        table3p.resetCurrentEffect();
         assertEquals(three.get(1), table3p.getSupremacy(table3p.motherNatureIsland()));
 
         students.add(new Student(ColorS.BLUE));
@@ -178,14 +180,25 @@ class TableExpertModeTest {
         table4p.motherNatureIsland().setTower(new Tower(ColorT.WHITE, four.get(1)));
         Exception exception = assertThrows(ParityException.class, () -> table4p.getSupremacy(table4p.motherNatureIsland()));
         assertEquals("there's a parity", exception.getMessage());
-        table4p.setCountTowers(table4p.motherNatureIsland(), false);
+        table4p.setCurrentEffect(new Effect(new CountTowersEffect(table4p.motherNatureIsland())));
         assertEquals(four.get(0), table4p.getSupremacy(table4p.motherNatureIsland()));
     }
 
+    @Test
+    void newIslandGroup(){
+        table2p.getIsland(2).setTower(new Tower(ColorT.BLACK, two.get(0)));
+        table2p.getIsland(3).setTower(new Tower(ColorT.BLACK, two.get(0)));
+        table2p.setNoEntryTile(table2p.getIsland(3), true);
+        List<Island> islands = new ArrayList<>();
+        islands.add(table2p.getIsland(2));
+        islands.add(table2p.getIsland(3));
+        table2p.newIslandGroup(islands);
+        assertTrue(table2p.isNoEntryTile(table2p.getIsland(2)));
+    }
 
     @Test
     void setProfessorOwner(){
-        table2p.setProfessorTie(two.get(1), true);
+        table2p.setCurrentEffect(new Effect(new ProfessorTieEffect(table2p.getPlayers()[1])));
         table2p.getPlayers()[0].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));
         table2p.getPlayers()[0].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));
         table2p.getPlayers()[0].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));
@@ -201,5 +214,44 @@ class TableExpertModeTest {
         table2p.setProfessorOwner(ColorS.YELLOW, table2p.getPlayers()[1]);
         assertEquals(two.get(1), table2p.getProfessorOwner(ColorS.YELLOW));
     }
-*/
+
+    @Test
+    void invalidCharacter(){
+        for (int i = 1; i < 13; i++){
+            if(!table2p.getCharacters().containsKey(i)){
+                int character = i;
+                assertThrows(InvalidCharacterException.class, () -> table2p.validCharacter(character));
+            }
+        }
+    }
+
+    @Test
+    void notEnoughCoins() throws NotEnoughCoinsException, InvalidCharacterException {
+        table2p.getCharacters().put(13, 20);
+        assertThrows(NotEnoughCoinsException.class, () -> table2p.validCharacter(13));
+        table2p.getCharacters().put(14, 1);
+        table2p.validCharacter(14);
+    }
+
+    @Test
+    void validAdditionalMovement() throws InvalidAdditionalMovementException {
+        table2p.validAdditionalMovement(1);
+        table2p.validAdditionalMovement(2);
+        assertThrows(InvalidAdditionalMovementException.class, () -> table2p.validAdditionalMovement(0));
+        assertThrows(InvalidAdditionalMovementException.class, () -> table2p.validAdditionalMovement(3));
+    }
+
+    @Test
+    void validNoEntryTile() throws InvalidNoEntryTileException, TooManyNoEntryTileException {
+        table2p.validNoEntryTile(table2p.getIsland(1));
+        table2p.setNoEntryTile(table2p.getIsland(1), true);
+        table2p.validNoEntryTile(table2p.getIsland(2));
+        table2p.setNoEntryTile(table2p.getIsland(2), true);
+        table2p.validNoEntryTile(table2p.getIsland(3));
+        table2p.setNoEntryTile(table2p.getIsland(3), true);
+        assertThrows(InvalidNoEntryTileException.class, () -> table2p.validNoEntryTile(table2p.getIsland(3)));
+        table2p.validNoEntryTile(table2p.getIsland(4));
+        table2p.setNoEntryTile(table2p.getIsland(4), true);
+        assertThrows(TooManyNoEntryTileException.class, () -> table2p.validNoEntryTile(table2p.getIsland(5)));
+    }
 }

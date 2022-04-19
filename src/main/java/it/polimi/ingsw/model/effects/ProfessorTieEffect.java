@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.enums.ColorS;
 
 public class ProfessorTieEffect implements TypeOfEffect, ProfessorOwnerEffect {
 
-    private Player effectOwner;
+    private final Player effectOwner;
 
     public ProfessorTieEffect(Player player){
         this.effectOwner = player;

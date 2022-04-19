@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.requestMessage;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.network.ControllerExecute;
+import it.polimi.ingsw.view.View;
 
 public class PlayAssistantMessage implements RequestMessage, ControllerExecute {
     private int value;
@@ -11,8 +12,8 @@ public class PlayAssistantMessage implements RequestMessage, ControllerExecute {
     }
 
     @Override
-    public void execute(Controller controller, String username) {
-        controller.playAssistant(this,username);
+    public void execute(Controller controller, String username, View view) {
+        controller.playAssistant(this,username,view);
     }
 
     public int getValue() {

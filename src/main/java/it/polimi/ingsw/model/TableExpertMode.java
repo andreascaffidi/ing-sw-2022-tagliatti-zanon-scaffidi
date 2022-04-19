@@ -95,10 +95,12 @@ public class TableExpertMode extends Table {
     private void setupStudentsOnCard(int card, int numOfStudents)
     {
         List<Student> students = new ArrayList<>();
-        for(int i = 0; i < numOfStudents; i++){
-            students.add(this.getBag().drawStudent());
+        if (numOfStudents != 0) {
+            for (int i = 0; i < numOfStudents; i++) {
+                students.add(this.getBag().drawStudent());
+            }
+            cards.add(new CardWithStudents(students, card));
         }
-        cards.add(new CardWithStudents(students, card));
     }
 
     public CardWithStudents getCardWithStudents(int character) throws CardNotFoundException {

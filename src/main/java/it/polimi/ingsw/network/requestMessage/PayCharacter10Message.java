@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.requestMessage;
 
 import it.polimi.ingsw.controller.ControllerExpertMode;
 import it.polimi.ingsw.network.ControllerExecuteExpertMode;
+import it.polimi.ingsw.view.View;
 
 import java.io.Serializable;
 import java.util.*;
@@ -34,7 +35,7 @@ public class PayCharacter10Message implements RequestMessage, ControllerExecuteE
 
 
     @Override
-    public void execute(ControllerExpertMode controller, String username) {
-        controller.payCharacter10(this, username);
+    public void execute(ControllerExpertMode controller, String username, View view) {
+        controller.payCharacter10(this, username, view);
     }
 }

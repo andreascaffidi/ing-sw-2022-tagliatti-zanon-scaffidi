@@ -5,11 +5,14 @@ import it.polimi.ingsw.model.Cloud;
 import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.network.ControllerExecute;
-import it.polimi.ingsw.network.Message;
+import it.polimi.ingsw.network.ControllerMessage;
 import it.polimi.ingsw.network.requestMessage.ChooseCloudMessage;
 import it.polimi.ingsw.network.requestMessage.MoveMotherNatureMessage;
 import it.polimi.ingsw.network.requestMessage.MoveStudentMessage;
 import it.polimi.ingsw.network.requestMessage.PlayAssistantMessage;
+import it.polimi.ingsw.network.responseMessage.MoveStudentToIslandErrorMessage;
+import it.polimi.ingsw.network.responseMessage.ResponseMessage;
+import it.polimi.ingsw.view.View;
 
 public class Controller {
 
@@ -21,13 +24,13 @@ public class Controller {
 
 
     //TODO: proibire al metodo di eseguire messaggi per esperti (nella remote view)
-    public void update(Message message){
+    public void update(ControllerMessage message){
         ControllerExecute controller = (ControllerExecute) message.getRequestMessage();
-        controller.execute(this, message.getUsername());
+        controller.execute(this, message.getUsername(), message.getView());
     }
 
 
-    public void playAssistant(PlayAssistantMessage message, String username){
+    public void playAssistant(PlayAssistantMessage message, String username, View view){
         try{
             checkPlayer(username);
             table.playAssistant(table.getCurrentPlayer().getAssistant(message.getValue()));
@@ -50,7 +53,7 @@ public class Controller {
     }
 
 
-    public void moveStudentToIsland(MoveStudentMessage message, String username){
+    public void moveStudentToIsland(MoveStudentMessage message, String username, View view){
         try{
             checkPlayer(username);
             int idIsland = message.getIdIsland()-1;
@@ -63,15 +66,15 @@ public class Controller {
             //TODO
             System.out.println("WrongPlayerException");
         } catch (IslandNotValidException e) {
-            //TODO
-            System.out.println("IslandNotValidException");
+            ResponseMessage errorMessage = new MoveStudentToIslandErrorMessage(e.getMessage());
+            view.invalidInput(errorMessage);
         } catch (InvalidEntranceStudentException e) {
             //TODO
             System.out.println("StudentIndexOutOfBoundsException");
         }
     }
 
-    public void moveStudentToDining(MoveStudentMessage message, String username){
+    public void moveStudentToDining(MoveStudentMessage message, String username, View view){
         try{
             checkPlayer(username);
             int studentIndex = message.getStudentIndex()-1;
@@ -89,7 +92,7 @@ public class Controller {
     }
 
 
-    public void moveMotherNature(MoveMotherNatureMessage message, String username){
+    public void moveMotherNature(MoveMotherNatureMessage message, String username, View view){
         try{
             checkPlayer(username);
             int movement = message.getMovements();
@@ -107,7 +110,7 @@ public class Controller {
 
 
 
-    public void chooseCloud(ChooseCloudMessage message, String username){
+    public void chooseCloud(ChooseCloudMessage message, String username, View view){
         try {
             checkPlayer(username);
             int idCloud = message.getId()-1;

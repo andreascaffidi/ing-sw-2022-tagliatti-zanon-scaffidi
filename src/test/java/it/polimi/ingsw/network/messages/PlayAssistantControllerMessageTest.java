@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PlayAssistantMessageTest {
+class PlayAssistantControllerMessageTest {
 
     @Test
     void execute() {

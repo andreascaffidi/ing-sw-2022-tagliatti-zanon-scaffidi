@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.requestMessage;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.network.ControllerExecute;
+import it.polimi.ingsw.view.View;
 
 public class MoveStudentMessage implements RequestMessage, ControllerExecute {
     String dest;
@@ -21,11 +22,11 @@ public class MoveStudentMessage implements RequestMessage, ControllerExecute {
 
 
     @Override
-    public void execute(Controller controller, String username) {
+    public void execute(Controller controller, String username, View view) {
         if(dest.equals("island")){
-            controller.moveStudentToIsland(this,username);
+            controller.moveStudentToIsland(this,username,view);
         }else{
-            controller.moveStudentToDining(this, username);
+            controller.moveStudentToDining(this, username,view);
         }
     }
 

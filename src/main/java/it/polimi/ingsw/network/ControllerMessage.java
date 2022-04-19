@@ -1,22 +1,26 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.requestMessage.RequestMessage;
+import it.polimi.ingsw.view.View;
 
-public class Message {
+public class ControllerMessage {
 
     private RequestMessage requestMessage;
+    private View view;
     private String username;
     private boolean expertMode;
 
-    public Message(RequestMessage requestMessage, String username) {
+    public ControllerMessage(RequestMessage requestMessage, String username, View view) {
         this.requestMessage = requestMessage;
         this.username = username;
+        this.view = view;
         this.expertMode = false;
     }
 
-    public Message(RequestMessage requestMessage, String username, boolean expertMode) {
+    public ControllerMessage(RequestMessage requestMessage, String username, View view, boolean expertMode) {
         this.requestMessage = requestMessage;
         this.username = username;
+        this.view = view;
         this.expertMode = expertMode;
     }
 
@@ -26,6 +30,10 @@ public class Message {
 
     public String getUsername() {
         return username;
+    }
+
+    public View getView(){
+        return view;
     }
 
     public boolean isExpertMode(){

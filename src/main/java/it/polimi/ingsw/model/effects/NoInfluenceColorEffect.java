@@ -14,6 +14,9 @@ public class NoInfluenceColorEffect implements TypeOfEffect, InfluenceEffect{
 
     @Override
     public int influenceEffect(int influence, Island island, Player player) {
-        return influence - island.numStudent(noInfluenceColor);
+        if(player.getSchoolBoard().getProfessorTable().hasProfessor(noInfluenceColor))
+            return influence - island.numStudent(noInfluenceColor);
+        else
+            return influence;
     }
 }

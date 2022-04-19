@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.requestMessage;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.network.ControllerExecute;
+import it.polimi.ingsw.view.View;
 
 public class MoveMotherNatureMessage implements RequestMessage, ControllerExecute {
     private int movements;
@@ -15,7 +16,7 @@ public class MoveMotherNatureMessage implements RequestMessage, ControllerExecut
     }
 
     @Override
-    public void execute(Controller controller, String username) {
-        controller.moveMotherNature(this, username);
+    public void execute(Controller controller, String username, View view) {
+        controller.moveMotherNature(this, username, view);
     }
 }

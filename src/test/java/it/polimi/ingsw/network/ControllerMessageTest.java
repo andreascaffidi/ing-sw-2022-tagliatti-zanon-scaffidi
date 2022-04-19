@@ -1,30 +1,31 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.requestMessage.PlayAssistantMessage;
+import it.polimi.ingsw.view.View;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MessageTest {
+class ControllerMessageTest {
 
     @Test
     void getRequestMessage() {
         PlayAssistantMessage type = new PlayAssistantMessage(2);
-        Message message = new Message(type, "user");
+        ControllerMessage message = new ControllerMessage(type, "user", new View());
         assertEquals(type, message.getRequestMessage());
     }
 
     @Test
     void getUsername() {
-        Message message = new Message(new PlayAssistantMessage(2), "user");
+        ControllerMessage message = new ControllerMessage(new PlayAssistantMessage(2), "user", new View());
         assertEquals("user", message.getUsername());
     }
 
 
     @Test
     void isExpertMode(){
-        Message message = new Message(new PlayAssistantMessage(2), "user", true);
-        Message message2 = new Message(new PlayAssistantMessage(2), "user");
+        ControllerMessage message = new ControllerMessage(new PlayAssistantMessage(2), "user", new View() , true);
+        ControllerMessage message2 = new ControllerMessage(new PlayAssistantMessage(2), "user", new View());
         assertTrue(message.isExpertMode());
         assertFalse(message2.isExpertMode());
     }

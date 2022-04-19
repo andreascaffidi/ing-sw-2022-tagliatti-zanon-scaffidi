@@ -7,8 +7,9 @@ import it.polimi.ingsw.model.cards.Assistant;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.Wizards;
 import it.polimi.ingsw.model.pawns.Student;
-import it.polimi.ingsw.network.Message;
+import it.polimi.ingsw.network.ControllerMessage;
 import it.polimi.ingsw.network.requestMessage.*;
+import it.polimi.ingsw.view.View;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,7 @@ class ControllerExpertModeTest {
 
     private ControllerExpertMode controllerExpertMode;
     private TableExpertMode tableExpertMode;
+    private View view;
 
     @BeforeEach
     void setUp() {
@@ -46,7 +48,7 @@ class ControllerExpertModeTest {
 
     @Test
     void playAssistant() {
-        Message message = new Message(new PlayAssistantMessage(3), "p1");
+        ControllerMessage message = new ControllerMessage(new PlayAssistantMessage(3), "p1", view);
         controllerExpertMode.update(message);
 
         //check if assistant is played: removed from player's deck, and added to player's discard pile
@@ -61,23 +63,23 @@ class ControllerExpertModeTest {
 
         //check if WrongPlayerException is caught (tbd)
 
-        Message message2 = new Message(new PlayAssistantMessage(3), "p1");
+        ControllerMessage message2 = new ControllerMessage(new PlayAssistantMessage(3), "p1", view);
         controllerExpertMode.update(message2);
 
         //check if AssistantNotFoundException is caught (tbd)
 
-        Message message3 = new Message(new PlayAssistantMessage(11), "p2");
+        ControllerMessage message3 = new ControllerMessage(new PlayAssistantMessage(11), "p2", view);
         controllerExpertMode.update(message3);
 
         //check if AssistantNotPlayableException is caught (tbd)
 
-        Message message4 = new Message(new PlayAssistantMessage(3), "p2");
+        ControllerMessage message4 = new ControllerMessage(new PlayAssistantMessage(3), "p2", view);
         controllerExpertMode.update(message4);
     }
 
     @Test
     void moveStudentToIsland() {
-        Message message = new Message(new MoveStudentMessage("island", 1, 3), "p1");
+        ControllerMessage message = new ControllerMessage(new MoveStudentMessage("island", 1, 3), "p1", view);
         Student studentToMove = tableExpertMode.getPlayers()[0].getSchoolBoard().getEntrance().getStudents().get(2);
         controllerExpertMode.update(message);
 
@@ -88,23 +90,23 @@ class ControllerExpertModeTest {
 
         //check if WrongPlayerException is caught (tbd)
 
-        Message message2 = new Message(new MoveStudentMessage("island", 1, 3), "p2");
+        ControllerMessage message2 = new ControllerMessage(new MoveStudentMessage("island", 1, 3), "p2", view);
         controllerExpertMode.update(message2);
 
         //check if IslandNotValidException is caught (tbd)
 
-        Message message3 = new Message(new MoveStudentMessage("island", 13, 3), "p1");
+        ControllerMessage message3 = new ControllerMessage(new MoveStudentMessage("island", 13, 3), "p1", view);
         controllerExpertMode.update(message3);
 
         //check if StudentIndexOutOfBoundsException is caught (tbd)
 
-        Message message4 = new Message(new MoveStudentMessage("island", 1, -1), "p1");
+        ControllerMessage message4 = new ControllerMessage(new MoveStudentMessage("island", 1, -1), "p1", view);
         controllerExpertMode.update(message4);
     }
 
     @Test
     void moveStudentToDining() {
-        Message message = new Message(new MoveStudentMessage("dining", 3), "p1");
+        ControllerMessage message = new ControllerMessage(new MoveStudentMessage("dining", 3), "p1", view);
         Student studentToMove = tableExpertMode.getPlayers()[0].getSchoolBoard().getEntrance().getStudents().get(2);
         ColorS studentColor = studentToMove.getColor();
         controllerExpertMode.update(message);
@@ -116,18 +118,18 @@ class ControllerExpertModeTest {
 
         //check if WrongPlayerException is caught (tbd)
 
-        Message message2 = new Message(new MoveStudentMessage("dining", 3), "p2");
+        ControllerMessage message2 = new ControllerMessage(new MoveStudentMessage("dining", 3), "p2", view);
         controllerExpertMode.update(message2);
 
         //check if StudentIndexOutOfBoundsException is caught (tbd)
 
-        Message message3 = new Message(new MoveStudentMessage("dining", 8), "p1");
+        ControllerMessage message3 = new ControllerMessage(new MoveStudentMessage("dining", 8), "p1", view);
         controllerExpertMode.update(message3);
     }
 
     @Test
     void moveMotherNature() {
-        Message message = new Message(new MoveMotherNatureMessage(3), "p1");
+        ControllerMessage message = new ControllerMessage(new MoveMotherNatureMessage(3), "p1", view);
         tableExpertMode.getCurrentPlayer().addToDiscardPile(new Assistant(8, 4, Wizards.WIZARD_1));
         int motherNatureIsland = tableExpertMode.motherNatureIsland().getId();
         controllerExpertMode.update(message);
@@ -138,18 +140,18 @@ class ControllerExpertModeTest {
 
         //check if WrongPlayerException is caught (tbd)
 
-        Message message2 = new Message(new MoveMotherNatureMessage(3), "p2");
+        ControllerMessage message2 = new ControllerMessage(new MoveMotherNatureMessage(3), "p2", view);
         controllerExpertMode.update(message2);
 
         //check if MovementNotValidException is caught (tbd)
 
-        Message message3 = new Message(new MoveMotherNatureMessage(5), "p1");
+        ControllerMessage message3 = new ControllerMessage(new MoveMotherNatureMessage(5), "p1", view);
         controllerExpertMode.update(message3);
     }
 
     @Test
     void chooseCloud() {
-        Message message = new Message(new ChooseCloudMessage(1), "p1");
+        ControllerMessage message = new ControllerMessage(new ChooseCloudMessage(1), "p1", view);
         tableExpertMode.getClouds().get(0).addStudent(new Student(ColorS.PINK));
         tableExpertMode.getClouds().get(0).addStudent(new Student(ColorS.PINK));
         tableExpertMode.getClouds().get(0).addStudent(new Student(ColorS.PINK));
@@ -169,12 +171,12 @@ class ControllerExpertModeTest {
 
         //check if WrongPlayerException is caught (tbd)
 
-        Message message2 = new Message(new ChooseCloudMessage(1), "p1");
+        ControllerMessage message2 = new ControllerMessage(new ChooseCloudMessage(1), "p1", view);
         controllerExpertMode.update(message2);
 
         //check if CloudNotValidException is caught (tbd)
 
-        Message message3 = new Message(new ChooseCloudMessage(1), "p2");
+        ControllerMessage message3 = new ControllerMessage(new ChooseCloudMessage(1), "p2", view);
         controllerExpertMode.update(message3);
     }
 
@@ -187,7 +189,7 @@ class ControllerExpertModeTest {
     //test abbozzato da completare
     @Test
     void payCharacter2() {
-        Message message = new Message(new PayCharacter2Message(), "p1", true);
+        ControllerMessage message = new ControllerMessage(new PayCharacter2Message(), "p1", view , true);
         controllerExpertMode.update(message);
     }
 

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.schoolBoard;
 
+import it.polimi.ingsw.exceptions.ColorNotFoundException;
+import it.polimi.ingsw.exceptions.InvalidColorsException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 import org.junit.jupiter.api.AfterEach;
@@ -90,6 +92,26 @@ class DiningRoomTest {
         }
         diningRoom.removeStudent(ColorS.YELLOW);
         assertFalse(diningRoom.getLine(ColorS.YELLOW).contains(yellowStudents.get(yellowStudents.size()-1)));
+    }
+
+    @Test
+    void validColors() throws ColorNotFoundException, InvalidColorsException {
+        diningRoom.addStudent(new Student(ColorS.BLUE));
+        List<String> colors = new ArrayList<>();
+        colors.add("blue");
+        diningRoom.validColors(colors);
+        diningRoom.getLine(ColorS.BLUE).remove(0);
+        assertThrows(InvalidColorsException.class, () -> diningRoom.validColors(colors));
+        diningRoom.addStudent(new Student(ColorS.BLUE));
+        diningRoom.addStudent(new Student(ColorS.BLUE));
+        colors.add("blue");
+        diningRoom.validColors(colors);
+        diningRoom.getLine(ColorS.BLUE).remove(0);
+        assertThrows(InvalidColorsException.class, () -> diningRoom.validColors(colors));
+        diningRoom.addStudent(new Student(ColorS.RED));
+        colors.remove(0);
+        colors.add("red");
+        diningRoom.validColors(colors);
     }
 
     @AfterEach

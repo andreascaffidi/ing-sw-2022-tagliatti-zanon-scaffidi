@@ -37,9 +37,9 @@ class TableTest {
         p7 = new Player("player7", 1);
         p8 = new Player("player8", 2);
         p9 = new Player("player9", 2);
-        two = new ArrayList<Player>(Arrays.asList(p1,p2));
-        three = new ArrayList<Player>(Arrays.asList(p3,p4,p5));
-        four = new ArrayList<Player>(Arrays.asList(p6,p7,p8,p9));
+        two = new ArrayList<>(Arrays.asList(p1,p2));
+        three = new ArrayList<>(Arrays.asList(p3,p4,p5));
+        four = new ArrayList<>(Arrays.asList(p6,p7,p8,p9));
         table2p = new Table(two);
         table3p = new Table(three);
         table4p = new Table(four);
@@ -171,7 +171,7 @@ class TableTest {
     }
 
     @Test
-    void setupSchoolboards() {
+    void setupSchoolBoards() {
         //test SchoolBoard created for each player (for each type of table)
         for (int i=0; i<table2p.getPlayers().length; i++){
             assertNotNull(table2p.getPlayers()[i].getSchoolBoard());
@@ -602,22 +602,21 @@ class TableTest {
 
         //case all assistant already played
         table3p.setCurrentPlayer(table3p.getPlayers()[0]);
-        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(1));
-        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(2));
-        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(3));
-        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(4));
-        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(5));
-        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(6));
-        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(7));
-        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(8));
+        table3p.getPlayers()[0].addToDiscardPile(table3p.getPlayers()[0].getAssistant(1));
+        table3p.getPlayers()[0].addToDiscardPile(table3p.getPlayers()[0].getAssistant(2));
+        table3p.getPlayers()[0].addToDiscardPile(table3p.getPlayers()[0].getAssistant(3));
+        table3p.getPlayers()[0].addToDiscardPile(table3p.getPlayers()[0].getAssistant(4));
+        table3p.getPlayers()[0].addToDiscardPile(table3p.getPlayers()[0].getAssistant(5));
+        table3p.getPlayers()[0].addToDiscardPile(table3p.getPlayers()[0].getAssistant(6));
+        table3p.getPlayers()[0].addToDiscardPile(table3p.getPlayers()[0].getAssistant(7));
+        table3p.getPlayers()[0].addToDiscardPile(table3p.getPlayers()[0].getAssistant(8));
 
-        table3p.setCurrentPlayer(table3p.getPlayers()[1]);
-        table3p.playAssistant(table3p.getPlayers()[1].getAssistant(9));
-        table3p.setCurrentPlayer(table3p.getPlayers()[2]);
-        table3p.playAssistant(table3p.getPlayers()[2].getAssistant(10));
+        table3p.getPlayers()[1].addToDiscardPile(table3p.getPlayers()[1].getAssistant(9));
 
-        table3p.setCurrentPlayer(table3p.getPlayers()[0]);
-        table3p.playAssistant(table3p.getPlayers()[0].getAssistant(10));
+        table3p.getPlayers()[2].addToDiscardPile(table3p.getPlayers()[2].getAssistant(10));
+
+        table3p.getPlayers()[0].addToDiscardPile(table3p.getPlayers()[0].getAssistant(10));
+
         assertEquals(10, table3p.getPlayers()[0].getDiscardPile().peek().getValue());
     }
 
