@@ -1,31 +1,33 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 
 import java.util.*;
 
-import static it.polimi.ingsw.model.Table.NUM_OF_STUDENTS_PER_COLOR;
-
+/**
+ * bag
+ */
 public class Bag {
-    private List<Student> students;
 
+    private final List<Student> students;
 
+    /**
+     * builds the bag
+     */
     public Bag() {
-        this.students = new ArrayList<Student>();
+        this.students = new ArrayList<>();
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    /**
+     * gets the students in the bag
+     * @return the students in the bag
+     */
+    public List<Student> getStudents() {
+        return students;
     }
 
-    public List<Student> getStudents()
-    {
-        return this.students;
-    }
-
-    /** adds a student to the bag
-     *
-     * @param student the student to add
+    /**
+     * adds a student to the bag
+     * @param student student to add
      */
     public void addStudent(Student student){
         this.students.add(student);
@@ -34,9 +36,9 @@ public class Bag {
         Collections.shuffle(students);
     }
 
-    /** adds a list of Student to the bag and then shuffles the Collection of Students,
-     *
-     * @param student the student to add
+    /**
+     * adds a list of student to the bag and then shuffles the bag
+     * @param student student to add
      */
     public void addStudents(List<Student> student){
         this.students.addAll(student);
@@ -46,8 +48,8 @@ public class Bag {
     }
 
     /**
-     * returns and removes a student from the bag
-     * @return Student
+     * removes a student from the bag
+     * @return Student removed student
      */
     public Student drawStudent(){
         return this.students.remove(0);

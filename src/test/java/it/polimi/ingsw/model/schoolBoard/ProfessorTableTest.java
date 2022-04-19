@@ -34,12 +34,4 @@ class ProfessorTableTest {
         professorTable.removeProfessor(professors.get(0));
         assertFalse(professorTable.getProfessors().contains(professors.get(0)));
     }
-
-    @Test
-    void hasProfessor() {
-        Professor prof = new Professor(ColorS.YELLOW);
-        professorTable.addProfessor(prof);
-        assertTrue(professorTable.hasProfessor(ColorS.YELLOW));
-        assertFalse(professorTable.hasProfessor(ColorS.BLUE));
-    }
 }

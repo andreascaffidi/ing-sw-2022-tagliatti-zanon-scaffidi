@@ -4,12 +4,19 @@ import it.polimi.ingsw.model.enums.RoundPhases;
 
 import java.util.*;
 
+/**
+ * class turn manager that manages turns
+ */
 public class TurnManager {
-    private List<Player> clockwise;
-    private List<Player> planningTurn;
-    private PriorityQueue<Player> actionTurn;
+    private final List<Player> clockwise;
+    private final List<Player> planningTurn;
+    private final PriorityQueue<Player> actionTurn;
     private RoundPhases phase;
 
+    /**
+     * builds turn manager
+     * @param players players of the match
+     */
     public TurnManager(List<Player> players){
         this.phase = RoundPhases.PLANNING;
         this.clockwise = players;
@@ -18,10 +25,18 @@ public class TurnManager {
         this.actionTurn = new PriorityQueue<>(4, new PlayerComparator());
     }
 
+    /**
+     * orders player next turn
+     * @param player player to order
+     */
     public void orderPlayer(Player player){
         this.actionTurn.add(player);
     }
 
+    /**
+     * creates a new turn order
+     * @param newRoundPlayer first player of the round
+     */
     private void newPlanningTurn(Player newRoundPlayer){
         int index = clockwise.indexOf(newRoundPlayer);
         for (int i = 0; i < clockwise.size(); i++){
@@ -30,6 +45,10 @@ public class TurnManager {
         }
     }
 
+    /**
+     * chooses next player
+     * @return next player
+     */
     public Player nextPlayer(){
         if (phase == RoundPhases.PLANNING){
             Player nextPlayer = planningTurn.remove(0);
@@ -54,6 +73,10 @@ public class TurnManager {
     }
 }
 
+//FIXME: guarda il warning
+/**
+ * player comparator
+ */
 class PlayerComparator implements Comparator<Player>{
     public int compare(Player p1, Player p2) {
         if (p1.getDiscardPile().peek().getValue() >= p2.getDiscardPile().peek().getValue()) {

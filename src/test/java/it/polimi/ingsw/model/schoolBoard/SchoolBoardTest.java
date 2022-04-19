@@ -11,11 +11,7 @@ class SchoolBoardTest {
     @BeforeEach
     void init(){
         Player player = new Player("Test");
-        schoolBoard = new SchoolBoard(player);
-    }
-    @Test
-    void getPlayer() {
-        assertInstanceOf(Player.class,schoolBoard.getPlayer());
+        schoolBoard = new SchoolBoard();
     }
 
     @Test

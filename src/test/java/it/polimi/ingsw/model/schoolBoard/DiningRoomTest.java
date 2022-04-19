@@ -39,7 +39,7 @@ class DiningRoomTest {
 
     @Test
     void getLine() {
-        Exception e = assertThrows(RuntimeException.class,()->diningRoom.getLine(null));
+        Exception e = assertThrows(RuntimeException.class,()-> diningRoom.getLine(null));
         System.out.println(e.getMessage());
     }
 
@@ -74,15 +74,6 @@ class DiningRoomTest {
         }
         assertEquals(2, diningRoom.getNumberOfStudentsPerColor(ColorS.BLUE));
         assertEquals(1, diningRoom.getNumberOfStudentsPerColor(ColorS.RED));
-    }
-
-    @Test
-    void removeStudent() {
-        for (Student s : blueStudents){
-            diningRoom.addStudent(s);
-        }
-        diningRoom.removeStudent(blueStudents.get(0));
-        assertFalse(diningRoom.getLine(ColorS.BLUE).contains(blueStudents.get(0)));
     }
 
     @Test
