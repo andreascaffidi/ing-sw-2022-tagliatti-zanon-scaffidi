@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.requestMessage;
+package it.polimi.ingsw.network.requests;
 
 import java.io.Serializable;
 

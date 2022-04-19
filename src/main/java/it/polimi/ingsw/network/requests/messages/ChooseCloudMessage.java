@@ -1,7 +1,8 @@
-package it.polimi.ingsw.network.requestMessage;
+package it.polimi.ingsw.network.requests.messages;
 
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.network.ControllerExecute;
+import it.polimi.ingsw.network.requests.ControllerExecute;
+import it.polimi.ingsw.network.requests.RequestMessage;
 import it.polimi.ingsw.view.View;
 
 public class ChooseCloudMessage implements RequestMessage, ControllerExecute {

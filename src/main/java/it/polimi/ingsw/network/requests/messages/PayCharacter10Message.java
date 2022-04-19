@@ -1,7 +1,8 @@
-package it.polimi.ingsw.network.requestMessage;
+package it.polimi.ingsw.network.requests.messages;
 
 import it.polimi.ingsw.controller.ControllerExpertMode;
-import it.polimi.ingsw.network.ControllerExecuteExpertMode;
+import it.polimi.ingsw.network.requests.ControllerExecuteExpertMode;
+import it.polimi.ingsw.network.requests.RequestMessage;
 import it.polimi.ingsw.view.View;
 
 import java.io.Serializable;

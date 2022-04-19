@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.network.ControllerMessage;
-import it.polimi.ingsw.network.responseMessage.ResponseMessage;
+import it.polimi.ingsw.network.responses.ResponseMessage;
 
 public class View {
 

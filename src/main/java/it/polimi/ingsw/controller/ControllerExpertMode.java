@@ -7,9 +7,9 @@ import it.polimi.ingsw.model.effects.*;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
-import it.polimi.ingsw.network.ControllerExecuteExpertMode;
-import it.polimi.ingsw.network.ControllerMessage;
-import it.polimi.ingsw.network.requestMessage.*;
+import it.polimi.ingsw.network.requests.ControllerExecuteExpertMode;
+import it.polimi.ingsw.network.requests.*;
+import it.polimi.ingsw.network.requests.messages.*;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;

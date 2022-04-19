@@ -1,18 +1,19 @@
-package it.polimi.ingsw.network.requestMessage;
+package it.polimi.ingsw.network.requests.messages;
 
 import it.polimi.ingsw.controller.ControllerExpertMode;
-import it.polimi.ingsw.network.ControllerExecuteExpertMode;
+import it.polimi.ingsw.network.requests.ControllerExecuteExpertMode;
+import it.polimi.ingsw.network.requests.RequestMessage;
 import it.polimi.ingsw.view.View;
 
 import java.io.Serializable;
 
-public class PayCharacter5Message implements RequestMessage, ControllerExecuteExpertMode, Serializable {
+public class PayCharacter6Message implements RequestMessage, ControllerExecuteExpertMode, Serializable {
 
     private int character;
     private int islandId;
 
-    public PayCharacter5Message(int islandId) {
-        this.character = 5;
+    public PayCharacter6Message(int islandId) {
+        this.character = 6;
         this.islandId = islandId;
     }
 
@@ -26,6 +27,6 @@ public class PayCharacter5Message implements RequestMessage, ControllerExecuteEx
 
     @Override
     public void execute(ControllerExpertMode controller, String username, View view) {
-        controller.payCharacter5(this, username, view);
+        controller.payCharacter6(this, username, view);
     }
 }

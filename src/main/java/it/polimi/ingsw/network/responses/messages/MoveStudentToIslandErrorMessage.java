@@ -1,6 +1,7 @@
-package it.polimi.ingsw.network.responseMessage;
+package it.polimi.ingsw.network.responses.messages;
 
-import it.polimi.ingsw.network.ClientExecute;
+import it.polimi.ingsw.network.responses.ClientExecute;
+import it.polimi.ingsw.network.responses.ResponseMessage;
 
 public class MoveStudentToIslandErrorMessage implements ResponseMessage, ClientExecute {
 

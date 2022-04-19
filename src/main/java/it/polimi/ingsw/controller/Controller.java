@@ -4,14 +4,14 @@ import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Cloud;
 import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.pawns.Student;
-import it.polimi.ingsw.network.ControllerExecute;
-import it.polimi.ingsw.network.ControllerMessage;
-import it.polimi.ingsw.network.requestMessage.ChooseCloudMessage;
-import it.polimi.ingsw.network.requestMessage.MoveMotherNatureMessage;
-import it.polimi.ingsw.network.requestMessage.MoveStudentMessage;
-import it.polimi.ingsw.network.requestMessage.PlayAssistantMessage;
-import it.polimi.ingsw.network.responseMessage.MoveStudentToIslandErrorMessage;
-import it.polimi.ingsw.network.responseMessage.ResponseMessage;
+import it.polimi.ingsw.network.requests.ControllerExecute;
+import it.polimi.ingsw.network.requests.ControllerMessage;
+import it.polimi.ingsw.network.requests.messages.ChooseCloudMessage;
+import it.polimi.ingsw.network.requests.messages.MoveMotherNatureMessage;
+import it.polimi.ingsw.network.requests.messages.MoveStudentMessage;
+import it.polimi.ingsw.network.requests.messages.PlayAssistantMessage;
+import it.polimi.ingsw.network.responses.messages.MoveStudentToIslandErrorMessage;
+import it.polimi.ingsw.network.responses.ResponseMessage;
 import it.polimi.ingsw.view.View;
 
 public class Controller {

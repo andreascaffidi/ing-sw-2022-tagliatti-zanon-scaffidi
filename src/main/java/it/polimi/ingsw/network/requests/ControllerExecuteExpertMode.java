@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network;
+package it.polimi.ingsw.network.requests;
 
 import it.polimi.ingsw.controller.ControllerExpertMode;
 import it.polimi.ingsw.view.View;
