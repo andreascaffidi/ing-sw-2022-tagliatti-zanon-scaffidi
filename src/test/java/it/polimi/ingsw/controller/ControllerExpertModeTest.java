@@ -116,6 +116,7 @@ class ControllerExpertModeTest {
     }
 
     @Test
+    @RepeatedTest(100)
     void payCharacter2() {
 
         Player player1 = new Player("p1");
@@ -126,16 +127,18 @@ class ControllerExpertModeTest {
         table = new TableExpertMode(players);
         controller = new ControllerExpertMode(table);
 
-        Message message = new Message(new PayCharacter2Message(), "p1", true);
+        PayCharacter2Message pay = new PayCharacter2Message();
+        Message message = new Message(pay, "p1", true);
 
         if(table.getCharacters().containsKey(2))
         {
+            assertEquals(2, pay.getCharacter());
             controller.update(message);
         }
     }
 
-    @RepeatedTest(100)
     @Test
+    @RepeatedTest(100)
     void payCharacter3() throws ParityException {
 
         Player player1 = new Player("p1");
@@ -146,10 +149,13 @@ class ControllerExpertModeTest {
         table = new TableExpertMode(players);
         controller = new ControllerExpertMode(table);
 
-        Message message = new Message(new PayCharacter3Message(1), "p1", true);
+        PayCharacter3Message pay = new PayCharacter3Message(1);
+
+        Message message = new Message(pay, "p1", true);
 
         if(table.getCharacters().containsKey(3))
         {
+            assertEquals(1, pay.getIslandId());
             table.getIsland(0).addStudent(new Student(ColorS.BLUE));
             table.getIsland(0).addStudent(new Student(ColorS.BLUE));
 
@@ -197,8 +203,8 @@ class ControllerExpertModeTest {
         }
     }
 
-    @RepeatedTest(100)
     @Test
+    @RepeatedTest(100)
     void payCharacter4() {
 
         Player player1 = new Player("p1");
@@ -228,8 +234,8 @@ class ControllerExpertModeTest {
     }
 
     //TODO: sistemare il character 5
-    @RepeatedTest(100)
     @Test
+    @RepeatedTest(100)
     void payCharacter5() {
 
         Player player1 = new Player("p1");
@@ -241,9 +247,12 @@ class ControllerExpertModeTest {
         table = new TableExpertMode(players);
         controller = new ControllerExpertMode(table);
 
-        Message message = new Message(new PayCharacter5Message(1), table.getCurrentPlayer().getUsername(), true);
+        PayCharacter5Message pay = new PayCharacter5Message(1);
+
+        Message message = new Message(pay, table.getCurrentPlayer().getUsername(), true);
 
         if(table.getCharacters().containsKey(5)) {
+            assertEquals(1, pay.getIslandId());
             assertFalse(table.isNoEntryTile(table.getIsland(0)));
             controller.update(message);
             assertTrue(table.isNoEntryTile(table.getIsland(0)));
@@ -257,6 +266,7 @@ class ControllerExpertModeTest {
     }
 
     @Test
+    @RepeatedTest(100)
     void payCharacter6() {
 
         Player player1 = new Player("p1");
@@ -267,10 +277,14 @@ class ControllerExpertModeTest {
         table = new TableExpertMode(players);
         controller = new ControllerExpertMode(table);
 
-        Message message = new Message(new PayCharacter6Message(1), "p1", true);
+        PayCharacter6Message pay = new PayCharacter6Message(1);
+
+        Message message = new Message(pay, "p1", true);
 
         if(table.getCharacters().containsKey(6))
         {
+            assertEquals(1, pay.getIslandId());
+            assertEquals(6, pay.getCharacter());
             controller.update(message);
         }
 
@@ -336,6 +350,7 @@ class ControllerExpertModeTest {
 
 
     @Test
+    @RepeatedTest(100)
     void payCharacter8() {
 
         Player player1 = new Player("p1");
@@ -346,15 +361,18 @@ class ControllerExpertModeTest {
         table = new TableExpertMode(players);
         controller = new ControllerExpertMode(table);
 
-        Message message = new Message(new PayCharacter8Message(), "p1", true);
+        PayCharacter8Message pay = new PayCharacter8Message();
+        Message message = new Message(pay, "p1", true);
 
         if(table.getCharacters().containsKey(8))
         {
+            assertEquals(8, pay.getCharacter());
             controller.update(message);
         }
     }
 
     @Test
+    @RepeatedTest(100)
     void payCharacter9() {
 
         Player player1 = new Player("p1");
@@ -365,10 +383,14 @@ class ControllerExpertModeTest {
         table = new TableExpertMode(players);
         controller = new ControllerExpertMode(table);
 
-        Message message = new Message(new PayCharacter9Message("blue"), "p1", true);
+        PayCharacter9Message pay = new PayCharacter9Message("blue");
+
+        Message message = new Message(pay, "p1", true);
 
         if(table.getCharacters().containsKey(9))
         {
+            assertEquals("blue", pay.getColor());
+            assertEquals(9, pay.getCharacter());
             controller.update(message);
         }
     }
@@ -448,10 +470,12 @@ class ControllerExpertModeTest {
         table = new TableExpertMode(players);
         controller = new ControllerExpertMode(table);
 
-        Message message = new Message(new PayCharacter11Message(1), "p1", true);
+        PayCharacter11Message pay = new PayCharacter11Message(1);
+        Message message = new Message(pay, "p1", true);
 
         if(table.getCharacters().containsKey(11))
         {
+            assertEquals(1, pay.getStudentId());
             Student student1 = table.getCardWithStudents(11).getStudents().remove(0);
 
             controller.update(message);
@@ -477,10 +501,13 @@ class ControllerExpertModeTest {
         table = new TableExpertMode(players);
         controller = new ControllerExpertMode(table);
 
-        Message message = new Message(new PayCharacter12Message("blue"), "p1", true);
+        PayCharacter12Message pay = new PayCharacter12Message("blue");
+        Message message = new Message(pay, "p1", true);
 
         if(table.getCharacters().containsKey(12)) {
 
+            assertEquals("blue", pay.getColor());
+            assertEquals(12, pay.getCharacter());
             //students dei player
             Student student1 = new Student(ColorS.BLUE);
             Student student2 = new Student(ColorS.BLUE);

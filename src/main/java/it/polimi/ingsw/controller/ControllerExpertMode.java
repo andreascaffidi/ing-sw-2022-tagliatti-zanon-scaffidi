@@ -140,8 +140,10 @@ public class ControllerExpertMode extends Controller{
         try {
             table.validCharacter(message.getCharacter());
             table.validIsland(message.getIslandId()-1);
+
             Island island = table.getIsland(message.getIslandId()-1);
             table.validNoEntryTile(island);
+
             table.setNoEntryTile(island, true);
             pay(message.getCharacter());
         }catch(InvalidCharacterException | NotEnoughCoinsException e)
