@@ -26,7 +26,7 @@ public class PayCharacter4Message implements RequestMessage, ControllerExecuteEx
     }
 
     @Override
-    public void execute(ControllerExpertMode controller, String username, View view) {
-        controller.payCharacter4(this, username, view);
+    public void execute(ControllerExpertMode controller, String username) {
+        controller.payCharacter4(this, username);
     }
 }

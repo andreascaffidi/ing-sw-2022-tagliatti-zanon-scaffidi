@@ -16,7 +16,7 @@ public class ChooseCloudMessage implements RequestMessage, ControllerExecute {
         return this.id;
     }
     @Override
-    public void execute(Controller controller, String username, View view) {
-        controller.chooseCloud(this, username, view);
+    public void execute(Controller controller, String username) {
+        controller.chooseCloud(this, username);
     }
 }

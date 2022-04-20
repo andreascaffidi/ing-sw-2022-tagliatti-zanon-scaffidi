@@ -5,21 +5,18 @@ import it.polimi.ingsw.view.View;
 public class ControllerMessage {
 
     private RequestMessage requestMessage;
-    private View view;
     private String username;
     private boolean expertMode;
 
-    public ControllerMessage(RequestMessage requestMessage, String username, View view) {
+    public ControllerMessage(RequestMessage requestMessage, String username) {
         this.requestMessage = requestMessage;
         this.username = username;
-        this.view = view;
         this.expertMode = false;
     }
 
-    public ControllerMessage(RequestMessage requestMessage, String username, View view, boolean expertMode) {
+    public ControllerMessage(RequestMessage requestMessage, String username, boolean expertMode) {
         this.requestMessage = requestMessage;
         this.username = username;
-        this.view = view;
         this.expertMode = expertMode;
     }
 
@@ -31,9 +28,6 @@ public class ControllerMessage {
         return username;
     }
 
-    public View getView(){
-        return view;
-    }
 
     public boolean isExpertMode(){
         return expertMode;

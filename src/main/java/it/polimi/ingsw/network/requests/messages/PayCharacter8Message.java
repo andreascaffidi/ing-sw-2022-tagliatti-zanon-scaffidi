@@ -20,7 +20,7 @@ public class PayCharacter8Message implements RequestMessage, ControllerExecuteEx
     }
 
     @Override
-    public void execute(ControllerExpertMode controller, String username, View view) {
-        controller.payCharacter8(this, username, view);
+    public void execute(ControllerExpertMode controller, String username) {
+        controller.payCharacter8(this, username);
     }
 }

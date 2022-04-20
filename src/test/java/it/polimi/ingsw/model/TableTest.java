@@ -404,20 +404,6 @@ class TableTest {
         assertEquals(table2p.getIsland(11), table2p.motherNatureIsland());
     }
 
-    @Test
-    void getPlayerWithMinTowers() throws ParityException {
-        table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().getTowers().remove(0);
-        assertEquals(two.get(0), table2p.getPlayerWithMinTowers());
-        table2p.getPlayers()[1].getSchoolBoard().getTowerBoard().getTowers().remove(0);
-        Exception exception = assertThrows(ParityException.class, () -> table2p.getPlayerWithMinTowers());
-        assertEquals("there's a parity", exception.getMessage());
-    }
-
-    @Test
-    void getPlayerWithMaxProfessor() {
-        table2p.getPlayers()[0].getSchoolBoard().getProfessorTable().addProfessor(new Professor(ColorS.BLUE));
-        assertEquals(two.get(0), table2p.getPlayerWithMaxProfessor());
-    }
 
     @Test
     void getProfessorOwner() {
@@ -647,14 +633,15 @@ class TableTest {
         assertEquals("Not valid cloud", exception1.getMessage());
     }
 
-    //TODO: implement endgame
     @Test
     void endGame(){
-        table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower();
-        table2p.endGame();
 
-        //case of parity
+        table2p.getPlayers()[0].getSchoolBoard().getTowerBoard().removeLastTower();
+        assertEquals(two.get(0), table2p.endGame());
+
         table2p.getPlayers()[1].getSchoolBoard().getTowerBoard().removeLastTower();
-        table2p.endGame();
+
+        table2p.getPlayers()[0].getSchoolBoard().getProfessorTable().addProfessor(new Professor(ColorS.BLUE));
+        assertEquals(two.get(0), table2p.endGame());
     }
 }

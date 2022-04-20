@@ -25,21 +25,18 @@ class ControllerTest {
 
     private Controller controller;
     private Table table;
-    private View view;
 
     @BeforeEach
     void setUp() {
         List<Player> players = new ArrayList<>(Arrays.asList(new Player("p1"), new Player("p2")));
         table = new Table(players);
         controller = new Controller(table);
-        view = new View();
     }
 
     @AfterEach
     void tearDown() {
         table = null;
         controller = null;
-        view = null;
     }
 
     @Test
@@ -49,7 +46,7 @@ class ControllerTest {
 
     @Test
     void playAssistant() {
-        ControllerMessage message = new ControllerMessage(new PlayAssistantMessage(3), "p1", view);
+        ControllerMessage message = new ControllerMessage(new PlayAssistantMessage(3), "p1");
         controller.update(message);
 
         //check if assistant is played: removed from player's deck, and added to player's discard pile
@@ -64,23 +61,23 @@ class ControllerTest {
 
         //check if WrongPlayerException is caught (tbd)
 
-        ControllerMessage message2 = new ControllerMessage(new PlayAssistantMessage(3), "p1", view);
+        ControllerMessage message2 = new ControllerMessage(new PlayAssistantMessage(3), "p1");
         controller.update(message2);
 
         //check if AssistantNotFoundException is caught (tbd)
 
-        ControllerMessage message3 = new ControllerMessage(new PlayAssistantMessage(11), "p2", view);
+        ControllerMessage message3 = new ControllerMessage(new PlayAssistantMessage(11), "p2");
         controller.update(message3);
 
         //check if AssistantNotPlayableException is caught (tbd)
 
-        ControllerMessage message4 = new ControllerMessage(new PlayAssistantMessage(3), "p2", view);
+        ControllerMessage message4 = new ControllerMessage(new PlayAssistantMessage(3), "p2");
         controller.update(message4);
     }
 
     @Test
     void moveStudentToIsland() {
-        ControllerMessage message = new ControllerMessage(new MoveStudentMessage("island", 1, 3), "p1", view);
+        ControllerMessage message = new ControllerMessage(new MoveStudentMessage("island", 1, 3), "p1");
         Student studentToMove = table.getPlayers()[0].getSchoolBoard().getEntrance().getStudents().get(2);
         controller.update(message);
 
@@ -91,23 +88,23 @@ class ControllerTest {
 
         //check if WrongPlayerException is caught (tbd)
 
-        ControllerMessage message2 = new ControllerMessage(new MoveStudentMessage("island", 1, 3), "p2", view);
+        ControllerMessage message2 = new ControllerMessage(new MoveStudentMessage("island", 1, 3), "p2");
         controller.update(message2);
 
         //check if IslandNotValidException is caught (tbd)
 
-        ControllerMessage message3 = new ControllerMessage(new MoveStudentMessage("island", 13, 3), "p1", view);
+        ControllerMessage message3 = new ControllerMessage(new MoveStudentMessage("island", 13, 3), "p1");
         controller.update(message3);
 
         //check if StudentIndexOutOfBoundsException is caught (tbd)
 
-        ControllerMessage message4 = new ControllerMessage(new MoveStudentMessage("island", 1, -1), "p1", view);
+        ControllerMessage message4 = new ControllerMessage(new MoveStudentMessage("island", 1, -1), "p1");
         controller.update(message4);
     }
 
     @Test
     void moveStudentToDining() {
-        ControllerMessage message = new ControllerMessage(new MoveStudentMessage("dining", 3), "p1", view);
+        ControllerMessage message = new ControllerMessage(new MoveStudentMessage("dining", 3), "p1");
         Student studentToMove = table.getPlayers()[0].getSchoolBoard().getEntrance().getStudents().get(2);
         ColorS studentColor = studentToMove.getColor();
         controller.update(message);
@@ -119,18 +116,18 @@ class ControllerTest {
 
         //check if WrongPlayerException is caught (tbd)
 
-        ControllerMessage message2 = new ControllerMessage(new MoveStudentMessage("dining", 3), "p2", view);
+        ControllerMessage message2 = new ControllerMessage(new MoveStudentMessage("dining", 3), "p2");
         controller.update(message2);
 
         //check if StudentIndexOutOfBoundsException is caught (tbd)
 
-        ControllerMessage message3 = new ControllerMessage(new MoveStudentMessage("dining", 8), "p1", view);
+        ControllerMessage message3 = new ControllerMessage(new MoveStudentMessage("dining", 8), "p1");
         controller.update(message3);
     }
 
     @Test
     void moveMotherNature() {
-        ControllerMessage message = new ControllerMessage(new MoveMotherNatureMessage(3), "p1", view);
+        ControllerMessage message = new ControllerMessage(new MoveMotherNatureMessage(3), "p1");
         table.getCurrentPlayer().addToDiscardPile(new Assistant(8, 4, Wizards.WIZARD_1));
         int motherNatureIsland = table.motherNatureIsland().getId();
         controller.update(message);
@@ -141,18 +138,18 @@ class ControllerTest {
 
         //check if WrongPlayerException is caught (tbd)
 
-        ControllerMessage message2 = new ControllerMessage(new MoveMotherNatureMessage(3), "p2", view);
+        ControllerMessage message2 = new ControllerMessage(new MoveMotherNatureMessage(3), "p2");
         controller.update(message2);
 
         //check if MovementNotValidException is caught (tbd)
 
-        ControllerMessage message3 = new ControllerMessage(new MoveMotherNatureMessage(5), "p1", view);
+        ControllerMessage message3 = new ControllerMessage(new MoveMotherNatureMessage(5), "p1");
         controller.update(message3);
     }
 
     @Test
     void chooseCloud() {
-        ControllerMessage message = new ControllerMessage(new ChooseCloudMessage(1), "p1", view);
+        ControllerMessage message = new ControllerMessage(new ChooseCloudMessage(1), "p1");
         table.getClouds().get(0).addStudent(new Student(ColorS.PINK));
         table.getClouds().get(0).addStudent(new Student(ColorS.PINK));
         table.getClouds().get(0).addStudent(new Student(ColorS.PINK));
@@ -172,12 +169,12 @@ class ControllerTest {
 
         //check if WrongPlayerException is caught (tbd)
 
-        ControllerMessage message2 = new ControllerMessage(new ChooseCloudMessage(1), "p1", view);
+        ControllerMessage message2 = new ControllerMessage(new ChooseCloudMessage(1), "p1");
         controller.update(message2);
 
         //check if CloudNotValidException is caught (tbd)
 
-        ControllerMessage message3 = new ControllerMessage(new ChooseCloudMessage(1), "p2", view);
+        ControllerMessage message3 = new ControllerMessage(new ChooseCloudMessage(1), "p2");
         controller.update(message3);
     }
 }

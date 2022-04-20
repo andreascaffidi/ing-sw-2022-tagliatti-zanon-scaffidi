@@ -27,13 +27,6 @@ class AssistantTest {
     }
 
     @Test
-    void playedAssistant() {
-        assertEquals(false, assistant.isPlayed());
-        assistant.playAssistant();
-        assertEquals(true, assistant.isPlayed());
-    }
-
-    @Test
     void getWizard() {
         assertEquals(Wizards.WIZARD_1, assistant.getWizard());
     }

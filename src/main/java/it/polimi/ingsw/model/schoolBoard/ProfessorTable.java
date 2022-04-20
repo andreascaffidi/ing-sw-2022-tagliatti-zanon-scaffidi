@@ -40,8 +40,19 @@ public class ProfessorTable {
         professors.remove(professor);
     }
 
-    public boolean hasProfessor(ColorS noInfluenceColor) {
-        //TODO
-        return true;
+    /**
+     * checks if there's the professor with a specified color
+     * @param color professor's color to check
+     * @return true if there's that professor, false otherwise
+     */
+    public boolean hasProfessor(ColorS color) {
+        for(Professor p: this.professors)
+        {
+            if(p.getColor() == color)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

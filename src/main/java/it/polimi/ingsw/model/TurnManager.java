@@ -26,16 +26,16 @@ public class TurnManager {
     }
 
     /**
-     * orders player next turn
-     * @param player player to order
+     * adds a player to the action turn queue
+     * @param player player to add
      */
     public void orderPlayer(Player player){
         this.actionTurn.add(player);
     }
 
     /**
-     * creates a new turn order
-     * @param newRoundPlayer first player of the round
+     * creates a new planning turn order based on clockwise order
+     * @param newRoundPlayer first player of a new round
      */
     private void newPlanningTurn(Player newRoundPlayer){
         int index = clockwise.indexOf(newRoundPlayer);
@@ -46,7 +46,7 @@ public class TurnManager {
     }
 
     /**
-     * chooses next player
+     * chooses next player for planning and action turn
      * @return next player
      */
     public Player nextPlayer(){
@@ -73,16 +73,26 @@ public class TurnManager {
     }
 }
 
-//FIXME: guarda il warning
 /**
- * player comparator
+ * player comparator private class
  */
 class PlayerComparator implements Comparator<Player>{
+
+    /**
+     * override of compare method
+     * compares two player to choose action turn order
+     * @param p1 first player to compare
+     * @param p2 second player to compare
+     * @return integer which represents the comparison
+     */
     public int compare(Player p1, Player p2) {
         if (p1.getDiscardPile().peek().getValue() >= p2.getDiscardPile().peek().getValue()) {
             return 1;
         }
-        return -1;
+        if (p1.getDiscardPile().peek().getValue() < p2.getDiscardPile().peek().getValue()) {
+            return -1;
+        }
+        return 0;
     }
 }
 

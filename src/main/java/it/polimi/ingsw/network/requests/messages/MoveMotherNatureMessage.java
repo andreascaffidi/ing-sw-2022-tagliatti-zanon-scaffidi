@@ -17,7 +17,7 @@ public class MoveMotherNatureMessage implements RequestMessage, ControllerExecut
     }
 
     @Override
-    public void execute(Controller controller, String username, View view) {
-        controller.moveMotherNature(this, username, view);
+    public void execute(Controller controller, String username) {
+        controller.moveMotherNature(this, username);
     }
 }

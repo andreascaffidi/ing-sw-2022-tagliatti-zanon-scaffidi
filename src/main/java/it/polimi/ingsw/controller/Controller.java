@@ -25,11 +25,11 @@ public class Controller {
     //TODO: proibire al metodo di eseguire messaggi per esperti (nella remote view)
     public void update(ControllerMessage message){
         ControllerExecute controller = (ControllerExecute) message.getRequestMessage();
-        controller.execute(this, message.getUsername(), message.getView());
+        controller.execute(this, message.getUsername());
     }
 
 
-    public void playAssistant(PlayAssistantMessage message, String username, View view){
+    public void playAssistant(PlayAssistantMessage message, String username){
         try{
             checkPlayer(username);
             table.playAssistant(table.getCurrentPlayer().getAssistant(message.getValue()));
@@ -52,7 +52,7 @@ public class Controller {
     }
 
 
-    public void moveStudentToIsland(MoveStudentMessage message, String username, View view){
+    public void moveStudentToIsland(MoveStudentMessage message, String username){
         try{
             checkPlayer(username);
             int idIsland = message.getIdIsland()-1;
@@ -65,15 +65,14 @@ public class Controller {
             //TODO
             System.out.println("WrongPlayerException");
         } catch (IslandNotValidException e) {
-            //ResponseMessage errorMessage = new MoveStudentToIslandErrorMessage(e.getMessage());
-            //view.invalidInput(errorMessage);
+
         } catch (InvalidEntranceStudentException e) {
             //TODO
             System.out.println("StudentIndexOutOfBoundsException");
         }
     }
 
-    public void moveStudentToDining(MoveStudentMessage message, String username, View view){
+    public void moveStudentToDining(MoveStudentMessage message, String username){
         try{
             checkPlayer(username);
             int studentIndex = message.getStudentIndex()-1;
@@ -91,7 +90,7 @@ public class Controller {
     }
 
 
-    public void moveMotherNature(MoveMotherNatureMessage message, String username, View view){
+    public void moveMotherNature(MoveMotherNatureMessage message, String username){
         try{
             checkPlayer(username);
             int movement = message.getMovements();
@@ -109,7 +108,7 @@ public class Controller {
 
 
 
-    public void chooseCloud(ChooseCloudMessage message, String username, View view){
+    public void chooseCloud(ChooseCloudMessage message, String username){
         try {
             checkPlayer(username);
             int idCloud = message.getId()-1;

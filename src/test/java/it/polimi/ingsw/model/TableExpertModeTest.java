@@ -163,11 +163,11 @@ class TableExpertModeTest {
 
         table3p.motherNatureIsland().addStudents(students);
         assertEquals(three.get(1), table3p.getSupremacy(table3p.motherNatureIsland()));
-        table3p.setCurrentEffect(new Effect(new AdditionalInfluenceEffect(three.get(0))));
+        table3p.setCurrentEffect(new AdditionalInfluenceEffect(three.get(0)));
         assertEquals(three.get(0), table3p.getSupremacy(table3p.motherNatureIsland()));
         table3p.resetCurrentEffect();
         assertEquals(three.get(1), table3p.getSupremacy(table3p.motherNatureIsland()));
-        table3p.setCurrentEffect(new Effect(new NoInfluenceColorEffect(ColorS.YELLOW)));
+        table3p.setCurrentEffect(new NoInfluenceColorEffect(ColorS.YELLOW));
         assertEquals(three.get(0), table3p.getSupremacy(table3p.motherNatureIsland()));
         table3p.resetCurrentEffect();
         assertEquals(three.get(1), table3p.getSupremacy(table3p.motherNatureIsland()));
@@ -180,7 +180,7 @@ class TableExpertModeTest {
         table4p.motherNatureIsland().setTower(new Tower(ColorT.WHITE, four.get(1)));
         Exception exception = assertThrows(ParityException.class, () -> table4p.getSupremacy(table4p.motherNatureIsland()));
         assertEquals("there's a parity", exception.getMessage());
-        table4p.setCurrentEffect(new Effect(new CountTowersEffect(table4p.motherNatureIsland())));
+        table4p.setCurrentEffect(new CountTowersEffect(table4p.motherNatureIsland()));
         assertEquals(four.get(0), table4p.getSupremacy(table4p.motherNatureIsland()));
     }
 
@@ -198,7 +198,7 @@ class TableExpertModeTest {
 
     @Test
     void setProfessorOwner(){
-        table2p.setCurrentEffect(new Effect(new ProfessorTieEffect(table2p.getPlayers()[1])));
+        table2p.setCurrentEffect(new ProfessorTieEffect(table2p.getPlayers()[1]));
         table2p.getPlayers()[0].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));
         table2p.getPlayers()[0].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));
         table2p.getPlayers()[0].getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.YELLOW));

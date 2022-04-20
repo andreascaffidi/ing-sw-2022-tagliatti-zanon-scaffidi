@@ -53,7 +53,7 @@ public class Island {
     }
 
     /**
-     * sets the island tower
+     * sets the island's tower
      * @param tower island tower
      */
     public void setTower(Tower tower){
@@ -114,8 +114,6 @@ public class Island {
     public void setNumOfTowers(int numOfTowers) {
         this.numOfTowers = numOfTowers;
     }
-
-    //FIXME: VERIFICARE QUESTO METODO
 
     /**
      * changes island id when a new group of island is created

@@ -23,11 +23,11 @@ public class MoveStudentMessage implements RequestMessage, ControllerExecute {
 
 
     @Override
-    public void execute(Controller controller, String username, View view) {
+    public void execute(Controller controller, String username) {
         if(dest.equals("island")){
-            controller.moveStudentToIsland(this,username,view);
+            controller.moveStudentToIsland(this,username);
         }else{
-            controller.moveStudentToDining(this, username,view);
+            controller.moveStudentToDining(this, username);
         }
     }
 

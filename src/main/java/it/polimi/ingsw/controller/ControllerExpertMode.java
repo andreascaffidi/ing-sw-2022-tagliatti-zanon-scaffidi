@@ -20,7 +20,6 @@ public class ControllerExpertMode extends Controller{
     private TableExpertMode table;
 
 
-    //FIXME: gestione controllerExpertMode
     public ControllerExpertMode(TableExpertMode table)
     {
         super(table);
@@ -31,7 +30,7 @@ public class ControllerExpertMode extends Controller{
     public void update(ControllerMessage message){
         if (message.isExpertMode()){
             ControllerExecuteExpertMode controller = (ControllerExecuteExpertMode) message.getRequestMessage();
-            controller.execute(this, message.getUsername(), message.getView());
+            controller.execute(this, message.getUsername());
         }
         else
         {
@@ -40,18 +39,17 @@ public class ControllerExpertMode extends Controller{
     }
 
     @Override
-    public void chooseCloud(ChooseCloudMessage message, String username, View view){
-        super.chooseCloud(message, username, view);
+    public void chooseCloud(ChooseCloudMessage message, String username){
+        super.chooseCloud(message, username);
         table.resetCurrentEffect();
     }
 
-    //FIXME: non funziona l'override
     @Override
-    public void moveStudentToDining(MoveStudentMessage message, String username, View view){
+    public void moveStudentToDining(MoveStudentMessage message, String username){
         try {
             ColorS color = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(message.getStudentIndex()-1).getColor();
-            super.moveStudentToDining(message, username, view);
-            if (table.getCurrentPlayer().getSchoolBoard().getDiningRoom().getLine(color).size() % 3 == 0){
+            super.moveStudentToDining(message, username);
+            if (table.getCurrentPlayer().getSchoolBoard().getDiningRoom().getLine(color).size() % 3 == 0 && table.getBank() > 0){
                 table.addCoins(table.getCurrentPlayer(), 1);
             }
         } catch (IndexOutOfBoundsException e){
@@ -60,7 +58,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter1(PayCharacter1Message message, String username, View view)
+    public void payCharacter1(PayCharacter1Message message, String username)
     {
         try {
             table.validCharacter(message.getCharacter());
@@ -95,10 +93,10 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter2(PayCharacter2Message message, String username, View view){
+    public void payCharacter2(PayCharacter2Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
-            table.setCurrentEffect(new Effect(new ProfessorTieEffect(table.getCurrentPlayer())));
+            table.setCurrentEffect(new ProfessorTieEffect(table.getCurrentPlayer()));
             pay(message.getCharacter());
         }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
@@ -107,7 +105,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter3(PayCharacter3Message message, String username, View view){
+    public void payCharacter3(PayCharacter3Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
             table.validIsland(message.getIslandId()-1);
@@ -122,7 +120,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter4(PayCharacter4Message message, String username, View view){
+    public void payCharacter4(PayCharacter4Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
             table.validAdditionalMovement(message.getAdditionalMovement());
@@ -137,7 +135,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter5(PayCharacter5Message message, String username, View view){
+    public void payCharacter5(PayCharacter5Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
             table.validIsland(message.getIslandId()-1);
@@ -158,11 +156,11 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter6(PayCharacter6Message message, String username, View view){
+    public void payCharacter6(PayCharacter6Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
             table.validIsland(message.getIslandId()-1);
-            table.setCurrentEffect(new Effect(new CountTowersEffect(table.getIsland(message.getIslandId()-1))));
+            table.setCurrentEffect(new CountTowersEffect(table.getIsland(message.getIslandId()-1)));
             pay(message.getCharacter());
         }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
@@ -173,13 +171,13 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter7(PayCharacter7Message message, String username, View view){
+    public void payCharacter7(PayCharacter7Message message, String username){
         try {
             //verify all indexes' validity
             table.validCharacter(message.getCharacter());
             for (int i = 0; i < message.getCardStudents().size(); i++) {
-                table.getCardWithStudents(message.getCharacter()).validStudent(message.getCardStudents().get(i));
-                table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(message.getEntranceStudents().get(i));
+                table.getCardWithStudents(message.getCharacter()).validStudent(message.getCardStudents().get(i)-1);
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(message.getEntranceStudents().get(i)-1);
             }
 
             List<Student> cardStudents = new ArrayList<>();
@@ -187,9 +185,12 @@ public class ControllerExpertMode extends Controller{
 
             //pick the students with the assigned indexes
             for (int i = 0; i < message.getCardStudents().size(); i++) {
-                Student cardStudent = table.getCardWithStudents(message.getCharacter()).getStudents().get(i);
-                Student entranceStudent = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(i);
+                int cardIndex = message.getCardStudents().get(i)-1;
+                Student cardStudent = table.getCardWithStudents(message.getCharacter()).getStudents().get(cardIndex);
                 cardStudents.add(cardStudent);
+
+                int entranceIndex = message.getEntranceStudents().get(i)-1;
+                Student entranceStudent = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(entranceIndex);
                 entranceStudents.add(entranceStudent);
             }
 
@@ -214,10 +215,10 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter8(PayCharacter8Message message, String username, View view){
+    public void payCharacter8(PayCharacter8Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
-            table.setCurrentEffect(new Effect(new AdditionalInfluenceEffect(table.getCurrentPlayer())));
+            table.setCurrentEffect(new AdditionalInfluenceEffect(table.getCurrentPlayer()));
             pay(message.getCharacter());
         }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
@@ -226,11 +227,11 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter9(PayCharacter9Message message, String username, View view){
+    public void payCharacter9(PayCharacter9Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
             ColorS color = ColorS.parseToColor(message.getColor());
-            table.setCurrentEffect(new Effect(new NoInfluenceColorEffect(color)));
+            table.setCurrentEffect(new NoInfluenceColorEffect(color));
             pay(message.getCharacter());
         }catch(InvalidCharacterException | NotEnoughCoinsException e)
         {
@@ -241,27 +242,32 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter10(PayCharacter10Message message, String username, View view){
+    public void payCharacter10(PayCharacter10Message message, String username){
         try {
             //verify all validity
             table.validCharacter(message.getCharacter());
             for (int i = 0; i < message.getDiningStudents().size(); i++) {
-                table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(message.getEntranceStudents().get(i));
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(message.getEntranceStudents().get(i)-1);
             }
             table.getCurrentPlayer().getSchoolBoard().getDiningRoom().validColors(message.getDiningStudents());
 
             List<Student> entranceStudents = new ArrayList<>();
+            List<Student> diningStudents = new ArrayList<>();
 
             //pick the students with the assigned indexes
             for (int i = 0; i < message.getEntranceStudents().size(); i++) {
-                Student entranceStudent = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(i);
+                int entranceIndex = message.getEntranceStudents().get(i)-1;
+                Student entranceStudent = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(entranceIndex);
                 entranceStudents.add(entranceStudent);
+
+                ColorS diningColor = ColorS.parseToColor(message.getDiningStudents().get(i));
+                Student diningStudent = table.getCurrentPlayer().getSchoolBoard().getDiningRoom().removeStudent(diningColor);
+                diningStudents.add(diningStudent);
             }
 
             //switch selected students
             for (int i = 0; i < message.getDiningStudents().size(); i++) {
-                Student diningStudent = table.getCurrentPlayer().getSchoolBoard().getDiningRoom().removeStudent(ColorS.parseToColor(message.getDiningStudents().get(i)));
-                table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(diningStudent);
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(diningStudents.get(i));
                 table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(entranceStudents.get(i));
                 table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(entranceStudents.get(i));
                 table.setProfessorOwner(entranceStudents.get(i).getColor(), table.getCurrentPlayer());
@@ -282,7 +288,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter11(PayCharacter11Message message, String username, View view){
+    public void payCharacter11(PayCharacter11Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
             table.getCardWithStudents(message.getCharacter()).validStudent(message.getStudentId()-1);
@@ -299,7 +305,7 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
-    public void payCharacter12(PayCharacter12Message message, String username, View view){
+    public void payCharacter12(PayCharacter12Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
             ColorS color = ColorS.parseToColor(message.getColor());

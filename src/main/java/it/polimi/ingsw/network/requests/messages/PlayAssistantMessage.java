@@ -13,8 +13,8 @@ public class PlayAssistantMessage implements RequestMessage, ControllerExecute {
     }
 
     @Override
-    public void execute(Controller controller, String username, View view) {
-        controller.playAssistant(this,username,view);
+    public void execute(Controller controller, String username) {
+        controller.playAssistant(this,username);
     }
 
     public int getValue() {

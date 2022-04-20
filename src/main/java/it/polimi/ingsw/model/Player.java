@@ -19,7 +19,6 @@ public class Player {
     private ColorT towerColor;
     private final Stack<Assistant> discardPile;
 
-    //FIXME: used only in tests
     /**
      * builds a player for a 2 or 3 players match
      * @param username player username
@@ -30,7 +29,6 @@ public class Player {
         this.discardPile = new Stack<>();
     }
 
-    //FIXME: used only in tests
     /**
      * builds a player for a 4-players match
      * @param username player username
@@ -43,6 +41,7 @@ public class Player {
         this.discardPile = new Stack<>();
     }
 
+    //FIXME: used only in tests
     /**
      * builds a player with username, assistant deck, tag team and tower color
      * @param username player username
@@ -98,9 +97,8 @@ public class Player {
         return tagTeam;
     }
 
-    //FIXME: never used
     /**
-     * override of the equals' method for player
+     * override of the "equals" method for player
      * @param o object to confront
      * @return if two players are equals
      */
