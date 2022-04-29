@@ -10,6 +10,11 @@ import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Tower;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 import it.polimi.ingsw.model.cards.Assistant;
+import it.polimi.ingsw.network.client.ReducedModel;
+import it.polimi.ingsw.network.client.states.ClientState;
+import it.polimi.ingsw.network.responses.ResponseMessage;
+import it.polimi.ingsw.network.responses.reducedModelMessage.GameStartedMessage;
+import it.polimi.ingsw.utils.Observable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -23,7 +28,7 @@ import java.util.stream.Collectors;
 /**
  * Table Class for match control, represents the entire model
  */
-public class Table {
+public class Table extends Observable<ResponseMessage> {
 
     public static final int NUM_OF_ISLANDS = 12;
     public static final int NUM_OF_STUDENTS_PER_COLOR = 26;
@@ -676,6 +681,20 @@ public class Table {
         }
         return winner;
         //TODO: we are in the endgame now!
+    }
+
+    //FIXME: è una prova
+    public ReducedModel createReducedModel(){
+        Map<Integer, String> islands = new HashMap<>();
+        for (Island i : this.islands){
+            islands.put(i.getId(), "BLU");
+        }
+        return new ReducedModel(islands);
+    }
+
+    //FIXME:prova
+    public void notifyall(){
+        notify(new GameStartedMessage(ClientState.PLAY_ASSISTANT,createReducedModel()));
     }
 
 }

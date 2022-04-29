@@ -9,8 +9,7 @@ import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.network.requests.ControllerExecuteExpertMode;
 import it.polimi.ingsw.network.requests.*;
-import it.polimi.ingsw.network.requests.messages.*;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.network.requests.gameMessages.*;
 
 import java.util.ArrayList;
 import java.util.List;

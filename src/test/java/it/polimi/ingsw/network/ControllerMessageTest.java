@@ -1,8 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.requests.ControllerMessage;
-import it.polimi.ingsw.network.requests.messages.PlayAssistantMessage;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.network.requests.gameMessages.PlayAssistantMessage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -8,7 +8,7 @@ public class ServerApp {
     public final static int SERVER_PORT = 1338;
 
     public static void main( String[] args ) throws IOException {
-        Server server = new Server(SERVER_PORT);
-        server.startServer();
+        Server server = new Server();
+        server.run();
     }
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages;
 
-import it.polimi.ingsw.network.requests.messages.ChooseCloudMessage;
+import it.polimi.ingsw.network.requests.gameMessages.ChooseCloudMessage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

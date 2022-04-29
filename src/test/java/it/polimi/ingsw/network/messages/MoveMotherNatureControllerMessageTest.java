@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages;
 
-import it.polimi.ingsw.network.requests.messages.MoveMotherNatureMessage;
+import it.polimi.ingsw.network.requests.gameMessages.MoveMotherNatureMessage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

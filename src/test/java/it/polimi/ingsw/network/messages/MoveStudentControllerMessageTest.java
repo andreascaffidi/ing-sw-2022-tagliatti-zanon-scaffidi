@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages;
 
-import it.polimi.ingsw.network.requests.messages.MoveStudentMessage;
+import it.polimi.ingsw.network.requests.gameMessages.MoveStudentMessage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

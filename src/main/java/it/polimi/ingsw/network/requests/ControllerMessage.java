@@ -1,7 +1,5 @@
 package it.polimi.ingsw.network.requests;
 
-import it.polimi.ingsw.view.View;
-
 public class ControllerMessage {
 
     private RequestMessage requestMessage;

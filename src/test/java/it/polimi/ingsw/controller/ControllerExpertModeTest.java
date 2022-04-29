@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.network.requests.ControllerMessage;
-import it.polimi.ingsw.network.requests.messages.*;
+import it.polimi.ingsw.network.requests.gameMessages.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;

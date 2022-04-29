@@ -1,6 +1,5 @@
 package it.polimi.ingsw.exceptions;
 
-import it.polimi.ingsw.network.responses.Response;
 import it.polimi.ingsw.network.responses.ResponseMessage;
 
 public class SendMessageException extends RuntimeException{

@@ -1,10 +1,12 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.ControllerExpertMode;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Table;
-import it.polimi.ingsw.network.responses.messages.FirstPlayerConnectResponse;
-import it.polimi.ingsw.network.responses.messages.UsernameTakenResponse;
+import it.polimi.ingsw.model.TableExpertMode;
+import it.polimi.ingsw.network.requests.setupMessages.CreateLobbyMessage;
+import it.polimi.ingsw.view.RemoteView;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -14,85 +16,139 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    private final int port;
+    private static final int PORT= 12345;
+    private ServerSocket serverSocket;
 
-    private ArrayList<Player> lobby;
-    private int numOfPlayers;
+    private ExecutorService executor = Executors.newFixedThreadPool(128);
 
-    private Map<SocketConnection, Controller> games;
-    private Map<String, SocketConnection> clients;
+    private Map<String, Connection> clients;
 
-    ExecutorService executorSocket = Executors.newCachedThreadPool();
+    private Map<Lobby, List<Connection>> lobbies;
 
+    private List<Connection> connections = new ArrayList<Connection>();
 
-    public Server(int port) {
-        this.port = port;
+    public Server() throws IOException {
+        this.serverSocket = new ServerSocket(PORT);
+        this.clients = new HashMap<>();
+        this.lobbies = new HashMap<>();
     }
 
-    public void startServer() throws IOException {
-        ServerSocket serverSocket;
-        try{
-            serverSocket = new ServerSocket(port);
-        }catch (IOException e){
-            System.err.println(e.getMessage());
-            return;
+    private synchronized void registerConnection(Connection c){
+        connections.add(c);
+    }
+
+    public synchronized void deregisterConnection(Connection c){
+        connections.remove(c);
+        //rimuovere client
+        clients.remove(c.getUsernameConnection());
+        //rimuovere connessione dalla lobby
+        if (c.getHostLobby() != null){
+            Lobby lobby = lobbies.keySet().stream().filter(l -> l.getHost().equals(c.getHostLobby())).findFirst().orElse(null);
+            List<Connection> lobbyConnections = lobbies.get(lobby);
+            lobbyConnections.remove(c);
+            lobby.removeConnection();
         }
-        print("Server ready");
-        while (true){
+
+        System.out.println("Connection number: " + getNumOfConnections());
+                /*
+        Connection opponent = playingConnection.get(c);
+        if(opponent != null){
+            opponent.closeConnection();
+            playingConnection.remove(c);
+            playingConnection.remove(opponent);
+            //Iterator<String> iterator = waitingConnection.keySet().iterator();
+            //while(iterator.hasNext()){
+            //    if(waitingConnection.get(iterator.next())==c){
+            //        iterator.remove();
+            //    }
+            //}
+
+        }*/
+
+    }
+
+    public synchronized void joinLobby(String host, Connection c){
+        //trovare lobby dell'host
+        Lobby lobby = lobbies.keySet().stream().filter(l -> l.getHost().equals(host)).findFirst().orElse(null);
+        lobby.addConnection();
+        //prendere le connessioni e aggiungerci questa
+        List<Connection> lobbyConnections = lobbies.get(lobby);
+        lobbyConnections.add(c);
+        lobbies.put(lobby, lobbyConnections);
+        if(lobby.getNumOfPlayers() == lobbyConnections.size()){
+            System.out.println("Lobby full");
+
+            List<Player> players = new ArrayList<>();
+            List<RemoteView> playerViews = new ArrayList<>();
+            for (Connection conn : lobbyConnections){
+                Player player = new Player(conn.getUsernameConnection());
+                RemoteView playerView = new RemoteView(player, conn);
+                players.add(player);
+                playerViews.add(playerView);
+            }
+
+            if (lobby.getGameMode().equals("EXPERT")){
+                TableExpertMode model = new TableExpertMode(players);
+                ControllerExpertMode controller = new ControllerExpertMode(model);
+                for(RemoteView v : playerViews){
+                    model.addObserver(v);
+                    v.addObserver(controller);
+                }
+            }else{
+                Table model = new Table(players);
+                Controller controller = new Controller(model);
+                for(RemoteView v : playerViews){
+                    model.addObserver(v);
+                    v.addObserver(controller);
+                }
+                //fixme: prova
+                model.notifyall();
+            }
+
+            /*
+            playingConnection.put(c1, c2);
+            playingConnection.put(c2, c1);
+            waitingConnection.clear();
+             */
+        }
+
+    }
+
+    public void run(){
+        System.out.println("Server listening on port: " + PORT);
+        while(true){
             try {
                 Socket socket = serverSocket.accept();
-                SocketConnection socketConnection = new SocketConnection(this, socket);
-                print("Nuova connessione");
-                executorSocket.submit(socketConnection);
-            }catch (IOException e){
-                System.err.println(e.getMessage());
-                break;
+                Connection connection = new Connection(socket, this);
+                registerConnection(connection);
+                System.out.println("Connection number: " + getNumOfConnections());
+                executor.submit(connection);
+            } catch (IOException e){
+                System.err.println("Connection error!");
             }
         }
-        executorSocket.shutdown();
-        serverSocket.close();
     }
 
-
-    public Map<SocketConnection, Controller> getGames() {
-        return games;
-    }
-
-    public void print(String text){
-        System.out.println(text);
-    }
-
-    public void connect(String username, SocketConnection socketConnection) {
-        if(clients.containsKey(username)){
-            socketConnection.send(new UsernameTakenResponse());
+    public boolean validUsername(String username, Connection connection){
+        if (clients.containsKey(username)){
+            return false;
+        }else{
+            clients.put(username, connection);
+            return true;
         }
-        clients.put(username,socketConnection);
-
-        synchronized (lobby){
-            if(lobby.isEmpty()){
-                lobby.add(new Player(username));
-                socketConnection.send(new FirstPlayerConnectResponse());
-            }else{
-                lobby.add(new Player(username));
-                if(lobby.size() == numOfPlayers){
-                    createGame();
-                }
-            }
-        }
-
     }
 
-    public void setNumOfPlayers(int numOfPlayers) {
-        this.numOfPlayers = numOfPlayers;
+    public void createLobby(CreateLobbyMessage settings, Connection connection){
+        List<Connection> lobbyConnections = new ArrayList<>();
+        lobbyConnections.add(connection);
+        lobbies.put(new Lobby(settings.getHost(), settings.getGameMode(), settings.getNumOfPlayers()), lobbyConnections);
     }
 
-    public void  createGame(){
-        numOfPlayers = -1;  //
+    public List<Lobby> getLobbies() {
+        return new ArrayList<>(lobbies.keySet());
+    }
 
-        ArrayList players = new ArrayList<>(lobby);
-
-        Table table = new Table(players);
-        Controller controller = new Controller(table);
-
+    public int getNumOfConnections() {
+        return connections.size();
     }
 }

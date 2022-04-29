@@ -6,14 +6,13 @@ import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.network.requests.ControllerExecute;
 import it.polimi.ingsw.network.requests.ControllerMessage;
-import it.polimi.ingsw.network.requests.messages.ChooseCloudMessage;
-import it.polimi.ingsw.network.requests.messages.MoveMotherNatureMessage;
-import it.polimi.ingsw.network.requests.messages.MoveStudentMessage;
-import it.polimi.ingsw.network.requests.messages.PlayAssistantMessage;
-import it.polimi.ingsw.network.responses.ResponseMessage;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.network.requests.gameMessages.ChooseCloudMessage;
+import it.polimi.ingsw.network.requests.gameMessages.MoveMotherNatureMessage;
+import it.polimi.ingsw.network.requests.gameMessages.MoveStudentMessage;
+import it.polimi.ingsw.network.requests.gameMessages.PlayAssistantMessage;
+import it.polimi.ingsw.utils.Observer;
 
-public class Controller {
+public class Controller implements Observer<ControllerMessage> {
 
     private Table table;
 
@@ -23,6 +22,7 @@ public class Controller {
 
 
     //TODO: proibire al metodo di eseguire messaggi per esperti (nella remote view)
+    @Override
     public void update(ControllerMessage message){
         ControllerExecute controller = (ControllerExecute) message.getRequestMessage();
         controller.execute(this, message.getUsername());
