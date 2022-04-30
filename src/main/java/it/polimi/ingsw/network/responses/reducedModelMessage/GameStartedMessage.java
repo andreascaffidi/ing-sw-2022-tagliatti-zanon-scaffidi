@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.responses.reducedModelMessage;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.ReducedModel;
+import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.responses.ClientExecute;
 import it.polimi.ingsw.network.responses.ResponseMessage;

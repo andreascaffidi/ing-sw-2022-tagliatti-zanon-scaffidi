@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.ReducedModel;
+import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.UI.UI;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
@@ -30,11 +30,5 @@ public class CLI implements UI {
 
     //FIXME: è una prova
     public static void showModel(ReducedModel reducedModel){
-        Map<Integer, String> islands = reducedModel.getIslands();
-        List<Integer> id = new ArrayList<>(islands.keySet());
-        for(int i =0 ; i< islands.size(); i++){
-            System.out.println(id.get(i) + " :  " + islands.get(i));
-        }
-
     }
 }

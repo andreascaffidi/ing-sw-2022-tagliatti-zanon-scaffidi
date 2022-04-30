@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Tower;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 import it.polimi.ingsw.model.cards.Assistant;
-import it.polimi.ingsw.network.client.ReducedModel;
+import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.responses.ResponseMessage;
 import it.polimi.ingsw.network.responses.reducedModelMessage.GameStartedMessage;
@@ -689,7 +689,7 @@ public class Table extends Observable<ResponseMessage> {
         for (Island i : this.islands){
             islands.put(i.getId(), "BLU");
         }
-        return new ReducedModel(islands);
+        return new ReducedModel();
     }
 
     //FIXME:prova
