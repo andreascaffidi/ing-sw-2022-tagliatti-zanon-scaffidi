@@ -30,5 +30,6 @@ public class CLI implements UI {
 
     //FIXME: è una prova
     public static void showModel(ReducedModel reducedModel){
+        System.out.println("QUESTO è il modello");
     }
 }

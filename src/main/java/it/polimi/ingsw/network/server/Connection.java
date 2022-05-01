@@ -1,10 +1,7 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.network.client.states.ClientState;
-import it.polimi.ingsw.network.requests.ControllerExecute;
-import it.polimi.ingsw.network.requests.ControllerExecuteExpertMode;
-import it.polimi.ingsw.network.requests.RequestMessage;
-import it.polimi.ingsw.network.requests.SetupExecute;
+import it.polimi.ingsw.network.requests.*;
 import it.polimi.ingsw.network.requests.setupMessages.CreateLobbyMessage;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 import it.polimi.ingsw.network.responses.ResponseMessage;
@@ -13,13 +10,14 @@ import it.polimi.ingsw.network.responses.reducedModelMessage.ServerErrorMessage;
 import it.polimi.ingsw.network.responses.setupMessages.SetupResponseMessage;
 import it.polimi.ingsw.network.responses.setupMessages.ShowLobbyMessage;
 import it.polimi.ingsw.utils.Observable;
+import it.polimi.ingsw.utils.Observer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class Connection extends Observable<RequestMessage> implements Runnable{
+public class Connection extends Observable<ControllerMessage> implements Runnable, Observer<ResponseMessage> {
 
     private Socket socket;
     private ObjectInputStream in;
@@ -76,7 +74,7 @@ public class Connection extends Observable<RequestMessage> implements Runnable{
             ((SetupExecute) request).execute(this);
         }
         if (request instanceof ControllerExecute || request instanceof ControllerExecuteExpertMode){
-            notify(request);
+            notify(new ControllerMessage(request, usernameConnection));
         }
     }
 
@@ -140,5 +138,10 @@ public class Connection extends Observable<RequestMessage> implements Runnable{
 
     public String getUsernameConnection() {
         return usernameConnection;
+    }
+
+    @Override
+    public void update(ResponseMessage message) {
+        send(message);
     }
 }

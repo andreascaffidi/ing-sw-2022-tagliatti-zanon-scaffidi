@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.TableExpertMode;
 import it.polimi.ingsw.network.requests.setupMessages.CreateLobbyMessage;
-import it.polimi.ingsw.view.RemoteView;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -79,27 +78,27 @@ public class Server {
             System.out.println("Lobby full");
 
             List<Player> players = new ArrayList<>();
-            List<RemoteView> playerViews = new ArrayList<>();
+            //List<RemoteView> playerViews = new ArrayList<>();
             for (Connection conn : lobbyConnections){
                 Player player = new Player(conn.getUsernameConnection());
-                RemoteView playerView = new RemoteView(player, conn);
+                //RemoteView playerView = new RemoteView(player, conn);
                 players.add(player);
-                playerViews.add(playerView);
+                //playerViews.add(playerView);
             }
 
             if (lobby.getGameMode().equals("EXPERT")){
                 TableExpertMode model = new TableExpertMode(players);
                 ControllerExpertMode controller = new ControllerExpertMode(model);
-                for(RemoteView v : playerViews){
-                    model.addObserver(v);
-                    v.addObserver(controller);
+                for(Connection conn : lobbyConnections){
+                    model.addObserver(conn);
+                    conn.addObserver(controller);
                 }
             }else{
                 Table model = new Table(players);
                 Controller controller = new Controller(model);
-                for(RemoteView v : playerViews){
-                    model.addObserver(v);
-                    v.addObserver(controller);
+                for(Connection conn : lobbyConnections){
+                    model.addObserver(conn);
+                    conn.addObserver(controller);
                 }
                 //fixme: prova
                 model.notifyall();
