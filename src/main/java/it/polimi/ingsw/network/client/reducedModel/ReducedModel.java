@@ -11,4 +11,28 @@ public class ReducedModel implements Serializable {
     private List<ReducedCloud> clouds;
     private String currentPlayer;
     private List<ReducedBoard> boards;
+
+    public ReducedModel(List<ReducedIsland> islands, List<ReducedCloud> clouds,
+                        String currentPlayer, List<ReducedBoard> boards) {
+        this.islands = islands;
+        this.clouds = clouds;
+        this.currentPlayer = currentPlayer;
+        this.boards = boards;
+    }
+
+    public List<ReducedBoard> getBoards() {
+        return boards;
+    }
+
+    public List<ReducedCloud> getClouds() {
+        return clouds;
+    }
+
+    public List<ReducedIsland> getIslands() {
+        return islands;
+    }
+
+    public String getCurrentPlayer() {
+        return currentPlayer;
+    }
 }

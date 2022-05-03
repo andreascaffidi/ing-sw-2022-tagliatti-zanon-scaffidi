@@ -10,6 +10,9 @@ import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Tower;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
 import it.polimi.ingsw.model.cards.Assistant;
+import it.polimi.ingsw.network.client.reducedModel.ReducedBoard;
+import it.polimi.ingsw.network.client.reducedModel.ReducedCloud;
+import it.polimi.ingsw.network.client.reducedModel.ReducedIsland;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.responses.ResponseMessage;
@@ -685,11 +688,28 @@ public class Table extends Observable<ResponseMessage> {
 
     //FIXME: è una prova
     public ReducedModel createReducedModel(){
-        Map<Integer, String> islands = new HashMap<>();
-        for (Island i : this.islands){
-            islands.put(i.getId(), "BLU");
+
+        List<ReducedBoard> reducedBoards = new ArrayList<>();
+        List<ReducedIsland> reducedIslands = new ArrayList<>();
+        List<ReducedCloud> reducedClouds = new ArrayList<>();
+
+        for(Player p : this.players)
+        {
+            reducedBoards.add(p.reduceBoard());
         }
-        return new ReducedModel();
+
+        for(Island i : this.islands)
+        {
+            reducedIslands.add(i.reduceIsland());
+        }
+
+        for(Cloud c : this.clouds)
+        {
+            reducedClouds.add(new ReducedCloud(this.clouds.indexOf(c),
+                    c.getStudents().stream().map(Student::getColor).collect(Collectors.toList())));
+        }
+
+        return new ReducedModel(reducedIslands, reducedClouds, this.currentPlayer.getUsername(), reducedBoards);
     }
 
     //FIXME:prova

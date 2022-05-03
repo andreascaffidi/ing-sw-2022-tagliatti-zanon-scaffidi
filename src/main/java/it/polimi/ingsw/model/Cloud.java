@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.pawns.Student;
+import it.polimi.ingsw.network.client.reducedModel.ReducedCloud;
 
 import java.util.*;
 
@@ -42,5 +43,4 @@ public class Cloud {
     public List<Student> getStudents() {
         return this.students;
     }
-
 }

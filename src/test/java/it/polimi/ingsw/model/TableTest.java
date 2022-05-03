@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Tower;
+import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -643,5 +644,12 @@ class TableTest {
 
         table2p.getPlayers()[0].getSchoolBoard().getProfessorTable().addProfessor(new Professor(ColorS.BLUE));
         assertEquals(two.get(0), table2p.endGame());
+    }
+
+    @Test
+    void checkerrors()
+    {
+        ReducedModel reduced = table2p.createReducedModel();
+        System.out.println(reduced.getCurrentPlayer());
     }
 }

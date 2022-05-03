@@ -1,12 +1,15 @@
 package it.polimi.ingsw.network.client.reducedModel;
 
+import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.enums.ColorT;
+
 import java.io.Serializable;
 import java.util.List;
 
 public class ReducedBoard implements Serializable {
 
     private String player;
-    private String towerColor;
+    private ColorT towerColor;
 
     private int yellowStudents;
     private int blueStudents;
@@ -14,16 +17,16 @@ public class ReducedBoard implements Serializable {
     private int pinkStudents;
     private int greenStudents;
 
-    private List<String> entranceStudents;
+    private List<ColorS> entranceStudents;
 
-    private List<String> professors;
+    private List<ColorS> professors;
 
     private int numOfTowers;
 
     private ReducedAssistantDeck assistantDeck;
 
-    public ReducedBoard(String player, String towerColor, int yellowStudents, int blueStudents, int redStudents,
-                        int pinkStudents, int greenStudents, List<String> entranceStudents, List<String> professors,
+    public ReducedBoard(String player, ColorT towerColor, int yellowStudents, int blueStudents, int redStudents,
+                        int pinkStudents, int greenStudents, List<ColorS> entranceStudents, List<ColorS> professors,
                         int numOfTowers, ReducedAssistantDeck assistantDeck) {
         this.player = player;
         this.towerColor = towerColor;
@@ -42,7 +45,7 @@ public class ReducedBoard implements Serializable {
         return player;
     }
 
-    public String getTowerColor() {
+    public ColorT getTowerColor() {
         return towerColor;
     }
 
@@ -66,11 +69,11 @@ public class ReducedBoard implements Serializable {
         return greenStudents;
     }
 
-    public List<String> getEntranceStudents() {
+    public List<ColorS> getEntranceStudents() {
         return entranceStudents;
     }
 
-    public List<String> getProfessors() {
+    public List<ColorS> getProfessors() {
         return professors;
     }
 

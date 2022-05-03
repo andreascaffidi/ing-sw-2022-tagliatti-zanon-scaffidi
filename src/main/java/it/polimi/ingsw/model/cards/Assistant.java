@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.enums.Wizards;
+import it.polimi.ingsw.network.client.reducedModel.ReducedAssistant;
 
 /**
  * class assistant card
@@ -44,5 +45,10 @@ public class Assistant {
      */
     public Wizards getWizard() {
         return wizard;
+    }
+
+    public ReducedAssistant reduceAssistant()
+    {
+        return new ReducedAssistant(this.value, this.motherNatureMovements, this.wizard);
     }
 }

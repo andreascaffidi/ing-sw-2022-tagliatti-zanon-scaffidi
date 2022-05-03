@@ -12,15 +12,26 @@ import it.polimi.ingsw.network.requests.gameMessages.MoveStudentMessage;
 import it.polimi.ingsw.network.requests.gameMessages.PlayAssistantMessage;
 import it.polimi.ingsw.utils.Observer;
 
+/**
+ * controller class
+ */
 public class Controller implements Observer<ControllerMessage> {
 
-    private Table table;
+    private final Table table;
 
+    /**
+     * builds the controller
+     * @param table to control
+     */
     public Controller(Table table){
         this.table = table;
     }
 
 
+    /**
+     * executes a method of the controller after the received message
+     * @param message that requests the execution of a specific controller method
+     */
     //TODO: proibire al metodo di eseguire messaggi per esperti (nella remote view)
     @Override
     public void update(ControllerMessage message){
@@ -29,6 +40,11 @@ public class Controller implements Observer<ControllerMessage> {
     }
 
 
+    /**
+     * plays assistant
+     * @param message play assistant
+     * @param username player that chooses the assistant
+     */
     public void playAssistant(PlayAssistantMessage message, String username){
         try{
             checkPlayer(username);
@@ -46,12 +62,21 @@ public class Controller implements Observer<ControllerMessage> {
         }
     }
 
+    /**
+     * checks if it's the player turn
+     * @param username of the player
+     */
     private void checkPlayer(String username){
         if(!username.equals(table.getCurrentPlayer().getUsername()))
             throw new WrongPlayerException("It isn't your turn");
     }
 
 
+    /**
+     * moves student to island
+     * @param message move student to island
+     * @param username player that chooses to move the student to island
+     */
     public void moveStudentToIsland(MoveStudentMessage message, String username){
         try{
             checkPlayer(username);
@@ -65,13 +90,18 @@ public class Controller implements Observer<ControllerMessage> {
             //TODO
             System.out.println("WrongPlayerException");
         } catch (IslandNotValidException e) {
-
+            //TODO
         } catch (InvalidEntranceStudentException e) {
             //TODO
             System.out.println("StudentIndexOutOfBoundsException");
         }
     }
 
+    /**
+     * moves student to dining room
+     * @param message move student to dining
+     * @param username player that chooses to move the student to dining room
+     */
     public void moveStudentToDining(MoveStudentMessage message, String username){
         try{
             checkPlayer(username);
@@ -90,6 +120,11 @@ public class Controller implements Observer<ControllerMessage> {
     }
 
 
+    /**
+     * moves mother nature
+     * @param message move mother nature
+     * @param username player that moves mother nature
+     */
     public void moveMotherNature(MoveMotherNatureMessage message, String username){
         try{
             checkPlayer(username);
@@ -107,7 +142,11 @@ public class Controller implements Observer<ControllerMessage> {
     }
 
 
-
+    /**
+     * chooses the cloud
+     * @param message choose cloud
+     * @param username of the player that chooses the cloud
+     */
     public void chooseCloud(ChooseCloudMessage message, String username){
         try {
             checkPlayer(username);

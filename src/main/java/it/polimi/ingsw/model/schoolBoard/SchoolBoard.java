@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.schoolBoard;
 
+import it.polimi.ingsw.network.client.reducedModel.ReducedBoard;
+
 /**
  * school board
  */

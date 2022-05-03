@@ -6,6 +6,9 @@ import it.polimi.ingsw.network.requests.RequestMessage;
 
 import java.io.Serializable;
 
+/**
+ *
+ */
 public class PayCharacter5Message implements RequestMessage, ControllerExecuteExpertMode, Serializable {
 
     private int character;

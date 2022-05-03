@@ -2,10 +2,17 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.AssistantNotFoundException;
 import it.polimi.ingsw.exceptions.MovementNotValidException;
 import it.polimi.ingsw.model.cards.Assistant;
+import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
+import it.polimi.ingsw.model.pawns.Professor;
+import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
+import it.polimi.ingsw.network.client.reducedModel.ReducedAssistant;
+import it.polimi.ingsw.network.client.reducedModel.ReducedAssistantDeck;
+import it.polimi.ingsw.network.client.reducedModel.ReducedBoard;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * class player
@@ -169,5 +176,25 @@ public class Player {
         if (movement <= 0 || movement > this.discardPile.peek().getMotherNatureMovements()){
             throw new MovementNotValidException("Not valid movement");
         }
+    }
+
+    public ReducedBoard reduceBoard()
+    {
+        ReducedAssistant reduced = null;
+        if(!this.discardPile.isEmpty())
+        {
+            reduced = this.discardPile.peek().reduceAssistant();
+        }
+        return new ReducedBoard(this.username, this.towerColor,
+                this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(ColorS.YELLOW),
+                this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(ColorS.BLUE),
+                this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(ColorS.RED),
+                this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(ColorS.PINK),
+                this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(ColorS.GREEN),
+                this.getSchoolBoard().getEntrance().getStudents().stream().map(Student::getColor).collect(Collectors.toList()),
+                this.getSchoolBoard().getProfessorTable().getProfessors().stream().map(Professor::getColor).collect(Collectors.toList()),
+                this.getSchoolBoard().getTowerBoard().getTowers().size(),
+                new ReducedAssistantDeck(this.getAssistantDeck().stream().map(Assistant::reduceAssistant).collect(Collectors.toList()),
+                        reduced));
     }
 }

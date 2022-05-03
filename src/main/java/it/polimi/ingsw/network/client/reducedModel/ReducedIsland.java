@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.client.reducedModel;
 
+import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.enums.ColorT;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -7,12 +10,12 @@ import java.util.Map;
 public class ReducedIsland implements Serializable {
 
     private int id;
-    private List<String> students;
-    private String tower;
+    private List<ColorS> students;
+    private ColorT tower;
     private int numOfTowers;
     private boolean motherNature;
 
-    public ReducedIsland(int id, List<String> students, String tower, int numOfTowers, boolean motherNature) {
+    public ReducedIsland(int id, List<ColorS> students, ColorT tower, int numOfTowers, boolean motherNature) {
         this.id = id;
         this.students = students;
         this.tower = tower;
@@ -24,11 +27,11 @@ public class ReducedIsland implements Serializable {
         return id;
     }
 
-    public List<String> getStudents() {
+    public List<ColorS> getStudents() {
         return students;
     }
 
-    public String getTower() {
+    public ColorT getTower() {
         return tower;
     }
 

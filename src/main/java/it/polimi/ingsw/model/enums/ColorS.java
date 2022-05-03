@@ -2,10 +2,12 @@ package it.polimi.ingsw.model.enums;
 
 import it.polimi.ingsw.exceptions.ColorNotFoundException;
 
+import java.io.Serializable;
+
 /**
  * pawn colors
  */
-public enum ColorS {
+public enum ColorS implements Serializable {
     GREEN, BLUE, RED, PINK, YELLOW;
 
     /**

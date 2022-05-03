@@ -14,17 +14,28 @@ import it.polimi.ingsw.network.requests.gameMessages.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * controller expert mode class
+ */
 public class ControllerExpertMode extends Controller{
 
-    private TableExpertMode table;
+    private final TableExpertMode table;
 
 
+    /**
+     * builds the controller expert mode
+     * @param table to control
+     */
     public ControllerExpertMode(TableExpertMode table)
     {
         super(table);
         this.table = table;
     }
 
+    /**
+     * executes a method of the controller expert mode after the received message
+     * @param message that requests the execution of a specific controller method
+     */
     @Override
     public void update(ControllerMessage message){
         if (message.isExpertMode()){
@@ -37,12 +48,22 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
+    /**
+     * chooses the cloud
+     * @param message choose cloud
+     * @param username of the player that chooses the cloud
+     */
     @Override
     public void chooseCloud(ChooseCloudMessage message, String username){
         super.chooseCloud(message, username);
         table.resetCurrentEffect();
     }
 
+    /**
+     * moves student to dining room
+     * @param message move student to dining
+     * @param username player that chooses to move the student to dining room
+     */
     @Override
     public void moveStudentToDining(MoveStudentMessage message, String username){
         try {
@@ -57,6 +78,11 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
+    /**
+     * plays character 1
+     * @param message pay character 1
+     * @param username of the player that plays the character
+     */
     public void payCharacter1(PayCharacter1Message message, String username)
     {
         try {
@@ -67,31 +93,19 @@ public class ControllerExpertMode extends Controller{
             table.getIsland(message.getIslandId()-1).addStudent(student);
             table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
             pay(message.getCharacter());
-        }catch(InvalidCharacterException e)
+        }catch(InvalidCharacterException | IslandNotValidException | CardNotFoundException |
+               InvalidCardStudentException | NotEnoughCoinsException e)
         {
-            //TODO
-            System.out.println(e.getMessage());
-        }
-        catch(IslandNotValidException e)
-        {
-            //TODO
-            System.out.println(e.getMessage());
-        }
-        catch(CardNotFoundException e)
-        {
-            //TODO
-            System.out.println(e.getMessage());
-        }
-        catch(InvalidCardStudentException e)
-        {
-            //TODO
-            System.out.println(e.getMessage());
-        } catch (NotEnoughCoinsException e) {
             //TODO
             System.out.println(e.getMessage());
         }
     }
 
+    /**
+     * plays character 2
+     * @param message pay character 2
+     * @param username of the player that plays the character
+     */
     public void payCharacter2(PayCharacter2Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
@@ -104,6 +118,11 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
+    /**
+     * plays character 3
+     * @param message pay character 3
+     * @param username of the player that plays the character
+     */
     public void payCharacter3(PayCharacter3Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
@@ -119,6 +138,11 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
+    /**
+     * plays character 4
+     * @param message pay character 4
+     * @param username of the player that plays the character
+     */
     public void payCharacter4(PayCharacter4Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
@@ -134,6 +158,11 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
+    /**
+     * plays character 5
+     * @param message pay character 5
+     * @param username of the player that plays the character
+     */
     public void payCharacter5(PayCharacter5Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
@@ -146,15 +175,16 @@ public class ControllerExpertMode extends Controller{
         {
             //TODO
             System.out.println(e.getMessage());
-        } catch (IslandNotValidException e) {
-            e.printStackTrace();
-        } catch (InvalidNoEntryTileException e) {
-            e.printStackTrace();
-        } catch (TooManyNoEntryTileException e) {
+        } catch (IslandNotValidException | InvalidNoEntryTileException | TooManyNoEntryTileException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * plays character 6
+     * @param message pay character 6
+     * @param username of the player that plays the character
+     */
     public void payCharacter6(PayCharacter6Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
@@ -170,6 +200,11 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
+    /**
+     * plays character 7
+     * @param message pay character 7
+     * @param username of the player that plays the character
+     */
     public void payCharacter7(PayCharacter7Message message, String username){
         try {
             //verify all indexes' validity
@@ -205,15 +240,16 @@ public class ControllerExpertMode extends Controller{
         {
             //TODO
             System.out.println(e.getMessage());
-        } catch (CardNotFoundException e) {
-            e.printStackTrace();
-        } catch (InvalidCardStudentException e) {
-            e.printStackTrace();
-        } catch (InvalidEntranceStudentException e) {
+        } catch (CardNotFoundException | InvalidCardStudentException | InvalidEntranceStudentException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * plays character 8
+     * @param message pay character 8
+     * @param username of the player that plays the character
+     */
     public void payCharacter8(PayCharacter8Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
@@ -226,6 +262,11 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
+    /**
+     * plays character 9
+     * @param message pay character 9
+     * @param username of the player that plays the character
+     */
     public void payCharacter9(PayCharacter9Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
@@ -241,6 +282,11 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
+    /**
+     * plays character 10
+     * @param message pay character 10
+     * @param username of the player that plays the character
+     */
     public void payCharacter10(PayCharacter10Message message, String username){
         try {
             //verify all validity
@@ -276,17 +322,17 @@ public class ControllerExpertMode extends Controller{
         {
             //TODO
             System.out.println(e.getMessage());
-        } catch (InvalidEntranceStudentException e) {
+        } catch (InvalidEntranceStudentException | NotEnoughCoinsException | ColorNotFoundException |
+                 InvalidColorsException e) {
             e.printStackTrace();
-        } catch (NotEnoughCoinsException ex) {
-            ex.printStackTrace();
-        } catch (ColorNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (InvalidColorsException ex) {
-            ex.printStackTrace();
         }
     }
 
+    /**
+     * plays character 11
+     * @param message pay character 11
+     * @param username of the player that plays the character
+     */
     public void payCharacter11(PayCharacter11Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
@@ -304,6 +350,11 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
+    /**
+     * plays character 12
+     * @param message pay character 12
+     * @param username of the player that plays the character
+     */
     public void payCharacter12(PayCharacter12Message message, String username){
         try {
             table.validCharacter(message.getCharacter());
@@ -332,6 +383,10 @@ public class ControllerExpertMode extends Controller{
         }
     }
 
+    /**
+     * plays a character and increments its cost
+     * @param character to play
+     */
     private void pay(int character) {
         int cost = table.getCharacters().get(character);
         table.pay(table.getCurrentPlayer(), cost);

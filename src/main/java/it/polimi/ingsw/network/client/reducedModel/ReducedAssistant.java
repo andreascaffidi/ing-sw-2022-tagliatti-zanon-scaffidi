@@ -1,14 +1,16 @@
 package it.polimi.ingsw.network.client.reducedModel;
 
+import it.polimi.ingsw.model.enums.Wizards;
+
 import java.io.Serializable;
 
 public class ReducedAssistant implements Serializable {
 
     private int id;
     private int motherNatureMovements;
-    private String wizard;
+    private Wizards wizard;
 
-    public ReducedAssistant(int id, int motherNatureMovements, String wizard) {
+    public ReducedAssistant(int id, int motherNatureMovements, Wizards wizard) {
         this.id = id;
         this.motherNatureMovements = motherNatureMovements;
         this.wizard = wizard;
@@ -22,7 +24,7 @@ public class ReducedAssistant implements Serializable {
         return motherNatureMovements;
     }
 
-    public String getWizard() {
+    public Wizards getWizard() {
         return wizard;
     }
 }
