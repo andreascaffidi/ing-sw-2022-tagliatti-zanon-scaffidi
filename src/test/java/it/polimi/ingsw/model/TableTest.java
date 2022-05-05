@@ -77,8 +77,8 @@ class TableTest {
 
         assertArrayEquals(four.toArray(), table4p.getPlayers());
         assertEquals(ColorT.BLACK, table4p.getPlayers()[0].getTowerColor());
-        assertEquals(ColorT.BLACK, table4p.getPlayers()[1].getTowerColor());
-        assertEquals(ColorT.WHITE, table4p.getPlayers()[2].getTowerColor());
+        assertEquals(ColorT.BLACK, table4p.getPlayers()[2].getTowerColor());
+        assertEquals(ColorT.WHITE, table4p.getPlayers()[1].getTowerColor());
         assertEquals(ColorT.WHITE, table4p.getPlayers()[3].getTowerColor());
     }
 
@@ -613,7 +613,7 @@ class TableTest {
         assertEquals(table3p.getPlayers()[1], table3p.getCurrentPlayer());
 
         table4p.nextPlayer();
-        assertEquals(table4p.getPlayers()[1], table4p.getCurrentPlayer());
+        assertEquals(table4p.getPlayers()[2], table4p.getCurrentPlayer());
     }
 
     @Test
@@ -646,10 +646,10 @@ class TableTest {
         assertEquals(two.get(0), table2p.endGame());
     }
 
+    //TODO: testing this and other reduced methoods
     @Test
-    void checkerrors()
+    void createReducedModel()
     {
         ReducedModel reduced = table2p.createReducedModel();
-        System.out.println(reduced.getCurrentPlayer());
     }
 }

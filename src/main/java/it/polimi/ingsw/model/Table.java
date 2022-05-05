@@ -103,12 +103,23 @@ public class Table extends Observable<ResponseMessage> {
     }
 
     /**
-     * sets up the players depending on the number of players
+     * sets up the players depending on the number of players, for 4 players matches: team 1 is placed on even indexes
+     * of the array and team 2 is placed on odd indexes of the array
      * @param players players to set up
      */
-    //FIXME: team1 players has to be placed on even index of the array, team2 on odd index
     private void setupPlayers(List<Player>players){
         this.players = new Player[numberOfPlayers];
+
+        if (this.numberOfPlayers == 4){
+            List<Player> team1 = players.stream().filter(p -> p.getTagTeam() == 1).collect(Collectors.toList());
+            List<Player> team2 = players.stream().filter(p -> p.getTagTeam() == 2).collect(Collectors.toList());
+            players.clear();
+            players.add(team1.get(0));
+            players.add(team2.get(0));
+            players.add(team1.get(1));
+            players.add(team2.get(1));
+        }
+
         for (int i = 0; i<this.numberOfPlayers; i++){
             this.players[i] = players.get(i);
             if(this.numberOfPlayers < 4){
