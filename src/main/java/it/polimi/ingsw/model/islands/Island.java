@@ -133,6 +133,10 @@ public class Island {
         return numOfTowers;
     }
 
+    /**
+     * gets a reduced version of the island
+     * @return reduced island
+     */
     public ReducedIsland reduceIsland()
     {
         return new ReducedIsland(this.id, this.getStudents().stream().map(Student::getColor).collect(Collectors.toList()),

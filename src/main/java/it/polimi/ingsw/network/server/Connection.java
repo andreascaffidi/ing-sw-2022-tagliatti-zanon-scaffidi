@@ -2,10 +2,10 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.requests.*;
+import it.polimi.ingsw.network.requests.setupMessages.ChooseTeamMessage;
 import it.polimi.ingsw.network.requests.setupMessages.CreateLobbyMessage;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 import it.polimi.ingsw.network.responses.ResponseMessage;
-import it.polimi.ingsw.network.responses.reducedModelMessage.ClientErrorMessage;
 import it.polimi.ingsw.network.responses.reducedModelMessage.ServerErrorMessage;
 import it.polimi.ingsw.network.responses.setupMessages.SetupResponseMessage;
 import it.polimi.ingsw.network.responses.setupMessages.ShowLobbyMessage;
@@ -19,10 +19,10 @@ import java.net.Socket;
 
 public class Connection extends Observable<ControllerMessage> implements Runnable, Observer<ResponseMessage> {
 
-    private Socket socket;
+    private final Socket socket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    private Server server;
+    private final Server server;
     private String usernameConnection;
     private String hostLobby;
     private boolean active = true;
@@ -64,7 +64,7 @@ public class Connection extends Observable<ControllerMessage> implements Runnabl
         } catch (ClassNotFoundException e){
             e.printStackTrace();
         } finally {
-            close();
+            closeConnection();
         }
     }
 
@@ -84,7 +84,7 @@ public class Connection extends Observable<ControllerMessage> implements Runnabl
             case "USERNAME":
                 String username = message.getMessage();
                 if(!server.validUsername(username, this)){
-                    send(new ClientErrorMessage("This nickname already exists, try another one: "));
+                    send(new ServerErrorMessage("This nickname already exists, try another one: "));
                 }else {
                     this.usernameConnection = username;
                     send(new SetupResponseMessage(ClientState.MENU));
@@ -93,7 +93,7 @@ public class Connection extends Observable<ControllerMessage> implements Runnabl
             case "COMMAND":
                 String command = message.getMessage();
                 if (command.equals("JOIN")){
-                    send(new ShowLobbyMessage(server.getLobbies()));
+                    send(new ShowLobbyMessage(server.getWaitingLobbies()));
                 }
                 if (command.equals("CREATE")){
                     send(new SetupResponseMessage(ClientState.CREATE_LOBBY));
@@ -107,33 +107,33 @@ public class Connection extends Observable<ControllerMessage> implements Runnabl
         }
     }
 
-    public void LobbySettings(CreateLobbyMessage message){
+    public void lobbySettings(CreateLobbyMessage message){
+        this.hostLobby = this.getUsernameConnection();
         server.createLobby(message, this);
     }
 
-    private void close(){
-        try{
-            socket.close();
-        }catch (IOException e){
-            System.err.println(e.getMessage());
-        }
-        System.out.println("Deregistering client...");
-        server.deregisterConnection(this);
-        System.out.println("Done!");
+    public void chooseTeam(ChooseTeamMessage message){
+        server.setLobbyTeam(message, this);
     }
 
     public synchronized void closeConnection(){
-        send(new ServerErrorMessage("Disconnected from the server "));
         try{
             socket.close();
         }catch (IOException e){
             System.err.println(e.getMessage());
         }
+        System.out.println("Removing client...");
+        server.deregisterConnection(this);
+        System.out.println("Done!");
         active = false;
     }
 
     public String getHostLobby() {
         return hostLobby;
+    }
+
+    public void setHostLobby(String hostLobby) {
+        this.hostLobby = hostLobby;
     }
 
     public String getUsernameConnection() {

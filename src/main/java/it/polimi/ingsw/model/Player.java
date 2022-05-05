@@ -178,6 +178,11 @@ public class Player {
         }
     }
 
+    //FIXME: it's horrible!
+    /**
+     * gets a reduced version of the entire player's board, including player's assistant deck
+     * @return reduced board
+     */
     public ReducedBoard reduceBoard()
     {
         ReducedAssistant reduced = null;

@@ -1,13 +1,11 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.states.AbstractPlayAssistantState;
-import it.polimi.ingsw.network.server.Lobby;
+import it.polimi.ingsw.network.client.states.AbstractClientState;
 
-import java.util.List;
 import java.util.Scanner;
 
-public class CLIPlayAssistantState extends AbstractPlayAssistantState {
+public class CLIPlayAssistantState extends AbstractClientState {
 
     private Client client;
     private Scanner in;

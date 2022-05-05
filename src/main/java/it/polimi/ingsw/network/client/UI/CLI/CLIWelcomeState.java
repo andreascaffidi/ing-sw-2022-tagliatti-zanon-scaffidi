@@ -1,13 +1,15 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.states.AbstractWelcomeState;
+import it.polimi.ingsw.network.client.states.AbstractClientState;
+import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 
 import java.util.Scanner;
 
-public class CLIWelcomeState extends AbstractWelcomeState {
+public class CLIWelcomeState extends AbstractClientState {
     private Client client;
     private Scanner in;
+    private String username;
 
     public CLIWelcomeState(Client client){
         this.client = client;
@@ -19,14 +21,14 @@ public class CLIWelcomeState extends AbstractWelcomeState {
         System.out.println("Welcome to the magic world of Eriantys:\nInsert a nickname: ");
         username = in.nextLine();
         client.setUsername(username);
-        notifyFromUI(client);
+        client.send(new SetupRequestMessage("USERNAME", username));
     }
 
     @Override
-    public void clientError(String message) {
+    public void serverError(String message) {
         System.out.println(message);
         username = in.nextLine();
         client.setUsername(username);
-        notifyFromUI(client);
+        client.send(new SetupRequestMessage("USERNAME", username));
     }
 }

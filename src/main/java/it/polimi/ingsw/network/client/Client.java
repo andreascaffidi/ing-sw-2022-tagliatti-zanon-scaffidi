@@ -17,9 +17,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Eriantys Client side
+ */
 public class Client {
-    private String ip;
-    private int port;
+    private final String ip;
+    private final int port;
 
     private String username;
 
@@ -27,7 +30,6 @@ public class Client {
     private ObjectOutputStream out;
 
     private AbstractClientState currentState;
-    private ClientState nextState;
 
     private List<Lobby> availableLobbies;
 
@@ -35,9 +37,13 @@ public class Client {
 
     private ReducedModel reducedModel;
 
+    private String waitingMessage;
+
     public Client(String ip, int port) {
         this.ip = ip;
         this.port = port;
+
+        //FIXME: new CLI() is only an example
         this.ui = new CLI();
         this.availableLobbies = new ArrayList<>();
     }
@@ -52,7 +58,7 @@ public class Client {
                 receive();
             }
         }catch (IOException | ClassNotFoundException e){
-            System.out.println("Connection closed from the client side");
+            System.out.println("Connection closed from the server side");
         }
         finally {
             in.close();
@@ -80,8 +86,7 @@ public class Client {
         }
     }
 
-    public void changeState(ClientState newState){
-        nextState = newState;
+    public void changeState(ClientState nextState){
         currentState = ui.getClientState(nextState, this);
         currentState.render();
     }
@@ -112,5 +117,13 @@ public class Client {
 
     public AbstractClientState getCurrentState() {
         return currentState;
+    }
+
+    public String getWaitingMessage() {
+        return waitingMessage;
+    }
+
+    public void setWaitingMessage(String waitingMessage) {
+        this.waitingMessage = waitingMessage;
     }
 }

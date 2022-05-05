@@ -47,6 +47,10 @@ public class Assistant {
         return wizard;
     }
 
+    /**
+     * gets a reduced version of the assistant card
+     * @return reduced assistant
+     */
     public ReducedAssistant reduceAssistant()
     {
         return new ReducedAssistant(this.value, this.motherNatureMovements, this.wizard);

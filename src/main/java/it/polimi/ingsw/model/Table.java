@@ -16,7 +16,7 @@ import it.polimi.ingsw.network.client.reducedModel.ReducedIsland;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.responses.ResponseMessage;
-import it.polimi.ingsw.network.responses.reducedModelMessage.GameStartedMessage;
+import it.polimi.ingsw.network.responses.reducedModelMessage.ReducedModelMessage;
 import it.polimi.ingsw.utils.Observable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -712,9 +712,8 @@ public class Table extends Observable<ResponseMessage> {
         return new ReducedModel(reducedIslands, reducedClouds, this.currentPlayer.getUsername(), reducedBoards);
     }
 
-    //FIXME:prova
-    public void notifyall(){
-        notify(new GameStartedMessage(ClientState.PLAY_ASSISTANT,createReducedModel()));
+    public void startGame(){
+        notify(new ReducedModelMessage(ClientState.PLAY_ASSISTANT,createReducedModel()));
     }
 
 }
