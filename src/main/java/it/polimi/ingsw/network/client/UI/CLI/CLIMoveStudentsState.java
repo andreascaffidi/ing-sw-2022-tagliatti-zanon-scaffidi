@@ -1,19 +1,24 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.states.AbstractMoveStudentsState;
+import it.polimi.ingsw.network.client.states.AbstractClientState;
 
 import java.util.Scanner;
 
-public class CLIMoveStudentsState extends AbstractMoveStudentsState {
+public class CLIMoveStudentsState extends AbstractClientState {
     private Client client;
     private Scanner in;
+
+    private String studentColor;
+    private int islandId;
+    private String destination;
 
     public CLIMoveStudentsState(Client client){
         this.client = client;
         in = new Scanner(System.in);
     }
 
+    //TODO: adattare al reduced model
     @Override
     public void render(){
         System.out.println("It's your turn! Choose 3 students from your entrance and move them to an Island or your Dining room");
@@ -62,6 +67,8 @@ public class CLIMoveStudentsState extends AbstractMoveStudentsState {
             comma ++;
         }
         System.out.println("Students moved, waiting for players...");
-        notifyFromUI(client);
+
+        //TODO: aggiustare costruttore
+        //client.send(new MoveStudentMessage(destination, studentColor, islandId));
     }
 }

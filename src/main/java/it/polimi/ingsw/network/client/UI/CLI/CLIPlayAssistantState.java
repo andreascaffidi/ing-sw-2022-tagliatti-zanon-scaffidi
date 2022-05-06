@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
+import it.polimi.ingsw.network.requests.gameMessages.PlayAssistantMessage;
 
 import java.util.Scanner;
 
@@ -9,6 +10,8 @@ public class CLIPlayAssistantState extends AbstractClientState {
 
     private Client client;
     private Scanner in;
+
+    private int id;
 
     public CLIPlayAssistantState(Client client){
         this.client = client;
@@ -36,6 +39,6 @@ public class CLIPlayAssistantState extends AbstractClientState {
             }
         }
         System.out.println("Assistant Played, waiting for the other players...");
-        notifyFromUI(client);
+        client.send(new PlayAssistantMessage(id));
     }
 }

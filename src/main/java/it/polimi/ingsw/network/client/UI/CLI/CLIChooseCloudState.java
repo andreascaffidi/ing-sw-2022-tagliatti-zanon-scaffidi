@@ -1,14 +1,16 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.states.AbstractChooseCloudState;
-import it.polimi.ingsw.network.client.states.AbstractMoveMotherNatureState;
+import it.polimi.ingsw.network.client.states.AbstractClientState;
+import it.polimi.ingsw.network.requests.gameMessages.ChooseCloudMessage;
 
 import java.util.Scanner;
 
-public class CLIChooseCloudState extends AbstractChooseCloudState {
+public class CLIChooseCloudState extends AbstractClientState {
     private Client client;
     private Scanner in;
+
+    private int id;
 
     public CLIChooseCloudState(Client client){
         this.client = client;
@@ -35,6 +37,6 @@ public class CLIChooseCloudState extends AbstractChooseCloudState {
         }
 
         System.out.println("Cloud chosen, waiting for players...");
-        notifyFromUI(client);
+        client.send(new ChooseCloudMessage(id));
     }
 }

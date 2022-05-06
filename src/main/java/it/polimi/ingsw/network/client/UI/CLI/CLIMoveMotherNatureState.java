@@ -1,13 +1,16 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.states.AbstractMoveMotherNatureState;
+import it.polimi.ingsw.network.client.states.AbstractClientState;
+import it.polimi.ingsw.network.requests.gameMessages.MoveMotherNatureMessage;
 
 import java.util.Scanner;
 
-public class CLIMoveMotherNatureState extends AbstractMoveMotherNatureState {
+public class CLIMoveMotherNatureState extends AbstractClientState {
     private Client client;
     private Scanner in;
+
+    private int id;
 
     public CLIMoveMotherNatureState(Client client){
         this.client = client;
@@ -35,6 +38,6 @@ public class CLIMoveMotherNatureState extends AbstractMoveMotherNatureState {
             }
         }
         System.out.println("Mother Nature moved, waiting for the other players...");
-        notifyFromUI(client);
+        client.send(new MoveMotherNatureMessage(id));
     }
 }
