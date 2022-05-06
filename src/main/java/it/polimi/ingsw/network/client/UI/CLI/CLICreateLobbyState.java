@@ -1,13 +1,17 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.states.AbstractCreateLobbyState;
+import it.polimi.ingsw.network.client.states.AbstractClientState;
+import it.polimi.ingsw.network.requests.setupMessages.CreateLobbyMessage;
 
 import java.util.Scanner;
 
-public class CLICreateLobbyState extends AbstractCreateLobbyState {
+public class CLICreateLobbyState extends AbstractClientState {
     private Client client;
     private Scanner in;
+    private String gameMode;
+    private String host;
+    private int numOfPlayers;
 
     public CLICreateLobbyState(Client client){
         this.client = client;
@@ -47,7 +51,7 @@ public class CLICreateLobbyState extends AbstractCreateLobbyState {
         }
 
         host = client.getUsername();
-        System.out.println("Lobby created, waiting for players...");
-        notifyFromUI(client);
+        client.send(new CreateLobbyMessage(host, gameMode, numOfPlayers));
     }
+
 }

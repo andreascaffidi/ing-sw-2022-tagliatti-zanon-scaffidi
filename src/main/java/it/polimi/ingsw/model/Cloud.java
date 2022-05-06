@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.pawns.Student;
-import it.polimi.ingsw.network.client.reducedModel.ReducedCloud;
 
 import java.util.*;
 

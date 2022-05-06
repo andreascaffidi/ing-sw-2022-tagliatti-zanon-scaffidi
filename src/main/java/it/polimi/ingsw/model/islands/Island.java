@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.islands;
 import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Tower;
 import it.polimi.ingsw.network.client.reducedModel.ReducedIsland;
@@ -133,9 +134,18 @@ public class Island {
         return numOfTowers;
     }
 
+    //FIXME: it's horrible
+    /**
+     * gets a reduced version of the island
+     * @return reduced island
+     */
     public ReducedIsland reduceIsland()
     {
+        ColorT towerColor = null;
+        if (this.getTower() != null){
+            towerColor = this.getTower().getColor();
+        }
         return new ReducedIsland(this.id, this.getStudents().stream().map(Student::getColor).collect(Collectors.toList()),
-                this.getTower().getColor(), this.numOfTowers, this.motherNature);
+                towerColor, this.numOfTowers, this.motherNature);
     }
 }

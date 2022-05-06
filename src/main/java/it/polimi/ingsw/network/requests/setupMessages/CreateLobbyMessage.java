@@ -17,7 +17,7 @@ public class CreateLobbyMessage implements RequestMessage, SetupExecute {
 
     @Override
     public void execute(Connection connection) {
-        connection.LobbySettings(this);
+        connection.lobbySettings(this);
     }
 
     public int getNumOfPlayers() {

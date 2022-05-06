@@ -137,7 +137,6 @@ class IslandTest {
     }
 
 
-    //FIXME: VERIFICARE QUESTO METODO
     @Test
     void changeId() {
         int decrement = 1;

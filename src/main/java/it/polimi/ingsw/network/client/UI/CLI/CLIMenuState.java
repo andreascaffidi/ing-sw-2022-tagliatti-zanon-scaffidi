@@ -1,13 +1,15 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.states.AbstractMenuState;
+import it.polimi.ingsw.network.client.states.AbstractClientState;
+import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 
 import java.util.Scanner;
 
-public class CLIMenuState extends AbstractMenuState {
+public class CLIMenuState extends AbstractClientState {
     private Client client;
     private Scanner in;
+    private String command;
 
     public CLIMenuState(Client client){
         this.client = client;
@@ -30,6 +32,6 @@ public class CLIMenuState extends AbstractMenuState {
                 System.out.println("Unknown command, please type: CREATE or JOIN ");
             }
         }
-        notifyFromUI(client);
+        client.send(new SetupRequestMessage("COMMAND", command));
     }
 }
