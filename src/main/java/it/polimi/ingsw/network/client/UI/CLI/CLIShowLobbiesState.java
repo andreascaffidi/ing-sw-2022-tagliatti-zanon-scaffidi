@@ -4,6 +4,7 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.requests.setupMessages.ChooseTeamMessage;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
+import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 import it.polimi.ingsw.network.server.Lobby;
 
 import java.util.List;
@@ -72,7 +73,7 @@ public class CLIShowLobbiesState extends AbstractClientState {
                 }
             }
         }else {
-            client.send(new SetupRequestMessage("JOIN_LOBBY", selectedHost));
+            client.send(new SetupRequestMessage(SetupResponsesTypes.JOIN_LOBBY, selectedHost));
         }
     }
 

@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 import it.polimi.ingsw.network.responses.ResponseMessage;
 import it.polimi.ingsw.network.responses.reducedModelMessage.ServerErrorMessage;
 import it.polimi.ingsw.network.responses.setupMessages.SetupResponseMessage;
+import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 import it.polimi.ingsw.network.responses.setupMessages.ShowLobbyMessage;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.Observer;
@@ -79,27 +80,29 @@ public class Connection extends Observable<ControllerMessage> implements Runnabl
     }
 
     public void setupConnection(SetupRequestMessage message){
-        String typeOfMessage = message.getTypeOfMessage().toUpperCase();
+        SetupResponsesTypes typeOfMessage = message.getTypeOfMessage();
         switch(typeOfMessage){
-            case "USERNAME":
+            case USERNAME:
                 String username = message.getMessage();
                 if(!server.validUsername(username, this)){
                     send(new ServerErrorMessage("This nickname already exists, try another one: "));
                 }else {
                     this.usernameConnection = username;
                     send(new SetupResponseMessage(ClientState.MENU));
-                } break;
+                }
+                break;
 
-            case "COMMAND":
+            case COMMAND:
                 String command = message.getMessage();
                 if (command.equals("JOIN")){
                     send(new ShowLobbyMessage(server.getWaitingLobbies()));
                 }
                 if (command.equals("CREATE")){
                     send(new SetupResponseMessage(ClientState.CREATE_LOBBY));
-                } break;
+                }
+                break;
 
-            case "JOIN_LOBBY":
+            case JOIN_LOBBY:
                 String selectedLobby = message.getMessage();
                 this.hostLobby = selectedLobby;
                 server.joinLobby(selectedLobby, this);
