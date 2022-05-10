@@ -38,7 +38,9 @@ public class CLIPlayAssistantState extends AbstractClientState {
                 System.out.println("You have to insert a number ");
             }
         }
-        System.out.println("Assistant Played, waiting for the other players...");
+
+        System.out.print("Sending to the server...");
         client.send(new PlayAssistantMessage(id));
+        System.out.print("\t Sent \n");
     }
 }

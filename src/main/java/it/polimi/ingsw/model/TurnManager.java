@@ -71,6 +71,10 @@ public class TurnManager {
             throw new RuntimeException("Idk where you are");
         }
     }
+
+    public RoundPhases getPhase() {
+        return phase;
+    }
 }
 
 /**

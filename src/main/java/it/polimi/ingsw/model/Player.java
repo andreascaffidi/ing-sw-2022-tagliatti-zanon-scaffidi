@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.AssistantNotFoundException;
-import it.polimi.ingsw.exceptions.MovementNotValidException;
+import it.polimi.ingsw.exceptions.GameException;
 import it.polimi.ingsw.model.cards.Assistant;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
@@ -170,11 +170,11 @@ public class Player {
     /**
      * checks if mother nature's movement is valid
      * @param movement mother nature's movement
-     * @throws MovementNotValidException invalid chosen movement
+     * @throws GameException invalid chosen movement
      */
-    public void validMovement(int movement) throws MovementNotValidException {
+    public void validMovement(int movement) throws GameException {
         if (movement <= 0 || movement > this.discardPile.peek().getMotherNatureMovements()){
-            throw new MovementNotValidException("Not valid movement");
+            throw new GameException("Not valid movement");
         }
     }
 

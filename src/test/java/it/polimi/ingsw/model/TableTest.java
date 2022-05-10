@@ -576,12 +576,12 @@ class TableTest {
     }
 
     @Test
-    void playAssistant() throws AssistantNotFoundException, AssistantNotPlayableException {
+    void playAssistant() throws AssistantNotFoundException, GameException {
         table2p.setCurrentPlayer(table2p.getPlayers()[0]);
         table2p.playAssistant(table2p.getPlayers()[0].getAssistant(3));
         assertEquals(3, table2p.getPlayers()[0].getDiscardPile().peek().getValue());
         table2p.setCurrentPlayer(table2p.getPlayers()[1]);
-        Exception e = assertThrows(AssistantNotPlayableException.class, () -> table2p.playAssistant(table2p.getPlayers()[1].getAssistant(3)));
+        Exception e = assertThrows(GameException.class, () -> table2p.playAssistant(table2p.getPlayers()[1].getAssistant(3)));
         assertEquals("Not playable assistant", e.getMessage());
 
         //case all assistant already played
@@ -618,20 +618,16 @@ class TableTest {
 
     @Test
     void validIsland(){
-        Exception exception = assertThrows(IslandNotValidException.class, () -> table2p.validIsland(13));
-        assertEquals("Not valid Island", exception.getMessage());
+        Exception exception = assertThrows(GameException.class, () -> table2p.validIsland(13));
 
-        Exception exception1 = assertThrows(IslandNotValidException.class, () -> table2p.validIsland(-1));
-        assertEquals("Not valid Island", exception1.getMessage());
+        Exception exception1 = assertThrows(GameException.class, () -> table2p.validIsland(-1));
     }
 
     @Test
     void validCloud(){
-        Exception exception = assertThrows(CloudNotValidException.class, () -> table2p.validCloud(3));
-        assertEquals("Not valid cloud", exception.getMessage());
+        Exception exception = assertThrows(GameException.class, () -> table2p.validCloud(3));
 
-        Exception exception1 = assertThrows(CloudNotValidException.class, () -> table2p.validCloud(-1));
-        assertEquals("Not valid cloud", exception1.getMessage());
+        Exception exception1 = assertThrows(GameException.class, () -> table2p.validCloud(-1));
     }
 
     @Test

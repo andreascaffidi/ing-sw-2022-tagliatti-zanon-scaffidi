@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.enums;
 
-import it.polimi.ingsw.exceptions.ColorNotFoundException;
+import it.polimi.ingsw.exceptions.GameException;
 
 import java.io.Serializable;
 
@@ -14,13 +14,13 @@ public enum ColorS implements Serializable {
      * parses the given string to the correct ColorS enum
      * @param string string to parse
      * @return correct parsed enum
-     * @throws ColorNotFoundException if the given string can't be parsed
+     * @throws GameException if the given string can't be parsed
      */
-    public static ColorS parseToColor(String string) throws ColorNotFoundException{
+    public static ColorS parseToColor(String string) throws GameException {
         try {
             return ColorS.valueOf(string.toUpperCase());
         }catch(IllegalArgumentException e){
-            throw new ColorNotFoundException("Color not found");
+            throw new GameException("Color not found");
         }
     }
 }

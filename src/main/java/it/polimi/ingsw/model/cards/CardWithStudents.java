@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.exceptions.InvalidCardStudentException;
+import it.polimi.ingsw.exceptions.GameException;
 import it.polimi.ingsw.model.pawns.Student;
 
 import java.util.*;
@@ -42,12 +42,12 @@ public class CardWithStudents {
     /**
      * checks if is possible to pick up a student from the card
      * @param id position of the student
-     * @throws InvalidCardStudentException if the position is invalid
+     * @throws GameException if the position is invalid
      */
-    public void validStudent(int id) throws InvalidCardStudentException {
+    public void validStudent(int id) throws GameException {
         if(id < 0 || id >= students.size())
         {
-            throw new InvalidCardStudentException("Invalid Student");
+            throw new GameException("Invalid Student");
         }
     }
 }

@@ -9,6 +9,8 @@ import it.polimi.ingsw.network.client.UI.UI;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
 
+import java.io.IOException;
+
 
 public class CLI implements UI {
 
@@ -32,12 +34,28 @@ public class CLI implements UI {
         }
     }
 
+    /**
+     * Clears the screen by erasing all the content on the current cli. <br>
+     * Actually is like if the users scrolls down until all the older printed message are hidden
+     */
+    public void clearScreen() {
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        try {
+            if (System.getProperty("os.name").contains("Windows"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                Runtime.getRuntime().exec("clear");
+        } catch (IOException | InterruptedException ex) {}
+    }
+
     //FIXME: è una prova
     public static void showModel(ReducedModel reducedModel){
         System.out.println("QUESTO è il modello");
         String model = "";
 
-        model += "Current Player: ";
+        model += "\nCurrent Player: ";
         model += reducedModel.getCurrentPlayer();
         model += "\n";
 
@@ -69,7 +87,7 @@ public class CLI implements UI {
         model += "Boards";
         for(ReducedBoard b : reducedModel.getBoards())
         {
-            model += "Board owner: ";
+            model += "\nBoard owner: ";
             model += b.getPlayer();
             model += "\n";
 
@@ -111,10 +129,10 @@ public class CLI implements UI {
                 model += ", ";
             }
 
-            model += "Num of Towers: ";
+            model += "\nNum of Towers: ";
             model += b.getNumOfTowers();
 
-            model += "Assistant Deck: ";
+            model += "\nAssistant Deck: ";
             //TODO: gestire il deck
             for(ReducedAssistant a : b.getAssistantDeck().getAssistantCards())
             {

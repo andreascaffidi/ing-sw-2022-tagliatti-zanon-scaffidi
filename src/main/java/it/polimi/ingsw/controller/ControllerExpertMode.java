@@ -93,9 +93,7 @@ public class ControllerExpertMode extends Controller{
             table.getIsland(message.getIslandId()-1).addStudent(student);
             table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
             pay(message.getCharacter());
-        }catch(InvalidCharacterException | IslandNotValidException | CardNotFoundException |
-               InvalidCardStudentException | NotEnoughCoinsException e)
-        {
+        }catch(GameException | NotEnoughCoinsException e){
             //TODO
             System.out.println(e.getMessage());
         }
@@ -111,8 +109,7 @@ public class ControllerExpertMode extends Controller{
             table.validCharacter(message.getCharacter());
             table.setCurrentEffect(new ProfessorTieEffect(table.getCurrentPlayer()));
             pay(message.getCharacter());
-        }catch(InvalidCharacterException | NotEnoughCoinsException e)
-        {
+        }catch(GameException | NotEnoughCoinsException e) {
             //TODO
             System.out.println(e.getMessage());
         }
@@ -129,12 +126,9 @@ public class ControllerExpertMode extends Controller{
             table.validIsland(message.getIslandId()-1);
             table.processIsland(table.getIsland(message.getIslandId()-1));
             pay(message.getCharacter());
-        }catch(InvalidCharacterException | NotEnoughCoinsException e)
-        {
+        }catch(GameException | NotEnoughCoinsException e) {
             //TODO
             System.out.println(e.getMessage());
-        } catch (IslandNotValidException e) {
-            e.printStackTrace();
         }
     }
 
@@ -149,12 +143,10 @@ public class ControllerExpertMode extends Controller{
             table.validAdditionalMovement(message.getAdditionalMovement());
             table.moveMotherNature(message.getAdditionalMovement());
             pay(message.getCharacter());
-        }catch(InvalidCharacterException | NotEnoughCoinsException e)
+        }catch(GameException | NotEnoughCoinsException e)
         {
             //TODO
             System.out.println(e.getMessage());
-        } catch (InvalidAdditionalMovementException e) {
-            e.printStackTrace();
         }
     }
 
@@ -171,12 +163,9 @@ public class ControllerExpertMode extends Controller{
             table.validNoEntryTile(island);
             table.setNoEntryTile(island, true);
             pay(message.getCharacter());
-        }catch(InvalidCharacterException | NotEnoughCoinsException e)
-        {
+        }catch(GameException | NotEnoughCoinsException e){
             //TODO
             System.out.println(e.getMessage());
-        } catch (IslandNotValidException | InvalidNoEntryTileException | TooManyNoEntryTileException e) {
-            e.printStackTrace();
         }
     }
 
@@ -191,12 +180,9 @@ public class ControllerExpertMode extends Controller{
             table.validIsland(message.getIslandId()-1);
             table.setCurrentEffect(new CountTowersEffect(table.getIsland(message.getIslandId()-1)));
             pay(message.getCharacter());
-        }catch(InvalidCharacterException | NotEnoughCoinsException e)
-        {
+        }catch(GameException | NotEnoughCoinsException e){
             //TODO
             System.out.println(e.getMessage());
-        } catch (IslandNotValidException e) {
-            e.printStackTrace();
         }
     }
 
@@ -236,12 +222,9 @@ public class ControllerExpertMode extends Controller{
                 table.getCardWithStudents(message.getCharacter()).getStudents().add(entranceStudents.get(i));
             }
             pay(message.getCharacter());
-        }catch(InvalidCharacterException | NotEnoughCoinsException e)
-        {
+        }catch(GameException | NotEnoughCoinsException e) {
             //TODO
             System.out.println(e.getMessage());
-        } catch (CardNotFoundException | InvalidCardStudentException | InvalidEntranceStudentException e) {
-            e.printStackTrace();
         }
     }
 
@@ -255,8 +238,7 @@ public class ControllerExpertMode extends Controller{
             table.validCharacter(message.getCharacter());
             table.setCurrentEffect(new AdditionalInfluenceEffect(table.getCurrentPlayer()));
             pay(message.getCharacter());
-        }catch(InvalidCharacterException | NotEnoughCoinsException e)
-        {
+        }catch(GameException | NotEnoughCoinsException e) {
             //TODO
             System.out.println(e.getMessage());
         }
@@ -273,12 +255,9 @@ public class ControllerExpertMode extends Controller{
             ColorS color = ColorS.parseToColor(message.getColor());
             table.setCurrentEffect(new NoInfluenceColorEffect(color));
             pay(message.getCharacter());
-        }catch(InvalidCharacterException | NotEnoughCoinsException e)
-        {
+        }catch(GameException | NotEnoughCoinsException e) {
             //TODO
             System.out.println(e.getMessage());
-        } catch (ColorNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -318,13 +297,9 @@ public class ControllerExpertMode extends Controller{
                 table.setProfessorOwner(entranceStudents.get(i).getColor(), table.getCurrentPlayer());
             }
             pay(message.getCharacter());
-        }catch(InvalidCharacterException e)
-        {
+        }catch(GameException | NotEnoughCoinsException e) {
             //TODO
             System.out.println(e.getMessage());
-        } catch (InvalidEntranceStudentException | NotEnoughCoinsException | ColorNotFoundException |
-                 InvalidColorsException e) {
-            e.printStackTrace();
         }
     }
 
@@ -341,12 +316,9 @@ public class ControllerExpertMode extends Controller{
             table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(student);
             table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
             pay(message.getCharacter());
-        }catch(InvalidCharacterException | NotEnoughCoinsException e)
-        {
+        }catch(GameException | NotEnoughCoinsException e) {
             //TODO
             System.out.println(e.getMessage());
-        } catch (CardNotFoundException | InvalidCardStudentException ex) {
-            ex.printStackTrace();
         }
     }
 
@@ -370,16 +342,12 @@ public class ControllerExpertMode extends Controller{
                         Student student = p.getSchoolBoard().getDiningRoom().removeStudent(color);
                         table.getBag().addStudent(student);
                     }
-
                 }
             }
             pay(message.getCharacter());
-        }catch(InvalidCharacterException | NotEnoughCoinsException e)
-        {
+        }catch(GameException | NotEnoughCoinsException e){
             //TODO
             System.out.println(e.getMessage());
-        } catch (ColorNotFoundException ex) {
-            ex.printStackTrace();
         }
     }
 
