@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.client.UI.CLI;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
+import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 
 import java.util.Scanner;
 
@@ -32,6 +33,6 @@ public class CLIMenuState extends AbstractClientState {
                 System.out.println("Unknown command, please type: CREATE or JOIN ");
             }
         }
-        client.send(new SetupRequestMessage("COMMAND", command));
+        client.send(new SetupRequestMessage(SetupResponsesTypes.COMMAND, command));
     }
 }

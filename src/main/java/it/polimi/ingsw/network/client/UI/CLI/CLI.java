@@ -9,6 +9,8 @@ import it.polimi.ingsw.network.client.UI.UI;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
 
+import java.io.IOException;
+
 
 public class CLI implements UI {
 
@@ -32,6 +34,22 @@ public class CLI implements UI {
             case PLAY_CHARACTER: return new CLIPlayCharacterState(client);
             default : return null;
         }
+    }
+
+    /**
+     * Clears the screen by erasing all the content on the current cli. <br>
+     * Actually is like if the users scrolls down until all the older printed message are hidden
+     */
+    public void clearScreen() {
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        try {
+            if (System.getProperty("os.name").contains("Windows"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                Runtime.getRuntime().exec("clear");
+        } catch (IOException | InterruptedException ex) {}
     }
 
     //FIXME: è una prova

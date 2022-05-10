@@ -35,6 +35,7 @@ public class Controller implements Observer<ControllerMessage> {
     //TODO: proibire al metodo di eseguire messaggi per esperti (nella remote view)
     @Override
     public void update(ControllerMessage message){
+        //todo: controllo username
         ControllerExecute controller = (ControllerExecute) message.getRequestMessage();
         controller.execute(this, message.getUsername());
     }
@@ -47,18 +48,16 @@ public class Controller implements Observer<ControllerMessage> {
      */
     public void playAssistant(PlayAssistantMessage message, String username){
         try{
+            System.out.println("playAssistant.checkPlayer");
             checkPlayer(username);
+            System.out.println("playAssistant.playAssistant");
             table.playAssistant(table.getCurrentPlayer().getAssistant(message.getValue()));
-            table.nextPlayer();
         }catch (WrongPlayerException e){
             //TODO
-            System.out.println("WrongPlayerException");
-        }catch (AssistantNotFoundException e){
+            System.out.println("playAssistant.WrongPlayerException");
+        }catch (AssistantNotFoundException | GameException e){
             //TODO
-            System.out.println("AssistantNotFoundException");
-        }catch (AssistantNotPlayableException e){
-            //TODO
-            System.out.println("AssistantNotPlayableException");
+            System.out.println("playAssistant.GameException");
         }
     }
 
@@ -88,13 +87,10 @@ public class Controller implements Observer<ControllerMessage> {
             table.getIsland(idIsland).addStudent(student);
         }catch (WrongPlayerException e){
             //TODO
-            System.out.println("WrongPlayerException");
-        } catch (IslandNotValidException e) {
-            //TODO
-        } catch (InvalidEntranceStudentException e) {
-            //TODO
-            System.out.println("StudentIndexOutOfBoundsException");
+        } catch (GameException e) {
+            //todo: logging
         }
+
     }
 
     /**
@@ -113,7 +109,7 @@ public class Controller implements Observer<ControllerMessage> {
         }catch (WrongPlayerException e){
             //TODO
             System.out.println("WrongPlayerException");
-        } catch (InvalidEntranceStudentException e) {
+        } catch (GameException e) {
             //TODO
             System.out.println("StudentIndexOutOfBoundsException");
         }
@@ -135,7 +131,7 @@ public class Controller implements Observer<ControllerMessage> {
         } catch (WrongPlayerException e){
             //TODO
             System.out.println("WrongPlayerException");
-        } catch (MovementNotValidException e){
+        } catch (GameException e){
             //TODO
             System.out.println("MovementNotValidException");
         }
@@ -153,14 +149,11 @@ public class Controller implements Observer<ControllerMessage> {
             int idCloud = message.getId()-1;
             table.validCloud(idCloud);
             Cloud cloud = table.getClouds().get(idCloud);
-            for(Student student : cloud.takeAllStudents()) {
-                table.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(student);
-            }
-            table.nextPlayer();
+            table.addStudentsToEntrance(cloud);
         }catch (WrongPlayerException e){
             //TODO
             System.out.println("WrongPlayerException");
-        }catch (CloudNotValidException e){
+        }catch (GameException e){
             //TODO
             System.out.println("CloudNotValidException");
         }

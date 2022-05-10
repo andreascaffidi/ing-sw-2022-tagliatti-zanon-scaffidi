@@ -73,7 +73,7 @@ class TableExpertModeTest {
     }
 
     @RepeatedTest(20)
-    void setupStudentsOnCard() throws CardNotFoundException {
+    void setupStudentsOnCard() throws GameException {
         if(table2p.getCharacters().containsKey(1)){
             assertEquals(4, table2p.getCardWithStudents(1).getStudents().size());
         }
@@ -84,7 +84,7 @@ class TableExpertModeTest {
             assertEquals(4, table2p.getCardWithStudents(11).getStudents().size());
         }
         if(table2p.getCharacters().containsKey(3)){
-            assertThrows(CardNotFoundException.class, () -> table2p.getCardWithStudents(3));
+            assertThrows(GameException.class, () -> table2p.getCardWithStudents(3));
         }
     }
 
@@ -220,13 +220,13 @@ class TableExpertModeTest {
         for (int i = 1; i < 13; i++){
             if(!table2p.getCharacters().containsKey(i)){
                 int character = i;
-                assertThrows(InvalidCharacterException.class, () -> table2p.validCharacter(character));
+                assertThrows(GameException.class, () -> table2p.validCharacter(character));
             }
         }
     }
 
     @Test
-    void notEnoughCoins() throws NotEnoughCoinsException, InvalidCharacterException {
+    void notEnoughCoins() throws GameException,NotEnoughCoinsException {
         table2p.getCharacters().put(13, 20);
         assertThrows(NotEnoughCoinsException.class, () -> table2p.validCharacter(13));
         table2p.getCharacters().put(14, 1);
@@ -234,24 +234,24 @@ class TableExpertModeTest {
     }
 
     @Test
-    void validAdditionalMovement() throws InvalidAdditionalMovementException {
+    void validAdditionalMovement() throws GameException {
         table2p.validAdditionalMovement(1);
         table2p.validAdditionalMovement(2);
-        assertThrows(InvalidAdditionalMovementException.class, () -> table2p.validAdditionalMovement(0));
-        assertThrows(InvalidAdditionalMovementException.class, () -> table2p.validAdditionalMovement(3));
+        assertThrows(GameException.class, () -> table2p.validAdditionalMovement(0));
+        assertThrows(GameException.class, () -> table2p.validAdditionalMovement(3));
     }
 
     @Test
-    void validNoEntryTile() throws InvalidNoEntryTileException, TooManyNoEntryTileException {
+    void validNoEntryTile() throws GameException{
         table2p.validNoEntryTile(table2p.getIsland(1));
         table2p.setNoEntryTile(table2p.getIsland(1), true);
         table2p.validNoEntryTile(table2p.getIsland(2));
         table2p.setNoEntryTile(table2p.getIsland(2), true);
         table2p.validNoEntryTile(table2p.getIsland(3));
         table2p.setNoEntryTile(table2p.getIsland(3), true);
-        assertThrows(InvalidNoEntryTileException.class, () -> table2p.validNoEntryTile(table2p.getIsland(3)));
+        assertThrows(GameException.class, () -> table2p.validNoEntryTile(table2p.getIsland(3)));
         table2p.validNoEntryTile(table2p.getIsland(4));
         table2p.setNoEntryTile(table2p.getIsland(4), true);
-        assertThrows(TooManyNoEntryTileException.class, () -> table2p.validNoEntryTile(table2p.getIsland(5)));
+        assertThrows(GameException.class, () -> table2p.validNoEntryTile(table2p.getIsland(5)));
     }
 }

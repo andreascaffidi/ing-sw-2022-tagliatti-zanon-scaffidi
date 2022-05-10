@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
+import it.polimi.ingsw.model.enums.RoundPhases;
 import it.polimi.ingsw.model.enums.Wizards;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.MotherNature;
@@ -21,6 +22,7 @@ import it.polimi.ingsw.network.responses.reducedModelMessage.EndGameMessage;
 import it.polimi.ingsw.network.responses.reducedModelMessage.ReducedModelMessage;
 import it.polimi.ingsw.network.responses.reducedModelMessage.ServerErrorMessage;
 import it.polimi.ingsw.network.responses.setupMessages.SetupResponseMessage;
+import it.polimi.ingsw.network.responses.reducedModelMessage.*;
 import it.polimi.ingsw.utils.Observable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -638,7 +640,7 @@ public class Table extends Observable<ResponseMessage> {
      * @throws AssistantNotPlayableException if assistant card isn't playable (i.e. another one has played it)
      * @throws AssistantNotFoundException if there isn't the assistant card
      */
-    public void playAssistant(Assistant card) throws AssistantNotPlayableException, AssistantNotFoundException {
+    public void playAssistant(Assistant card) throws GameException, AssistantNotFoundException {
         List<Assistant> playable = new ArrayList<>(getCurrentPlayer().getAssistantDeck());
         for(Player player : players) {
             if (!player.getDiscardPile().isEmpty()) {
@@ -651,8 +653,18 @@ public class Table extends Observable<ResponseMessage> {
             turnManager.orderPlayer(getCurrentPlayer());
         }
         else {
-            throw new AssistantNotPlayableException("Not playable assistant");
+            notify(new ServerErrorMessage("Assistant is not playable"));
+            throw new GameException("Not playable assistant");
         }
+
+        this.nextPlayer();
+
+        ClientState clientState = turnManager.getPhase() == RoundPhases.PLANNING
+                ?
+                ClientState.PLAY_ASSISTANT
+                :
+                ClientState.MOVE_STUDENTS;
+        notify(new ReducedModelMessage(clientState,this.createReducedModel()));
     }
 
     /**
@@ -665,24 +677,27 @@ public class Table extends Observable<ResponseMessage> {
     /**
      * checks island index's validity
      * @param idIsland island's index to check
-     * @throws IslandNotValidException if island's index is invalid
+     * @throws GameException if island's index is invalid
      */
-    public void validIsland(int idIsland) throws IslandNotValidException {
-        if(idIsland >= islands.size() || idIsland < 0)
-            throw new IslandNotValidException("Not valid Island");
+    public void validIsland(int idIsland) throws GameException {
+        if(idIsland >= islands.size() || idIsland < 0){
+            notify(new ServerErrorMessage("The island you chose is not valid"));
+            throw new GameException("The island you chose is not valid");
+        }
     }
 
     /**
      * checks cloud index's validity
      * @param cloudIndex cloud's index to check
-     * @throws CloudNotValidException if cloud's index is invalid
+     * @throws GameException if cloud's index is invalid
      */
-    public void validCloud(int cloudIndex) throws CloudNotValidException {
+    public void validCloud(int cloudIndex) throws GameException {
         if(cloudIndex >= clouds.size() ||
                 cloudIndex < 0 ||
                 clouds.get(cloudIndex).getStudents().isEmpty()
         ){
-            throw new CloudNotValidException("Not valid cloud");
+            notify(new ServerErrorMessage("Not valid cloud"));
+            throw new GameException("Not valid cloud");
         }
     }
 
@@ -730,5 +745,19 @@ public class Table extends Observable<ResponseMessage> {
     public void startGame(){
         notify(new ReducedModelMessage(ClientState.PLAY_ASSISTANT,createReducedModel()));
     }
+
+    public void addStudentsToEntrance(Cloud cloud){
+        for(Student student : cloud.takeAllStudents()) {
+            this.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(student);
+        }
+        this.nextPlayer();
+        ClientState clientState = turnManager.getPhase() == RoundPhases.PLANNING
+                ?
+                ClientState.PLAY_ASSISTANT
+                :
+                ClientState.MOVE_STUDENTS;
+        notify(new ReducedModelMessage(clientState,this.createReducedModel()));
+    }
+
 
 }

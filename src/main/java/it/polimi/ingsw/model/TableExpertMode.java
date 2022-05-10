@@ -119,16 +119,16 @@ public class TableExpertMode extends Table {
      * gets the card that has students placed on it
      * @param character character card id
      * @return card with students placed on it
-     * @throws CardNotFoundException if the character card hasn't got students on it
+     * @throws GameException if the character card hasn't got students on it
      */
-    public CardWithStudents getCardWithStudents(int character) throws CardNotFoundException {
+    public CardWithStudents getCardWithStudents(int character) throws GameException {
         for(CardWithStudents card : cards)
         {
             if(card.getCharacter() == character) {
                 return card;
             }
         }
-        throw new CardNotFoundException("Card not found");
+        throw new GameException("Card not found");
     }
 
     /**
@@ -306,13 +306,13 @@ public class TableExpertMode extends Table {
     /**
      * checks character validity
      * @param id character id
-     * @throws InvalidCharacterException if character isn't on the table
+     * @throws GameException if character isn't on the table
      * @throws NotEnoughCoinsException if there aren't enough coins to pay the character card
      */
-    public void validCharacter(int id) throws InvalidCharacterException, NotEnoughCoinsException {
+    public void validCharacter(int id) throws GameException,NotEnoughCoinsException{
         //TODO: check if character card is already played in this round
         if(!this.characters.containsKey(id)) {
-            throw new InvalidCharacterException("Invalid Character");
+            throw new GameException("Invalid Character");
         }
         if(this.playerCoins.get(getCurrentPlayer()) < this.characters.get(id)){
             throw new NotEnoughCoinsException("You don't have enough coins");
@@ -322,26 +322,26 @@ public class TableExpertMode extends Table {
     /**
      * checks additional movement validity
      * @param movement additional movement
-     * @throws InvalidAdditionalMovementException if additional movement is invalid
+     * @throws GameException if additional movement is invalid
      */
-    public void validAdditionalMovement(int movement) throws InvalidAdditionalMovementException {
+    public void validAdditionalMovement(int movement) throws GameException {
         if (movement > 2 || movement <= 0){
-            throw new InvalidAdditionalMovementException("Invalid additional movement");
+            throw new GameException("Invalid additional movement");
         }
     }
 
     /**
      * checks no entry tile validity
      * @param island island on which place no entry tile
-     * @throws TooManyNoEntryTileException if all 4 no entry tiles are already placed on the table
-     * @throws InvalidNoEntryTileException if there's already a no entry tile on the island
+     * @throws GameException if all 4 no entry tiles are already placed on the table
+     * @throws GameException if there's already a no entry tile on the island
      */
-    public void validNoEntryTile(Island island) throws TooManyNoEntryTileException, InvalidNoEntryTileException {
+    public void validNoEntryTile(Island island) throws GameException{
         if (this.numOfNoEntryTiles >= MAX_NO_ENTRY_TILES){
-            throw new TooManyNoEntryTileException("No more no-entry tile placeable");
+            throw new GameException("No more no-entry tile placeable");
         }
         if (this.noEntryTiles.get(island)){
-            throw new InvalidNoEntryTileException("Invalid no-entry tile position");
+            throw new GameException("Invalid no-entry tile position");
         }
     }
 

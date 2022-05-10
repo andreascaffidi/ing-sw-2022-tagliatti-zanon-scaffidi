@@ -2,13 +2,14 @@ package it.polimi.ingsw.network.requests.setupMessages;
 
 import it.polimi.ingsw.network.requests.RequestMessage;
 import it.polimi.ingsw.network.requests.SetupExecute;
+import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 import it.polimi.ingsw.network.server.Connection;
 
 public class SetupRequestMessage implements RequestMessage, SetupExecute {
-    private String typeOfMessage;
+    private SetupResponsesTypes typeOfMessage;
     private String message;
 
-    public SetupRequestMessage(String typeOfMessage, String message) {
+    public SetupRequestMessage(SetupResponsesTypes typeOfMessage, String message) {
         this.typeOfMessage = typeOfMessage;
         this.message = message;
     }
@@ -22,7 +23,7 @@ public class SetupRequestMessage implements RequestMessage, SetupExecute {
         return message;
     }
 
-    public String getTypeOfMessage() {
+    public SetupResponsesTypes getTypeOfMessage() {
         return typeOfMessage;
     }
 }

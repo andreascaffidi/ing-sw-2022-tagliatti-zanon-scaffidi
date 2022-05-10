@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.exceptions.InvalidCardStudentException;
-import it.polimi.ingsw.exceptions.ParityException;
+
+import it.polimi.ingsw.exceptions.GameException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,8 +45,8 @@ class CardWithStudentsTest {
     void validStudent() {
         CardWithStudents card = new CardWithStudents(students, 3);
         CardWithStudents card2 = new CardWithStudents(students, 1);
-        Exception exception = new InvalidCardStudentException("Invalid Student");
-        exception = assertThrows(InvalidCardStudentException.class, () -> card.validStudent(4));
+        Exception exception = new GameException("Invalid Student");
+        exception = assertThrows(GameException.class, () -> card.validStudent(4));
         assertEquals("Invalid Student", exception.getMessage());
     }
 }

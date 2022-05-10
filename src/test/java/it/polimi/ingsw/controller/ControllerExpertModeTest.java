@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 
-import it.polimi.ingsw.exceptions.CardNotFoundException;
+import it.polimi.ingsw.exceptions.GameException;
 import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TableExpertMode;
@@ -125,7 +125,7 @@ class ControllerExpertModeTest {
     }
 
     @RepeatedTest(100)
-    void payCharacter1() throws CardNotFoundException {
+    void payCharacter1() throws GameException {
 
         ControllerMessage message = new ControllerMessage(new PayCharacter1Message(1, 1), "p1", true);
 
@@ -275,7 +275,7 @@ class ControllerExpertModeTest {
     }
 
     @RepeatedTest(100)
-    void payCharacter7() throws CardNotFoundException {
+    void payCharacter7() throws GameException {
 
         if (table.getCharacters().containsKey(7)) {
 
@@ -407,7 +407,7 @@ class ControllerExpertModeTest {
     }
 
     @RepeatedTest(100)
-    void payCharacter11() throws CardNotFoundException {
+    void payCharacter11() throws GameException {
 
         PayCharacter11Message pay = new PayCharacter11Message(1);
         ControllerMessage message = new ControllerMessage(pay, "p1", true);
