@@ -39,6 +39,8 @@ public class Client {
 
     private String waitingMessage;
 
+    private String winner;
+
     public Client(String ip, int port) {
         this.ip = ip;
         this.port = port;
@@ -125,5 +127,14 @@ public class Client {
 
     public void setWaitingMessage(String waitingMessage) {
         this.waitingMessage = waitingMessage;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
+
+    public String getWinner()
+    {
+        return this.winner;
     }
 }

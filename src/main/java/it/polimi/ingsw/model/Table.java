@@ -16,7 +16,11 @@ import it.polimi.ingsw.network.client.reducedModel.ReducedIsland;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.responses.ResponseMessage;
+import it.polimi.ingsw.network.responses.reducedModelMessage.DisconnectErrorMessage;
+import it.polimi.ingsw.network.responses.reducedModelMessage.EndGameMessage;
 import it.polimi.ingsw.network.responses.reducedModelMessage.ReducedModelMessage;
+import it.polimi.ingsw.network.responses.reducedModelMessage.ServerErrorMessage;
+import it.polimi.ingsw.network.responses.setupMessages.SetupResponseMessage;
 import it.polimi.ingsw.utils.Observable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -686,14 +690,14 @@ public class Table extends Observable<ResponseMessage> {
      * ends the game and choose the winner
      * @return the winner of the game
      */
-    public Player endGame() {
+    public void endGame() {
         Player winner;
         try {
             winner = this.getPlayerWithMinTowers();
         }catch (ParityException e){
             winner = this.getPlayerWithMaxProfessor();
         }
-        return winner;
+        notify(new EndGameMessage(winner.getUsername()));
         //TODO: we are in the endgame now!
     }
 

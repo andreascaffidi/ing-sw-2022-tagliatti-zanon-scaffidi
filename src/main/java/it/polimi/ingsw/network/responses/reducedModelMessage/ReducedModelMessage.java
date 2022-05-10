@@ -7,7 +7,7 @@ import it.polimi.ingsw.network.responses.ClientExecute;
 import it.polimi.ingsw.network.responses.ResponseMessage;
 
 public class ReducedModelMessage implements ResponseMessage, ClientExecute {
-    private final ClientState clientState;
+    private ClientState clientState;
     private final ReducedModel reducedModel;
 
     public ReducedModelMessage(ClientState clientState, ReducedModel reducedModel){
@@ -18,6 +18,11 @@ public class ReducedModelMessage implements ResponseMessage, ClientExecute {
     @Override
     public void execute(Client client) {
         client.setReducedModel(reducedModel);
+        if(!reducedModel.getCurrentPlayer().equals(client.getUsername()))
+        {
+           clientState = ClientState.WAITING;
+           client.setWaitingMessage("It's " + reducedModel.getCurrentPlayer() + "turn");
+        }
         client.changeState(clientState);
     }
 }

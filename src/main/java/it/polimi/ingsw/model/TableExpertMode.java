@@ -8,6 +8,8 @@ import it.polimi.ingsw.model.effects.Effect;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
+import it.polimi.ingsw.network.client.reducedModel.ReducedCharacter;
+import it.polimi.ingsw.network.client.reducedModel.ReducedCharacterDeck;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -342,4 +344,12 @@ public class TableExpertMode extends Table {
             throw new InvalidNoEntryTileException("Invalid no-entry tile position");
         }
     }
+
+    /*
+    public ReducedCharacter ReduceCharacter()
+    {
+        ReducedCharacter character1 = new ReducedCharacter(characters.keySet().stream().
+        return new ReducedCharacterDeck()
+    }
+    */
 }
