@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 public class CLIWelcomeState extends AbstractClientState {
@@ -19,17 +20,19 @@ public class CLIWelcomeState extends AbstractClientState {
 
     @Override
     public void render(){
-        System.out.println("Welcome to the magic world of Eriantys:\nInsert a nickname: ");
-        username = in.nextLine();
-        client.setUsername(username);
-        client.send(new SetupRequestMessage(SetupResponsesTypes.USERNAME, username));
+        System.out.println("Welcome to the magic world of Eriantys:\nInsert a username: ");
+        this.askUsername();
     }
 
     @Override
     public void serverError(String message) {
         System.out.println(message);
+        this.askUsername();
+    }
+
+    private void askUsername(){
         username = in.nextLine();
-        client.setUsername(username);
+        client.setUsername(username.toLowerCase());
         client.send(new SetupRequestMessage(SetupResponsesTypes.USERNAME, username));
     }
 }

@@ -13,6 +13,15 @@ import java.io.IOException;
 
 
 public class CLI implements UI {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
 
     public CLI(){
 
@@ -55,109 +64,109 @@ public class CLI implements UI {
     //FIXME: è una prova
     public static void showModel(ReducedModel reducedModel){
         System.out.println("\n");
-        String model = "";
+        String model = "------------------------------------------------------------\n";
 
         model += "Current Player: ";
         model += reducedModel.getCurrentPlayer();
         model += "\n";
         model += "\n";
 
-        model += "Islands:\n";
+        model += showIslands(reducedModel);
+
+        model += showClouds(reducedModel);
+
+        model += "BOARDS \n";
+        model += "\n";
+        for(ReducedBoard b : reducedModel.getBoards())
+        {
+            model += showBoard(b);
+        }
+        System.out.println(model);
+    }
+
+    public static String showIslands(ReducedModel reducedModel){
+        String model = "";
+        model += "-- ISLANDS --\n";
         for(ReducedIsland i : reducedModel.getIslands())
         {
-            model += i.getId() + 1;
+            model +="\t";
+            model += (i.getId() + 1);
             model += ": ";
-            model += "Mother Nature: ";
-            model += i.isMotherNature();
-            model += " ";
+            model += i.isMotherNature() ? "[MN] ": "";
             for(ColorS s : i.getStudents()) {
-                model += s;
+                model += s.toAnsiString()+" ";
             }
             model += "\n";
         }
         model += "\n";
+        //System.out.println(model);
+        return model;
+    }
 
-        model += "Clouds\n";
+    public static String showClouds(ReducedModel reducedModel){
+        String model = "";
+        model += "-- CLOUDS --\n";
         for(ReducedCloud c : reducedModel.getClouds())
         {
             model += c.getId() + 1;
             model += ": ";
             for(ColorS s : c.getStudents())
             {
-                model += s.toString();
+                model += s.toAnsiString();
                 model += " ";
             }
             model += "\n";
         }
         model += "\n";
+        //System.out.println(model);
+        return model;
+    }
 
-        model += "Boards: \n";
-        model += "\n";
-        for(ReducedBoard b : reducedModel.getBoards())
+    public static String showBoard(ReducedBoard b){
+        String model = "------------------------------------------------------------\n";
+        model += "\t\t\t\t\t\t"+b.getPlayer() +"\n";
+        model += "------------------------------------------------------------\n";
+        model += "-- ENTRANCE -- \n\t";
+        for(ColorS c : b.getEntranceStudents())
         {
-            model += "Board owner: ";
-            model += b.getPlayer();
-            model += "\n";
-
-            model += "Tower color: ";
-            model += b.getTowerColor();
-            model += "\n";
-
-            model += "\n";
-            model += "Dining Room: \n";
-            model += "Yellow Students: ";
-            model += b.getYellowStudents();
-            model += "\n";
-
-            model += "Blue Students: ";
-            model += b.getBlueStudents();
-            model += "\n";
-
-            model += "Green Students: ";
-            model += b.getGreenStudents();
-            model += "\n";
-
-            model += "Pink Students: ";
-            model += b.getPinkStudents();
-            model += "\n";
-
-            model += "Red Students: ";
-            model += b.getYellowStudents();
-            model += "\n";
-
-            model += "Entrance Students: ";
-            for(ColorS c : b.getEntranceStudents())
-            {
-                model += c;
-                model += " ";
-            }
-            model += "\n";
-
-            model += "Professors: ";
-            for(ColorS p : b.getProfessors())
-            {
-                model += p;
-                model += " ";
-            }
-            model += "\n";
-
-            model += "Num of Towers: ";
-            model += b.getNumOfTowers();
-            model += "\n";
-
-            model += "\n";
-            model += "Assistant Deck: ";
-            for(ReducedAssistant a : b.getAssistantDeck().getAssistantCards())
-            {
-                model += "[";
-                model += a.getId();
-                model += ", ";
-                model += a.getMotherNatureMovements();
-                model += "] ";
-            }
-            model += "\n";
-            model += "\n";
+            model += c.toAnsiString();
+            model += " ";
         }
-        System.out.println(model);
+        model += "\n\n";
+
+        model += "-- DINING ROOM -- \n";
+        model += ANSI_YELLOW+"\tYELLOW: "+b.getYellowStudents()+" / 10\n"+ANSI_RESET;
+        model += ANSI_BLUE+"\tBLUE: "+b.getBlueStudents()+" / 10\n"+ANSI_RESET;;
+        model += ANSI_GREEN+"\tGREEN: "+b.getGreenStudents()+" / 10\n"+ANSI_RESET;;
+        model += ANSI_PURPLE+"\tPINK: "+b.getPinkStudents()+" / 10\n"+ANSI_RESET;;
+        model += ANSI_RED+"\tRED: "+b.getRedStudents()+" / 10\n\n"+ANSI_RESET;;
+
+
+        model += "-- PROFESSORS TABLE --\n\t";
+        if(b.getProfessors().size() == 0){
+            model += "[no professors in your board]";
+        }else{
+            for(ColorS p : b.getProfessors()){
+                model += p.toAnsiString()+" ";
+            }
+
+        }
+        model += "\n\n";
+
+
+        model += "-- TOWERS --\n";
+        model += "\t"+b.getTowerColor()+ " -- "+b.getNumOfTowers()+" / []\n\n";
+
+        model += "-- ASSISTANT DECK -- \n\t";
+        for(ReducedAssistant a : b.getAssistantDeck().getAssistantCards())
+        {
+            model += "[";
+            model += a.getId();
+            model += ", ";
+            model += a.getMotherNatureMovements();
+            model += "] ";
+        }
+        model += "\n\n\n";
+        return model;
     }
 }
