@@ -705,7 +705,7 @@ public class Table extends Observable<ResponseMessage> {
      * ends the game and choose the winner
      * @return the winner of the game
      */
-    public void endGame() {
+    public Player endGame() {
         Player winner;
         try {
             winner = this.getPlayerWithMinTowers();
@@ -713,6 +713,7 @@ public class Table extends Observable<ResponseMessage> {
             winner = this.getPlayerWithMaxProfessor();
         }
         notify(new EndGameMessage(winner.getUsername()));
+        return winner;
         //TODO: we are in the endgame now!
     }
 
