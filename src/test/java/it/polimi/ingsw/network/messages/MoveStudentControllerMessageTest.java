@@ -3,6 +3,9 @@ package it.polimi.ingsw.network.messages;
 import it.polimi.ingsw.network.requests.gameMessages.MoveStudentMessage;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MoveStudentControllerMessageTest {
@@ -13,14 +16,12 @@ class MoveStudentControllerMessageTest {
     }
 
     @Test
-    void getIdIsland() {
-        MoveStudentMessage message = new MoveStudentMessage("island", 3, 3);
-        assertEquals(3, message.getIdIsland());
+    void getMovements() {
+        Map<Integer, String> movements = new HashMap<>();
+        movements.put(1, "DINING");
+        movements.put(2, "3");
+        MoveStudentMessage message = new MoveStudentMessage(movements);
+        assertEquals(movements, message.getMovements());
     }
 
-    @Test
-    void getStudentIndex() {
-        MoveStudentMessage message = new MoveStudentMessage("dining", 3);
-        assertEquals(3, message.getStudentIndex());
-    }
 }

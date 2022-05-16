@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ColorSTest {
 
     @Test
-    void parseToColor() throws GameException {
+    void parseToColor() throws ColorNotFoundException {
         assertEquals(ColorS.BLUE, ColorS.parseToColor("blue"));
         assertEquals(ColorS.BLUE, ColorS.parseToColor("BLUE"));
         assertEquals(ColorS.BLUE, ColorS.parseToColor("bLuE"));
@@ -17,6 +17,6 @@ class ColorSTest {
         assertEquals(ColorS.PINK, ColorS.parseToColor("pink"));
         assertEquals(ColorS.YELLOW, ColorS.parseToColor("yellow"));
         assertEquals(ColorS.GREEN, ColorS.parseToColor("green"));
-        assertThrows(GameException.class, () -> ColorS.parseToColor("black"));
+        assertThrows(ColorNotFoundException.class, () -> ColorS.parseToColor("black"));
     }
 }

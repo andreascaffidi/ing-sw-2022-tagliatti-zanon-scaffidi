@@ -73,7 +73,7 @@ class TableExpertModeTest {
     }
 
     @RepeatedTest(20)
-    void setupStudentsOnCard() throws GameException {
+    void setupStudentsOnCard() throws CardNotFoundException {
         if(table2p.getCharacters().containsKey(1)){
             assertEquals(4, table2p.getCardWithStudents(1).getStudents().size());
         }
@@ -84,7 +84,7 @@ class TableExpertModeTest {
             assertEquals(4, table2p.getCardWithStudents(11).getStudents().size());
         }
         if(table2p.getCharacters().containsKey(3)){
-            assertThrows(GameException.class, () -> table2p.getCardWithStudents(3));
+            assertThrows(CardNotFoundException.class, () -> table2p.getCardWithStudents(3));
         }
     }
 
@@ -226,9 +226,9 @@ class TableExpertModeTest {
     }
 
     @Test
-    void notEnoughCoins() throws GameException,NotEnoughCoinsException {
+    void notEnoughCoins() throws GameException {
         table2p.getCharacters().put(13, 20);
-        assertThrows(NotEnoughCoinsException.class, () -> table2p.validCharacter(13));
+        assertThrows(GameException.class, () -> table2p.validCharacter(13));
         table2p.getCharacters().put(14, 1);
         table2p.validCharacter(14);
     }

@@ -2,73 +2,89 @@ package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
+import it.polimi.ingsw.network.requests.gameMessages.MoveStudentMessage;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class CLIMoveStudentsState extends AbstractClientState {
     private Client client;
     private Scanner in;
-
-    private String studentColor;
-    private int islandId;
-    private String destination;
 
     public CLIMoveStudentsState(Client client){
         this.client = client;
         in = new Scanner(System.in);
     }
 
-    //TODO: adattare al reduced model
     @Override
     public void render(){
-        System.out.println("It's your turn! Choose 3 students from your entrance and move them to an Island or your Dining room");
-        System.out.println("for example: yellow Island 1, blue Island 12, red Dining Room");
         CLI.showModel(client.getReducedModel());
+        int choices = 3;
+        if (client.getReducedModel().getBoards().size() == 3){
+            choices = 4;
+        }
+        System.out.println("It's your turn! Choose " + choices +" students from your entrance and move them" +
+                " to an Island or your Dining room");
 
-        int comma = 0;
-        boolean valid = false;
+        Map<Integer, String> movements = new HashMap<>();
 
-        while (comma < 3 && valid == false)
+        int numOfEntranceStudent = client.getReducedModel().getBoards().get(0).getEntranceStudents().size();
+        List<Integer> students = new ArrayList<>();
+        for (int i = 1; i < numOfEntranceStudent+1; i++){
+            students.add(i);
+        }
+
+
+        while (choices > 0)
         {
-            String input = in.nextLine().toUpperCase();
-            if(input.equals("YELLOW") ||
-                    input.equals("BLUE") || input.equals("RED") || input.equals("PINK") || input.equals("GREEN"))
-            {
-                studentColor = input;
+            boolean valid = false;
+            int student = 0;
+            System.out.println("Choose a student from your entrance by typing its position ");
+            while (!students.contains(student) && !valid){
+                try {
+                    student = Integer.parseInt(in.nextLine());
+                    if (!students.contains(student)) {
+                        System.out.println("Invalid student position ");
+                    } else {
+                        students.remove((Integer) student);
+                        valid = true;
+                    }
+                } catch (NumberFormatException e){
+                    System.out.println("You have to insert a number ");
+                }
             }
-            else{
-                System.out.println("Unknown command, please type a color");
-            }
+            System.out.println("Choose a destination for this student by typing DINING ROOM or a number of an island ");
 
-            if(input.equals("ISLAND"))
-            {
-                destination = input;
-                int num = 0;
-                while (num < 1 || num > 12){
+            String destination;
+            valid = false;
+            while (!valid) {
+                destination = in.nextLine().toUpperCase();
+                if (destination.equals("DINING ROOM")) {
+                    valid = true;
+                    movements.put(student, destination);
+                } else {
                     try {
-                        num = Integer.parseInt(in.nextLine());
-                        if (num < 1 || num > 12){
-                            System.out.println("Invalid island ");
-                        }else{
-                            islandId = num;
+                        int verify = Integer.parseInt(destination);
+                        if (verify < 1 || verify > client.getReducedModel().getIslands().size()) {
+                            System.out.println("Invalid island, choose another one");
+                        } else {
                             valid = true;
+                            movements.put(student, destination);
                         }
-                    }catch (NumberFormatException e){
-                        System.out.println("You have to insert a number ");
+                    } catch (NumberFormatException e) {
+                        System.out.println("You have to insert the number of an island or DINING ROOM");
                     }
                 }
-            } else if (input.equals("DINING ROOM")) {
-                destination = input;
-                valid = true;
-            } else {
-                System.out.println("Unknown command, please type a destination");
             }
-
-            comma ++;
+            choices --;
         }
         System.out.println("Students moved, waiting for players...");
 
-        //TODO: aggiustare costruttore
-        //client.send(new MoveStudentMessage(destination, studentColor, islandId));
+        client.send(new MoveStudentMessage(movements));
+    }
+
+    @Override
+    public void serverError(String message) {
+        System.out.println(message);
+        render();
     }
 }

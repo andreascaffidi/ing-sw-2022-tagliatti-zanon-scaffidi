@@ -5,7 +5,7 @@ import it.polimi.ingsw.network.requests.ControllerExecuteExpertMode;
 import it.polimi.ingsw.network.requests.RequestMessage;
 
 /**
- * game message pay character 2
+ * game message to pay character 2
  */
 public class PayCharacter2Message implements RequestMessage, ControllerExecuteExpertMode {
 
@@ -19,8 +19,8 @@ public class PayCharacter2Message implements RequestMessage, ControllerExecuteEx
     }
 
     /**
-     * gets character 2
-     * @return character 2
+     * gets character id
+     * @return character id
      */
     public int getCharacter() {
         return character;
@@ -29,10 +29,9 @@ public class PayCharacter2Message implements RequestMessage, ControllerExecuteEx
     /**
      * executes controller method pay character 2
      * @param controller game controller
-     * @param username of the player that pays character 2
      */
     @Override
-    public void execute(ControllerExpertMode controller, String username) {
-        controller.payCharacter2(this, username);
+    public void execute(ControllerExpertMode controller) {
+        controller.payCharacter2(this);
     }
 }

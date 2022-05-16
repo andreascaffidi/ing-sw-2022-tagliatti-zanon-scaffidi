@@ -40,6 +40,7 @@ public class CLI implements UI {
      * Clears the screen by erasing all the content on the current cli. <br>
      * Actually is like if the users scrolls down until all the older printed message are hidden
      */
+    //FIXME: it doesn't work
     public void clearScreen() {
 
         System.out.print("\033[H\033[2J");
@@ -52,7 +53,7 @@ public class CLI implements UI {
         } catch (IOException | InterruptedException ex) {}
     }
 
-    //FIXME: è una prova
+    //FIXME: it's horrible
     public static void showModel(ReducedModel reducedModel){
         System.out.println("\n");
         String model = "";
@@ -67,13 +68,17 @@ public class CLI implements UI {
         {
             model += i.getId() + 1;
             model += ": ";
-            model += "Mother Nature: ";
-            model += i.isMotherNature();
-            model += " ";
-            for(ColorS s : i.getStudents()) {
-                model += s;
+            if (i.isMotherNature()){
+                model += "--MOTHER NATURE-- ";
             }
-            model += "\n";
+            if (i.getTower() != null){
+                model += "--TOWER = " + i.getNumOfTowers() + " " + i.getTower() + " --";
+            }
+            model += " --STUDENTS = ";
+            for(ColorS s : i.getStudents()) {
+                model += s + " ";
+            }
+            model += "--\n";
         }
         model += "\n";
 
@@ -90,6 +95,8 @@ public class CLI implements UI {
             model += "\n";
         }
         model += "\n";
+
+        model += "-----------------------------------------------------------\n";
 
         model += "Boards: \n";
         model += "\n";
@@ -122,7 +129,7 @@ public class CLI implements UI {
             model += "\n";
 
             model += "Red Students: ";
-            model += b.getYellowStudents();
+            model += b.getRedStudents();
             model += "\n";
 
             model += "Entrance Students: ";
@@ -149,14 +156,19 @@ public class CLI implements UI {
             model += "Assistant Deck: ";
             for(ReducedAssistant a : b.getAssistantDeck().getAssistantCards())
             {
-                model += "[";
+                model += "[Value = ";
                 model += a.getId();
-                model += ", ";
+                model += ", Movement = ";
                 model += a.getMotherNatureMovements();
                 model += "] ";
             }
+            if (b.getAssistantDeck().getPlayedAssistant() != null) {
+                model += "\n\nPlayed card: [Value = " + b.getAssistantDeck().getPlayedAssistant().getId();
+                model += ", Movement = " + b.getAssistantDeck().getPlayedAssistant().getMotherNatureMovements() + "] ";
+            }
             model += "\n";
             model += "\n";
+            model += "-----------------------------------------------------------\n";
         }
         System.out.println(model);
     }

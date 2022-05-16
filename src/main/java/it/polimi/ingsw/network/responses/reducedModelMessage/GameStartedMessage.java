@@ -7,13 +7,13 @@ import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.responses.ClientExecute;
 import it.polimi.ingsw.network.responses.ResponseMessage;
 
-public class ReducedModelMessage implements ResponseMessage, ClientExecute {
-    private ClientState clientState;
+public class GameStartedMessage implements ResponseMessage, ClientExecute {
     private final ReducedModel reducedModel;
+    private ClientState clientState;
 
-    public ReducedModelMessage(ClientState clientState, ReducedModel reducedModel){
-        this.clientState = clientState;
+    public GameStartedMessage(ReducedModel reducedModel){
         this.reducedModel = reducedModel;
+        clientState = ClientState.PLAY_ASSISTANT;
     }
 
     @Override

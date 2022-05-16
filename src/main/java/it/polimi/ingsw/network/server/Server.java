@@ -230,6 +230,7 @@ public class Server {
 
         List<Player> players = new ArrayList<>();
         for (Connection c : lobbyConnections){
+            //TODO: mi sono dimenticato di creare players con tag team in caso di partita a 4
             Player player = new Player(c.getUsernameConnection());
             players.add(player);
         }

@@ -5,7 +5,7 @@ import it.polimi.ingsw.network.requests.ControllerExecute;
 import it.polimi.ingsw.network.requests.RequestMessage;
 
 /**
- * game message choose cloud
+ * game message to choose a cloud
  */
 public class ChooseCloudMessage implements RequestMessage, ControllerExecute {
     private final int id;
@@ -29,10 +29,9 @@ public class ChooseCloudMessage implements RequestMessage, ControllerExecute {
     /**
      * executes controller method choose cloud
      * @param controller game controller
-     * @param username of the player that chooses the cloud
      */
     @Override
-    public void execute(Controller controller, String username) {
-        controller.chooseCloud(this, username);
+    public void execute(Controller controller) {
+        controller.chooseCloud(this);
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.schoolBoard;
 import it.polimi.ingsw.exceptions.GameException;
 import it.polimi.ingsw.model.pawns.Student;
+
 import java.util.*;
 
 /**
@@ -46,7 +47,8 @@ public class Entrance {
      * @throws GameException invalid chosen student index
      */
     public void validStudentIndex(int studentIndex) throws GameException {
-        if(studentIndex >= students.size() || studentIndex < 0)
+        if(studentIndex >= students.size() || studentIndex < 0) {
             throw new GameException("Student not found");
+        }
     }
 }
