@@ -5,7 +5,7 @@ import it.polimi.ingsw.network.requests.ControllerExecute;
 import it.polimi.ingsw.network.requests.RequestMessage;
 
 /**
- * game message move mother nature
+ * game message to move mother nature
  */
 public class MoveMotherNatureMessage implements RequestMessage, ControllerExecute {
     private final int movements;
@@ -29,10 +29,9 @@ public class MoveMotherNatureMessage implements RequestMessage, ControllerExecut
     /**
      * executes controller method move mother nature
      * @param controller game controller
-     * @param username of the player that moves mother nature
      */
     @Override
-    public void execute(Controller controller, String username) {
-        controller.moveMotherNature(this, username);
+    public void execute(Controller controller) {
+        controller.moveMotherNature(this);
     }
 }

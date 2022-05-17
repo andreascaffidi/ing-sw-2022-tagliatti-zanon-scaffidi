@@ -11,14 +11,15 @@ public class TurnManager {
     private final List<Player> clockwise;
     private final List<Player> planningTurn;
     private final PriorityQueue<Player> actionTurn;
-    private RoundPhases phase;
+    private RoundPhases nextPhase;
+    private RoundPhases currentPhase;
 
     /**
      * builds turn manager
      * @param players players of the match
      */
     public TurnManager(List<Player> players){
-        this.phase = RoundPhases.PLANNING;
+        this.nextPhase = RoundPhases.PLANNING;
         this.clockwise = players;
         this.planningTurn = new ArrayList<>(players);
         this.planningTurn.remove(0);
@@ -50,20 +51,22 @@ public class TurnManager {
      * @return next player
      */
     public Player nextPlayer(){
-        if (phase == RoundPhases.PLANNING){
+        if (nextPhase == RoundPhases.PLANNING){
+            currentPhase = RoundPhases.PLANNING;
             Player nextPlayer = planningTurn.remove(0);
             if (planningTurn.isEmpty()){
-                phase = RoundPhases.ACTION;
+                nextPhase = RoundPhases.ACTION;
             }
             return nextPlayer;
         }
-        else if (phase == RoundPhases.ACTION){
+        else if (nextPhase == RoundPhases.ACTION){
+            currentPhase = RoundPhases.ACTION;
             Player nextPlayer = actionTurn.poll();
             if (actionTurn.size() == clockwise.size() - 1){
                 newPlanningTurn(nextPlayer);
             }
             if (actionTurn.isEmpty()){
-                phase = RoundPhases.PLANNING;
+                nextPhase = RoundPhases.PLANNING;
             }
             return nextPlayer;
         }
@@ -72,8 +75,12 @@ public class TurnManager {
         }
     }
 
-    public RoundPhases getPhase() {
-        return phase;
+    /**
+     * gets the current round phase (planning or action)
+     * @return round phase
+     */
+    public RoundPhases getCurrentPhase() {
+        return currentPhase;
     }
 }
 

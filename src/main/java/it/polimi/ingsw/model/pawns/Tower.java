@@ -32,7 +32,6 @@ public class Tower {
      * gets tower color
      * @return tower color
      */
-    //FIXME: only used in tests
     public ColorT getColor() {
         return color;
     }

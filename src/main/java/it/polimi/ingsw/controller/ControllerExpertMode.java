@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.network.requests.ControllerExecuteExpertMode;
 import it.polimi.ingsw.network.requests.*;
 import it.polimi.ingsw.network.requests.gameMessages.*;
+import it.polimi.ingsw.network.responses.reducedModelMessage.ServerErrorMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class ControllerExpertMode extends Controller{
 
     /**
      * builds the controller expert mode
-     * @param table to control
+     * @param table model to modify
      */
     public ControllerExpertMode(TableExpertMode table)
     {
@@ -33,57 +34,61 @@ public class ControllerExpertMode extends Controller{
     }
 
     /**
-     * executes a method of the controller expert mode after the received message
-     * @param message that requests the execution of a specific controller method
+     * it's an override of update() Controller class' method
+     * executes a controller method based on the controller message received
+     * @param message controller message to be executed
      */
     @Override
     public void update(ControllerMessage message){
-        if (message.isExpertMode()){
-            ControllerExecuteExpertMode controller = (ControllerExecuteExpertMode) message.getRequestMessage();
-            controller.execute(this, message.getUsername());
-        }
-        else
-        {
-            super.update(message);
+        try {
+            RequestMessage requestMessage = message.getRequestMessage();
+            if (requestMessage instanceof ControllerExecuteExpertMode) {
+                table.checkCurrentPlayer(message.getUsername());
+                ControllerExecuteExpertMode request = (ControllerExecuteExpertMode) requestMessage;
+                request.execute(this);
+            } else {
+                super.update(message);
+            }
+        } catch (GameException e){
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * chooses the cloud
-     * @param message choose cloud
-     * @param username of the player that chooses the cloud
+     * it's an override of chooseCloud() Controller class' method
+     * chooses the cloud for the current player and reset the current effect on the table
+     * @param message choose cloud message
      */
     @Override
-    public void chooseCloud(ChooseCloudMessage message, String username){
-        super.chooseCloud(message, username);
+    public void chooseCloud(ChooseCloudMessage message){
+        super.chooseCloud(message);
         table.resetCurrentEffect();
     }
 
     /**
-     * moves student to dining room
-     * @param message move student to dining
-     * @param username player that chooses to move the student to dining room
+     * it's an override of moveStudentToDining() Controller class' method
+     * moves a student to the current player's dining room and possibly gives him a coin
+     * @param studentIndex student to move
      */
     @Override
-    public void moveStudentToDining(MoveStudentMessage message, String username){
+    protected void moveStudentToDining(int studentIndex){
         try {
-            ColorS color = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(message.getStudentIndex()-1).getColor();
-            super.moveStudentToDining(message, username);
+            table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(studentIndex);
+            ColorS color = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(studentIndex).getColor();
+            super.moveStudentToDining(studentIndex);
             if (table.getCurrentPlayer().getSchoolBoard().getDiningRoom().getLine(color).size() % 3 == 0 && table.getBank() > 0){
                 table.addCoins(table.getCurrentPlayer(), 1);
             }
-        } catch (IndexOutOfBoundsException e){
-            //TODO:
-            System.out.println("StudentIndexOutOfBoundsException");
+        } catch (GameException e) {
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays character 1
-     * @param message pay character 1
-     * @param username of the player that plays the character
+     * pays character 1 and executes its effect
+     * @param message pay character 1 message
      */
-    public void payCharacter1(PayCharacter1Message message, String username)
+    public void payCharacter1(PayCharacter1Message message)
     {
         try {
             table.validCharacter(message.getCharacter());
@@ -93,69 +98,65 @@ public class ControllerExpertMode extends Controller{
             table.getIsland(message.getIslandId()-1).addStudent(student);
             table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
             pay(message.getCharacter());
-        }catch(GameException | NotEnoughCoinsException e){
-            //TODO
-            System.out.println(e.getMessage());
+            //TODO: manca notify()
+        }catch(GameException | CardNotFoundException e){
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays character 2
-     * @param message pay character 2
-     * @param username of the player that plays the character
+     * pays character 2 and executes its effect
+     * @param message pay character 2 message
      */
-    public void payCharacter2(PayCharacter2Message message, String username){
+    public void payCharacter2(PayCharacter2Message message){
         try {
             table.validCharacter(message.getCharacter());
             table.setCurrentEffect(new ProfessorTieEffect(table.getCurrentPlayer()));
             pay(message.getCharacter());
-        }catch(GameException | NotEnoughCoinsException e) {
-            //TODO
-            System.out.println(e.getMessage());
+            //TODO: manca notify()
+        }catch(GameException e) {
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays character 3
-     * @param message pay character 3
-     * @param username of the player that plays the character
+     * pays character 3 and executes its effect
+     * @param message pay character 3 message
      */
-    public void payCharacter3(PayCharacter3Message message, String username){
+    public void payCharacter3(PayCharacter3Message message){
         try {
             table.validCharacter(message.getCharacter());
             table.validIsland(message.getIslandId()-1);
             table.processIsland(table.getIsland(message.getIslandId()-1));
             pay(message.getCharacter());
-        }catch(GameException | NotEnoughCoinsException e) {
-            //TODO
-            System.out.println(e.getMessage());
+            //TODO: manca notify()
+        }catch(GameException e) {
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays character 4
-     * @param message pay character 4
-     * @param username of the player that plays the character
+     * pays character 4 and executes its effect
+     * @param message pay character 4 message
      */
-    public void payCharacter4(PayCharacter4Message message, String username){
+    public void payCharacter4(PayCharacter4Message message){
         try {
             table.validCharacter(message.getCharacter());
             table.validAdditionalMovement(message.getAdditionalMovement());
             table.moveMotherNature(message.getAdditionalMovement());
             pay(message.getCharacter());
-        }catch(GameException | NotEnoughCoinsException e)
+            //TODO: manca notify()
+        }catch(GameException e)
         {
-            //TODO
-            System.out.println(e.getMessage());
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays character 5
-     * @param message pay character 5
-     * @param username of the player that plays the character
+     * pays character 5 and executes its effect
+     * @param message pay character 5 message
      */
-    public void payCharacter5(PayCharacter5Message message, String username){
+    public void payCharacter5(PayCharacter5Message message){
         try {
             table.validCharacter(message.getCharacter());
             table.validIsland(message.getIslandId()-1);
@@ -163,35 +164,33 @@ public class ControllerExpertMode extends Controller{
             table.validNoEntryTile(island);
             table.setNoEntryTile(island, true);
             pay(message.getCharacter());
-        }catch(GameException | NotEnoughCoinsException e){
-            //TODO
-            System.out.println(e.getMessage());
+            //TODO: manca notify()
+        }catch(GameException e){
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays character 6
-     * @param message pay character 6
-     * @param username of the player that plays the character
+     * pays character 6 and executes its effect
+     * @param message pay character 6 message
      */
-    public void payCharacter6(PayCharacter6Message message, String username){
+    public void payCharacter6(PayCharacter6Message message){
         try {
             table.validCharacter(message.getCharacter());
             table.validIsland(message.getIslandId()-1);
             table.setCurrentEffect(new CountTowersEffect(table.getIsland(message.getIslandId()-1)));
             pay(message.getCharacter());
-        }catch(GameException | NotEnoughCoinsException e){
-            //TODO
-            System.out.println(e.getMessage());
+            //TODO: manca notify()
+        }catch(GameException e){
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays character 7
-     * @param message pay character 7
-     * @param username of the player that plays the character
+     * pays character 7 and executes its effect
+     * @param message pay character 7 message
      */
-    public void payCharacter7(PayCharacter7Message message, String username){
+    public void payCharacter7(PayCharacter7Message message){
         try {
             //verify all indexes' validity
             table.validCharacter(message.getCharacter());
@@ -222,51 +221,48 @@ public class ControllerExpertMode extends Controller{
                 table.getCardWithStudents(message.getCharacter()).getStudents().add(entranceStudents.get(i));
             }
             pay(message.getCharacter());
-        }catch(GameException | NotEnoughCoinsException e) {
-            //TODO
-            System.out.println(e.getMessage());
+            //TODO: manca notify()
+        }catch(GameException | CardNotFoundException e) {
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays character 8
-     * @param message pay character 8
-     * @param username of the player that plays the character
+     * pays character 8 and executes its effect
+     * @param message pay character 8 message
      */
-    public void payCharacter8(PayCharacter8Message message, String username){
+    public void payCharacter8(PayCharacter8Message message){
         try {
             table.validCharacter(message.getCharacter());
             table.setCurrentEffect(new AdditionalInfluenceEffect(table.getCurrentPlayer()));
             pay(message.getCharacter());
-        }catch(GameException | NotEnoughCoinsException e) {
-            //TODO
-            System.out.println(e.getMessage());
+            //TODO: manca notify()
+        }catch(GameException e) {
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays character 9
-     * @param message pay character 9
-     * @param username of the player that plays the character
+     * pays character 9 and executes its effect
+     * @param message pay character 9 message
      */
-    public void payCharacter9(PayCharacter9Message message, String username){
+    public void payCharacter9(PayCharacter9Message message){
         try {
             table.validCharacter(message.getCharacter());
-            ColorS color = ColorS.parseToColor(message.getColor());
+            ColorS color = message.getColor();
             table.setCurrentEffect(new NoInfluenceColorEffect(color));
             pay(message.getCharacter());
-        }catch(GameException | NotEnoughCoinsException e) {
-            //TODO
-            System.out.println(e.getMessage());
+            //TODO: manca notify()
+        }catch(GameException e) {
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays character 10
-     * @param message pay character 10
-     * @param username of the player that plays the character
+     * pays character 10 and executes its effect
+     * @param message pay character 10 message
      */
-    public void payCharacter10(PayCharacter10Message message, String username){
+    public void payCharacter10(PayCharacter10Message message){
         try {
             //verify all validity
             table.validCharacter(message.getCharacter());
@@ -284,7 +280,7 @@ public class ControllerExpertMode extends Controller{
                 Student entranceStudent = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(entranceIndex);
                 entranceStudents.add(entranceStudent);
 
-                ColorS diningColor = ColorS.parseToColor(message.getDiningStudents().get(i));
+                ColorS diningColor = message.getDiningStudents().get(i);
                 Student diningStudent = table.getCurrentPlayer().getSchoolBoard().getDiningRoom().removeStudent(diningColor);
                 diningStudents.add(diningStudent);
             }
@@ -297,18 +293,17 @@ public class ControllerExpertMode extends Controller{
                 table.setProfessorOwner(entranceStudents.get(i).getColor(), table.getCurrentPlayer());
             }
             pay(message.getCharacter());
-        }catch(GameException | NotEnoughCoinsException e) {
-            //TODO
-            System.out.println(e.getMessage());
+            //TODO: manca notify()
+        }catch(GameException e) {
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays character 11
-     * @param message pay character 11
-     * @param username of the player that plays the character
+     * pays character 11 and executes its effect
+     * @param message pay character 11 message
      */
-    public void payCharacter11(PayCharacter11Message message, String username){
+    public void payCharacter11(PayCharacter11Message message){
         try {
             table.validCharacter(message.getCharacter());
             table.getCardWithStudents(message.getCharacter()).validStudent(message.getStudentId()-1);
@@ -316,21 +311,20 @@ public class ControllerExpertMode extends Controller{
             table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(student);
             table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
             pay(message.getCharacter());
-        }catch(GameException | NotEnoughCoinsException e) {
-            //TODO
-            System.out.println(e.getMessage());
+            //TODO: manca notify()
+        }catch(GameException | CardNotFoundException e) {
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays character 12
-     * @param message pay character 12
-     * @param username of the player that plays the character
+     * pays character 12 and executes its effect
+     * @param message pay character 12 message
      */
-    public void payCharacter12(PayCharacter12Message message, String username){
+    public void payCharacter12(PayCharacter12Message message){
         try {
             table.validCharacter(message.getCharacter());
-            ColorS color = ColorS.parseToColor(message.getColor());
+            ColorS color = message.getColor();
             for (Player p : table.getPlayers()) {
                 if (p.getSchoolBoard().getDiningRoom().getLine(color).size() < 3) {
                     int n = p.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color);
@@ -345,15 +339,15 @@ public class ControllerExpertMode extends Controller{
                 }
             }
             pay(message.getCharacter());
-        }catch(GameException | NotEnoughCoinsException e){
-            //TODO
-            System.out.println(e.getMessage());
+            //TODO: manca notify()
+        }catch(GameException e){
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * plays a character and increments its cost
-     * @param character to play
+     * pays a character card for the current player and increments its cost
+     * @param character character card's id to pay
      */
     private void pay(int character) {
         int cost = table.getCharacters().get(character);

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.schoolBoard;
 
+import it.polimi.ingsw.exceptions.ColorNotFoundException;
 import it.polimi.ingsw.exceptions.GameException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
@@ -39,7 +40,6 @@ class DiningRoomTest {
     @Test
     void getLine() {
         Exception e = assertThrows(RuntimeException.class,()-> diningRoom.getLine(null));
-        System.out.println(e.getMessage());
     }
 
     @Test
@@ -85,22 +85,22 @@ class DiningRoomTest {
     }
 
     @Test
-    void validColors() throws GameException {
+    void validColors() throws GameException, ColorNotFoundException {
         diningRoom.addStudent(new Student(ColorS.BLUE));
-        List<String> colors = new ArrayList<>();
-        colors.add("blue");
+        List<ColorS> colors = new ArrayList<>();
+        colors.add(ColorS.BLUE);
         diningRoom.validColors(colors);
         diningRoom.getLine(ColorS.BLUE).remove(0);
         assertThrows(GameException.class, () -> diningRoom.validColors(colors));
         diningRoom.addStudent(new Student(ColorS.BLUE));
         diningRoom.addStudent(new Student(ColorS.BLUE));
-        colors.add("blue");
+        colors.add(ColorS.BLUE);
         diningRoom.validColors(colors);
         diningRoom.getLine(ColorS.BLUE).remove(0);
         assertThrows(GameException.class, () -> diningRoom.validColors(colors));
         diningRoom.addStudent(new Student(ColorS.RED));
         colors.remove(0);
-        colors.add("red");
+        colors.add(ColorS.RED);
         diningRoom.validColors(colors);
     }
 

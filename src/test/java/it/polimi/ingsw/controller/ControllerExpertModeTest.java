@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 
+import it.polimi.ingsw.exceptions.CardNotFoundException;
 import it.polimi.ingsw.exceptions.GameException;
 import it.polimi.ingsw.exceptions.ParityException;
 import it.polimi.ingsw.model.Player;
@@ -66,7 +67,9 @@ class ControllerExpertModeTest {
 
         assertEquals(1, table.getPlayerCoins(player));
 
-        ControllerMessage message = new ControllerMessage(new MoveStudentMessage("dining", 3), table.getCurrentPlayer().getUsername());
+        Map<Integer,String> movement = new HashMap<>();
+        movement.put(3, "DINING ROOM");
+        ControllerMessage message = new ControllerMessage(new MoveStudentMessage(movement), table.getCurrentPlayer().getUsername());
         controller.update(message);
 
         assertEquals(2, table.getPlayerCoins(player));
@@ -79,7 +82,9 @@ class ControllerExpertModeTest {
         player.getSchoolBoard().getDiningRoom().addStudent(new Student(ColorS.BLUE));
         assertEquals(1, table.getPlayerCoins(player));
 
-        ControllerMessage message = new ControllerMessage(new MoveStudentMessage("dining", 8), "p1");
+        Map<Integer,String> movement = new HashMap<>();
+        movement.put(8, "DINING");
+        ControllerMessage message = new ControllerMessage(new MoveStudentMessage(movement), "p1");
         controller.update(message);
 
         //tbd -> exceptions
@@ -91,7 +96,7 @@ class ControllerExpertModeTest {
         table.addCoins(table.getCurrentPlayer(), 1);
 
         PayCharacter2Message pay = new PayCharacter2Message();
-        ControllerMessage message = new ControllerMessage(pay, "p1", true);
+        ControllerMessage message = new ControllerMessage(pay, "p1");
 
         controller.update(message);
 
@@ -113,21 +118,21 @@ class ControllerExpertModeTest {
 
         table.getCharacters().put(12, 3);
 
-        ControllerMessage message = new ControllerMessage(new PayCharacter12Message("blue"), "p1", true);
+        ControllerMessage message = new ControllerMessage(new PayCharacter12Message(ColorS.BLUE), "p1");
         controller.update(message);
 
         assertEquals(2, table.getPlayerCoins(player));
 
-        ControllerMessage message2 = new ControllerMessage(new PayCharacter12Message("blue"), "p1", true);
+        ControllerMessage message2 = new ControllerMessage(new PayCharacter12Message(ColorS.BLUE), "p1");
         controller.update(message2);
 
         //tbd -> exceptions
     }
 
     @RepeatedTest(100)
-    void payCharacter1() throws GameException {
+    void payCharacter1() throws CardNotFoundException {
 
-        ControllerMessage message = new ControllerMessage(new PayCharacter1Message(1, 1), "p1", true);
+        ControllerMessage message = new ControllerMessage(new PayCharacter1Message(1, 1), "p1");
 
         if(table.getCharacters().containsKey(1))
         {
@@ -156,7 +161,7 @@ class ControllerExpertModeTest {
         table.addCoins(table.getCurrentPlayer(), 1);
 
         PayCharacter2Message pay = new PayCharacter2Message();
-        ControllerMessage message = new ControllerMessage(pay, "p1", true);
+        ControllerMessage message = new ControllerMessage(pay, "p1");
 
         assertEquals(2, pay.getCharacter());
         controller.update(message);
@@ -174,7 +179,7 @@ class ControllerExpertModeTest {
 
         PayCharacter3Message pay = new PayCharacter3Message(1);
 
-        ControllerMessage message = new ControllerMessage(pay, "p1", true);
+        ControllerMessage message = new ControllerMessage(pay, "p1");
 
         assertEquals(1, pay.getIslandId());
         table.getIsland(0).addStudent(new Student(ColorS.BLUE));
@@ -221,7 +226,7 @@ class ControllerExpertModeTest {
 
         table.getCharacters().put(4, 1);
 
-        ControllerMessage message = new ControllerMessage(new PayCharacter4Message(1), "p1", true);
+        ControllerMessage message = new ControllerMessage(new PayCharacter4Message(1), "p1");
 
         table.setMotherNature(table.getIsland(0));
 
@@ -242,7 +247,7 @@ class ControllerExpertModeTest {
 
         PayCharacter5Message pay = new PayCharacter5Message(1);
 
-        ControllerMessage message = new ControllerMessage(pay, table.getCurrentPlayer().getUsername(), true);
+        ControllerMessage message = new ControllerMessage(pay, table.getCurrentPlayer().getUsername());
 
 
         assertEquals(1, pay.getIslandId());
@@ -262,7 +267,7 @@ class ControllerExpertModeTest {
 
         PayCharacter6Message pay = new PayCharacter6Message(1);
 
-        ControllerMessage message = new ControllerMessage(pay, "p1", true);
+        ControllerMessage message = new ControllerMessage(pay, "p1");
 
         assertEquals(1, pay.getIslandId());
         assertEquals(6, pay.getCharacter());
@@ -275,7 +280,7 @@ class ControllerExpertModeTest {
     }
 
     @RepeatedTest(100)
-    void payCharacter7() throws GameException {
+    void payCharacter7() throws CardNotFoundException {
 
         if (table.getCharacters().containsKey(7)) {
 
@@ -299,7 +304,7 @@ class ControllerExpertModeTest {
             entranceStudentChosen.add(2);
             entranceStudentChosen.add(3);
 
-            ControllerMessage message = new ControllerMessage(new PayCharacter7Message(cardStudentChosen, entranceStudentChosen), "p1", true);
+            ControllerMessage message = new ControllerMessage(new PayCharacter7Message(cardStudentChosen, entranceStudentChosen), "p1");
 
             //dopo l'effetto mi aspetto che:
             controller.update(message);
@@ -332,7 +337,7 @@ class ControllerExpertModeTest {
         table.addCoins(table.getCurrentPlayer(), 1);
 
         PayCharacter8Message pay = new PayCharacter8Message();
-        ControllerMessage message = new ControllerMessage(pay, "p1", true);
+        ControllerMessage message = new ControllerMessage(pay, "p1");
 
         assertEquals(8, pay.getCharacter());
         controller.update(message);
@@ -348,11 +353,11 @@ class ControllerExpertModeTest {
         table.getCharacters().put(9, 3);
         table.addCoins(table.getCurrentPlayer(), 2);
 
-        PayCharacter9Message pay = new PayCharacter9Message("blue");
+        PayCharacter9Message pay = new PayCharacter9Message(ColorS.BLUE);
 
-        ControllerMessage message = new ControllerMessage(pay, "p1", true);
+        ControllerMessage message = new ControllerMessage(pay, "p1");
 
-        assertEquals("blue", pay.getColor());
+        assertEquals(ColorS.BLUE, pay.getColor());
         assertEquals(9, pay.getCharacter());
         controller.update(message);
 
@@ -373,10 +378,10 @@ class ControllerExpertModeTest {
         Student student1 = table.getCurrentPlayer().getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).get(0);
         Student student2 = table.getCurrentPlayer().getSchoolBoard().getDiningRoom().getLine(ColorS.BLUE).get(1);
 
-        List<String> diningRoomStudentChosen = new ArrayList<>();
+        List<ColorS> diningRoomStudentChosen = new ArrayList<>();
 
-        diningRoomStudentChosen.add("blue");
-        diningRoomStudentChosen.add("blue");
+        diningRoomStudentChosen.add(ColorS.BLUE);
+        diningRoomStudentChosen.add(ColorS.BLUE);
 
         Student student3 = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(0);
         Student student4 = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(1);
@@ -386,7 +391,7 @@ class ControllerExpertModeTest {
         entranceStudentChosen.add(1);
         entranceStudentChosen.add(2);
 
-        ControllerMessage message = new ControllerMessage(new PayCharacter10Message(diningRoomStudentChosen, entranceStudentChosen), "p1", true);
+        ControllerMessage message = new ControllerMessage(new PayCharacter10Message(diningRoomStudentChosen, entranceStudentChosen), "p1");
 
         //dopo l'effetto mi aspetto che:
         controller.update(message);
@@ -407,10 +412,10 @@ class ControllerExpertModeTest {
     }
 
     @RepeatedTest(100)
-    void payCharacter11() throws GameException {
+    void payCharacter11() throws CardNotFoundException {
 
         PayCharacter11Message pay = new PayCharacter11Message(1);
-        ControllerMessage message = new ControllerMessage(pay, "p1", true);
+        ControllerMessage message = new ControllerMessage(pay, "p1");
 
         table.addCoins(table.getCurrentPlayer(), 1);
 
@@ -438,10 +443,10 @@ class ControllerExpertModeTest {
         table.getCharacters().put(12, 3);
         table.addCoins(table.getCurrentPlayer(), 2);
 
-        PayCharacter12Message pay = new PayCharacter12Message("blue");
-        ControllerMessage message = new ControllerMessage(pay, "p1", true);
+        PayCharacter12Message pay = new PayCharacter12Message(ColorS.BLUE);
+        ControllerMessage message = new ControllerMessage(pay, "p1");
 
-        assertEquals("blue", pay.getColor());
+        assertEquals(ColorS.BLUE, pay.getColor());
         assertEquals(12, pay.getCharacter());
         //students dei player
         Student student1 = new Student(ColorS.BLUE);

@@ -17,12 +17,9 @@ import it.polimi.ingsw.network.client.reducedModel.ReducedIsland;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.responses.ResponseMessage;
-import it.polimi.ingsw.network.responses.reducedModelMessage.DisconnectErrorMessage;
 import it.polimi.ingsw.network.responses.reducedModelMessage.EndGameMessage;
+import it.polimi.ingsw.network.responses.reducedModelMessage.GameStartedMessage;
 import it.polimi.ingsw.network.responses.reducedModelMessage.ReducedModelMessage;
-import it.polimi.ingsw.network.responses.reducedModelMessage.ServerErrorMessage;
-import it.polimi.ingsw.network.responses.setupMessages.SetupResponseMessage;
-import it.polimi.ingsw.network.responses.reducedModelMessage.*;
 import it.polimi.ingsw.utils.Observable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -184,7 +181,9 @@ public class Table extends Observable<ResponseMessage> {
         this.clouds = new ArrayList<>();
         // The number of clouds is the same as the number of players
         for(int i = 0; i < this.numberOfPlayers; i++){
-            this.clouds.add(new Cloud());
+            Cloud cloud = new Cloud();
+            addStudentsToCloud(cloud);
+            this.clouds.add(cloud);
         }
     }
 
@@ -595,15 +594,6 @@ public class Table extends Observable<ResponseMessage> {
         return clouds;
     }
 
-    //FIXME: used only in tests
-    /**
-     * gets mother nature
-     * @return mother nature
-     */
-    public MotherNature getMotherNature() {
-        return motherNature;
-    }
-
     /**
      * checks if a player is the new owner of the professor with a given color, in that case sets the new professor owner
      * @param color professor's color
@@ -637,7 +627,7 @@ public class Table extends Observable<ResponseMessage> {
     /**
      * plays the assistant card, puts it on top of the discard pile and calculates the order of action phase turn
      * @param card assistant card to play
-     * @throws AssistantNotPlayableException if assistant card isn't playable (i.e. another one has played it)
+     * @throws GameException if assistant card isn't playable (i.e. another one has played it)
      * @throws AssistantNotFoundException if there isn't the assistant card
      */
     public void playAssistant(Assistant card) throws GameException, AssistantNotFoundException {
@@ -653,17 +643,17 @@ public class Table extends Observable<ResponseMessage> {
             turnManager.orderPlayer(getCurrentPlayer());
         }
         else {
-            notify(new ServerErrorMessage("Assistant is not playable"));
             throw new GameException("Not playable assistant");
         }
 
         this.nextPlayer();
 
-        ClientState clientState = turnManager.getPhase() == RoundPhases.PLANNING
-                ?
-                ClientState.PLAY_ASSISTANT
-                :
-                ClientState.MOVE_STUDENTS;
+        ClientState clientState;
+        if (turnManager.getCurrentPhase() == RoundPhases.PLANNING){
+            clientState = ClientState.PLAY_ASSISTANT;
+        }else{
+            clientState = ClientState.MOVE_STUDENTS;
+        }
         notify(new ReducedModelMessage(clientState,this.createReducedModel()));
     }
 
@@ -681,7 +671,6 @@ public class Table extends Observable<ResponseMessage> {
      */
     public void validIsland(int idIsland) throws GameException {
         if(idIsland >= islands.size() || idIsland < 0){
-            notify(new ServerErrorMessage("The island you chose is not valid"));
             throw new GameException("The island you chose is not valid");
         }
     }
@@ -696,16 +685,14 @@ public class Table extends Observable<ResponseMessage> {
                 cloudIndex < 0 ||
                 clouds.get(cloudIndex).getStudents().isEmpty()
         ){
-            notify(new ServerErrorMessage("Not valid cloud"));
             throw new GameException("Not valid cloud");
         }
     }
 
     /**
      * ends the game and choose the winner
-     * @return the winner of the game
      */
-    public Player endGame() {
+    public void endGame() {
         Player winner;
         try {
             winner = this.getPlayerWithMinTowers();
@@ -713,29 +700,27 @@ public class Table extends Observable<ResponseMessage> {
             winner = this.getPlayerWithMaxProfessor();
         }
         notify(new EndGameMessage(winner.getUsername()));
-        return winner;
-        //TODO: we are in the endgame now!
     }
 
-    //FIXME: è una prova
+    /**
+     * creates and returns a reduced version of the table
+     * @return reduced model
+     */
     public ReducedModel createReducedModel(){
 
         List<ReducedBoard> reducedBoards = new ArrayList<>();
         List<ReducedIsland> reducedIslands = new ArrayList<>();
         List<ReducedCloud> reducedClouds = new ArrayList<>();
 
-        for(Player p : this.players)
-        {
+        for(Player p : this.players) {
             reducedBoards.add(p.reduceBoard());
         }
 
-        for(Island i : this.islands)
-        {
+        for(Island i : this.islands) {
             reducedIslands.add(i.reduceIsland());
         }
 
-        for(Cloud c : this.clouds)
-        {
+        for(Cloud c : this.clouds) {
             reducedClouds.add(new ReducedCloud(this.clouds.indexOf(c),
                     c.getStudents().stream().map(Student::getColor).collect(Collectors.toList())));
         }
@@ -743,22 +728,43 @@ public class Table extends Observable<ResponseMessage> {
         return new ReducedModel(reducedIslands, reducedClouds, this.currentPlayer.getUsername(), reducedBoards);
     }
 
+    /**
+     * sends to all clients a game started message with a reduced version of the model
+     */
     public void startGame(){
-        notify(new ReducedModelMessage(ClientState.PLAY_ASSISTANT,createReducedModel()));
+        notify(new GameStartedMessage(createReducedModel()));
     }
 
+
+    /**
+     * adds students taken from a cloud to the current player's entrance
+     * @param cloud cloud with the students
+     */
     public void addStudentsToEntrance(Cloud cloud){
         for(Student student : cloud.takeAllStudents()) {
             this.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(student);
         }
         this.nextPlayer();
-        ClientState clientState = turnManager.getPhase() == RoundPhases.PLANNING
-                ?
-                ClientState.PLAY_ASSISTANT
-                :
-                ClientState.MOVE_STUDENTS;
+        ClientState clientState;
+        if (turnManager.getCurrentPhase() == RoundPhases.ACTION) {
+            clientState = ClientState.MOVE_STUDENTS;
+        }else{
+            clientState = ClientState.PLAY_ASSISTANT;
+            for (Cloud c : this.clouds){
+                addStudentsToCloud(c);
+            }
+        }
         notify(new ReducedModelMessage(clientState,this.createReducedModel()));
     }
 
+    /**
+     * checks if it's the player turn
+     * @param username of the player
+     */
+    public void checkCurrentPlayer(String username) throws GameException{
+        if(!username.equals(getCurrentPlayer().getUsername())) {
+            throw new GameException("It isn't your turn");
+        }
+    }
 
 }

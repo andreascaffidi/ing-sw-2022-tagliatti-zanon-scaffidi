@@ -4,13 +4,19 @@ import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Cloud;
 import it.polimi.ingsw.model.Table;
 import it.polimi.ingsw.model.pawns.Student;
+import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.requests.ControllerExecute;
 import it.polimi.ingsw.network.requests.ControllerMessage;
 import it.polimi.ingsw.network.requests.gameMessages.ChooseCloudMessage;
 import it.polimi.ingsw.network.requests.gameMessages.MoveMotherNatureMessage;
 import it.polimi.ingsw.network.requests.gameMessages.MoveStudentMessage;
 import it.polimi.ingsw.network.requests.gameMessages.PlayAssistantMessage;
+import it.polimi.ingsw.network.responses.reducedModelMessage.ReducedModelMessage;
+import it.polimi.ingsw.network.responses.reducedModelMessage.ServerErrorMessage;
 import it.polimi.ingsw.utils.Observer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * controller class
@@ -21,7 +27,7 @@ public class Controller implements Observer<ControllerMessage> {
 
     /**
      * builds the controller
-     * @param table to control
+     * @param table model to modify
      */
     public Controller(Table table){
         this.table = table;
@@ -29,133 +35,118 @@ public class Controller implements Observer<ControllerMessage> {
 
 
     /**
-     * executes a method of the controller after the received message
-     * @param message that requests the execution of a specific controller method
+     * called when Connection class calls notify()
+     * executes a controller method based on the controller message received
+     * @param message controller message to be executed
      */
     //TODO: proibire al metodo di eseguire messaggi per esperti (nella remote view)
     @Override
     public void update(ControllerMessage message){
-        //todo: controllo username
-        ControllerExecute controller = (ControllerExecute) message.getRequestMessage();
-        controller.execute(this, message.getUsername());
+        try {
+            table.checkCurrentPlayer(message.getUsername());
+            ControllerExecute request = (ControllerExecute) message.getRequestMessage();
+            request.execute(this);
+        } catch (GameException e){
+            table.notify(new ServerErrorMessage(e.getMessage()));
+        }
     }
 
 
     /**
-     * plays assistant
-     * @param message play assistant
-     * @param username player that chooses the assistant
+     * plays an assistant card for the current player
+     * @param message play assistant message
      */
-    public void playAssistant(PlayAssistantMessage message, String username){
+    public void playAssistant(PlayAssistantMessage message){
         try{
-            System.out.println("playAssistant.checkPlayer");
-            checkPlayer(username);
-            System.out.println("playAssistant.playAssistant");
             table.playAssistant(table.getCurrentPlayer().getAssistant(message.getValue()));
-        }catch (WrongPlayerException e){
-            //TODO
-            System.out.println("playAssistant.WrongPlayerException");
         }catch (AssistantNotFoundException | GameException e){
-            //TODO
-            System.out.println("playAssistant.GameException");
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
     /**
-     * checks if it's the player turn
-     * @param username of the player
+     * moves a student to an island
+     * @param studentIndex student to move
+     * @param idIsland island on which place student
+     * @throws GameException if indexes are invalid
      */
-    private void checkPlayer(String username){
-        if(!username.equals(table.getCurrentPlayer().getUsername()))
-            throw new WrongPlayerException("It isn't your turn");
-    }
-
-
-    /**
-     * moves student to island
-     * @param message move student to island
-     * @param username player that chooses to move the student to island
-     */
-    public void moveStudentToIsland(MoveStudentMessage message, String username){
-        try{
-            checkPlayer(username);
-            int idIsland = message.getIdIsland()-1;
-            int studentIndex = message.getStudentIndex()-1;
-            table.validIsland(idIsland);
-            table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(studentIndex);
-            Student student = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().remove(studentIndex);
-            table.getIsland(idIsland).addStudent(student);
-        }catch (WrongPlayerException e){
-            //TODO
-        } catch (GameException e) {
-            //todo: logging
-        }
-
+    private void moveStudentToIsland(int studentIndex, int idIsland) throws GameException{
+        table.validIsland(idIsland);
+        table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(studentIndex);
+        Student student = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(studentIndex);
+        table.getIsland(idIsland).addStudent(student);
     }
 
     /**
-     * moves student to dining room
-     * @param message move student to dining
-     * @param username player that chooses to move the student to dining room
+     * moves a student to the current player's dining room
+     * @param studentIndex student to move
+     * @throws GameException if indexes are invalid
      */
-    public void moveStudentToDining(MoveStudentMessage message, String username){
+    protected void moveStudentToDining(int studentIndex) throws GameException{
+        table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(studentIndex);
+        Student student = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(studentIndex);
+        table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(student);
+        table.setProfessorOwner(student.getColor(), table.getCurrentPlayer());
+    }
+
+    /**
+     * moves students from current player's entrance to the dining room or to an island chosen
+     * @param message move students message
+     */
+    public void moveStudents(MoveStudentMessage message){
         try{
-            checkPlayer(username);
-            int studentIndex = message.getStudentIndex()-1;
-            table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(studentIndex);
-            Student student = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().remove(studentIndex);
-            table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(student);
-            table.setProfessorOwner(student.getColor(), table.getCurrentPlayer());
-        }catch (WrongPlayerException e){
-            //TODO
-            System.out.println("WrongPlayerException");
-        } catch (GameException e) {
-            //TODO
-            System.out.println("StudentIndexOutOfBoundsException");
+            //FIXME: dovrei controllare prima tutte le validità e poi spostarli, altrimenti se solo i primi due sono validi me li sposta comunque
+            List<Integer> studentIndexes = new ArrayList<>(message.getMovements().keySet());
+            for (int student : studentIndexes){
+                String destination = message.getMovements().get(student);
+                if (destination.equals("DINING ROOM")){
+                    moveStudentToDining(student-1);
+                }else{
+                    int idIsland = Integer.parseInt(destination);
+                    moveStudentToIsland(student-1, idIsland-1);
+                }
+            }
+            for (int student : studentIndexes){
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().remove(student-1);
+            }
+            //FIXME la notify() dovrebbe essere sul modello
+            table.notify(new ReducedModelMessage(ClientState.MOVE_MN, table.createReducedModel()));
+        } catch (GameException | NumberFormatException e){
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
 
     /**
-     * moves mother nature
-     * @param message move mother nature
-     * @param username player that moves mother nature
+     * moves mother nature and processes the island on which it is placed
+     * @param message move mother nature message
      */
-    public void moveMotherNature(MoveMotherNatureMessage message, String username){
+    public void moveMotherNature(MoveMotherNatureMessage message){
         try{
-            checkPlayer(username);
             int movement = message.getMovements();
             table.getCurrentPlayer().validMovement(movement);
             table.moveMotherNature(movement);
             table.processIsland(table.motherNatureIsland());
-        } catch (WrongPlayerException e){
-            //TODO
-            System.out.println("WrongPlayerException");
+            //FIXME la notify() dovrebbe essere sul modello
+            table.notify(new ReducedModelMessage(ClientState.CHOOSE_CLOUD, table.createReducedModel()));
         } catch (GameException e){
-            //TODO
-            System.out.println("MovementNotValidException");
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 
 
     /**
-     * chooses the cloud
-     * @param message choose cloud
-     * @param username of the player that chooses the cloud
+     * chooses the cloud for the current player
+     * @param message choose cloud message
      */
-    public void chooseCloud(ChooseCloudMessage message, String username){
+    public void chooseCloud(ChooseCloudMessage message){
         try {
-            checkPlayer(username);
             int idCloud = message.getId()-1;
             table.validCloud(idCloud);
             Cloud cloud = table.getClouds().get(idCloud);
             table.addStudentsToEntrance(cloud);
-        }catch (WrongPlayerException e){
-            //TODO
-            System.out.println("WrongPlayerException");
         }catch (GameException e){
-            //TODO
-            System.out.println("CloudNotValidException");
+            table.notify(new ServerErrorMessage(e.getMessage()));
         }
     }
 }
