@@ -23,8 +23,20 @@ public class CLI implements UI {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    public CLI(){
+    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
+    public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+    public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
+    public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
+    public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
+    public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
+    public CLI(){
+            System.out.print(   " ___  __               ___      __  \n" +
+                                "|__  |__) |  / \\  |\\ |  |  \\ / /__` \n" +
+                                "|___ |  \\ | /~-~\\ | \\|  |   |  .__/ \n" +
+                                "                                   \n");
     }
 
     @Override
@@ -67,7 +79,7 @@ public class CLI implements UI {
         String model = "------------------------------------------------------------\n";
 
         model += "Current Player: ";
-        model += reducedModel.getCurrentPlayer();
+        model += Ansi.Yellow.colorize(reducedModel.getCurrentPlayer());
         model += "\n";
         model += "\n";
 
@@ -86,7 +98,9 @@ public class CLI implements UI {
 
     public static String showIslands(ReducedModel reducedModel){
         String model = "";
-        model += "-- ISLANDS --\n";
+        model += Ansi.Yellow.colorize("ISLANDS")+"\n";
+
+
         for(ReducedIsland i : reducedModel.getIslands())
         {
             model +="\t";
@@ -105,7 +119,9 @@ public class CLI implements UI {
 
     public static String showClouds(ReducedModel reducedModel){
         String model = "";
-        model += "-- CLOUDS --\n";
+
+        model += Ansi.Yellow.colorize("CLOUDS")+"\n";
+
         for(ReducedCloud c : reducedModel.getClouds())
         {
             model += c.getId() + 1;
@@ -124,9 +140,10 @@ public class CLI implements UI {
 
     public static String showBoard(ReducedBoard b){
         String model = "------------------------------------------------------------\n";
-        model += "\t\t\t\t\t\t"+b.getPlayer() +"\n";
+        model += "\t\t\t\t\t\t"+Ansi.Yellow.colorize(b.getPlayer())+"\n";
         model += "------------------------------------------------------------\n";
-        model += "-- ENTRANCE -- \n\t";
+        model += Ansi.Yellow.colorize("ENTRANCE")+"\n";
+
         for(ColorS c : b.getEntranceStudents())
         {
             model += c.toAnsiString();
@@ -134,30 +151,30 @@ public class CLI implements UI {
         }
         model += "\n\n";
 
-        model += "-- DINING ROOM -- \n";
-        model += ANSI_YELLOW+"\tYELLOW: "+b.getYellowStudents()+" / 10\n"+ANSI_RESET;
-        model += ANSI_BLUE+"\tBLUE: "+b.getBlueStudents()+" / 10\n"+ANSI_RESET;;
-        model += ANSI_GREEN+"\tGREEN: "+b.getGreenStudents()+" / 10\n"+ANSI_RESET;;
-        model += ANSI_PURPLE+"\tPINK: "+b.getPinkStudents()+" / 10\n"+ANSI_RESET;;
-        model += ANSI_RED+"\tRED: "+b.getRedStudents()+" / 10\n\n"+ANSI_RESET;;
 
+        model += Ansi.Yellow.colorize("DINING ROOM")+"\n";
 
-        model += "-- PROFESSORS TABLE --\n\t";
+        model += Ansi.YELLOW+"\tYELLOW: "+b.getYellowStudents()+" / 10\n"+Ansi.RESET;
+        model += Ansi.BLUE+"\tBLUE: "+b.getBlueStudents()+" / 10\n"+Ansi.RESET;;
+        model += Ansi.GREEN+"\tGREEN: "+b.getGreenStudents()+" / 10\n"+Ansi.RESET;;
+        model += Ansi.MAGENTA+"\tPINK: "+b.getPinkStudents()+" / 10\n"+Ansi.RESET;;
+        model += Ansi.RED+"\tRED: "+b.getRedStudents()+" / 10\n\n"+Ansi.RESET;;
+
+        model += Ansi.Yellow.colorize("PROFESSORS TABLE")+"\n";;
         if(b.getProfessors().size() == 0){
             model += "[no professors in your board]";
         }else{
             for(ColorS p : b.getProfessors()){
                 model += p.toAnsiString()+" ";
             }
-
         }
         model += "\n\n";
 
 
-        model += "-- TOWERS --\n";
+        model += Ansi.Yellow.colorize("TOWERS")+"\n";
         model += "\t"+b.getTowerColor()+ " -- "+b.getNumOfTowers()+" / []\n\n";
 
-        model += "-- ASSISTANT DECK -- \n\t";
+        model += Ansi.Yellow.colorize("ASSISTANT DECK")+"\n";
         for(ReducedAssistant a : b.getAssistantDeck().getAssistantCards())
         {
             model += "[";
@@ -168,5 +185,11 @@ public class CLI implements UI {
         }
         model += "\n\n\n";
         return model;
+    }
+
+
+
+    public void print(String string){
+        System.out.println(string);
     }
 }

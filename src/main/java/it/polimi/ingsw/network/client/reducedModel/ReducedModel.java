@@ -10,6 +10,7 @@ public class ReducedModel implements Serializable {
     private List<ReducedIsland> islands;
     private List<ReducedCloud> clouds;
     private String currentPlayer;
+    //TODO convertire in mappa -> username : board
     private List<ReducedBoard> boards;
 
     public ReducedModel(List<ReducedIsland> islands, List<ReducedCloud> clouds,

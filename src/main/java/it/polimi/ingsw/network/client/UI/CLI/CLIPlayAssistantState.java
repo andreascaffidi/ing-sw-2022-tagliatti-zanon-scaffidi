@@ -20,7 +20,7 @@ public class CLIPlayAssistantState extends AbstractClientState {
 
     @Override
     public void render(){
-        System.out.println("It's your turn! Play an Assistant Card by typing the id ");
+        System.out.println(CLI.ANSI_GREEN+"It's your turn!"+CLI.ANSI_RESET+" Play an Assistant Card by typing the id ");
         CLI.showModel(client.getReducedModel());
 
         int num = 0;
