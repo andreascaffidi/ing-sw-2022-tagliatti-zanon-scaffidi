@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.client;
 
+import it.polimi.ingsw.network.client.UI.GUI.GUI;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
@@ -41,12 +42,15 @@ public class Client {
 
     private String winner;
 
-    public Client(String ip, int port) {
+    public Client(String ip, int port, UI ui) {
         this.ip = ip;
         this.port = port;
 
         //FIXME: new CLI() is only an example
-        this.ui = new CLI();
+        this.ui = ui;
+        if (this.ui instanceof GUI){
+            ((GUI) this.ui).init();
+        }
         this.availableLobbies = new ArrayList<>();
     }
 

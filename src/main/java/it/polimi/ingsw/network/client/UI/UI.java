@@ -7,4 +7,6 @@ import it.polimi.ingsw.network.client.states.ClientState;
 public interface UI {
 
     AbstractClientState getClientState(ClientState clientState, Client client);
+
+    public void init();
 }
