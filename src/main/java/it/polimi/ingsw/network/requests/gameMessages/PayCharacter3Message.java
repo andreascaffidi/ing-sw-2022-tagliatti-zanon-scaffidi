@@ -7,7 +7,7 @@ import it.polimi.ingsw.network.requests.RequestMessage;
 import java.io.Serializable;
 
 /**
- * game message pay character 3
+ * game message to pay character 3
  */
 public class PayCharacter3Message implements RequestMessage, ControllerExecuteExpertMode, Serializable {
 
@@ -32,8 +32,8 @@ public class PayCharacter3Message implements RequestMessage, ControllerExecuteEx
     }
 
     /**
-     * gets character 3
-     * @return character 3
+     * gets character id
+     * @return character id
      */
     public int getCharacter() {
         return character;
@@ -42,11 +42,10 @@ public class PayCharacter3Message implements RequestMessage, ControllerExecuteEx
     /**
      * executes controller method pay character 3
      * @param controller game controller
-     * @param username of the player that pays character 3
      */
     @Override
-    public void execute(ControllerExpertMode controller, String username)
+    public void execute(ControllerExpertMode controller)
     {
-        controller.payCharacter3(this, username);
+        controller.payCharacter3(this);
     }
 }

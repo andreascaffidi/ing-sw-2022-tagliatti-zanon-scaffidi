@@ -20,8 +20,10 @@ class PlayerTest {
         Assistant a1 = new Assistant(1,2, Wizards.WIZARD_1);
         Assistant a2 = new Assistant(2,3, Wizards.WIZARD_1);
         Assistant a3 = new Assistant(3,3, Wizards.WIZARD_1);
-        deck = new ArrayList<Assistant>(Arrays.asList(a1,a2,a3));
-        player = new Player("nickname", deck, 1, ColorT.BLACK);
+        deck = new ArrayList<>(Arrays.asList(a1, a2, a3));
+        player = new Player("nickname", 1);
+        player.setTowerColor(ColorT.BLACK);
+        player.getAssistantDeck().addAll(deck);
     }
 
     @AfterEach

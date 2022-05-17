@@ -78,15 +78,14 @@ public class DiningRoom {
      * checks colors validity
      * @param colors colors to check
      * @throws GameException invalid chosen colors
-     * @throws GameException color not allowed
      */
-    public void validColors(List<String> colors) throws GameException{
+    public void validColors(List<ColorS> colors) throws GameException {
         int minStudent = 1;
-        if (colors.size() == 2 && ColorS.parseToColor(colors.get(0)) == ColorS.parseToColor(colors.get(1))){
+        if (colors.size() == 2 && colors.get(0) == colors.get(1)){
             minStudent = 2;
         }
-        for (String color : colors) {
-            if (this.getLine(ColorS.parseToColor(color)).size() < minStudent) {
+        for (ColorS color : colors) {
+            if (this.getLine(color).size() < minStudent) {
                 throw new GameException("Invalid colors");
             }
         }

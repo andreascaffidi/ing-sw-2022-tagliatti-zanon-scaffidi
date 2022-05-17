@@ -21,12 +21,4 @@ class ControllerMessageTest {
         assertEquals("user", message.getUsername());
     }
 
-
-    @Test
-    void isExpertMode(){
-        ControllerMessage message = new ControllerMessage(new PlayAssistantMessage(2), "user", true);
-        ControllerMessage message2 = new ControllerMessage(new PlayAssistantMessage(2), "user");
-        assertTrue(message.isExpertMode());
-        assertFalse(message2.isExpertMode());
-    }
 }

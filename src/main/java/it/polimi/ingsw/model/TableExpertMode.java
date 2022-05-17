@@ -8,8 +8,6 @@ import it.polimi.ingsw.model.effects.Effect;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
-import it.polimi.ingsw.network.client.reducedModel.ReducedCharacter;
-import it.polimi.ingsw.network.client.reducedModel.ReducedCharacterDeck;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -68,7 +66,7 @@ public class TableExpertMode extends Table {
     }
 
     /**
-     * sets up the character cards, choose 3 random characters and creates a map <cardId,cardCost>
+     * sets up the character cards, choose 3 random characters and creates a map < cardId, cardCost>
      */
     private void setupCharacterCards() {
         JSONParser jsonParser = new JSONParser();
@@ -119,16 +117,16 @@ public class TableExpertMode extends Table {
      * gets the card that has students placed on it
      * @param character character card id
      * @return card with students placed on it
-     * @throws GameException if the character card hasn't got students on it
+     * @throws CardNotFoundException if the character card hasn't got students on it
      */
-    public CardWithStudents getCardWithStudents(int character) throws GameException {
+    public CardWithStudents getCardWithStudents(int character) throws CardNotFoundException {
         for(CardWithStudents card : cards)
         {
             if(card.getCharacter() == character) {
                 return card;
             }
         }
-        throw new GameException("Card not found");
+        throw new CardNotFoundException("Card not found");
     }
 
     /**
@@ -307,15 +305,15 @@ public class TableExpertMode extends Table {
      * checks character validity
      * @param id character id
      * @throws GameException if character isn't on the table
-     * @throws NotEnoughCoinsException if there aren't enough coins to pay the character card
+     * @throws GameException if there aren't enough coins to pay the character card
      */
-    public void validCharacter(int id) throws GameException,NotEnoughCoinsException{
+    public void validCharacter(int id) throws GameException{
         //TODO: check if character card is already played in this round
         if(!this.characters.containsKey(id)) {
             throw new GameException("Invalid Character");
         }
         if(this.playerCoins.get(getCurrentPlayer()) < this.characters.get(id)){
-            throw new NotEnoughCoinsException("You don't have enough coins");
+            throw new GameException("You don't have enough coins");
         }
     }
 
@@ -345,6 +343,7 @@ public class TableExpertMode extends Table {
         }
     }
 
+    //TODO: reduced character card
     /*
     public ReducedCharacter ReduceCharacter()
     {

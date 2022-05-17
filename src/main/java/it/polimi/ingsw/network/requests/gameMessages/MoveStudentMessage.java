@@ -4,63 +4,39 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.network.requests.ControllerExecute;
 import it.polimi.ingsw.network.requests.RequestMessage;
 
+import java.util.Map;
+
+
 /**
- * game message move student
+ * game message to move a student
  */
 public class MoveStudentMessage implements RequestMessage, ControllerExecute {
-    String dest;
-    int idIsland;
-    int studentIndex;
+
+    private final Map<Integer, String> movements;
 
     /**
      * builds move student message
-     * @param dest student destination
-     * @param studentIndex student index
+     * @param movements map of all 3 movements chosen
      */
-    public MoveStudentMessage(String dest, int studentIndex) {
-        this.dest = dest;
-        this.studentIndex = studentIndex;
+    public MoveStudentMessage(Map<Integer, String> movements){
+        this.movements = movements;
     }
 
     /**
-     * builds move student message with destination island
-     * @param dest student destination
-     * @param idIsland destination island id
-     * @param studentIndex student index
+     * gets the map of movements
+     * @return map of movements
      */
-    public MoveStudentMessage(String dest,int idIsland, int studentIndex){
-        this.dest = dest;
-        this.studentIndex =studentIndex;
-        this.idIsland = idIsland;
+    public Map<Integer, String> getMovements() {
+        return movements;
     }
 
     /**
-     * executes controller method move student
+     * executes controller method move students
      * @param controller game controller
-     * @param username of the player that moves the student
      */
     @Override
-    public void execute(Controller controller, String username) {
-        if(dest.equals("island")){
-            controller.moveStudentToIsland(this,username);
-        }else{
-            controller.moveStudentToDining(this, username);
-        }
+    public void execute(Controller controller) {
+        controller.moveStudents(this);
     }
 
-    /**
-     * gets island id
-     * @return island id
-     */
-    public int getIdIsland() {
-        return idIsland;
-    }
-
-    /**
-     * gets student index
-     * @return student index
-     */
-    public int getStudentIndex() {
-        return studentIndex;
-    }
 }

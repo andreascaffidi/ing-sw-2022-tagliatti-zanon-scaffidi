@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.pawns.Professor;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
-import it.polimi.ingsw.network.client.reducedModel.ReducedAssistant;
 import it.polimi.ingsw.network.client.reducedModel.ReducedAssistantDeck;
 import it.polimi.ingsw.network.client.reducedModel.ReducedBoard;
 
@@ -46,22 +45,6 @@ public class Player {
         this.tagTeam = tagTeam;
         this.assistantDeck = new ArrayList<>();
         this.discardPile = new Stack<>();
-    }
-
-    //FIXME: used only in tests
-    /**
-     * builds a player with username, assistant deck, tag team and tower color
-     * @param username player username
-     * @param assistantDeck player assistant deck
-     * @param tagTeam player tag team
-     * @param towerColor player tower color
-     */
-    public Player(String username, List<Assistant> assistantDeck, int tagTeam, ColorT towerColor) {
-        this.username = username;
-        this.towerColor = towerColor;
-        this.assistantDeck = assistantDeck;
-        this.discardPile = new Stack<>();
-        this.tagTeam = tagTeam;
     }
 
     /**
@@ -178,18 +161,12 @@ public class Player {
         }
     }
 
-    //FIXME: it's horrible!
     /**
      * gets a reduced version of the entire player's board, including player's assistant deck
      * @return reduced board
      */
     public ReducedBoard reduceBoard()
     {
-        ReducedAssistant reduced = null;
-        if(!this.discardPile.isEmpty())
-        {
-            reduced = this.discardPile.peek().reduceAssistant();
-        }
         return new ReducedBoard(this.username, this.towerColor,
                 this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(ColorS.YELLOW),
                 this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(ColorS.BLUE),
@@ -200,6 +177,6 @@ public class Player {
                 this.getSchoolBoard().getProfessorTable().getProfessors().stream().map(Professor::getColor).collect(Collectors.toList()),
                 this.getSchoolBoard().getTowerBoard().getTowers().size(),
                 new ReducedAssistantDeck(this.getAssistantDeck().stream().map(Assistant::reduceAssistant).collect(Collectors.toList()),
-                        reduced));
+                        !this.discardPile.isEmpty() ? this.discardPile.peek().reduceAssistant() : null));
     }
 }
