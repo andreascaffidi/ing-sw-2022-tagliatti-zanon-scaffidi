@@ -35,7 +35,7 @@ public class CLIShowLobbiesState extends AbstractClientState {
         while (!valid){
             String input = in.nextLine();
             for (Lobby l : availableLobbies){
-                if (input.equals(l.getHost())) {
+                if (input.equalsIgnoreCase(l.getHost())) {
                     valid = true;
                     selectedHost = input;
                     selectedLobby = l;
