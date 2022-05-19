@@ -1,28 +1,22 @@
 package it.polimi.ingsw.network.client.UI.GUI;
 
-import it.polimi.ingsw.network.client.UI.GUI.scenesController.WelcomeSceneController;
 import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.scene.CacheHint;
-import javafx.scene.Group;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.paint.Color;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.FileInputStream;
-import java.util.Arrays;
-import java.util.logging.Logger;
+import java.net.URL;
+import java.nio.file.Paths;
 
 public class JavaFXGUI extends Application {
 
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
     public static void main(String[] args)
     {
         launch(args);
@@ -31,9 +25,10 @@ public class JavaFXGUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         try{
-            Group root = new Group();
-            Stage stage = new Stage();
-            Scene scene = new Scene(root, 600, 600);
+            stage = new Stage();
+            URL url = Paths.get("C:\\Users\\wilta\\IdeaProjects\\ing-sw-2022-tagliatti-zanon-scaffidi\\src\\main\\java\\it\\polimi\\ingsw\\network\\client\\UI\\GUI\\scenesController\\WelcomeScene.fxml").toUri().toURL();
+            root = FXMLLoader.load(url);
+            scene = new Scene(root, 600, 600);
 
             /*Text text = new Text();
             text.setText("Ciao");

@@ -11,7 +11,7 @@
    <children>
       <ImageView fitHeight="400.0" fitWidth="600.0" layoutX="-0.0" layoutY="-0.0">
          <image>
-            <Image url="@../img/Eriantys_cover_EN-1024x1024.jpg" />
+            <Image url="@../../../../../../../../../resources/img/Eriantys_cover_EN-1024x1024.jpg" />
          </image>
       </ImageView>
       <Button layoutX="122.0" layoutY="136.0" mnemonicParsing="false" text="Normal">

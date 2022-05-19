@@ -14,7 +14,7 @@
    <children>
        <ImageView fitHeight="400.0" fitWidth="600.0" layoutX="-0.0" layoutY="-0.0">
            <image>
-               <Image url="@../img/Eriantys_cover_EN-1024x1024.jpg" />
+               <Image url="@../../../../../../../../../resources/img/Eriantys_cover_EN-1024x1024.jpg" />
            </image>
        </ImageView>
       <Text fill="WHITE" layoutX="201.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a lobby!">
