@@ -26,7 +26,7 @@ public class ClientApp
      * @throws IOException
      */
     public static void main( String[] args ) throws IOException {
-        String launchComponentValue = args.length > 0 ? args[0] : "cli";
+        String launchComponentValue = args.length > 0 ? args[0] : "gui";
         LaunchComponent launchComponent = LaunchComponent.valueOf(launchComponentValue.toUpperCase());
 
         switch(launchComponent)
