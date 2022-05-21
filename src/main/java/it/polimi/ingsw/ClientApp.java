@@ -34,7 +34,8 @@ public class ClientApp
             case GUI:
             {
                 ui = new GUI();
-                ui.init();
+                JavaFXGUI.main(null);
+                //ui.init();
                 break;
             }
             case CLI: ui = new CLI();

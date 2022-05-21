@@ -4,6 +4,7 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.UI.UI;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,43 +15,8 @@ public class GUI implements UI {
     {
     }
 
-    private final List<String> scenes = new ArrayList<>();
-    private String currentScene;
     public void init(){
-        JavaFXGUI.main(null);
-    }
-    /**
-     * This method adds a scene in the sceneMap in order to be retrieved when the scene is shown again later.
-     * @param fxmlFile
-     */
-    public void addScene(String fxmlFile) {
-        scenes.add(fxmlFile);
-    }
-
-    /**
-     * This method retrieves a scene in the sceneMap
-     *
-     * @param fxmlFile a String representing the path of the fxml file
-     * @return the SavedScene associated with the fxmlFile if present, otherwise null
-     */
-    public String getScene(String fxmlFile){
-        return scenes.get(scenes.indexOf(fxmlFile));
-    }
-
-    /**
-     * This method is used to set the current SavedScene
-     * @param current the SavedScene instance to be set as the current one
-     */
-    public void setCurrentScene(String current){
-        currentScene = current;
-    }
-
-    /**
-     * This method is used to retrieve the current SavedScene
-     * @return the current SavedScene instance
-     */
-    public String getCurrentScene(){
-        return currentScene;
+        //JavaFXGUI.main(null);
     }
 
     public AbstractClientState getClientState(ClientState clientState, Client client)
