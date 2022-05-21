@@ -14,6 +14,7 @@ import it.polimi.ingsw.network.server.Lobby;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +93,7 @@ public class Client {
         }
     }
 
-    public void changeState(ClientState nextState){
+    public void changeState(ClientState nextState) throws MalformedURLException {
         currentState = ui.getClientState(nextState, this);
         //ui.clearScreen();
         currentState.render();

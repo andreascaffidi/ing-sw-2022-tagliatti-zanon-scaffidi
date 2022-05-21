@@ -1,10 +1,12 @@
 package it.polimi.ingsw.network.client.states;
 
+import java.net.MalformedURLException;
+
 public abstract class AbstractClientState {
 
-    public abstract void render();
+    public abstract void render() throws MalformedURLException;
 
-    public void serverError(String message){
+    public void serverError(String message) throws MalformedURLException {
         throw new UnsupportedOperationException();
     }
 

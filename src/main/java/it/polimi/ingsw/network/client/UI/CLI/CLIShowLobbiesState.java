@@ -6,11 +6,14 @@ import it.polimi.ingsw.network.requests.setupMessages.ChooseTeamMessage;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 import it.polimi.ingsw.network.server.Lobby;
+import javafx.fxml.Initializable;
 
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
-public class CLIShowLobbiesState extends AbstractClientState {
+public class CLIShowLobbiesState extends AbstractClientState{
     private Client client;
     private Scanner in;
     private List<Lobby> availableLobbies;

@@ -16,12 +16,19 @@ import java.net.URL;
 import java.nio.file.Paths;
 import javafx.scene.control.TextField;
 
+/**
+ * Welcome Scene controller
+ */
 public class WelcomeSceneController extends AbstractController{
 
+    /**
+     * scene actors
+     */
     @FXML
     public Button loginButton;
     @FXML
     TextField NickNameTextField;
+
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -38,16 +45,9 @@ public class WelcomeSceneController extends AbstractController{
         stage.setScene(scene);
         stage.show();
 
-
-        stage.setScene(new Scene(root));
-        stage.show();
     }
 
     public String getUsername() {
         return this.NickNameTextField.toString();
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
+import javafx.fxml.Initializable;
 
 public class AbstractController {
 
@@ -35,4 +36,6 @@ public class AbstractController {
      * both from FXML or, if the scene has already been loaded once, from the client cache
      */
     public void onSceneShow() { }
+
+
 }
