@@ -40,6 +40,12 @@ public class CLI implements UI {
     }
 
     @Override
+    public void init()
+    {
+
+    }
+
+    @Override
     public AbstractClientState getClientState(ClientState clientState, Client client) {
         switch (clientState){
             case WELCOME: return new CLIWelcomeState(client);

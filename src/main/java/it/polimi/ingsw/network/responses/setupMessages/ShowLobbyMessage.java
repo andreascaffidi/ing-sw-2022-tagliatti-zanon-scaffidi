@@ -6,6 +6,7 @@ import it.polimi.ingsw.network.responses.ClientExecute;
 import it.polimi.ingsw.network.responses.ResponseMessage;
 import it.polimi.ingsw.network.server.Lobby;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 public class ShowLobbyMessage implements ResponseMessage, ClientExecute {
@@ -17,7 +18,7 @@ public class ShowLobbyMessage implements ResponseMessage, ClientExecute {
     }
 
     @Override
-    public void execute(Client client) {
+    public void execute(Client client) throws MalformedURLException {
         client.setAvailableLobbies(lobbies);
         client.changeState(ClientState.JOIN_LOBBY);
     }

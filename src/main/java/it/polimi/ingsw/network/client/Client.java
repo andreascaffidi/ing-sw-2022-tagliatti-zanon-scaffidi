@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.client;
 
+import it.polimi.ingsw.network.client.UI.GUI.GUI;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
@@ -13,6 +14,7 @@ import it.polimi.ingsw.network.server.Lobby;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +44,15 @@ public class Client {
 
     private String winner;
 
-    public Client(String ip, int port) {
+    public Client(String ip, int port, UI ui) {
         this.ip = ip;
         this.port = port;
 
-        this.ui = new CLI();
+        //FIXME: new CLI() is only an example
+        this.ui = ui;
+        if (this.ui instanceof GUI){
+            ((GUI) this.ui).init();
+        }
         this.availableLobbies = new ArrayList<>();
     }
 
