@@ -27,7 +27,7 @@ public class WelcomeSceneController extends AbstractController{
     @FXML
     public Button loginButton;
     @FXML
-    TextField NickNameTextField;
+    public TextField NickNameTextField;
 
     private Stage stage;
     private Scene scene;
@@ -44,7 +44,6 @@ public class WelcomeSceneController extends AbstractController{
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
     }
 
     public String getUsername() {

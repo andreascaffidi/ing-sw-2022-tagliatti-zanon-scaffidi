@@ -7,7 +7,15 @@ import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -15,6 +23,19 @@ import java.util.Scanner;
 
 public class GUIWelcomeState extends AbstractClientState {
 
+
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
+    private static Stage primaryStage;
+    private static Scene primaryScene;
+
+    private static final Pane mainRoot = new StackPane();
+    private static final Pane overlayRoot = new StackPane();
+
+    private static final Object sceneLock = new Object();
+    private static boolean initialized = false;
+    static Runnable onExit;
     private Client client;
     private Scanner in;
     private String username;
@@ -25,7 +46,7 @@ public class GUIWelcomeState extends AbstractClientState {
     }
 
     @Override
-    public void render() throws MalformedURLException {
+    public void render() throws IOException {
         this.askUsername();
     }
 

@@ -93,7 +93,7 @@ public class Client {
         }
     }
 
-    public void changeState(ClientState nextState) throws MalformedURLException {
+    public void changeState(ClientState nextState) {
         currentState = ui.getClientState(nextState, this);
         //ui.clearScreen();
         currentState.render();

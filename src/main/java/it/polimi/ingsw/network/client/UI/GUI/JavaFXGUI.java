@@ -43,6 +43,8 @@ public class JavaFXGUI extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
+        System.out.println("avviato");
         synchronized (sceneLock) {
             primaryStage = stage;
 
@@ -72,7 +74,6 @@ public class JavaFXGUI extends Application {
             initialized = true;
             sceneLock.notifyAll();
         }
-
         stage.show();
     }
 

@@ -20,7 +20,7 @@
             <Font size="24.0" />
          </font></Button>
       <TextField fx:id="NickNameTextField" layoutX="420.0" layoutY="430.0" onAction="#login" prefHeight="50.0" prefWidth="400.0" />
-      <Text fill="WHITE" layoutX="287.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome, insert your nickname!">
+      <Text fill="WHITE" layoutX="306.0" layoutY="372.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome, insert your nickname!">
          <font>
             <Font name="Gigi" size="64.0" />
          </font>
