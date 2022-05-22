@@ -643,7 +643,7 @@ class TableTest {
         assertEquals(two.get(0), table2p.endGame());
     }*/
 
-    //TODO: testing this and other reduced methoods
+    //TODO: testing this and other reduced methods
     @Test
     void createReducedModel()
     {

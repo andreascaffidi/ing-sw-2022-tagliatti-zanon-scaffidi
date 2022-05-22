@@ -251,7 +251,6 @@ public class Table extends Observable<ResponseMessage> {
                     allAssistants.add(new Assistant(((Long)card.get("value")).intValue(), ((Long)card.get("movement")).intValue(), wizard));
                 }
             }
-            //FIXME: technically player choose the wizard :(
             for (int i = 0; i < this.numberOfPlayers; i++){
                 Wizards wizard = Wizards.values()[i];
                 List<Assistant> assistants = allAssistants.stream().filter(a -> a.getWizard()==wizard).collect(Collectors.toList());
@@ -582,7 +581,9 @@ public class Table extends Observable<ResponseMessage> {
      */
     public void addStudentsToCloud(Cloud cloud){
         for(int i=0; i < NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD; i++){
-            cloud.addStudent(this.getBag().drawStudent());
+            if (!this.bag.getStudents().isEmpty()) {
+                cloud.addStudent(this.getBag().drawStudent());
+            }
         }
     }
 
@@ -740,21 +741,34 @@ public class Table extends Observable<ResponseMessage> {
      * adds students taken from a cloud to the current player's entrance
      * @param cloud cloud with the students
      */
+    //TODO: proibire questa fase di gioco nel caso non ci siano abbastanza studenti
     public void addStudentsToEntrance(Cloud cloud){
-        for(Student student : cloud.takeAllStudents()) {
-            this.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(student);
-        }
-        this.nextPlayer();
-        ClientState clientState;
-        if (turnManager.getCurrentPhase() == RoundPhases.ACTION) {
-            clientState = ClientState.MOVE_STUDENTS;
-        }else{
-            clientState = ClientState.PLAY_ASSISTANT;
-            for (Cloud c : this.clouds){
-                addStudentsToCloud(c);
+        try {
+            for (Student student : cloud.takeAllStudents()) {
+                this.getCurrentPlayer().getSchoolBoard().getEntrance().addStudent(student);
             }
+            this.nextPlayer();
+            ClientState clientState;
+            if (turnManager.getCurrentPhase() == RoundPhases.ACTION) {
+                clientState = ClientState.MOVE_STUDENTS;
+            } else {
+                clientState = ClientState.PLAY_ASSISTANT;
+                for (Cloud c : this.clouds) {
+                    addStudentsToCloud(c);
+                }
+                //TODO: test these two endgame conditions
+                if (currentPlayer.getAssistantDeck().isEmpty()) {
+                    throw new EndGameException("No more assistants");
+                }
+                if (bag.getStudents().isEmpty()){
+                    throw new EndGameException("No more students in the bag");
+                }
+            }
+            notify(new ReducedModelMessage(clientState, this.createReducedModel()));
+        } catch (EndGameException e){
+            System.out.println("Game ended");
+            this.endGame();
         }
-        notify(new ReducedModelMessage(clientState,this.createReducedModel()));
     }
 
     /**

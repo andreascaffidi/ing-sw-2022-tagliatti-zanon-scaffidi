@@ -73,8 +73,11 @@ public class CLI implements UI {
         } catch (IOException | InterruptedException ex) {}
     }
 
-    //FIXME: è una prova
     public static void showModel(ReducedModel reducedModel){
+        //FIXME: è un test
+        if (reducedModel instanceof ReducedModelExpertMode){
+            showExpert((ReducedModelExpertMode)reducedModel);
+        }
         System.out.println("\n");
         String model = "------------------------------------------------------------\n";
 
@@ -187,7 +190,20 @@ public class CLI implements UI {
         return model;
     }
 
-
+    public static void showExpert(ReducedModelExpertMode reducedModelExpertMode){
+        if (reducedModelExpertMode.getCurrentEffect()!=null) {
+            System.out.println(reducedModelExpertMode.getCurrentEffect());
+        }
+        for (String player : reducedModelExpertMode.getCoins().keySet()){
+            System.out.println(player + " has " + reducedModelExpertMode.getCoins().get(player) + " coins");
+        }
+        for (ReducedIsland island : reducedModelExpertMode.getNoEntryTiles().keySet()){
+            System.out.println(island.getId() + " has " + reducedModelExpertMode.getNoEntryTiles().get(island));
+        }
+        for (ReducedCharacter character : reducedModelExpertMode.getCharacters()){
+            System.out.println(character.getId() + " costs " + character.getCost());
+        }
+    }
 
     public void print(String string){
         System.out.println(string);

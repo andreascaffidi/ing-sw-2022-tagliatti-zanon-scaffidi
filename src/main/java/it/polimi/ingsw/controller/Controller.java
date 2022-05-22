@@ -39,7 +39,6 @@ public class Controller implements Observer<ControllerMessage> {
      * executes a controller method based on the controller message received
      * @param message controller message to be executed
      */
-    //TODO: proibire al metodo di eseguire messaggi per esperti (nella remote view)
     @Override
     public void update(ControllerMessage message){
         try {
@@ -68,11 +67,8 @@ public class Controller implements Observer<ControllerMessage> {
      * moves a student to an island
      * @param studentIndex student to move
      * @param idIsland island on which place student
-     * @throws GameException if indexes are invalid
      */
-    private void moveStudentToIsland(int studentIndex, int idIsland) throws GameException{
-        table.validIsland(idIsland);
-        table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(studentIndex);
+    private void moveStudentToIsland(int studentIndex, int idIsland){
         Student student = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(studentIndex);
         table.getIsland(idIsland).addStudent(student);
     }
@@ -80,10 +76,8 @@ public class Controller implements Observer<ControllerMessage> {
     /**
      * moves a student to the current player's dining room
      * @param studentIndex student to move
-     * @throws GameException if indexes are invalid
      */
-    protected void moveStudentToDining(int studentIndex) throws GameException{
-        table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(studentIndex);
+    protected void moveStudentToDining(int studentIndex){
         Student student = table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(studentIndex);
         table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(student);
         table.setProfessorOwner(student.getColor(), table.getCurrentPlayer());
@@ -95,8 +89,19 @@ public class Controller implements Observer<ControllerMessage> {
      */
     public void moveStudents(MoveStudentMessage message){
         try{
-            //FIXME: dovrei controllare prima tutte le validità e poi spostarli, altrimenti se solo i primi due sono validi me li sposta comunque
             List<Integer> studentIndexes = new ArrayList<>(message.getMovements().keySet());
+
+            //verify all movements' validity
+            for (int student : studentIndexes){
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(student-1);
+                String destination = message.getMovements().get(student);
+                if (!destination.equals("DINING ROOM")){
+                    int idIsland = Integer.parseInt(destination);
+                    table.validIsland(idIsland-1);
+                }
+            }
+
+            //add students to the game
             for (int student : studentIndexes){
                 String destination = message.getMovements().get(student);
                 if (destination.equals("DINING ROOM")){
@@ -106,10 +111,12 @@ public class Controller implements Observer<ControllerMessage> {
                     moveStudentToIsland(student-1, idIsland-1);
                 }
             }
+
+            //remove students from the entrance
             for (int student : studentIndexes){
                 table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().remove(student-1);
             }
-            //FIXME la notify() dovrebbe essere sul modello
+
             table.notify(new ReducedModelMessage(ClientState.MOVE_MN, table.createReducedModel()));
         } catch (GameException | NumberFormatException e){
             table.notify(new ServerErrorMessage(e.getMessage()));
@@ -127,7 +134,6 @@ public class Controller implements Observer<ControllerMessage> {
             table.getCurrentPlayer().validMovement(movement);
             table.moveMotherNature(movement);
             table.processIsland(table.motherNatureIsland());
-            //FIXME la notify() dovrebbe essere sul modello
             table.notify(new ReducedModelMessage(ClientState.CHOOSE_CLOUD, table.createReducedModel()));
         } catch (GameException e){
             table.notify(new ServerErrorMessage(e.getMessage()));

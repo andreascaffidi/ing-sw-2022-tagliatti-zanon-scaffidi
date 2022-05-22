@@ -30,6 +30,7 @@ public class Client {
     private ObjectOutputStream out;
 
     private AbstractClientState currentState;
+    private ClientState backState;
 
     private List<Lobby> availableLobbies;
 
@@ -45,7 +46,6 @@ public class Client {
         this.ip = ip;
         this.port = port;
 
-        //FIXME: new CLI() is only an example
         this.ui = new CLI();
         this.availableLobbies = new ArrayList<>();
     }
@@ -91,6 +91,9 @@ public class Client {
     public void changeState(ClientState nextState){
         currentState = ui.getClientState(nextState, this);
         //ui.clearScreen();
+        if (nextState != ClientState.PLAY_CHARACTER){
+            backState = nextState;
+        }
         currentState.render();
     }
 
@@ -137,5 +140,9 @@ public class Client {
     public String getWinner()
     {
         return this.winner;
+    }
+
+    public ClientState getBackState() {
+        return backState;
     }
 }

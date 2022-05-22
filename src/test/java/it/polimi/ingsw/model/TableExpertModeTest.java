@@ -131,9 +131,15 @@ class TableExpertModeTest {
 
     @Test
     void incrementCardCost(){
-        table2p.getCharacters().put(20, 2);
-        table2p.incrementCardCost(20);
-        assertEquals(3, table2p.getCharacters().get(20));
+        if (!table2p.getCharacters().containsKey(10)){
+            table2p.getCharacters().put(10, 1);
+        }
+        table2p.incrementCardCost(10);
+        assertEquals(2, table2p.getCharacters().get(10));
+
+        //character card can be incremented only the first time
+        table2p.incrementCardCost(10);
+        assertEquals(2, table2p.getCharacters().get(10));
     }
 
     @Test

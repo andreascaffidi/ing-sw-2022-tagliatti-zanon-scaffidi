@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.network.requests.ControllerExecuteExpertMode;
 import it.polimi.ingsw.network.requests.*;
 import it.polimi.ingsw.network.requests.gameMessages.*;
+import it.polimi.ingsw.network.responses.reducedModelMessage.CharacterPayedMessage;
 import it.polimi.ingsw.network.responses.reducedModelMessage.ServerErrorMessage;
 
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class ControllerExpertMode extends Controller{
     public void chooseCloud(ChooseCloudMessage message){
         super.chooseCloud(message);
         table.resetCurrentEffect();
+        table.setCharacterAlreadyPlayed(false);
     }
 
     /**
@@ -96,9 +98,11 @@ public class ControllerExpertMode extends Controller{
             table.getCardWithStudents(message.getCharacter()).validStudent(message.getStudentId()-1);
             Student student = table.getCardWithStudents(message.getCharacter()).getStudents().remove(message.getStudentId()-1);
             table.getIsland(message.getIslandId()-1).addStudent(student);
-            table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
+            if (!table.getBag().getStudents().isEmpty()) {
+                table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
+            }
             pay(message.getCharacter());
-            //TODO: manca notify()
+            table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException | CardNotFoundException e){
             table.notify(new ServerErrorMessage(e.getMessage()));
         }
@@ -113,7 +117,7 @@ public class ControllerExpertMode extends Controller{
             table.validCharacter(message.getCharacter());
             table.setCurrentEffect(new ProfessorTieEffect(table.getCurrentPlayer()));
             pay(message.getCharacter());
-            //TODO: manca notify()
+            table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException e) {
             table.notify(new ServerErrorMessage(e.getMessage()));
         }
@@ -129,7 +133,7 @@ public class ControllerExpertMode extends Controller{
             table.validIsland(message.getIslandId()-1);
             table.processIsland(table.getIsland(message.getIslandId()-1));
             pay(message.getCharacter());
-            //TODO: manca notify()
+            table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException e) {
             table.notify(new ServerErrorMessage(e.getMessage()));
         }
@@ -145,7 +149,7 @@ public class ControllerExpertMode extends Controller{
             table.validAdditionalMovement(message.getAdditionalMovement());
             table.moveMotherNature(message.getAdditionalMovement());
             pay(message.getCharacter());
-            //TODO: manca notify()
+            table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException e)
         {
             table.notify(new ServerErrorMessage(e.getMessage()));
@@ -164,7 +168,7 @@ public class ControllerExpertMode extends Controller{
             table.validNoEntryTile(island);
             table.setNoEntryTile(island, true);
             pay(message.getCharacter());
-            //TODO: manca notify()
+            table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException e){
             table.notify(new ServerErrorMessage(e.getMessage()));
         }
@@ -180,7 +184,7 @@ public class ControllerExpertMode extends Controller{
             table.validIsland(message.getIslandId()-1);
             table.setCurrentEffect(new CountTowersEffect(table.getIsland(message.getIslandId()-1)));
             pay(message.getCharacter());
-            //TODO: manca notify()
+            table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException e){
             table.notify(new ServerErrorMessage(e.getMessage()));
         }
@@ -221,7 +225,7 @@ public class ControllerExpertMode extends Controller{
                 table.getCardWithStudents(message.getCharacter()).getStudents().add(entranceStudents.get(i));
             }
             pay(message.getCharacter());
-            //TODO: manca notify()
+            table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException | CardNotFoundException e) {
             table.notify(new ServerErrorMessage(e.getMessage()));
         }
@@ -236,7 +240,7 @@ public class ControllerExpertMode extends Controller{
             table.validCharacter(message.getCharacter());
             table.setCurrentEffect(new AdditionalInfluenceEffect(table.getCurrentPlayer()));
             pay(message.getCharacter());
-            //TODO: manca notify()
+            table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException e) {
             table.notify(new ServerErrorMessage(e.getMessage()));
         }
@@ -252,7 +256,7 @@ public class ControllerExpertMode extends Controller{
             ColorS color = message.getColor();
             table.setCurrentEffect(new NoInfluenceColorEffect(color));
             pay(message.getCharacter());
-            //TODO: manca notify()
+            table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException e) {
             table.notify(new ServerErrorMessage(e.getMessage()));
         }
@@ -293,7 +297,7 @@ public class ControllerExpertMode extends Controller{
                 table.setProfessorOwner(entranceStudents.get(i).getColor(), table.getCurrentPlayer());
             }
             pay(message.getCharacter());
-            //TODO: manca notify()
+            table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException e) {
             table.notify(new ServerErrorMessage(e.getMessage()));
         }
@@ -309,9 +313,11 @@ public class ControllerExpertMode extends Controller{
             table.getCardWithStudents(message.getCharacter()).validStudent(message.getStudentId()-1);
             Student student = table.getCardWithStudents(message.getCharacter()).getStudents().remove(message.getStudentId()-1);
             table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(student);
-            table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
+            if (!table.getBag().getStudents().isEmpty()) {
+                table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
+            }
             pay(message.getCharacter());
-            //TODO: manca notify()
+            table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException | CardNotFoundException e) {
             table.notify(new ServerErrorMessage(e.getMessage()));
         }
@@ -339,7 +345,7 @@ public class ControllerExpertMode extends Controller{
                 }
             }
             pay(message.getCharacter());
-            //TODO: manca notify()
+            table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException e){
             table.notify(new ServerErrorMessage(e.getMessage()));
         }
@@ -353,5 +359,6 @@ public class ControllerExpertMode extends Controller{
         int cost = table.getCharacters().get(character);
         table.pay(table.getCurrentPlayer(), cost);
         table.incrementCardCost(character);
+        table.setCharacterAlreadyPlayed(true);
     }
 }

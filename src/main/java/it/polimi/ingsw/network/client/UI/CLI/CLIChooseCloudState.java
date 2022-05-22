@@ -1,16 +1,17 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.reducedModel.ReducedModelExpertMode;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
+import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.requests.gameMessages.ChooseCloudMessage;
 
 import java.util.Scanner;
 
 public class CLIChooseCloudState extends AbstractClientState {
-    private Client client;
-    private Scanner in;
+    private final Client client;
+    private final Scanner in;
 
-    private int id;
 
     public CLIChooseCloudState(Client client){
         this.client = client;
@@ -20,44 +21,50 @@ public class CLIChooseCloudState extends AbstractClientState {
     @Override
     public void render(){
         CLI.showModel(client.getReducedModel());
-        System.out.println("It's your turn! Choose a cloud");
-        System.out.println("Insert the Cloud ID: ");
-        int num = 0;
-        while (num < 1 || num > client.getReducedModel().getClouds().size()){
-            try {
-                num = Integer.parseInt(in.nextLine());
-                if (num < 1 || num > client.getReducedModel().getClouds().size()){
-                    System.out.println("Invalid Cloud id ");
+        System.out.println("It's your turn! Choose a cloud by typing the id ");
+        if (client.getReducedModel() instanceof ReducedModelExpertMode){
+            System.out.println("Or you can even pay a character card from the available, by typing " +
+                    "PAY CHARACTER (you can pay a character card only one time per round)");
+        }
+
+        int cloudChosen = 0;
+        boolean exit = false;
+        boolean payCharacter = false;
+
+        while (!exit){
+            String input = in.nextLine();
+            if (client.getReducedModel() instanceof ReducedModelExpertMode &&
+                    input.equalsIgnoreCase("PAY CHARACTER")){
+                if ( ((ReducedModelExpertMode) client.getReducedModel()).isCharacterAlreadyPlayed()){
+                    System.out.println("You have already played a character in this round ");
                 }else{
-                    id = num;
+                    exit = true;
+                    payCharacter = true;
+                    client.changeState(ClientState.PLAY_CHARACTER);
                 }
-            }catch (NumberFormatException e){
-                System.out.println("You have to insert a number ");
+            }else {
+                try {
+                    cloudChosen = Integer.parseInt(input);
+                    if (cloudChosen < 1 || cloudChosen > client.getReducedModel().getClouds().size()) {
+                        System.out.println("Invalid Cloud id ");
+                    } else {
+                        System.out.println("Cloud chosen, waiting for players...");
+                        exit = true;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("You have to insert a number ");
+                }
             }
         }
 
-        System.out.println("Cloud chosen, waiting for players...");
-        client.send(new ChooseCloudMessage(id));
+        if (!payCharacter) {
+            client.send(new ChooseCloudMessage(cloudChosen));
+        }
     }
 
     @Override
     public void serverError(String message) {
         System.out.println(message);
-        int num = 0;
-        while (num < 1 || num > client.getReducedModel().getClouds().size()){
-            try {
-                num = Integer.parseInt(in.nextLine());
-                if (num < 1 || num > client.getReducedModel().getClouds().size()){
-                    System.out.println("Invalid Cloud id ");
-                }else{
-                    id = num;
-                }
-            }catch (NumberFormatException e){
-                System.out.println("You have to insert a number ");
-            }
-        }
-
-        System.out.println("Cloud chosen, waiting for players...");
-        client.send(new ChooseCloudMessage(id));
+        render();
     }
 }

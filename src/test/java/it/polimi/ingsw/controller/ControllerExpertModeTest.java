@@ -114,17 +114,34 @@ class ControllerExpertModeTest {
     void pay(){
         Player player = table.getCurrentPlayer();
         assertEquals(1, table.getPlayerCoins(player));
-        table.addCoins(player, 4);
+        table.addCoins(player, 12);
 
         table.getCharacters().put(12, 3);
 
         ControllerMessage message = new ControllerMessage(new PayCharacter12Message(ColorS.BLUE), "p1");
         controller.update(message);
 
-        assertEquals(2, table.getPlayerCoins(player));
+        assertEquals(10, table.getPlayerCoins(player));
 
         ControllerMessage message2 = new ControllerMessage(new PayCharacter12Message(ColorS.BLUE), "p1");
         controller.update(message2);
+
+        //check player can't pay another character in the same round
+        assertEquals(10, table.getPlayerCoins(player));
+
+        //check if boolean "characterAlreadyPlayed" is reset to false
+        ControllerMessage message3 = new ControllerMessage(new ChooseCloudMessage(1), "p1");
+        controller.update(message3);
+
+        Player player2 = table.getCurrentPlayer();
+        assertEquals(1, table.getPlayerCoins(player2));
+        table.addCoins(player2, 12);
+
+        //remember that this card has incremented its cost
+        ControllerMessage message4 = new ControllerMessage(new PayCharacter12Message(ColorS.BLUE), "p2");
+        controller.update(message4);
+
+        assertEquals(9, table.getPlayerCoins(player2));
 
         //tbd -> exceptions
     }

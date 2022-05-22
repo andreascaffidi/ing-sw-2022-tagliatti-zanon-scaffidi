@@ -33,4 +33,13 @@ public class ProfessorTieEffect implements Effect, ProfessorOwnerEffect {
         }
         return students;
     }
+
+    /**
+     * override of toString() method
+     * @return specified effect
+     */
+    @Override
+    public String toString() {
+        return effectOwner.getUsername() + " gets professors even in parity cases";
+    }
 }

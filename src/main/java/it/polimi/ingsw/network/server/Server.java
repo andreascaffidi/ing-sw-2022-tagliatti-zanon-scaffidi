@@ -230,9 +230,14 @@ public class Server {
 
         List<Player> players = new ArrayList<>();
         for (Connection c : lobbyConnections){
-            //TODO: mi sono dimenticato di creare players con tag team in caso di partita a 4
-            Player player = new Player(c.getUsernameConnection());
-            players.add(player);
+            if (lobbyConnections.size() == 4){
+                String playerUsername = c.getUsernameConnection();
+                Player player = new Player(playerUsername, lobby.getPlayersByTeam(1).contains(playerUsername) ? 1 : 2);
+                players.add(player);
+            }else{
+                Player player = new Player(c.getUsernameConnection());
+                players.add(player);
+            }
         }
 
         if (lobby.getGameMode().equals("EXPERT")){
