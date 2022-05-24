@@ -52,7 +52,7 @@ public class Client {
 
     public void startClient() throws IOException{
         Socket socket = new Socket(ip, port);
-        System.out.println("Connection established");
+        //System.out.println("Connection established");
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
         try{

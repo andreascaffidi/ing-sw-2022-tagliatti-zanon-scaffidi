@@ -15,6 +15,7 @@ public class CLIMoveStudentsState extends AbstractClientState {
         in = new Scanner(System.in);
     }
 
+    //todo: invece di scegliere la posizione, far scegliere un colore
     @Override
     public void render(){
         CLI.showModel(client.getReducedModel());
@@ -22,7 +23,7 @@ public class CLIMoveStudentsState extends AbstractClientState {
         if (client.getReducedModel().getBoards().size() == 3){
             choices = 4;
         }
-        System.out.println("It's your turn! Choose " + choices +" students from your entrance and move them" +
+        System.out.println("It's your turn! Choose " + Ansi.colorize(String.valueOf(choices),Ansi.BACKGROUND_YELLOW,Ansi.BLACK) +" students from your entrance and move them" +
                 " to an Island or your Dining room");
 
         Map<Integer, String> movements = new HashMap<>();
@@ -34,25 +35,26 @@ public class CLIMoveStudentsState extends AbstractClientState {
         }
 
 
+
         while (choices > 0)
         {
             boolean valid = false;
             int student = 0;
-            System.out.println("Choose a student from your entrance by typing its position ");
+            System.out.print("Choose a student from your entrance by typing its position: ");
             while (!students.contains(student) && !valid){
                 try {
                     student = Integer.parseInt(in.nextLine());
                     if (!students.contains(student)) {
-                        System.out.println("Invalid student position ");
+                        CLI.error("Invalid student position\n");
                     } else {
                         students.remove((Integer) student);
                         valid = true;
                     }
                 } catch (NumberFormatException e){
-                    System.out.println("You have to insert a number ");
+                    CLI.error("You have to insert a number\n");
                 }
             }
-            System.out.println("Choose a destination for this student by typing DINING ROOM or a number of an island ");
+            System.out.print("Choose a destination for this student by typing DINING ROOM or a number of an island: ");
 
             String destination;
             valid = false;
@@ -65,26 +67,25 @@ public class CLIMoveStudentsState extends AbstractClientState {
                     try {
                         int verify = Integer.parseInt(destination);
                         if (verify < 1 || verify > client.getReducedModel().getIslands().size()) {
-                            System.out.println("Invalid island, choose another one");
+                           CLI.error("Invalid island, choose another one: ");
                         } else {
                             valid = true;
                             movements.put(student, destination);
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println("You have to insert the number of an island or DINING ROOM");
+                       CLI.error("You have to insert the number of an island or DINING ROOM: ");
                     }
                 }
             }
             choices --;
         }
         System.out.println("Students moved, waiting for players...");
-
         client.send(new MoveStudentMessage(movements));
     }
 
     @Override
     public void serverError(String message) {
-        System.out.println(message);
+        CLI.error(message+"\n");
         render();
     }
 }

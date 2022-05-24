@@ -19,7 +19,7 @@ public class CLIMenuState extends AbstractClientState {
 
     @Override
     public void render(){
-        System.out.println("Create or join a lobby by typing: CREATE or JOIN ");
+        System.out.print("Create or join a lobby by typing: CREATE or JOIN ");
         boolean valid = false;
         while (!valid){
             String input = in.nextLine().toUpperCase();
@@ -30,7 +30,7 @@ public class CLIMenuState extends AbstractClientState {
                 command = input;
                 valid = true;
             }else{
-                System.out.println("Unknown command, please type: CREATE or JOIN ");
+               CLI.error("Unknown command, please type: CREATE or JOIN ");
             }
         }
         client.send(new SetupRequestMessage(SetupResponsesTypes.COMMAND, command));

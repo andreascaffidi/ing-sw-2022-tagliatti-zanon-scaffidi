@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.enums;
 
+import it.polimi.ingsw.network.client.UI.CLI.Ansi;
 import it.polimi.ingsw.network.client.UI.CLI.CLI;
 import it.polimi.ingsw.exceptions.ColorNotFoundException;
 
@@ -10,11 +11,11 @@ import java.io.Serializable;
  */
 public enum ColorS implements Serializable {
 
-    GREEN(CLI.ANSI_GREEN),
-    BLUE(CLI.ANSI_BLUE),
-    RED(CLI.ANSI_RED),
-    PINK(CLI.ANSI_PURPLE),
-    YELLOW(CLI.ANSI_YELLOW);
+    GREEN(Ansi.GREEN),
+    BLUE(Ansi.BLUE),
+    RED(Ansi.RED),
+    PINK(Ansi.MAGENTA),
+    YELLOW(Ansi.YELLOW);
 
     public String ansiEscapeCode;
 
@@ -34,6 +35,10 @@ public enum ColorS implements Serializable {
         }catch(IllegalArgumentException e){
             throw new ColorNotFoundException("Color not found");
         }
+    }
+
+    public String getAnsiEscapeCode() {
+        return ansiEscapeCode;
     }
 
     public String toAnsiString(){

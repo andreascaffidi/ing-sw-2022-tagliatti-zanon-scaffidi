@@ -10,6 +10,10 @@ import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 
 public class CLI implements UI {
@@ -33,10 +37,7 @@ public class CLI implements UI {
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
     public CLI(){
-            System.out.print(   " ___  __               ___      __  \n" +
-                                "|__  |__) |  / \\  |\\ |  |  \\ / /__` \n" +
-                                "|___ |  \\ | /~-~\\ | \\|  |   |  .__/ \n" +
-                                "                                   \n");
+
     }
 
     @Override
@@ -72,122 +73,179 @@ public class CLI implements UI {
                 Runtime.getRuntime().exec("clear");
         } catch (IOException | InterruptedException ex) {}
     }
-
+public static void showLogo(){
+    final String logo =  " _______ .______     ____    ____  ___      .__   __. .___________. __       _______.\n" +
+            "|   ____||   _  \\    \\   \\  /   / /   \\     |  \\ |  | |           ||  |     /       |\n" +
+            "|  |__   |  |_)  |    \\   \\/   / /  ^  \\    |   \\|  | `---|  |----`|  |    |   (----`\n" +
+            "|   __|  |      /      \\_    _/ /  /_\\  \\   |  . `  |     |  |     |  |     \\   \\    \n" +
+            "|  |____ |  |\\  \\----.   |  |  /  _____  \\  |  |\\   |     |  |     |  | .----)   |   \n" +
+            "|_______|| _| `._____|   |__| /__/     \\__\\ |__| \\__|     |__|     |__| |_______/    \n" +
+            "                                                                                     \n\n";
+    System.out.print(Ansi.colorize(logo,Ansi.CYAN));
+}
     //FIXME: è una prova
     public static void showModel(ReducedModel reducedModel){
         System.out.println("\n");
         String model = "------------------------------------------------------------\n";
 
-        model += "Current Player: ";
-        model += Ansi.Yellow.colorize(reducedModel.getCurrentPlayer());
-        model += "\n";
+        model += "C U R R E N T   P L A Y E R: ";
+        model += Ansi.colorize(" "+reducedModel.getCurrentPlayer()+" ",Ansi.BACKGROUND_YELLOW,Ansi.BLACK,Ansi.HIGH_INTENSITY);
         model += "\n";
 
-        model += showIslands(reducedModel);
+        model += "\n\uD83C\uDFDD \uD83C\uDFDD \uD83C\uDFDD "+ Ansi.colorize(" I S L A N D S ",Ansi.HIGH_INTENSITY,Ansi.BACKGROUND_GREEN,Ansi.BLACK) + " \uD83C\uDFDD \uD83C\uDFDD \uD83C\uDFDD \n";
+        model += islandsToString(reducedModel.getIslands());
 
-        model += showClouds(reducedModel);
+        model += "\n️☁️️ ☁️️ ☁️️ "+ Ansi.colorize(" C L O U D S ",Ansi.HIGH_INTENSITY,Ansi.BACKGROUND_CYAN,Ansi.BLACK)+" ☁️️ ☁️️ ☁️️ \n";
+        model += cloudsToString(reducedModel.getClouds());
 
-        model += "BOARDS \n";
-        model += "\n";
+        model += "\n\uD83C\uDFB2 \uD83C\uDFB2 \uD83C\uDFB2 " + Ansi.colorize(" B O A R D S ",Ansi.BACKGROUND_RED,Ansi.BLACK,Ansi.HIGH_INTENSITY)+" \uD83C\uDFB2 \uD83C\uDFB2 \uD83C\uDFB2\n\n";
+
         for(ReducedBoard b : reducedModel.getBoards())
         {
-            model += showBoard(b);
+            model += boardToString(b);
+            model += assistantDeckToString(b.getAssistantDeck().getAssistantCards());
+            model += "\n";
         }
+
+        //model += "\n\uD83C\uDCCF \uD83C\uDCCF \uD83C\uDCCF " + Ansi.colorize(" A S S I S T A N T   D E C K ",Ansi.BACKGROUND_BLUE,Ansi.BLACK,Ansi.HIGH_INTENSITY)+" \uD83C\uDCCF \uD83C\uDCCF \uD83C\uDCCF\n\n";
+
+
         System.out.println(model);
     }
 
-    public static String showIslands(ReducedModel reducedModel){
+    public static String[] cloudToStringArray(ReducedCloud cloud){
+        String[]  cloudStrArray = new String[3];
+        cloudStrArray[0] = Ansi.colorize("┌────┬───────────┐",Ansi.CYAN);
+        cloudStrArray[1] =  Ansi.colorize("│ ",Ansi.CYAN)+"#"+cloud.getId()+ Ansi.colorize(" │ ",Ansi.CYAN);
+        for(ColorS color : ColorS.values()){
+            cloudStrArray[1] += Ansi.colorize(String.valueOf(cloud.getStudents(color).size()), color.getAnsiEscapeCode())+" ";
+        }
+        cloudStrArray[1] +=  Ansi.colorize("│",Ansi.CYAN);
+        cloudStrArray[2] =  Ansi.colorize("└────┴───────────┘",Ansi.CYAN);
+        return cloudStrArray;
+    }
+
+    public static String cloudsToString(List<ReducedCloud> clouds){
+        String cloudStr = "";
+        for(int i = 0; i<3; i++) {
+            for (ReducedCloud cloud : clouds) {
+                cloudStr += cloudToStringArray(cloud)[i];
+                cloudStr += "  ";
+            }
+            cloudStr += "\n";
+        }
+        return cloudStr;
+    }
+
+    public static String[] islandToStringArray(ReducedIsland island){
+        String[]  islandStrArray = new String[5];
+        islandStrArray[0] =  Ansi.colorize("┌─────┬───┬──────┐",Ansi.GREEN);
+        islandStrArray[1] =  Ansi.colorize("│",Ansi.GREEN)+" #"
+                +(island.getId() < 10 ? island.getId()+"  " : island.getId()+" ")+Ansi.colorize("│",Ansi.GREEN)
+                + (island.getTower()!=null ? Ansi.colorize(" T ",island.getTower().getAnsiEscapeCode()) : "   ")
+                +Ansi.colorize("│",Ansi.GREEN)+ (island.isMotherNature() ? "  MN  ":"      ")
+                +Ansi.colorize("│",Ansi.GREEN);
+        islandStrArray[2] = Ansi.colorize("├─────┴───┴──────┤",Ansi.GREEN);
+        islandStrArray[3] = Ansi.colorize("│",Ansi.GREEN)+" ";
+        for(ColorS color : ColorS.values()){
+            islandStrArray[3] += Ansi.colorize(String.valueOf(island.getStudents(color).size()), color.getAnsiEscapeCode())+"  ";
+        }
+        islandStrArray[3] += ""+Ansi.colorize("│",Ansi.GREEN);
+        islandStrArray[4] = Ansi.colorize("└────────────────┘",Ansi.GREEN);
+        return islandStrArray;
+    }
+
+    public static String islandsToString(List<ReducedIsland> islands){
+        final int islandsPerRow = 6;
+
+        String islandStr = "";
+        List<ReducedIsland> islandFirstRow = new ArrayList<>(islands.subList(0,(islands.size()<islandsPerRow?islands.size():islandsPerRow)));
+        for(int i = 0; i<5; i++) {
+            for (ReducedIsland island : islandFirstRow) {
+                islandStr += islandToStringArray(island)[i];
+                islandStr += "  ";
+            }
+            islandStr += "\n";
+        }
+        if(islands.size()>islandsPerRow){
+            List<ReducedIsland> islandSecondRow =  new ArrayList<>(islands.subList(islandsPerRow,islands.size()));
+            for(int i = 0; i<5; i++) {
+                for (ReducedIsland island : islandSecondRow) {
+                    islandStr += islandToStringArray(island)[i];
+                    islandStr += "  ";
+                }
+                islandStr += "\n";
+            }
+        }
+
+        return islandStr;
+    }
+
+    public static String boardToString(ReducedBoard b){
+        ColorS colors[] = ColorS.values();
         String model = "";
-        model += Ansi.Yellow.colorize("ISLANDS")+"\n";
+            model +="		 "+Ansi.colorize(" "+b.getPlayer()+" ",Ansi.BACKGROUND_YELLOW,Ansi.BLACK)+"’s BOARD                                    \n";
+            model +="╔══════╦══════════╦═══════════════════════════╦══════╦════════╗\n";
+            model +="║      ║ ENTRANCE ║ DINING ROOM               ║ PROF ║ TOWERS ║\n";
+            model +="╠══════╬══════════╬═══════════════════════════╬══════╬════════╣\n";
 
+        for(ColorS color : colors){
+            model +="║"+Ansi.colorize(color.toString().toUpperCase(Locale.ROOT)+(String.join("", Collections.nCopies(6-color.toString().length(), " "))),color.getAnsiEscapeCode())+"║    "+b.getEntranceStudents().stream().filter(c-> c == color).count()+"     ║ ";
+            int students = b.getStudents().get(color).intValue();
+            for(int i = 0; i<10; i++){
+                String placeholder = i < students ? "S" : "_";
 
-        for(ReducedIsland i : reducedModel.getIslands())
-        {
-            model +="\t";
-            model += (i.getId() + 1);
-            model += ": ";
-            model += i.isMotherNature() ? "[MN] ": "";
-            for(ColorS s : i.getStudents()) {
-                model += s.toAnsiString()+" ";
+                if(i == 2 || i == 5 || i == 8){
+                    model += "("+Ansi.colorize(placeholder, color.getAnsiEscapeCode())+") ";
+                }else{
+                    model += Ansi.colorize(placeholder+" ", color.getAnsiEscapeCode());
+                }
             }
-            model += "\n";
+            model += "║  ";
+            // PROFESSORS
+            model += b.getProfessors().contains(color) ? 'P' : '_';
+            model += "   ║  ";
+            // TOWERS
+            int towers = b.getNumOfTowers();
+            int printedTowres = 0;
+            for(int i = 0; i<2;i++){
+                if(printedTowres<towers){
+                    model += "T";
+                    printedTowres++;
+                }else{
+                    model += "_";
+                }
+                model +="  ";
+            }
+            model += "║\n";
         }
-        model += "\n";
-        //System.out.println(model);
+        model +="╚══════╩══════════╩═══════════════════════════╩══════╩════════╝\n";
         return model;
     }
 
-    public static String showClouds(ReducedModel reducedModel){
-        String model = "";
-
-        model += Ansi.Yellow.colorize("CLOUDS")+"\n";
-
-        for(ReducedCloud c : reducedModel.getClouds())
-        {
-            model += c.getId() + 1;
-            model += ": ";
-            for(ColorS s : c.getStudents())
-            {
-                model += s.toAnsiString();
-                model += " ";
+    public static String assistantDeckToString(List<ReducedAssistant> cards){
+        String cardsStr = "";
+        for(int i = 0; i<3; i++) {
+            for (ReducedAssistant card : cards) {
+                cardsStr += assistantToStringArray(card)[i]+" ";
             }
-            model += "\n";
+            cardsStr += "\n";
         }
-        model += "\n";
-        //System.out.println(model);
-        return model;
+        return cardsStr;
     }
 
-    public static String showBoard(ReducedBoard b){
-        String model = "------------------------------------------------------------\n";
-        model += "\t\t\t\t\t\t"+Ansi.Yellow.colorize(b.getPlayer())+"\n";
-        model += "------------------------------------------------------------\n";
-        model += Ansi.Yellow.colorize("ENTRANCE")+"\n";
-
-        for(ColorS c : b.getEntranceStudents())
-        {
-            model += c.toAnsiString();
-            model += " ";
-        }
-        model += "\n\n";
-
-
-        model += Ansi.Yellow.colorize("DINING ROOM")+"\n";
-
-        model += Ansi.YELLOW+"\tYELLOW: "+b.getYellowStudents()+" / 10\n"+Ansi.RESET;
-        model += Ansi.BLUE+"\tBLUE: "+b.getBlueStudents()+" / 10\n"+Ansi.RESET;;
-        model += Ansi.GREEN+"\tGREEN: "+b.getGreenStudents()+" / 10\n"+Ansi.RESET;;
-        model += Ansi.MAGENTA+"\tPINK: "+b.getPinkStudents()+" / 10\n"+Ansi.RESET;;
-        model += Ansi.RED+"\tRED: "+b.getRedStudents()+" / 10\n\n"+Ansi.RESET;;
-
-        model += Ansi.Yellow.colorize("PROFESSORS TABLE")+"\n";;
-        if(b.getProfessors().size() == 0){
-            model += "[no professors in your board]";
-        }else{
-            for(ColorS p : b.getProfessors()){
-                model += p.toAnsiString()+" ";
-            }
-        }
-        model += "\n\n";
-
-
-        model += Ansi.Yellow.colorize("TOWERS")+"\n";
-        model += "\t"+b.getTowerColor()+ " -- "+b.getNumOfTowers()+" / []\n\n";
-
-        model += Ansi.Yellow.colorize("ASSISTANT DECK")+"\n";
-        for(ReducedAssistant a : b.getAssistantDeck().getAssistantCards())
-        {
-            model += "[";
-            model += a.getId();
-            model += ", ";
-            model += a.getMotherNatureMovements();
-            model += "] ";
-        }
-        model += "\n\n\n";
-        return model;
+    public static String[] assistantToStringArray(ReducedAssistant card){
+        String[]  cardStrArray = new String[3];
+        cardStrArray[0] = "┌───┬───┐";
+        cardStrArray[1] = "│ "+card.getId()+" │ "+card.getMotherNatureMovements()+" │";
+        cardStrArray[2] = "└───┴───┘";
+        return cardStrArray;
     }
 
 
+    public static void error(String string){
+        System.out.print(Ansi.colorize(string,Ansi.RED));
+    }
 
     public void print(String string){
         System.out.println(string);

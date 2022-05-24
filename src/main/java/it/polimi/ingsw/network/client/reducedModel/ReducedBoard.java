@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.enums.ColorT;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * reduced serializable version of player's board
@@ -14,11 +15,7 @@ public class ReducedBoard implements Serializable {
     private final String player;
     private final ColorT towerColor;
 
-    private final int yellowStudents;
-    private final int blueStudents;
-    private final int redStudents;
-    private final int pinkStudents;
-    private final int greenStudents;
+    private final Map <ColorS,Integer> students;
 
     private final List<ColorS> entranceStudents;
 
@@ -32,26 +29,17 @@ public class ReducedBoard implements Serializable {
      * builds a reduced board
      * @param player player's username
      * @param towerColor tower's color
-     * @param yellowStudents number of yellow students
-     * @param blueStudents number of blue students
-     * @param redStudents number of red students
-     * @param pinkStudents number of pink students
-     * @param greenStudents number of green students
+     * @param students students on the dining room
      * @param entranceStudents colors of entrance students
      * @param professors colors of professors on the board
      * @param numOfTowers number of towers on the board
      * @param assistantDeck reduced assistant deck
      */
-    public ReducedBoard(String player, ColorT towerColor, int yellowStudents, int blueStudents, int redStudents,
-                        int pinkStudents, int greenStudents, List<ColorS> entranceStudents, List<ColorS> professors,
+    public ReducedBoard(String player, ColorT towerColor, Map <ColorS,Integer> students, List<ColorS> entranceStudents, List<ColorS> professors,
                         int numOfTowers, ReducedAssistantDeck assistantDeck) {
         this.player = player;
         this.towerColor = towerColor;
-        this.yellowStudents = yellowStudents;
-        this.blueStudents = blueStudents;
-        this.redStudents = redStudents;
-        this.pinkStudents = pinkStudents;
-        this.greenStudents = greenStudents;
+        this.students = students;
         this.entranceStudents = entranceStudents;
         this.professors = professors;
         this.numOfTowers = numOfTowers;
@@ -74,45 +62,6 @@ public class ReducedBoard implements Serializable {
         return towerColor;
     }
 
-    /**
-     * gets number of yellow students
-     * @return number of yellow students
-     */
-    public int getYellowStudents() {
-        return yellowStudents;
-    }
-
-    /**
-     * gets number of blue students
-     * @return number of blue students
-     */
-    public int getBlueStudents() {
-        return blueStudents;
-    }
-
-    /**
-     * gets number of red students
-     * @return number of red students
-     */
-    public int getRedStudents() {
-        return redStudents;
-    }
-
-    /**
-     * gets number of pink students
-     * @return number of pink students
-     */
-    public int getPinkStudents() {
-        return pinkStudents;
-    }
-
-    /**
-     * gets number of green students
-     * @return number of green students
-     */
-    public int getGreenStudents() {
-        return greenStudents;
-    }
 
     /**
      * gets colors of entrance students
@@ -144,5 +93,9 @@ public class ReducedBoard implements Serializable {
      */
     public ReducedAssistantDeck getAssistantDeck() {
         return assistantDeck;
+    }
+
+    public Map <ColorS,Integer> getStudents(){
+        return students;
     }
 }

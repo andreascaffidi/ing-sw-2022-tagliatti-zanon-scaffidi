@@ -167,12 +167,14 @@ public class Player {
      */
     public ReducedBoard reduceBoard()
     {
-        return new ReducedBoard(this.username, this.towerColor,
-                this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(ColorS.YELLOW),
-                this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(ColorS.BLUE),
-                this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(ColorS.RED),
-                this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(ColorS.PINK),
-                this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(ColorS.GREEN),
+        Map <ColorS,Integer> students = new HashMap();
+        for (ColorS color : ColorS.values()) {
+            students.put(color,this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color));
+        }
+        return new ReducedBoard(
+                this.username,
+                this.towerColor,
+                students,
                 this.getSchoolBoard().getEntrance().getStudents().stream().map(Student::getColor).collect(Collectors.toList()),
                 this.getSchoolBoard().getProfessorTable().getProfessors().stream().map(Professor::getColor).collect(Collectors.toList()),
                 this.getSchoolBoard().getTowerBoard().getTowers().size(),
