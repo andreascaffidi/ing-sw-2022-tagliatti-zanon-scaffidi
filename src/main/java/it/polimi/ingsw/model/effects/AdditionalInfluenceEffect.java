@@ -35,4 +35,13 @@ public class AdditionalInfluenceEffect implements Effect, InfluenceEffect {
         }
         return influence;
     }
+
+    /**
+     * override of toString() method
+     * @return specified effect
+     */
+    @Override
+    public String toString() {
+        return effectOwner.getUsername() + " has 2 more additional influence in this round";
+    }
 }

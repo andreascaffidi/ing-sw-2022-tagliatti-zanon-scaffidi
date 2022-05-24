@@ -10,7 +10,7 @@ import it.polimi.ingsw.network.server.Lobby;
 import java.util.List;
 import java.util.Scanner;
 
-public class CLIShowLobbiesState extends AbstractClientState {
+public class CLIShowLobbiesState extends AbstractClientState{
     private Client client;
     private Scanner in;
     private List<Lobby> availableLobbies;

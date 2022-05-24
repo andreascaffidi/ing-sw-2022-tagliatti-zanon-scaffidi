@@ -51,7 +51,6 @@ public class Bag {
      * removes a student from the bag
      * @return Student removed student
      */
-    //TODO: la partita può finire anche quando terminano gli studenti nella bag
     public Student drawStudent(){
         return this.students.remove(0);
     }

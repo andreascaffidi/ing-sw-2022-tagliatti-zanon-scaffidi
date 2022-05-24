@@ -33,4 +33,13 @@ public class CountTowersEffect implements Effect, InfluenceEffect{
         }
         return influence;
     }
+
+    /**
+     * override of toString() method
+     * @return specified effect
+     */
+    @Override
+    public String toString() {
+        return "Towers on island " + (islandEffect.getId()+1) + " aren't counted for influence in this round";
+    }
 }

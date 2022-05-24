@@ -85,6 +85,10 @@ public static void showLogo(){
 }
     //FIXME: è una prova
     public static void showModel(ReducedModel reducedModel){
+        //FIXME: è un test
+        if (reducedModel instanceof ReducedModelExpertMode){
+            showExpert((ReducedModelExpertMode)reducedModel);
+        }
         System.out.println("\n");
         String model = "------------------------------------------------------------\n";
 
@@ -245,6 +249,20 @@ public static void showLogo(){
 
     public static void error(String string){
         System.out.print(Ansi.colorize(string,Ansi.RED));
+    }
+    public static void showExpert(ReducedModelExpertMode reducedModelExpertMode){
+        if (reducedModelExpertMode.getCurrentEffect()!=null) {
+            System.out.println(reducedModelExpertMode.getCurrentEffect());
+        }
+        for (String player : reducedModelExpertMode.getCoins().keySet()){
+            System.out.println(player + " has " + reducedModelExpertMode.getCoins().get(player) + " coins");
+        }
+        for (ReducedIsland island : reducedModelExpertMode.getNoEntryTiles().keySet()){
+            System.out.println(island.getId() + " has " + reducedModelExpertMode.getNoEntryTiles().get(island));
+        }
+        for (ReducedCharacter character : reducedModelExpertMode.getCharacters()){
+            System.out.println(character.getId() + " costs " + character.getCost());
+        }
     }
 
     public void print(String string){

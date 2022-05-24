@@ -34,4 +34,13 @@ public class NoInfluenceColorEffect implements Effect, InfluenceEffect{
         else
             return influence;
     }
+
+    /**
+     * override of toString() method
+     * @return specified effect
+     */
+    @Override
+    public String toString() {
+        return noInfluenceColor.toString() + " has no influence in this round";
+    }
 }

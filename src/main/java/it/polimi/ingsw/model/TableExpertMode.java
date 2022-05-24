@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.effects.Effect;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
+import it.polimi.ingsw.network.client.reducedModel.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Table class for match control, expert mode variant
@@ -32,6 +34,7 @@ public class TableExpertMode extends Table {
 
     private int bank;
     private int numOfNoEntryTiles;
+    private boolean characterAlreadyPlayed;
 
     private Effect currentEffect;
 
@@ -51,6 +54,7 @@ public class TableExpertMode extends Table {
 
         this.playerCoins = new HashMap<>();
         this.noEntryTiles = new HashMap<>();
+        this.characterAlreadyPlayed = false;
 
         for (int i = 0; i < this.getPlayers().length; i++){
             this.playerCoins.put(this.getPlayers()[i], NUM_OF_COINS_SETUP);
@@ -176,13 +180,28 @@ public class TableExpertMode extends Table {
     }
 
     /**
-     * increments character card cost
+     * increments character card cost the first time a player pays it
      * @param character character card to increment
      */
-    //FIXME: card cost has to be incremented only the first time i pay it
     public void incrementCardCost(int character){
         int cost = this.characters.get(character);
-        this.characters.put(character, cost + 1);
+        JSONParser jsonParser = new JSONParser();
+        try (FileReader reader = new FileReader("assets/characters.json"))
+        {
+            Object obj = jsonParser.parse(reader);
+            JSONArray cards = (JSONArray) obj;
+            for (Object o : cards){
+                JSONObject card =  (JSONObject) o;
+                if (((Long)card.get("id")).intValue()==character){
+                    int initialCost = ((Long)card.get("cost")).intValue();
+                    if (cost == initialCost){
+                        this.characters.put(character, cost + 1);
+                    }
+                }
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -217,6 +236,14 @@ public class TableExpertMode extends Table {
      */
     public void setCurrentEffect(Effect effect){
         this.currentEffect = effect;
+    }
+
+    /**
+     * sets if character is already played by a player in this round
+     * @param characterAlreadyPlayed if character is already played
+     */
+    public void setCharacterAlreadyPlayed(boolean characterAlreadyPlayed) {
+        this.characterAlreadyPlayed = characterAlreadyPlayed;
     }
 
     /**
@@ -308,7 +335,9 @@ public class TableExpertMode extends Table {
      * @throws GameException if there aren't enough coins to pay the character card
      */
     public void validCharacter(int id) throws GameException{
-        //TODO: check if character card is already played in this round
+        if(this.characterAlreadyPlayed){
+            throw new GameException("You have already played a character in this round");
+        }
         if(!this.characters.containsKey(id)) {
             throw new GameException("Invalid Character");
         }
@@ -343,12 +372,55 @@ public class TableExpertMode extends Table {
         }
     }
 
-    //TODO: reduced character card
-    /*
-    public ReducedCharacter ReduceCharacter()
-    {
-        ReducedCharacter character1 = new ReducedCharacter(characters.keySet().stream().
-        return new ReducedCharacterDeck()
+    /**
+     * creates and returns a reduced version of the table expert mode
+     * @return reduced model expert mode
+     */
+    @Override
+    public ReducedModel createReducedModel(){
+
+        List<ReducedBoard> reducedBoards = new ArrayList<>();
+        List<ReducedIsland> reducedIslands = new ArrayList<>();
+        List<ReducedCloud> reducedClouds = new ArrayList<>();
+
+        for(Player p : this.getPlayers()) {
+            reducedBoards.add(p.reduceBoard());
+        }
+
+        for(Island i : this.getIslands()) {
+            reducedIslands.add(i.reduceIsland());
+        }
+
+        for(Cloud c : this.getClouds()) {
+            reducedClouds.add(new ReducedCloud(this.getClouds().indexOf(c),
+                    c.getStudents().stream().map(Student::getColor).collect(Collectors.toList())));
+        }
+
+        Map<String, Integer> reducedCoins = new HashMap<>();
+        for (Player p : this.playerCoins.keySet()){
+            reducedCoins.put(p.getUsername(), this.playerCoins.get(p));
+        }
+
+        Map<ReducedIsland, Boolean> reducedNoEntryTiles = new HashMap<>();
+        for (Island i : this.noEntryTiles.keySet()){
+            reducedNoEntryTiles.put(i.reduceIsland(), this.noEntryTiles.get(i));
+        }
+
+        List<ReducedCharacter> reducedCharacters = new ArrayList<>();
+        for (int character : this.characters.keySet()){
+            try {
+                List<Student> studentsOnCard = this.getCardWithStudents(character).getStudents();
+                reducedCharacters.add(new ReducedCharacter(character, this.characters.get(character),
+                        studentsOnCard.stream().map(Student::getColor).collect(Collectors.toList())));
+            } catch (CardNotFoundException e){
+                reducedCharacters.add(new ReducedCharacter(character, this.characters.get(character), null));
+            }
+        }
+
+        return new ReducedModelExpertMode(reducedIslands, reducedClouds,
+                this.getCurrentPlayer().getUsername(), reducedBoards,
+                this.currentEffect != null ? this.currentEffect.toString() : null,
+                reducedCoins, reducedNoEntryTiles, reducedCharacters, characterAlreadyPlayed);
     }
-    */
+
 }

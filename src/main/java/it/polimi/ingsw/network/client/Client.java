@@ -6,7 +6,6 @@ import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.requests.RequestMessage;
 import it.polimi.ingsw.network.responses.ClientExecute;
 import it.polimi.ingsw.network.responses.ResponseMessage;
-import it.polimi.ingsw.network.client.UI.CLI.CLI;
 import it.polimi.ingsw.network.client.UI.UI;
 import it.polimi.ingsw.network.server.Lobby;
 
@@ -28,12 +27,14 @@ public class Client {
 
     private ObjectInputStream in;
     private ObjectOutputStream out;
+    private boolean active = true;
 
     private AbstractClientState currentState;
+    private ClientState backState;
 
     private List<Lobby> availableLobbies;
 
-    private UI ui;
+    private final UI ui;
 
     private ReducedModel reducedModel;
 
@@ -41,12 +42,10 @@ public class Client {
 
     private String winner;
 
-    public Client(String ip, int port) {
+    public Client(String ip, int port, UI ui) {
         this.ip = ip;
         this.port = port;
-
-        //FIXME: new CLI() is only an example
-        this.ui = new CLI();
+        this.ui = ui;
         this.availableLobbies = new ArrayList<>();
     }
 
@@ -56,7 +55,7 @@ public class Client {
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
         try{
-            while(true) {
+            while(active) {
                 receive();
             }
         }catch (IOException | ClassNotFoundException e){
@@ -91,6 +90,9 @@ public class Client {
     public void changeState(ClientState nextState){
         currentState = ui.getClientState(nextState, this);
         //ui.clearScreen();
+        if (nextState != ClientState.PLAY_CHARACTER){
+            backState = nextState;
+        }
         currentState.render();
     }
 
@@ -137,5 +139,13 @@ public class Client {
     public String getWinner()
     {
         return this.winner;
+    }
+
+    public ClientState getBackState() {
+        return backState;
+    }
+
+    public void disconnectClient(){
+        this.active = false;
     }
 }

@@ -7,6 +7,8 @@ import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.responses.ClientExecute;
 import it.polimi.ingsw.network.responses.ResponseMessage;
 
+import java.net.MalformedURLException;
+
 public class GameStartedMessage implements ResponseMessage, ClientExecute {
     private final ReducedModel reducedModel;
     private ClientState clientState;
@@ -17,7 +19,7 @@ public class GameStartedMessage implements ResponseMessage, ClientExecute {
     }
 
     @Override
-    public void execute(Client client) {
+    public void execute(Client client) throws MalformedURLException {
         client.setReducedModel(reducedModel);
         if(!reducedModel.getCurrentPlayer().equals(client.getUsername()))
         {
