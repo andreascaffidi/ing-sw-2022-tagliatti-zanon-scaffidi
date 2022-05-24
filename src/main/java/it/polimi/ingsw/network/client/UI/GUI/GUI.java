@@ -4,19 +4,11 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.UI.UI;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
-import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GUI implements UI {
 
-    public GUI()
-    {
-    }
-
-    public void init(){
-        //JavaFXGUI.main(null);
+    public GUI() {
+        new Thread(JavaFXGUI::launchJavaFX).start();
     }
 
     public AbstractClientState getClientState(ClientState clientState, Client client)

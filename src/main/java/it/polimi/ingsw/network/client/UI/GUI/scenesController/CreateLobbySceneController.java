@@ -1,19 +1,11 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
+import it.polimi.ingsw.network.requests.setupMessages.CreateLobbyMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Paths;
-
-public class CreateLobbySceneController extends AbstractController{
+public class CreateLobbySceneController extends AbstractSceneController {
 
     @FXML
     private Button expert;
@@ -36,18 +28,8 @@ public class CreateLobbySceneController extends AbstractController{
     private String mode;
     private int num;
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-    public void enter(ActionEvent event) throws IOException
-    {
-        URL url = Paths.get("C:\\Users\\wilta\\IdeaProjects\\ing-sw-2022-tagliatti-zanon-scaffidi\\src\\main\\java\\it\\polimi\\ingsw\\network\\client\\UI\\GUI\\scenesController\\WaitingScene.fxml").toUri().toURL();
-        root = FXMLLoader.load(url);
-
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    public void enter(ActionEvent event){
+        client.send(new CreateLobbyMessage(client.getUsername(), this.mode.toUpperCase(), this.num));
     }
 
     public void expert(ActionEvent event)
@@ -75,11 +57,4 @@ public class CreateLobbySceneController extends AbstractController{
         this.num = 4;
     }
 
-    public int getNum() {
-        return num;
-    }
-
-    public String getMode() {
-        return mode;
-    }
 }

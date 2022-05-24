@@ -5,7 +5,6 @@ import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 
-import java.util.Locale;
 import java.util.Scanner;
 
 public class CLIWelcomeState extends AbstractClientState {
@@ -32,6 +31,7 @@ public class CLIWelcomeState extends AbstractClientState {
 
     private void askUsername(){
         username = in.nextLine();
+        //TODO: evitare che lo user si chiami \n
         client.setUsername(username.toLowerCase());
         client.send(new SetupRequestMessage(SetupResponsesTypes.USERNAME, username));
     }

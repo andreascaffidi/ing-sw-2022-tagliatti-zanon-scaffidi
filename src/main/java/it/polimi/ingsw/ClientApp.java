@@ -5,18 +5,11 @@ import it.polimi.ingsw.network.client.UI.CLI.CLI;
 import it.polimi.ingsw.network.client.UI.GUI.GUI;
 import it.polimi.ingsw.network.client.UI.GUI.JavaFXGUI;
 import it.polimi.ingsw.network.client.UI.UI;
-import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Locale;
 
 public class ClientApp
 {
-
-    private static UI ui;
-    private enum LaunchComponent{
-        CLI, GUI
-    }
 
     /**
      * initializes and launches the client
@@ -26,20 +19,12 @@ public class ClientApp
      * @throws IOException
      */
     public static void main( String[] args ) throws IOException {
-        String launchComponentValue = args.length > 0 ? args[0] : "gui";
-        LaunchComponent launchComponent = LaunchComponent.valueOf(launchComponentValue.toUpperCase());
-
-        switch(launchComponent)
-        {
-            case GUI:
-            {
-                ui = new GUI();
-                JavaFXGUI.main(null);
-                //ui.init();
-                break;
-            }
-            case CLI: ui = new CLI();
-            break;
+        String UIType = args.length > 0 ? args[0].toUpperCase() : "GUI";
+        UI ui;
+        if (UIType.equals("GUI")){
+            ui = new GUI();
+        }else{
+            ui = new CLI();
         }
         Client client = new Client("127.0.0.1", 12345, ui);
         client.startClient();

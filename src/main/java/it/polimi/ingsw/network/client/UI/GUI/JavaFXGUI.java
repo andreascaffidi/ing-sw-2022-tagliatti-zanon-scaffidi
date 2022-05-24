@@ -1,125 +1,93 @@
 package it.polimi.ingsw.network.client.UI.GUI;
 
-import it.polimi.ingsw.network.client.UI.GUI.scenesController.SceneController;
-import it.polimi.ingsw.network.client.UI.GUI.scenesController.WelcomeSceneController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.net.ContentHandler;
 import java.net.URL;
-import java.nio.file.Paths;
+
 
 public class JavaFXGUI extends Application {
-
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-
-    public static void main(String[] args)
-    {
-        launch(args);
-    }
 
     private static Stage primaryStage;
     private static Scene primaryScene;
 
-    private static final Pane mainRoot = new StackPane();
-    private static final Pane overlayRoot = new StackPane();
+    private static final Pane mainPane = new StackPane();
+    private static final Pane overlayPane = new StackPane();
 
-    private static final Object sceneLock = new Object();
+    private static final Object lock = new Object();
     private static boolean initialized = false;
-    static Runnable onExit;
 
+    public static void launchJavaFX() {
+        launch();
+    }
 
     @Override
-    public void start(Stage stage) throws Exception {
-
-        System.out.println("avviato");
-        synchronized (sceneLock) {
+    public void start(Stage stage){
+        synchronized (lock) {
+            //primary stage is the main window
             primaryStage = stage;
+            primaryStage.setTitle("Eriantys");
+            URL imagePath = this.getClass().getResource("/img/Eriantys.png");
+            if (imagePath != null) {
+                Image image = new Image(imagePath.toString());
+                stage.getIcons().add(image);
+            }
 
-            stage.setTitle("Eryantis");
+            //overlay root is the external layer of the scene
+            overlayPane.setMouseTransparent(true);
+            ((StackPane) overlayPane).setAlignment(Pos.CENTER);
 
-            //stage = new Stage();
-            URL url = Paths.get("C:\\Users\\wilta\\IdeaProjects\\ing-sw-2022-tagliatti-zanon-scaffidi\\src\\main\\java\\it\\polimi\\ingsw\\network\\client\\UI\\GUI\\scenesController\\WelcomeScene.fxml").toUri().toURL();
-            root = FXMLLoader.load(url);
+            //main root is the root layer of the scene
+            mainPane.setId("root");
+            mainPane.setCache(true);
+            mainPane.setCacheHint(CacheHint.SPEED);
+            overlayPane.setCache(true);
+            overlayPane.setCacheHint(CacheHint.SPEED);
 
-            //overlayRoot.setMouseTransparent(true);
-            //((StackPane)overlayRoot).setAlignment(Pos.CENTER);
-            //mainRoot.setId("root");
+            //create a Pane composed by a main root and an overlay root (they are panes too)
+            Pane pane = new StackPane(mainPane, overlayPane);
 
-            //mainRoot.setCache(true);
-            //mainRoot.setCacheHint(CacheHint.SPEED);
-            //overlayRoot.setCache(true);
-            //overlayRoot.setCacheHint(CacheHint.SPEED);
-
-            FileInputStream inputstream = new FileInputStream("C:\\Users\\wilta\\IdeaProjects\\ing-sw-2022-tagliatti-zanon-scaffidi\\src\\main\\resources\\img\\Eriantys.png");
-            Image image = new Image(inputstream);
-            stage.getIcons().add(image);
-
-            primaryScene = new Scene(root, 1280, 720);
-
-            stage.setScene(primaryScene);
-            stage.setFullScreen(false);
+            //the first scene loaded is a black screen
+            primaryScene = new Scene(pane, 1280, 720, Color.BLACK);
+            primaryStage.setScene(primaryScene);
+            primaryStage.setFullScreen(false);
             initialized = true;
-            sceneLock.notifyAll();
+            lock.notifyAll();
         }
-        stage.show();
+
+        primaryStage.show();
     }
 
-    /**
-     * This method sets the main root of the scene
-     * @param newRoot the new root of the scene
-     */
-    public static void setMainRoot(Pane newRoot){
-        mainRoot.getChildren().clear();
-        mainRoot.getChildren().add(newRoot);
+    public static void setMainPane(Pane pane){
+        mainPane.getChildren().clear();
+        mainPane.getChildren().add(pane);
     }
 
-    /**
-     * This method retrieves the main root of the scene
-     * @return the main root of the scene
-     */
-    public static Pane getMainRoot() {
-        return mainRoot;
+    public static Pane getMainPane() {
+        return mainPane;
     }
 
-    /**
-     * This method sets the root for the overlay
-     * @param newRoot the new root for the overlay
-     */
-    public static void setOverlayRoot(Pane newRoot){
-        overlayRoot.getChildren().clear();
-        overlayRoot.getChildren().add(newRoot);
+    public static void setOverlayPane(Pane pane){
+        overlayPane.getChildren().clear();
+        overlayPane.getChildren().add(pane);
     }
 
-    /**
-     * This method retrieves the overlay root of the scene
-     * @return the overlay root
-     */
-    public static Pane getOverlayRoot() {
-        return overlayRoot;
+    public static Pane getOverlayPane() {
+        return overlayPane;
     }
 
-    /**
-     * This method retrieves the Scene instance
-     * @return the Scene instance
-     */
     public static Scene getPrimaryScene(){
-        synchronized(sceneLock){
+        synchronized(lock){
             while (!initialized) {
                 try {
-                    sceneLock.wait();
+                    lock.wait();
                 } catch (InterruptedException e){
                     Thread.currentThread().interrupt();
                 }
@@ -128,15 +96,11 @@ public class JavaFXGUI extends Application {
         }
     }
 
-    /**
-     * This method retrieves the Stage instance
-     * @return the Stage instance
-     */
     public static Stage getPrimaryStage(){
-        synchronized(sceneLock){
+        synchronized(lock){
             while (!initialized) {
                 try {
-                    sceneLock.wait();
+                    lock.wait();
                 } catch (InterruptedException e){
                     Thread.currentThread().interrupt();
                 }
@@ -145,4 +109,8 @@ public class JavaFXGUI extends Application {
         }
     }
 
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+    }
 }

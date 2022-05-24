@@ -10,7 +10,7 @@
    <children>
       <ImageView fitHeight="720.0" fitWidth="1280.0" opacity="0.75">
          <image>
-            <Image url="@../../../../../../../../../resources/img/2138689.png" />
+            <Image url="@../img/2138689.png" />
          </image>
       </ImageView>
       <Text fill="WHITE" layoutX="317.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting for other players...">

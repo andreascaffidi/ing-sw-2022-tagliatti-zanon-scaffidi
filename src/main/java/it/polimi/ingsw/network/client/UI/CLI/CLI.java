@@ -39,11 +39,6 @@ public class CLI implements UI {
                                 "                                   \n");
     }
 
-    @Override
-    public void init()
-    {
-
-    }
 
     @Override
     public AbstractClientState getClientState(ClientState clientState, Client client) {

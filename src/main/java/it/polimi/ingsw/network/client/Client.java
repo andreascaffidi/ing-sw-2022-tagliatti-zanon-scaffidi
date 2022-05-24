@@ -1,20 +1,17 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.network.client.UI.GUI.GUI;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.requests.RequestMessage;
 import it.polimi.ingsw.network.responses.ClientExecute;
 import it.polimi.ingsw.network.responses.ResponseMessage;
-import it.polimi.ingsw.network.client.UI.CLI.CLI;
 import it.polimi.ingsw.network.client.UI.UI;
 import it.polimi.ingsw.network.server.Lobby;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.MalformedURLException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +27,14 @@ public class Client {
 
     private ObjectInputStream in;
     private ObjectOutputStream out;
+    private boolean active = true;
 
     private AbstractClientState currentState;
     private ClientState backState;
 
     private List<Lobby> availableLobbies;
 
-    private UI ui;
+    private final UI ui;
 
     private ReducedModel reducedModel;
 
@@ -47,12 +45,7 @@ public class Client {
     public Client(String ip, int port, UI ui) {
         this.ip = ip;
         this.port = port;
-
-        //FIXME: new CLI() is only an example
         this.ui = ui;
-        if (this.ui instanceof GUI){
-            ((GUI) this.ui).init();
-        }
         this.availableLobbies = new ArrayList<>();
     }
 
@@ -62,7 +55,7 @@ public class Client {
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
         try{
-            while(true) {
+            while(active) {
                 receive();
             }
         }catch (IOException | ClassNotFoundException e){
@@ -150,5 +143,9 @@ public class Client {
 
     public ClientState getBackState() {
         return backState;
+    }
+
+    public void disconnectClient(){
+        this.active = false;
     }
 }

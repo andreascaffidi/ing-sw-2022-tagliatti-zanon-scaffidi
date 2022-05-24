@@ -2,30 +2,34 @@ package it.polimi.ingsw.network.client.UI.GUI;
 
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.UI.GUI.scenesController.MenuSceneController;
-import it.polimi.ingsw.network.client.UI.GUI.scenesController.WelcomeSceneController;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
-import it.polimi.ingsw.network.requests.setupMessages.CreateLobbyMessage;
-import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
-import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
-import java.util.Scanner;
 
 public class GUIMenuState extends AbstractClientState {
-    private Client client;
-    private Scanner in;
-    private String command;
+    private final Client client;
+    private Parent root;
 
     public GUIMenuState(Client client){
         this.client = client;
-        in = new Scanner(System.in);
     }
 
     @Override
-    public void render(){
-
+    public void render() {
+        URL url = getClass().getResource("/fxml/MenuScene.fxml");
+        FXMLLoader loader = new FXMLLoader(url);
+        try {
+            root = loader.load();
+            MenuSceneController menuSceneController = loader.getController();
+            menuSceneController.setClient(client);
+            Platform.runLater(() ->JavaFXGUI.setMainPane((Pane)root));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
