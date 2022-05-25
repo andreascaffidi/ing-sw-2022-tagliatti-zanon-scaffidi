@@ -1,17 +1,17 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
+import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.reducedModel.ReducedAssistant;
 import it.polimi.ingsw.network.client.reducedModel.ReducedBoard;
+import it.polimi.ingsw.network.client.reducedModel.ReducedIsland;
 import it.polimi.ingsw.network.requests.gameMessages.PlayAssistantMessage;
+import it.polimi.ingsw.network.requests.setupMessages.CreateLobbyMessage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
@@ -20,6 +20,71 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlayAssistantSceneController extends AbstractSceneController {
+
+    @FXML
+    GridPane player1;
+
+    @FXML
+    GridPane player2;
+
+    @FXML
+    GridPane player3;
+
+    @FXML
+    GridPane player4;
+
+    @FXML
+    List<GridPane> schoolBoards = new ArrayList<>();
+    @FXML
+    FlowPane playerPane;
+
+    @FXML
+    StackPane cloud1;
+
+    @FXML
+    StackPane cloud2;
+
+    @FXML
+    StackPane cloud3;
+
+    @FXML
+    StackPane cloud4;
+
+    @FXML
+    List<StackPane> clouds = new ArrayList<>();
+
+    @FXML
+    FlowPane cloudPane;
+
+    @FXML
+    StackPane island1;
+
+    @FXML
+    StackPane island2;
+    @FXML
+    StackPane island3;
+    @FXML
+    StackPane island4;
+    @FXML
+    StackPane island5;
+    @FXML
+    StackPane island6;
+    @FXML
+    StackPane island7;
+    @FXML
+    StackPane island8;
+    @FXML
+    StackPane island9;
+    @FXML
+    StackPane island10;
+    @FXML
+    StackPane island11;
+    @FXML
+    StackPane island12;
+    @FXML
+    List<StackPane> islands = new ArrayList<>();
+    @FXML
+    FlowPane islandPane;
 
     @FXML
     Button PlayCharacter;
@@ -72,6 +137,8 @@ public class PlayAssistantSceneController extends AbstractSceneController {
     @FXML
     FlowPane tableauPane;
 
+    private int value;
+
     @Override
     public void setup() {
 
@@ -95,7 +162,8 @@ public class PlayAssistantSceneController extends AbstractSceneController {
             Assistant1.setOnAction(e -> {
                         tableauPane.getChildren().remove(Assistant1);
                         stockPane.getChildren().add(Assistant1);
-                        client.send(new PlayAssistantMessage(1)); });
+                        deck.remove(Assistant1);
+                client.send(new PlayAssistantMessage(1)); });
         }
 
         Image img2 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(2).png")));
@@ -109,6 +177,7 @@ public class PlayAssistantSceneController extends AbstractSceneController {
             Assistant2.setOnAction(e -> {
                 tableauPane.getChildren().remove(Assistant2);
                 stockPane.getChildren().add(Assistant2);
+                deck.remove(Assistant2);
                 client.send(new PlayAssistantMessage(2));
             });
         }
@@ -123,6 +192,7 @@ public class PlayAssistantSceneController extends AbstractSceneController {
             Assistant3.setOnAction(e -> {
                 tableauPane.getChildren().remove(Assistant3);
                 stockPane.getChildren().add(Assistant3);
+                deck.remove(Assistant3);
                 client.send(new PlayAssistantMessage(3));
             });
         }
@@ -137,6 +207,7 @@ public class PlayAssistantSceneController extends AbstractSceneController {
             Assistant4.setOnAction(e -> {
                 tableauPane.getChildren().remove(Assistant4);
                 stockPane.getChildren().add(Assistant4);
+                deck.remove(Assistant4);
                 client.send(new PlayAssistantMessage(4));
             });
         }
@@ -151,6 +222,7 @@ public class PlayAssistantSceneController extends AbstractSceneController {
             Assistant5.setOnAction(e -> {
                 tableauPane.getChildren().remove(Assistant5);
                 stockPane.getChildren().add(Assistant5);
+                deck.remove(Assistant5);
                 client.send(new PlayAssistantMessage(5));
             });
         }
@@ -165,6 +237,7 @@ public class PlayAssistantSceneController extends AbstractSceneController {
             Assistant6.setOnAction(e -> {
                 tableauPane.getChildren().remove(Assistant6);
                 stockPane.getChildren().add(Assistant6);
+                deck.remove(Assistant6);
                 client.send(new PlayAssistantMessage(6));
             });
         }
@@ -179,6 +252,7 @@ public class PlayAssistantSceneController extends AbstractSceneController {
             Assistant7.setOnAction(e -> {
                 tableauPane.getChildren().remove(Assistant7);
                 stockPane.getChildren().add(Assistant7);
+                deck.remove(Assistant7);
                 client.send(new PlayAssistantMessage(7));
             });
         }
@@ -193,6 +267,7 @@ public class PlayAssistantSceneController extends AbstractSceneController {
             Assistant8.setOnAction(e -> {
                 tableauPane.getChildren().remove(Assistant8);
                 stockPane.getChildren().add(Assistant8);
+                deck.remove(Assistant8);
                 client.send(new PlayAssistantMessage(8));
             });
         }
@@ -207,6 +282,7 @@ public class PlayAssistantSceneController extends AbstractSceneController {
             Assistant9.setOnAction(e -> {
                 tableauPane.getChildren().remove(Assistant9);
                 stockPane.getChildren().add(Assistant9);
+                deck.remove(Assistant9);
                 client.send(new PlayAssistantMessage(9));
             });
         }
@@ -221,6 +297,7 @@ public class PlayAssistantSceneController extends AbstractSceneController {
             Assistant10.setOnAction(e -> {
                 tableauPane.getChildren().remove(Assistant10);
                 stockPane.getChildren().add(Assistant10);
+                deck.remove(Assistant10);
                 client.send(new PlayAssistantMessage(10));
             });
         }
@@ -237,6 +314,8 @@ public class PlayAssistantSceneController extends AbstractSceneController {
             // put card on tableau pane
             tableauPane.getChildren().add(card);
         }
+
+        //showModel();
     }
 
     public void showModel()
@@ -249,21 +328,164 @@ public class PlayAssistantSceneController extends AbstractSceneController {
 
     public void showIslands()
     {
+        islands.add(island1);
+        islands.add(island2);
+        islands.add(island3);
+        islands.add(island4);
+        islands.add(island5);
+        islands.add(island6);
+        islands.add(island7);
+        islands.add(island8);
+        islands.add(island9);
+        islands.add(island10);
+        islands.add(island11);
+        islands.add(island12);
+
+        Image ex1 = new Image(String.valueOf(getClass().getResource("/img/Tavolo/Isole/island1.png")));
+        Image ex2 = new Image(String.valueOf(getClass().getResource("/img/Tavolo/Isole/island2.png")));
+        Image ex3 = new Image(String.valueOf(getClass().getResource("/img/Tavolo/Isole/island3.png")));
+
+        Image blue = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_blue.png")));
+        Image red = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_red.png")));
+        Image yellow = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_yellow.png")));
+        Image pink = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_pink.png")));
+        Image green = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_green.png")));
+
+
+        for(int i = 0; i < client.getReducedModel().getIslands().size(); i++)
+        {
+            if(i % 3 == 0)
+            {
+                islands.get(i).getChildren().add(new ImageView(ex1));
+            }
+            if(i% 3 == 1)
+            {
+                islands.get(i).getChildren().add(new ImageView(ex2));
+            }
+            if(i % 3 == 2)
+            {
+                islands.get(i).getChildren().add(new ImageView(ex3));
+            }
+
+            String color = null;
+
+            for(ColorS s : client.getReducedModel().getIslands().get(i).getStudents()) {
+                color = s.toString().toLowerCase();
+                switch(color){
+                    case "blue": islands.get(i).getChildren().add(new ImageView(blue));
+                    case "red": islands.get(i).getChildren().add(new ImageView(red));
+                    case "pink": islands.get(i).getChildren().add(new ImageView(pink));
+                    case "yellow": islands.get(i).getChildren().add(new ImageView(yellow));
+                    case "green": islands.get(i).getChildren().add(new ImageView(green));
+                }
+            }
+        }
+
+        for( int j = 0; j < islands.size(); j++) {
+
+            // get card from stock
+            Pane island = islands.remove(j);
+
+            // set card position
+            island.setLayoutX(j * 20);
+
+            // put card on tableau pane
+            islandPane.getChildren().add(island);
+        }
 
     }
 
     public void showClouds()
     {
+        clouds.add(cloud1);
+        clouds.add(cloud2);
+        clouds.add(cloud3);
+        clouds.add(cloud4);
 
+        Image ex1 = new Image(String.valueOf(getClass().getResource("/img/Tavolo/Nuvole/cloud_card_1.png")));
+        Image ex2 = new Image(String.valueOf(getClass().getResource("/img/Tavolo/Nuvole/cloud_card_2.png")));
+        Image ex3 = new Image(String.valueOf(getClass().getResource("/img/Tavolo/Nuvole/cloud_card_3.png")));
+        Image ex4 = new Image(String.valueOf(getClass().getResource("/img/Tavolo/Nuvole/cloud_card_4.png")));
+
+        Image blue = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_blue.png")));
+        Image red = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_red.png")));
+        Image yellow = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_yellow.png")));
+        Image pink = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_pink.png")));
+        Image green = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_green.png")));
+
+
+        for(int i = 0; i < client.getReducedModel().getClouds().size(); i++)
+        {
+            if(i == 0)
+            {
+                clouds.get(i).getChildren().add(new ImageView(ex1));
+            }
+            if(i == 1)
+            {
+                clouds.get(i).getChildren().add(new ImageView(ex2));
+            }
+            if(i == 2)
+            {
+                clouds.get(i).getChildren().add(new ImageView(ex3));
+            }
+            if(i == 3)
+            {
+                clouds.get(i).getChildren().add(new ImageView(ex4));
+            }
+
+            String color = null;
+
+            for(ColorS s : client.getReducedModel().getClouds().get(i).getStudents()) {
+                color = s.toString().toLowerCase();
+                switch(color){
+                    case "blue": clouds.get(i).getChildren().add(new ImageView(blue));
+                    case "red": clouds.get(i).getChildren().add(new ImageView(red));
+                    case "pink": clouds.get(i).getChildren().add(new ImageView(pink));
+                    case "yellow": clouds.get(i).getChildren().add(new ImageView(yellow));
+                    case "green": clouds.get(i).getChildren().add(new ImageView(green));
+                }
+            }
+        }
+        for( int j = 0; j < clouds.size(); j++) {
+
+            // get card from stock
+            Pane cloud = clouds.get(j);
+
+            // set card position
+            cloud.setLayoutX(j * 20);
+
+            // put card on tableau pane
+            cloudPane.getChildren().add(cloud);
+        }
     }
 
     public void showSchoolBoards()
     {
+        schoolBoards.add(player1);
+        schoolBoards.add(player2);
+        schoolBoards.add(player3);
+        schoolBoards.add(player4);
 
+        Image ex1 = new Image(String.valueOf(getClass().getResource("/img/Plancia/Plancia_DEF2.png")));
+
+        for(int i = 0; i < client.getReducedModel().getBoards().size(); i++)
+        {
+            schoolBoards.get(i).getChildren().add(new ImageView(ex1));
+        }
+        for( int j = 0; j < schoolBoards.size(); j++) {
+
+            // get card from stock
+            Pane player = schoolBoards.get(j);
+
+            // set card position
+            player.setLayoutX(j * 20);
+
+            // put card on tableau pane
+            playerPane.getChildren().add(player);
+        }
     }
 
     public void showCoins()
     {
-
     }
 }
