@@ -1,9 +1,5 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Usage:
  * <li>String msg = Ansi.Red.and(Ansi.BgYellow).format("Hello %s", name)</li>
@@ -81,8 +77,8 @@ public final class Ansi {
         public static final Ansi BgCyan = new Ansi(BACKGROUND_CYAN);
         public static final Ansi BgWhite = new Ansi(BACKGROUND_WHITE);
 
-        final private String[] codes;
-        static private String codes_str;
+        private String[] codes;
+        private static String codes_str;
 
         public Ansi(String... codes) {
             this.codes = codes;
@@ -92,7 +88,21 @@ public final class Ansi {
             }
             codes_str = _codes_str;
         }
+        public static String colorize(String original) {
+                return codes_str + original + RESET;
+        }
+        public static String colorize(String original, String color) {
+                return color + original + RESET;
+        }
 
+        public static String colorize(String original, String... codes) {
+                String _codes_str = "";
+                for (String code : codes) {
+                        _codes_str +=code;
+                }
+                return _codes_str + original + RESET;
+        }
+ /*
         public Ansi and(Ansi other) {
             List<String> both = new ArrayList<String>();
             Collections.addAll(both, codes);
@@ -100,11 +110,11 @@ public final class Ansi {
             return new Ansi(both.toArray(new String[] {}));
         }
 
-        public static String colorize(String original) {
+      public static String colorize(String original) {
             return codes_str + original + RESET;
         }
 
         public String format(String template, Object... args) {
             return colorize(String.format(template, args));
-        }
+        }*/
 }

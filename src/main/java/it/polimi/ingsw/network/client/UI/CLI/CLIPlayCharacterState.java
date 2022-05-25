@@ -327,11 +327,13 @@ public class CLIPlayCharacterState extends AbstractClientState {
                 .findFirst().orElse(null);
 
         int diningAvailable = 0;
+        //FIXME:
+        /*
         if (myBoard != null){
             diningAvailable = myBoard.getBlueStudents() + myBoard.getRedStudents() + myBoard.getGreenStudents()
             + myBoard.getPinkStudents() + myBoard.getYellowStudents();
         }
-
+*/
         List<Integer> entranceChosen = new ArrayList<>();
         List<ColorS> diningChosen = new ArrayList<>();
 
@@ -370,6 +372,8 @@ public class CLIPlayCharacterState extends AbstractClientState {
             exit = false;
             ColorS colorChosen = null;
             System.out.println("Choose a color from the dining room ");
+            //FIXME:
+            /*
             while (!exit) {
                 try {
                     colorChosen = ColorS.parseToColor(in.nextLine());
@@ -395,6 +399,8 @@ public class CLIPlayCharacterState extends AbstractClientState {
                     System.out.println("Invalid color ");
                 }
             }
+            */
+
             entranceChosen.add(studentChosen);
             diningChosen.add(colorChosen);
             choices--;

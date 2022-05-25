@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.enums.ColorT;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * reduced serializable version of an island
@@ -47,6 +48,10 @@ public class ReducedIsland implements Serializable {
      */
     public List<ColorS> getStudents() {
         return students;
+    }
+
+    public List<ColorS> getStudents(ColorS color) {
+        return students.stream().filter(i -> i.equals(color)).collect(Collectors.toList());
     }
 
     /**

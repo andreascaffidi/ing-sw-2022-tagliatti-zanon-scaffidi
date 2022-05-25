@@ -19,13 +19,15 @@ public class CLIWelcomeState extends AbstractClientState {
 
     @Override
     public void render(){
-        System.out.println("Welcome to the magic world of Eriantys:\nInsert a username: ");
+        System.out.println("\n\t\t\t\t\t\t\t"+Ansi.colorize("W E L C O M E   T O",Ansi.UNDERLINE));
+        CLI.showLogo();
+        System.out.print("Insert a username: ");
         this.askUsername();
     }
 
     @Override
     public void serverError(String message) {
-        System.out.println(message);
+        CLI.error(message);
         this.askUsername();
     }
 
