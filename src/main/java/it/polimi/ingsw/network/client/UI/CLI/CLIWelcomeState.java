@@ -7,16 +7,24 @@ import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 
 import java.util.Scanner;
 
+/**
+ * CLI welcome state class
+ */
 public class CLIWelcomeState extends AbstractClientState {
-    private Client client;
-    private Scanner in;
-    private String username;
+    private final Scanner in;
 
+    /**
+     * builds a CLI welcome state class
+     * @param client client
+     */
     public CLIWelcomeState(Client client){
         this.client = client;
         in = new Scanner(System.in);
     }
 
+    /**
+     * displays welcome state on command line
+     */
     @Override
     public void render(){
         System.out.println("\n\t\t\t\t\t\t\t"+Ansi.colorize("W E L C O M E   T O",Ansi.UNDERLINE));
@@ -25,16 +33,31 @@ public class CLIWelcomeState extends AbstractClientState {
         this.askUsername();
     }
 
+    /**
+     * manages server error on command line
+     * @param message error message
+     */
     @Override
     public void serverError(String message) {
         CLI.error(message);
         this.askUsername();
     }
 
+    /**
+     * asks username on command line and sends it to the server
+     */
     private void askUsername(){
-        username = in.nextLine();
-        //TODO: evitare che lo user si chiami \n
+        boolean valid = false;
+        String username = null;
+        while(!valid){
+            username = in.nextLine();
+            if (username.contains(" ") || username.length() == 0){
+                System.out.println("Username not permitted (avoid white spaces)");
+            }else {
+                valid = true;
+            }
+        }
         client.setUsername(username.toLowerCase());
-        client.send(new SetupRequestMessage(SetupResponsesTypes.USERNAME, username));
+        client.send(new SetupRequestMessage(SetupResponsesTypes.USERNAME, username.toLowerCase()));
     }
 }
