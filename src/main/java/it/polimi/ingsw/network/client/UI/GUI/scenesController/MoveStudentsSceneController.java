@@ -1060,12 +1060,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                -> {
                     Image img = event.getDragboard().getImage();
                     island.getChildren().add(setStudentsDimension(new ImageView(img)));
-                    toSend.put(0, valueOf(id));
-                    bigCount++;
-                       if(bigCount == 3)
-                       {
-                           client.send(new MoveStudentMessage(toSend));
-                       }
+                    checkIsland(event.getDragboard().getString(), id);
                     event.consume();
                 });
     }
@@ -1127,16 +1122,68 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                         }
                     }
 
-                    toSend.put(0, "DINING ROOM");
-                    bigCount++;
-                    if(bigCount == 3)
-                    {
-                        client.send(new MoveStudentMessage(toSend));
-                    }
+                    checkDiningRoom(color);
                     diningRoom.toFront();
 
                     event.consume();
         });
+    }
+
+    public void checkDiningRoom(String color)
+    {
+        bigCount = bigCount + 1;
+        int index = 0;
+
+        for(int k = 0; k < client.getReducedModel().getBoards().size(); k++)
+        {
+            if(client.getReducedModel().getBoards().get(k).getPlayer().equals(client.getReducedModel().getCurrentPlayer()))
+            {
+                for(ColorS s : client.getReducedModel().getBoards().get(k).getEntranceStudents())
+                {
+                    if(s.toString().equals(color))
+                    {
+                        index = k;
+                        break;
+                    }
+                }
+            }
+        }
+
+        toSend.put(index, "DINING ROOM");
+
+        if(bigCount == 3)
+        {
+            client.send(new MoveStudentMessage(toSend));
+        }
+    }
+
+    public void checkIsland(String color, int id)
+    {
+        bigCount = bigCount + 1;
+
+        int index = 0;
+
+        for(int k = 0; k < client.getReducedModel().getBoards().size(); k++)
+        {
+            if(client.getReducedModel().getBoards().get(k).getPlayer().equals(client.getReducedModel().getCurrentPlayer()))
+            {
+                for(ColorS s : client.getReducedModel().getBoards().get(k).getEntranceStudents())
+                {
+                    if(s.toString().equals(color))
+                    {
+                        index = k;
+                        break;
+                    }
+                }
+            }
+        }
+
+        toSend.put(index, valueOf(id));
+
+        if(bigCount == 3)
+        {
+            client.send(new MoveStudentMessage(toSend));
+        }
     }
 
 }
