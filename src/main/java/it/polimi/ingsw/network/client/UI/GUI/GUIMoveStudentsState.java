@@ -28,7 +28,7 @@ public class GUIMoveStudentsState extends AbstractClientState {
     //TODO: adattare al reduced model
     @Override
     public void render(){
-        URL url = getClass().getResource("/fxml/MoveStudentsState.fxml");
+        URL url = getClass().getResource("/fxml/MoveStudentsScene.fxml");
         FXMLLoader loader = new FXMLLoader(url);
         try {
             root = loader.load();
