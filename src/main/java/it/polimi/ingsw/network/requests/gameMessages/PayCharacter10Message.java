@@ -17,8 +17,6 @@ public class PayCharacter10Message implements RequestMessage, ControllerExecuteE
     private final List<ColorS> diningStudents;
     private final List<Integer>  entranceStudents;
 
-    //TODO: implementare sulla view un metodo che verifichi che le due liste siano della stessa lunghezza
-    // e che non si ripetano gli indici della stessa lista
     /**
      * builds pay character 10 message
      * @param diningStudents dining student colors

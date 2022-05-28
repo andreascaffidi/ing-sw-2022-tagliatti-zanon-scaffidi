@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.cards.CardWithStudents;
 import it.polimi.ingsw.model.effects.InfluenceEffect;
+import it.polimi.ingsw.model.effects.MotherNatureEffect;
 import it.polimi.ingsw.model.effects.ProfessorOwnerEffect;
 import it.polimi.ingsw.model.effects.Effect;
 import it.polimi.ingsw.model.enums.ColorS;
@@ -302,6 +303,20 @@ public class TableExpertMode extends Table {
             influence = influenceEffect.influenceEffect(influence, island, player);
         }
         return influence;
+    }
+
+    /**
+     * moves mother nature counting the current effect of the round
+     * @param movement mother nature movements
+     */
+    @Override
+    public void moveMotherNature(int movement) {
+        int movements = movement;
+        if (this.currentEffect != null && this.currentEffect instanceof MotherNatureEffect){
+            MotherNatureEffect motherNatureEffect = (MotherNatureEffect) this.currentEffect;
+            movements = motherNatureEffect.motherNatureEffect(movements);
+        }
+        super.moveMotherNature(movements);
     }
 
     /**

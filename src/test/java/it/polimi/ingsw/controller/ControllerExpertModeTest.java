@@ -250,8 +250,7 @@ class ControllerExpertModeTest {
         //chiamo l'effetto
         controller.update(message);
 
-        //dopo aver chiamato l'effetto, motherNature deve essersi spostata di 1
-        assertTrue(table.getIsland(1).isMotherNature());
+        //da testare l'effetto
 
         //tbd -> exceptions
     }

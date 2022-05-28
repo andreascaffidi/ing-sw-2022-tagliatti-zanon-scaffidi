@@ -9,25 +9,34 @@ import it.polimi.ingsw.network.requests.gameMessages.MoveMotherNatureMessage;
 
 import java.util.Scanner;
 
+/**
+ * CLI move mother nature state class
+ */
 public class CLIMoveMotherNatureState extends AbstractClientState {
     private final Client client;
     private final Scanner in;
 
-
+    /**
+     * builds a CLI move mother nature state class and print the main information
+     * @param client client
+     */
     public CLIMoveMotherNatureState(Client client){
         this.client = client;
         in = new Scanner(System.in);
-    }
 
-    @Override
-    public void render(){
-        CLI.showModel(client.getReducedModel());
+        client.getUI().showModel(client.getReducedModel());
         System.out.println("It's your turn! Move Mother Nature by typing the number of movement you want, ");
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
             System.out.println("Or you can even pay a character card from the available, by typing " +
                     "PAY CHARACTER (you can pay a character card only one time per round)");
         }
+    }
 
+    /**
+     * displays move mother nature state on command line
+     */
+    @Override
+    public void render(){
         int movementChosen = 0;
         boolean exit = false;
         boolean payCharacter = false;
@@ -72,6 +81,10 @@ public class CLIMoveMotherNatureState extends AbstractClientState {
         }
     }
 
+    /**
+     * manages server error on command line
+     * @param message error message
+     */
     @Override
     public void serverError(String message) {
         System.out.println(message);

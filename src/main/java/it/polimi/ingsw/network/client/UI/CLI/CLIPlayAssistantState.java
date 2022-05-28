@@ -12,26 +12,35 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+/**
+ * CLI play assistant state class
+ */
 public class CLIPlayAssistantState extends AbstractClientState {
 
     private final Client client;
     private final Scanner in;
 
-
+    /**
+     * builds a CLI play assistant state class and print the main information
+     * @param client client
+     */
     public CLIPlayAssistantState(Client client){
         this.client = client;
         in = new Scanner(System.in);
-    }
 
-    @Override
-    public void render(){
-        CLI.showModel(client.getReducedModel());
+        client.getUI().showModel(client.getReducedModel());
         System.out.println("It's your turn! Play an Assistant Card by typing the id ");
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
             System.out.println("Or you can even pay a character card from the available, by typing " +
                     "PAY CHARACTER (you can pay a character card only one time per round)");
         }
+    }
 
+    /**
+     * displays play assistant state on command line
+     */
+    @Override
+    public void render(){
         int assistantChosen = 0;
         boolean exit = false;
         boolean payCharacter = false;
@@ -76,6 +85,10 @@ public class CLIPlayAssistantState extends AbstractClientState {
         }
     }
 
+    /**
+     * manages server error on command line
+     * @param message error message
+     */
     @Override
     public void serverError(String message) {
         System.out.println(message);

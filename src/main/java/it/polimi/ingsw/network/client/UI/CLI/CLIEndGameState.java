@@ -3,18 +3,23 @@ package it.polimi.ingsw.network.client.UI.CLI;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 
-import java.util.Scanner;
-
+/**
+ * CLI end game state class
+ */
 public class CLIEndGameState extends AbstractClientState {
-    private Client client;
-    private Scanner in;
-    private String command;
+    private final Client client;
 
+    /**
+     * builds a CLI end game state class
+     * @param client client
+     */
     public CLIEndGameState(Client client){
         this.client = client;
-        in = new Scanner(System.in);
     }
 
+    /**
+     * displays end game state on command line
+     */
     @Override
     public void render()
     {
@@ -24,5 +29,6 @@ public class CLIEndGameState extends AbstractClientState {
         }else{
             System.out.println("The winner is... not you! It's " + client.getWinner());
         }
+        client.disconnectClient();
     }
 }

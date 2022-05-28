@@ -7,16 +7,26 @@ import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 
 import java.util.Scanner;
 
+/**
+ * CLI menu state class
+ */
 public class CLIMenuState extends AbstractClientState {
-    private Client client;
-    private Scanner in;
+    private final Client client;
+    private final Scanner in;
     private String command;
 
+    /**
+     * builds a CLI menu state class
+     * @param client client
+     */
     public CLIMenuState(Client client){
         this.client = client;
         in = new Scanner(System.in);
     }
 
+    /**
+     * displays menu state on command line
+     */
     @Override
     public void render(){
         System.out.print("Create or join a lobby by typing: CREATE or JOIN ");

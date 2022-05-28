@@ -8,25 +8,34 @@ import it.polimi.ingsw.network.requests.gameMessages.ChooseCloudMessage;
 
 import java.util.Scanner;
 
+/**
+ * CLI choose cloud state class
+ */
 public class CLIChooseCloudState extends AbstractClientState {
     private final Client client;
     private final Scanner in;
 
-
+    /**
+     * builds a CLI choose cloud state class and print the main information
+     * @param client client
+     */
     public CLIChooseCloudState(Client client){
         this.client = client;
         in = new Scanner(System.in);
-    }
 
-    @Override
-    public void render(){
-        CLI.showModel(client.getReducedModel());
-        System.out.println("It's your turn! Choose a cloud by typing the id ");
+        client.getUI().showModel(client.getReducedModel());
+        System.out.println("It's your turn! Choose a cloud by typing the ID ");
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
             System.out.println("Or you can even pay a character card from the available, by typing " +
                     "PAY CHARACTER (you can pay a character card only one time per round)");
         }
+    }
 
+    /**
+     * displays choose cloud state on command line
+     */
+    @Override
+    public void render(){
         int cloudChosen = 0;
         boolean exit = false;
         boolean payCharacter = false;
@@ -46,7 +55,7 @@ public class CLIChooseCloudState extends AbstractClientState {
                 try {
                     cloudChosen = Integer.parseInt(input);
                     if (cloudChosen < 1 || cloudChosen > client.getReducedModel().getClouds().size()) {
-                        System.out.println("Invalid Cloud id ");
+                        System.out.println("Invalid cloud ID ");
                     } else {
                         System.out.println("Cloud chosen, waiting for players...");
                         exit = true;
@@ -62,6 +71,10 @@ public class CLIChooseCloudState extends AbstractClientState {
         }
     }
 
+    /**
+     * manages server error on command line
+     * @param message error message
+     */
     @Override
     public void serverError(String message) {
         System.out.println(message);

@@ -134,7 +134,12 @@ public class Controller implements Observer<ControllerMessage> {
             table.getCurrentPlayer().validMovement(movement);
             table.moveMotherNature(movement);
             table.processIsland(table.motherNatureIsland());
-            table.notify(new ReducedModelMessage(ClientState.CHOOSE_CLOUD, table.createReducedModel()));
+            //TODO: test this endgame condition
+            if (!table.isLastRound()){
+                table.notify(new ReducedModelMessage(ClientState.CHOOSE_CLOUD, table.createReducedModel()));
+            }else{
+                table.lastRound();
+            }
         } catch (GameException e){
             table.notify(new ServerErrorMessage(e.getMessage()));
         }

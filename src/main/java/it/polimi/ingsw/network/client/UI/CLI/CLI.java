@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
+import it.polimi.ingsw.exceptions.ColorNotFoundException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.reducedModel.*;
@@ -10,10 +11,7 @@ import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 
 public class CLI implements UI {
@@ -83,8 +81,8 @@ public static void showLogo(){
             "                                                                                     \n\n";
     System.out.print(Ansi.colorize(logo,Ansi.CYAN));
 }
-    //FIXME: è una prova
-    public static void showModel(ReducedModel reducedModel){
+    @Override
+    public void showModel(ReducedModel reducedModel){
         //FIXME: è un test
         if (reducedModel instanceof ReducedModelExpertMode){
             showExpert((ReducedModelExpertMode)reducedModel);
@@ -267,5 +265,120 @@ public static void showLogo(){
 
     public void print(String string){
         System.out.println(string);
+    }
+
+    /**
+     * chooses a valid island from the reduced model
+     * @param reducedModel reduced model
+     * @return island chosen
+     */
+    public static int chooseValidIsland(ReducedModel reducedModel){
+        Scanner in = new Scanner(System.in);
+        boolean exit = false;
+        int islandChosen = 0;
+        while (!exit){
+            try {
+                islandChosen = Integer.parseInt(in.nextLine());
+                if (islandChosen < 1 || islandChosen > reducedModel.getIslands().size()) {
+                    System.out.println("Invalid island, choose another one");
+                } else {
+                    exit = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("You have to insert a number ");
+            }
+        }
+        return islandChosen;
+    }
+
+    /**
+     * chooses a valid student from the character card
+     * @param reducedModelExpertMode reduced model
+     * @param character character card
+     * @return student chosen
+     */
+    public static int chooseValidStudentOnCard(ReducedModelExpertMode reducedModelExpertMode, int character){
+        Scanner in = new Scanner(System.in);
+        ReducedCharacter card = reducedModelExpertMode.getCharacters().
+                stream().filter(c -> c.getId()==character).findFirst().orElse(null);
+
+        List<ColorS> studentsOnCard = card != null ? card.getStudents() : new ArrayList<>();
+
+        System.out.println("Students on card: ");
+        for (int i = 0; i < studentsOnCard.size(); i++){
+            System.out.println((i+1) + " : " + studentsOnCard.get(i).toString());
+        }
+
+        int studentChosen = 0;
+        boolean exit = false;
+
+        while (!exit){
+            try {
+                studentChosen = Integer.parseInt(in.nextLine());
+                if (studentChosen < 1 || studentChosen > studentsOnCard.size()) {
+                    System.out.println("Invalid student position ");
+                } else {
+                    exit = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("You have to insert a number ");
+            }
+        }
+        return studentChosen;
+    }
+
+    /**
+     * chooses a valid color from the available
+     * @return color chosen
+     */
+    public static ColorS chooseValidColor(){
+        Scanner in = new Scanner(System.in);
+        boolean exit = false;
+        ColorS colorChosen = null;
+        while (!exit){
+            try {
+                colorChosen = ColorS.parseToColor(in.nextLine());
+                exit = true;
+            } catch (ColorNotFoundException e) {
+                System.out.println("Invalid color ");
+            }
+        }
+        return colorChosen;
+    }
+
+    /**
+     * chooses a valid student from the entrance
+     * @param reducedModel reduced model
+     * @param player board's owner
+     * @return student chosen
+     */
+    public static int chooseValidEntranceStudent(ReducedModel reducedModel, String player){
+        List<Integer> entranceAvailable = new ArrayList<>();
+
+        ReducedBoard myBoard = reducedModel.getBoards().stream()
+                .filter(b -> b.getPlayer().equals(player))
+                .findFirst().orElse(null);
+
+        if (myBoard != null) {
+            for (int i = 1; i < myBoard.getEntranceStudents().size() + 1; i++) {
+                entranceAvailable.add(i);
+            }
+        }
+        Scanner in = new Scanner(System.in);
+        boolean exit = false;
+        int studentChosen = 0;
+        while (!exit){
+            try {
+                studentChosen = Integer.parseInt(in.nextLine());
+                if (!entranceAvailable.contains(studentChosen)) {
+                    System.out.println("Invalid student position ");
+                } else {
+                    exit = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("You have to insert a number ");
+            }
+        }
+        return studentChosen;
     }
 }

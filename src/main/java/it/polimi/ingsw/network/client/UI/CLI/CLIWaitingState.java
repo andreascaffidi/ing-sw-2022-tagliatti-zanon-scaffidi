@@ -22,6 +22,7 @@ public class CLIWaitingState extends AbstractClientState {
     @Override
     public void render(){
         System.out.println(client.getWaitingMessage());
+        //TODO: bloccare input in qualche modo
     }
 
     /**
@@ -30,7 +31,6 @@ public class CLIWaitingState extends AbstractClientState {
      */
     @Override
     public void serverError(String message) {
-        //FIXME: it's only an ester egg
-        System.out.println("Other players are trying to cheating :( ");
+        //do nothing
     }
 }

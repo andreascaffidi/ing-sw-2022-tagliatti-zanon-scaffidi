@@ -5,7 +5,7 @@ import it.polimi.ingsw.network.responses.ClientExecute;
 import it.polimi.ingsw.network.responses.ResponseMessage;
 
 public class DisconnectErrorMessage implements ResponseMessage, ClientExecute {
-    private String message;
+    private final String message;
 
     public DisconnectErrorMessage(String message){
         this.message = message;

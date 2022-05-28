@@ -167,7 +167,7 @@ public class Player {
      */
     public ReducedBoard reduceBoard()
     {
-        Map <ColorS,Integer> students = new HashMap();
+        Map <ColorS,Integer> students = new HashMap<>();
         for (ColorS color : ColorS.values()) {
             students.put(color,this.getSchoolBoard().getDiningRoom().getNumberOfStudentsPerColor(color));
         }

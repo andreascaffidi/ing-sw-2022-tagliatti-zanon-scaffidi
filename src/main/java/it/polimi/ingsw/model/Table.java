@@ -46,6 +46,7 @@ public class Table extends Observable<ResponseMessage> {
     public int NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD;
 
     private final TurnManager turnManager;
+    private boolean lastRound = false;
 
     private final Bag bag;
     private final int numberOfPlayers;
@@ -583,6 +584,8 @@ public class Table extends Observable<ResponseMessage> {
         for(int i=0; i < NUM_OF_STUDENTS_TO_PLACE_ON_CLOUD; i++){
             if (!this.bag.getStudents().isEmpty()) {
                 cloud.addStudent(this.getBag().drawStudent());
+            } else {
+                this.lastRound = true;
             }
         }
     }
@@ -741,7 +744,6 @@ public class Table extends Observable<ResponseMessage> {
      * adds students taken from a cloud to the current player's entrance
      * @param cloud cloud with the students
      */
-    //TODO: proibire questa fase di gioco nel caso non ci siano abbastanza studenti
     public void addStudentsToEntrance(Cloud cloud){
         try {
             for (Student student : cloud.takeAllStudents()) {
@@ -756,12 +758,9 @@ public class Table extends Observable<ResponseMessage> {
                 for (Cloud c : this.clouds) {
                     addStudentsToCloud(c);
                 }
-                //TODO: test these two endgame conditions
+                //TODO: test this endgame condition
                 if (currentPlayer.getAssistantDeck().isEmpty()) {
                     throw new EndGameException("No more assistants");
-                }
-                if (bag.getStudents().isEmpty()){
-                    throw new EndGameException("No more students in the bag");
                 }
             }
             notify(new ReducedModelMessage(clientState, this.createReducedModel()));
@@ -781,4 +780,23 @@ public class Table extends Observable<ResponseMessage> {
         }
     }
 
+    /**
+     * checks if the match is in the last round (to avoid choosing a new cloud)
+     * @return if match is in the last round
+     */
+    public boolean isLastRound() {
+        return lastRound;
+    }
+
+    /**
+     * manages the last round (if there aren't enough students in the bag)
+     */
+    public void lastRound(){
+        this.nextPlayer();
+        if (this.turnManager.getCurrentPhase() == RoundPhases.ACTION) {
+            notify(new ReducedModelMessage(ClientState.MOVE_STUDENTS, this.createReducedModel()));
+        } else {
+            this.endGame();
+        }
+    }
 }

@@ -16,8 +16,6 @@ public class PayCharacter7Message implements RequestMessage, ControllerExecuteEx
     private final List<Integer>  cardStudents;
     private final List<Integer>  entranceStudents;
 
-    //TODO: implementare sulla view un metodo che verifichi che le due liste siano della stessa lunghezza
-    // e che non si ripetano gli indici della stessa lista
     /**
      * builds pay character 7 message
      * @param cardStudents card student IDs

@@ -73,6 +73,15 @@ public class ReducedModelExpertMode extends ReducedModel implements Serializable
     }
 
     /**
+     * gets a specific character by its ID
+     * @param character character ID
+     * @return reduced character
+     */
+    public ReducedCharacter getCharacterById(int character){
+        return characters.stream().filter(c -> c.getId() == character).findFirst().orElse(null);
+    }
+
+    /**
      * check if a player has already played a character
      * @return if a player has already played a character
      */

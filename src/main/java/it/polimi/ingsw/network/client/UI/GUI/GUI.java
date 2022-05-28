@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client.UI.GUI;
 
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.UI.UI;
+import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
 
@@ -29,4 +30,8 @@ public class GUI implements UI {
         }
     }
 
+    @Override
+    public void showModel(ReducedModel reducedModel) {
+        //TODO: metterci la roba di lucrezia
+    }
 }

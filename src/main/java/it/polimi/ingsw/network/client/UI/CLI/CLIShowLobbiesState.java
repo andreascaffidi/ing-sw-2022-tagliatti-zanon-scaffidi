@@ -10,21 +10,30 @@ import it.polimi.ingsw.network.server.Lobby;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * CLI show lobbies state class
+ */
 public class CLIShowLobbiesState extends AbstractClientState{
-    private Client client;
-    private Scanner in;
-    private List<Lobby> availableLobbies;
+    private final Client client;
+    private final Scanner in;
     private String selectedHost;
     private Lobby selectedLobby;
 
+    /**
+     * builds a CLI show lobbies state class
+     * @param client client
+     */
     public CLIShowLobbiesState(Client client){
         this.client = client;
         in = new Scanner(System.in);
     }
 
+    /**
+     * displays show lobbies state on command line
+     */
     @Override
     public void render(){
-        this.availableLobbies = client.getAvailableLobbies();
+        List<Lobby> availableLobbies = client.getAvailableLobbies();
         System.out.println("Select the lobby to join by typing the username of the host:\n\n");
         for (Lobby l : availableLobbies){
             System.out.println(l.getHost() + " :    " + l.getGameMode() + " MODE  " +
@@ -77,6 +86,10 @@ public class CLIShowLobbiesState extends AbstractClientState{
         }
     }
 
+    /**
+     * manages server error on command line
+     * @param message error message
+     */
     @Override
     public void serverError(String message) {
         System.out.println(message);

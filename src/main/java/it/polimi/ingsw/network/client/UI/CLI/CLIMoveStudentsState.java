@@ -8,26 +8,37 @@ import it.polimi.ingsw.network.requests.gameMessages.MoveStudentMessage;
 
 import java.util.*;
 
+/**
+ * CLI move students state class
+ */
 public class CLIMoveStudentsState extends AbstractClientState {
     private final Client client;
     private final Scanner in;
+    private int choices;
 
+    /**
+     * builds a CLI move students state class and print the main information
+     * @param client client
+     */
     public CLIMoveStudentsState(Client client){
         this.client = client;
         in = new Scanner(System.in);
-    }
 
-    @Override
-    public void render(){
-        CLI.showModel(client.getReducedModel());
-        int choices = client.getReducedModel().getBoards().size() == 3 ? 4 : 3;
+        client.getUI().showModel(client.getReducedModel());
+        choices = client.getReducedModel().getBoards().size() == 3 ? 4 : 3;
         System.out.println("It's your turn! Choose " + choices +" students from your entrance and move them" +
                 " to an Island or your Dining room");
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
             System.out.println("Or you can even pay a character card from the available, by typing " +
                     "PAY CHARACTER (you can pay a character card only one time per round)");
         }
+    }
 
+    /**
+     * displays move students state on command line
+     */
+    @Override
+    public void render(){
         Map<Integer, String> movementsChosen = new HashMap<>();
 
         boolean payCharacter = false;
@@ -36,7 +47,6 @@ public class CLIMoveStudentsState extends AbstractClientState {
         for (int i = 1; i < client.getReducedModel().getBoards().get(0).getEntranceStudents().size()+1; i++){
             studentsAvailable.add(i);
         }
-
 
         while (choices > 0)
         {
@@ -119,6 +129,10 @@ public class CLIMoveStudentsState extends AbstractClientState {
         }
     }
 
+    /**
+     * manages server error on command line
+     * @param message error message
+     */
     @Override
     public void serverError(String message) {
         System.out.println(message);

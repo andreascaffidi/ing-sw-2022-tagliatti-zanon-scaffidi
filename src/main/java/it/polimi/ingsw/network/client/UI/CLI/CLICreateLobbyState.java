@@ -6,18 +6,27 @@ import it.polimi.ingsw.network.requests.setupMessages.CreateLobbyMessage;
 
 import java.util.Scanner;
 
+/**
+ * CLI create lobby state class
+ */
 public class CLICreateLobbyState extends AbstractClientState {
-    private Client client;
-    private Scanner in;
+    private final Client client;
+    private final Scanner in;
     private String gameMode;
-    private String host;
     private int numOfPlayers;
 
+    /**
+     * builds a CLI create lobby state class
+     * @param client client
+     */
     public CLICreateLobbyState(Client client){
         this.client = client;
         in = new Scanner(System.in);
     }
 
+    /**
+     * displays create lobby state on command line
+     */
     @Override
     public void render(){
         System.out.print("Insert the game mode by typing: NORMAL or EXPERT ");
@@ -50,7 +59,7 @@ public class CLICreateLobbyState extends AbstractClientState {
             }
         }
 
-        host = client.getUsername();
+        String host = client.getUsername();
         client.send(new CreateLobbyMessage(host, gameMode, numOfPlayers));
     }
 

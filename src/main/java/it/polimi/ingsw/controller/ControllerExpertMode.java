@@ -147,7 +147,7 @@ public class ControllerExpertMode extends Controller{
         try {
             table.validCharacter(message.getCharacter());
             table.validAdditionalMovement(message.getAdditionalMovement());
-            table.moveMotherNature(message.getAdditionalMovement());
+            table.setCurrentEffect(new AdditionalMovementEffect(message.getAdditionalMovement()));
             pay(message.getCharacter());
             table.notify(new CharacterPayedMessage(table.createReducedModel(), message.getCharacter()));
         }catch(GameException e)
@@ -270,10 +270,11 @@ public class ControllerExpertMode extends Controller{
         try {
             //verify all validity
             table.validCharacter(message.getCharacter());
+
+            table.getCurrentPlayer().getSchoolBoard().getDiningRoom().validColors(message.getDiningStudents());
             for (int i = 0; i < message.getDiningStudents().size(); i++) {
                 table.getCurrentPlayer().getSchoolBoard().getEntrance().validStudentIndex(message.getEntranceStudents().get(i)-1);
             }
-            table.getCurrentPlayer().getSchoolBoard().getDiningRoom().validColors(message.getDiningStudents());
 
             List<Student> entranceStudents = new ArrayList<>();
             List<Student> diningStudents = new ArrayList<>();

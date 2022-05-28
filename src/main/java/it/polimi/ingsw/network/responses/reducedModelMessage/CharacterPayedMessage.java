@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network.responses.reducedModelMessage;
 
 import it.polimi.ingsw.network.client.Client;
-import it.polimi.ingsw.network.client.UI.CLI.CLI;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.responses.ClientExecute;
@@ -21,10 +20,10 @@ public class CharacterPayedMessage  implements ResponseMessage, ClientExecute {
         client.setReducedModel(reducedModel);
         if(!reducedModel.getCurrentPlayer().equals(client.getUsername()))
         {
-            System.out.println(reducedModel.getCurrentPlayer() + " has payed " + character + " card ");
-            CLI.showModel(reducedModel);
+            client.getUI().showModel(reducedModel);
             client.changeState(ClientState.WAITING);
-            client.setWaitingMessage("It's " + reducedModel.getCurrentPlayer() + " turn, waiting for yours...");
+            client.setWaitingMessage(reducedModel.getCurrentPlayer() + "has payed " + character + " card.\n"
+                    + "It's " + reducedModel.getCurrentPlayer() + " turn, waiting for yours...");
         }else {
             System.out.println("You have correctly payed " + character + " card");
             client.changeState(client.getBackState());

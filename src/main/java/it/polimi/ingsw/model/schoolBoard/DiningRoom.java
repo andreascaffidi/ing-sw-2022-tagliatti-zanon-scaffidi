@@ -80,6 +80,9 @@ public class DiningRoom {
      * @throws GameException invalid chosen colors
      */
     public void validColors(List<ColorS> colors) throws GameException {
+        if (colors == null){
+            throw new GameException("You don't have students in your dining room, so you can't play this card");
+        }
         int minStudent = 1;
         if (colors.size() == 2 && colors.get(0) == colors.get(1)){
             minStudent = 2;

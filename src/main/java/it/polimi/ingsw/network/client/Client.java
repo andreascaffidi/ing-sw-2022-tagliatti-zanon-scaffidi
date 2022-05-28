@@ -148,4 +148,8 @@ public class Client {
     public void disconnectClient(){
         this.active = false;
     }
+
+    public UI getUI() {
+        return ui;
+    }
 }
