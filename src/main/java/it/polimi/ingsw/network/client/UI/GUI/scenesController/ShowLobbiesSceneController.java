@@ -1,5 +1,7 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
+import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
+import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 import it.polimi.ingsw.network.server.Lobby;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,12 +33,24 @@ public class ShowLobbiesSceneController extends AbstractSceneController {
             lobbies.add(l.getHost() + ": " + l.getGameMode() + " MODE " + l.getNumOfConnection() + "/" + l.getNumOfPlayers());
         }
         myChoiceBox.getItems().addAll(lobbies);
-
     }
 
     public void enter(ActionEvent event)
     {
-        //TODO: da qua iniziano le cose complicate
+        String chosenLobby = myChoiceBox.getValue();
+        String definitiveLobby = null;
+
+        List<Lobby> availableLobbies = client.getAvailableLobbies();
+
+        String prova;
+        for(Lobby l: availableLobbies) {
+            prova = l.getHost() + ": " + l.getGameMode() + " MODE " + l.getNumOfConnection() + "/" + l.getNumOfPlayers();
+            if(prova.equals(chosenLobby))
+            {
+                definitiveLobby = l.getHost();
+            }
+        }
+        client.send(new SetupRequestMessage(SetupResponsesTypes.JOIN_LOBBY, definitiveLobby));
     }
 
 }

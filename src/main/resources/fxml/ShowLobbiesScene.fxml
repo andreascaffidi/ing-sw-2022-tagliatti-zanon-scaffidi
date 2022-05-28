@@ -20,7 +20,7 @@
             <Font name="Gigi" size="64.0" />
          </font>
       </Text>
-      <Button fx:id="Enter" layoutX="840.0" layoutY="430.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Enter">
+      <Button fx:id="Enter" layoutX="840.0" layoutY="430.0" mnemonicParsing="false" onAction="#enter" prefHeight="50.0" prefWidth="100.0" text="Enter">
          <font>
             <Font size="18.0" />
          </font>
