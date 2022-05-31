@@ -85,7 +85,7 @@ public class Connection extends Observable<ControllerMessage> implements Runnabl
             case USERNAME:
                 String username = message.getMessage();
                 if(!server.validUsername(username, this)){
-                    send(new ServerErrorMessage("This nickname already exists, try another one: "));
+                    send(new ServerErrorMessage("This username already exists, try another one: "));
                 }else {
                     this.usernameConnection = username;
                     send(new SetupResponseMessage(ClientState.MENU));
