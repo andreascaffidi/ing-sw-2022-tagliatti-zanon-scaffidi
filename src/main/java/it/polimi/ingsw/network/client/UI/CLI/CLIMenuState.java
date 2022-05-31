@@ -11,7 +11,7 @@ public class CLIMenuState extends AbstractClientState {
     private Client client;
     private Scanner in;
     private String command;
-
+    private final String CTA = "Create or join a lobby by typing "+Ansi.colorize("CREATE",Ansi.UNDERLINE)+" or "+Ansi.colorize("JOIN",Ansi.UNDERLINE)+": "+Ansi.TYPING_ICON+" ";
     public CLIMenuState(Client client){
         this.client = client;
         in = new Scanner(System.in);
@@ -19,10 +19,11 @@ public class CLIMenuState extends AbstractClientState {
 
     @Override
     public void render(){
-        System.out.print("Create or join a lobby by typing: CREATE or JOIN ");
         boolean valid = false;
         while (!valid){
-            String input = in.nextLine().toUpperCase();
+            System.out.print(CTA);
+            String rawInput = in.nextLine();
+            String input = rawInput.toUpperCase();
             if (input.equals("JOIN")){
                 command = input;
                 valid = true;
@@ -30,7 +31,7 @@ public class CLIMenuState extends AbstractClientState {
                 command = input;
                 valid = true;
             }else{
-               CLI.error("Unknown command, please type: CREATE or JOIN ");
+               CLI.error("["+rawInput+"] is not a valid command\n");
             }
         }
         client.send(new SetupRequestMessage(SetupResponsesTypes.COMMAND, command));

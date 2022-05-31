@@ -77,6 +77,10 @@ public final class Ansi {
         public static final Ansi BgCyan = new Ansi(BACKGROUND_CYAN);
         public static final Ansi BgWhite = new Ansi(BACKGROUND_WHITE);
 
+        public static final String TYPING_ICON = "➡️";
+        public static final String ERROR_ICON = "❌️";
+
+
         private String[] codes;
         private static String codes_str;
 

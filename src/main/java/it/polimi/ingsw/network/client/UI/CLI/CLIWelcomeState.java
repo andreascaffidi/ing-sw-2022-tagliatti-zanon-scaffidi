@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class CLIWelcomeState extends AbstractClientState {
     private final Scanner in;
-
+    private final String CTA = "Insert a username: "+Ansi.TYPING_ICON+" ";
     /**
      * builds a CLI welcome state class
      * @param client client
@@ -29,7 +29,7 @@ public class CLIWelcomeState extends AbstractClientState {
     public void render(){
         System.out.println("\n\t\t\t\t\t\t\t"+Ansi.colorize("W E L C O M E   T O",Ansi.UNDERLINE));
         CLI.showLogo();
-        System.out.print("Insert a username: ");
+        System.out.print(CTA);
         this.askUsername();
     }
 
@@ -52,7 +52,8 @@ public class CLIWelcomeState extends AbstractClientState {
         while(!valid){
             username = in.nextLine();
             if (username.contains(" ") || username.length() == 0){
-                System.out.println("Username not permitted (avoid white spaces)");
+                CLI.error("Username not permitted (avoid white spaces)\n");
+                System.out.print(CTA);
             }else {
                 valid = true;
             }
