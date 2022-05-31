@@ -5,8 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class purpose is to test all methods of the MotherNature class
+ */
 class MotherNatureTest {
 
+    /**
+     * Tests that the island associated is setted (and so getted) correctly;
+     */
     @Test
     void setAndGetIsland() {
         int id1 = 0, id2 = 0;

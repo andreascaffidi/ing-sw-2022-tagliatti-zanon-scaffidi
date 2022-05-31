@@ -11,11 +11,19 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class purpose is to test all methods of the Bag class
+ */
 class BagTest {
 
     private Bag bag;
     private List<Student> students;
 
+    /**
+     *  Initialises a new bag and a new arraylist of students with 3 different students into it.
+     *  <br>
+     *  <u>It's called before each test</u>
+     */
     @BeforeEach
     void init() {
         bag = new Bag();
@@ -25,17 +33,33 @@ class BagTest {
         students.add(new Student(ColorS.PINK));
     }
 
+    /**
+     * Sets to null every attribute
+     * <br>
+     * <u>It's called after each test</u>
+     */
     @AfterEach
     void tearDown() {
         this.bag = null;
         this.students = null;
     }
 
+    /**
+     * Tests if it returns all the students
+     *  <u>This method is implicitly tested by other tests</u>
+     */
     @Test
     void getStudents() {
         assertTrue(true, "tested in other methods");
     }
 
+    /**
+     * Tests if a student is added correctly into the bag
+     *  <ol>
+     *      <li>Add a student into the bag</li>
+     *      <li>Verifies the student is in the bag</li>
+     *  </ol>
+     */
     @Test
     void addStudent() {
         for (Student s : students){
@@ -44,6 +68,13 @@ class BagTest {
         }
     }
 
+    /**
+     * Tests if students are added correctly into the bag
+     *  <ol>
+     *      <li>Adds some students into the bag</li>
+     *      <li>Verifies if all students are in the bag</li>
+     *  </ol>
+     */
     @Test
     void addStudents() {
         bag.addStudents(students);
@@ -52,7 +83,14 @@ class BagTest {
         }
     }
 
-
+    /**
+     * Tests if a student is drawn correctly:
+     * <ol>
+     *     <li>Adds some students to the bag</li>
+     *     <li>Draws a student</li>
+     *     <li>Verifies that the student is no more in the bag</li>
+     * </ol>
+     */
     @Test
     void drawStudent() {
         bag.addStudents(students);

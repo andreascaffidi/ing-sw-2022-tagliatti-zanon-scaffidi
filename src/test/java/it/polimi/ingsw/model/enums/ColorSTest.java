@@ -6,8 +6,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class purpose is to Students color enum
+ */
 class ColorSTest {
 
+    /**
+     * Test if a string is correctly parsed to its respective color
+     * @throws ColorNotFoundException
+     */
     @Test
     void parseToColor() throws ColorNotFoundException {
         assertEquals(ColorS.BLUE, ColorS.parseToColor("blue"));
