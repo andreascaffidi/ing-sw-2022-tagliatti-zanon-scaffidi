@@ -17,10 +17,6 @@ public class GUIMoveStudentsState extends AbstractClientState {
     private final Client client;
     private Parent root;
 
-    private String studentColor;
-    private int islandId;
-    private String destination;
-
     public GUIMoveStudentsState(Client client){
         this.client = client;
     }

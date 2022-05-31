@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
 import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.network.client.reducedModel.ReducedBoard;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModelExpertMode;
 import it.polimi.ingsw.network.requests.gameMessages.MoveStudentMessage;
 import javafx.event.ActionEvent;
@@ -195,10 +196,10 @@ public class MoveStudentsSceneController extends AbstractSceneController {
 
     @FXML
     Button playCharacter3;
-
-    private Map<Integer, String> toSend = new HashMap<>();
     private int bigCount;
     int[] countSchoolBoard = {0, 0, 0, 0, 0};
+
+    private Map<Integer, String> movementsChosen;
 
     @Override
     public void setup()
@@ -208,6 +209,8 @@ public class MoveStudentsSceneController extends AbstractSceneController {
         playCharacter3.setVisible(false);
 
         bigCount = 0;
+
+        movementsChosen = new HashMap<>();
 
         handleCharacters();
         showModel();
@@ -737,11 +740,11 @@ public class MoveStudentsSceneController extends AbstractSceneController {
         }
         for(int i = 0; i < client.getReducedModel().getBoards().get(0).getStudents().get(ColorS.YELLOW) ; i++)
         {
-            player1DiningRoom.add(setStudentsDimension(new ImageView(green)), i, 2);
+            player1DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 2);
         }
         for(int i = 0; i < client.getReducedModel().getBoards().get(0).getStudents().get(ColorS.PINK) ; i++)
         {
-            player1DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 3);
+            player1DiningRoom.add(setStudentsDimension(new ImageView(pink)), i, 3);
         }
         for(int i = 0; i < client.getReducedModel().getBoards().get(0).getStudents().get(ColorS.BLUE) ; i++)
         {
@@ -764,11 +767,11 @@ public class MoveStudentsSceneController extends AbstractSceneController {
         }
         for(int i = 0; i < client.getReducedModel().getBoards().get(1).getStudents().get(ColorS.YELLOW) ; i++)
         {
-            player2DiningRoom.add(setStudentsDimension(new ImageView(green)), i, 2);
+            player2DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 2);
         }
         for(int i = 0; i < client.getReducedModel().getBoards().get(1).getStudents().get(ColorS.PINK) ; i++)
         {
-            player2DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 3);
+            player2DiningRoom.add(setStudentsDimension(new ImageView(pink)), i, 3);
         }
         for(int i = 0; i < client.getReducedModel().getBoards().get(1).getStudents().get(ColorS.BLUE) ; i++)
         {
@@ -789,10 +792,10 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                 player3DiningRoom.add(setStudentsDimension(new ImageView(red)), i, 1);
             }
             for (int i = 0; i < client.getReducedModel().getBoards().get(2).getStudents().get(ColorS.YELLOW); i++) {
-                player3DiningRoom.add(setStudentsDimension(new ImageView(green)), i, 2);
+                player3DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 2);
             }
             for (int i = 0; i < client.getReducedModel().getBoards().get(2).getStudents().get(ColorS.PINK); i++) {
-                player3DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 3);
+                player3DiningRoom.add(setStudentsDimension(new ImageView(pink)), i, 3);
             }
             for (int i = 0; i < client.getReducedModel().getBoards().get(2).getStudents().get(ColorS.BLUE); i++) {
                 player3DiningRoom.add(setStudentsDimension(new ImageView(blue)), i, 4);
@@ -813,10 +816,10 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                 player4DiningRoom.add(setStudentsDimension(new ImageView(red)), i, 1);
             }
             for (int i = 0; i < client.getReducedModel().getBoards().get(3).getStudents().get(ColorS.YELLOW); i++) {
-                player4DiningRoom.add(setStudentsDimension(new ImageView(green)), i, 2);
+                player4DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 2);
             }
             for (int i = 0; i < client.getReducedModel().getBoards().get(3).getStudents().get(ColorS.PINK); i++) {
-                player4DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 3);
+                player4DiningRoom.add(setStudentsDimension(new ImageView(pink)), i, 3);
             }
             for (int i = 0; i < client.getReducedModel().getBoards().get(3).getStudents().get(ColorS.BLUE); i++) {
                 player4DiningRoom.add(setStudentsDimension(new ImageView(blue)), i, 4);
@@ -831,11 +834,11 @@ public class MoveStudentsSceneController extends AbstractSceneController {
 
     public void showProfessorTable()
     {
-        Image blue = new Image(valueOf(getClass().getResource("/img/Plancia/Studenti/student_blue.png")));
-        Image red = new Image(valueOf(getClass().getResource("/img/Plancia/Studenti/student_red.png")));
-        Image yellow = new Image(valueOf(getClass().getResource("/img/Plancia/Studenti/student_yellow.png")));
-        Image pink = new Image(valueOf(getClass().getResource("/img/Plancia/Studenti/student_pink.png")));
-        Image green = new Image(valueOf(getClass().getResource("/img/Plancia/Studenti/student_green.png")));
+        Image blue = new Image(valueOf(getClass().getResource("/img/Plancia/Professori/teacher_blue.png")));
+        Image red = new Image(valueOf(getClass().getResource("/img/Plancia/Professori/teacher_red.png")));
+        Image yellow = new Image(valueOf(getClass().getResource("/img/Plancia/Professori/teacher_yellow.png")));
+        Image pink = new Image(valueOf(getClass().getResource("/img/Plancia/Professori/teacher_pink.png")));
+        Image green = new Image(valueOf(getClass().getResource("/img/Plancia/Professori/teacher_green.png")));
         String color;
 
         //PLAYER1
@@ -1036,9 +1039,9 @@ public class MoveStudentsSceneController extends AbstractSceneController {
             Dragboard db = supp.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
 
-
             content.putImage(supp.getImage());
-            content.putString(color);
+            //content.putString(color);
+            content.putString(valueOf(count));
             db.setContent(content);
             entrance.getChildren().remove(supp);
 
@@ -1060,7 +1063,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                -> {
                     Image img = event.getDragboard().getImage();
                     island.getChildren().add(setStudentsDimension(new ImageView(img)));
-                    checkIsland(event.getDragboard().getString(), id);
+                    checkIsland(parseInt(event.getDragboard().getString()), id);
                     event.consume();
                 });
     }
@@ -1079,7 +1082,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
         diningRoom.setOnDragDropped((DragEvent event)
                 -> {
                     Image img = event.getDragboard().getImage();
-                    String color = event.getDragboard().getString();
+                    /*String color = event.getDragboard().getString();
 
                     ColorS colorS = null;
                     int i = 0;
@@ -1120,69 +1123,96 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                                     client.getReducedModel().getBoards().get(k).getStudents().get(colorS) + countSchoolBoard[i] - 1,
                                     i);
                         }
-                    }
+                    }*/
 
-                    checkDiningRoom(color);
-                    diningRoom.toFront();
+            int index = Integer.parseInt(event.getDragboard().getString());
+            ColorS colorS = null;
+            String color = null;
 
-                    event.consume();
+            for(int k = 0; k < client.getReducedModel().getBoards().size(); k++)
+            {
+                if(client.getReducedModel().getBoards().get(k).getPlayer().equals(client.getReducedModel().getCurrentPlayer()))
+                {
+                    color = client.getReducedModel().getBoards().get(k).getEntranceStudents().get(index).toString().toLowerCase();
+                }
+            }
+
+            int i = 0;
+
+            switch (color) {
+                case "blue":
+                    i =  4;
+                    colorS = ColorS.BLUE;
+                    countSchoolBoard[4] = countSchoolBoard[4] + 1;
+                    break;
+                case "red":
+                    i = 1;
+                    colorS = ColorS.RED;
+                    countSchoolBoard[1] = countSchoolBoard[1] + 1;
+                    break;
+                case "pink":
+                    i = 3;
+                    colorS = ColorS.PINK;
+                    countSchoolBoard[3] = countSchoolBoard[3] + 1;
+                    break;
+                case "yellow":
+                    i = 2;
+                    colorS = ColorS.YELLOW;
+                    countSchoolBoard[2] = countSchoolBoard[2] + 1;
+                    break;
+                case "green":
+                    i = 0;
+                    colorS = ColorS.GREEN;
+                    countSchoolBoard[0] = countSchoolBoard[0] + 1;
+                    break;
+            }
+
+            for(int k = 0; k < client.getReducedModel().getBoards().size(); k++)
+            {
+                if(client.getReducedModel().getBoards().get(k).getPlayer().equals(client.getReducedModel().getCurrentPlayer()))
+                {
+                    diningRoom.add(setStudentsDimension(new ImageView(img)),
+                            client.getReducedModel().getBoards().get(k).getStudents().get(colorS) + countSchoolBoard[i] - 1,
+                            i);
+                }
+            }
+
+            checkDiningRoom(index);
+            diningRoom.toFront();
+            event.consume();
         });
     }
 
-    public void checkDiningRoom(String color)
+    public void checkDiningRoom(Integer index)
     {
         bigCount = bigCount + 1;
-        int index = 0;
+        String destination = "DINING ROOM";
+        System.out.println(index);
+        movementsChosen.put(index + 1, destination);
+        System.out.println(movementsChosen.get(index));
 
-        for(int k = 0; k < client.getReducedModel().getBoards().size(); k++)
-        {
-            if(client.getReducedModel().getBoards().get(k).getPlayer().equals(client.getReducedModel().getCurrentPlayer()))
-            {
-                for(ColorS s : client.getReducedModel().getBoards().get(k).getEntranceStudents())
-                {
-                    if(s.toString().equals(color))
-                    {
-                        index = k;
-                        break;
-                    }
-                }
-            }
-        }
-
-        toSend.put(index, "DINING ROOM");
-
-        if(bigCount == 3)
-        {
-            client.send(new MoveStudentMessage(toSend));
-        }
+        check();
     }
 
-    public void checkIsland(String color, int id)
+    public void checkIsland(Integer stud, Integer id)
     {
         bigCount = bigCount + 1;
 
-        int index = 0;
+        System.out.println(stud);
 
-        for(int k = 0; k < client.getReducedModel().getBoards().size(); k++)
-        {
-            if(client.getReducedModel().getBoards().get(k).getPlayer().equals(client.getReducedModel().getCurrentPlayer()))
-            {
-                for(ColorS s : client.getReducedModel().getBoards().get(k).getEntranceStudents())
-                {
-                    if(s.toString().equals(color))
-                    {
-                        index = k;
-                        break;
-                    }
-                }
-            }
-        }
+        movementsChosen.put(stud + 1, valueOf(id));
+        System.out.println(movementsChosen.get(stud));
 
-        toSend.put(index, valueOf(id));
+        check();
+    }
 
+    public void check()
+    {
         if(bigCount == 3)
         {
-            client.send(new MoveStudentMessage(toSend));
+            System.out.println("sto dentro");
+            System.out.println(movementsChosen);
+            client.send(new MoveStudentMessage(movementsChosen));
         }
     }
 
