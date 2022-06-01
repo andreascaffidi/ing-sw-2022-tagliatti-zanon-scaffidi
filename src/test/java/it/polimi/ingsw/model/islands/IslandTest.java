@@ -17,11 +17,19 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class purpose is to test all methods of the Island class
+ */
 class IslandTest {
     Island island;
     int randomId;
     private List<Student> students;
 
+    /**
+     *  Initialises a new random Island and adds in it a random amount of students
+     *  <br>
+     *  <u>It's called before each test</u>
+     */
     @BeforeEach
     void init() {
         this.randomId = new Random().nextInt(12);
@@ -39,22 +47,38 @@ class IslandTest {
         }
     }
 
+    /**
+     * Sets to null every attribute
+     * <br>
+     * <u>It's called after each test</u>
+     */
     @AfterEach
     void tearDown() {
-
+        this.island = null;
+        this.randomId = 0;
+        this.students = null;
     }
 
+    /**
+     * Tests if it returns the id setted during initialization
+     */
     @Test
     void getId() {
         assertEquals(randomId,this.island.getId());
     }
 
+    /**
+     * Tests if a students is added to the island
+     */
     @Test
     void addStudent() {
         this.island.addStudent(students.get(0));
         assertTrue(island.getStudents().contains(students.get(0)));
     }
 
+    /**
+     * Tests if an arraylist of students are added to the island
+     */
     @Test
     void addStudents() {
         this.island.addStudents(students);
@@ -67,7 +91,9 @@ class IslandTest {
     }
 
 
-
+    /**
+     * Tests if it returns the number of students given a color
+     */
     @Test
     void numStudent() {
         this.island.addStudents(students);
@@ -80,6 +106,9 @@ class IslandTest {
         assertEquals(numOfColor,island.numStudent(randColor));
     }
 
+    /**
+     * Tests if mother nature is setted
+     */
     @Test
     void setMotherNature() {
         MotherNature motherNature = new MotherNature(island);
@@ -87,6 +116,9 @@ class IslandTest {
         assertTrue(island.isMotherNature());
     }
 
+    /**
+     * Tests if mother nature is on the island
+     */
     @Test
     void isMotherNature() {
         MotherNature motherNature = new MotherNature(island);
@@ -95,6 +127,9 @@ class IslandTest {
     }
 
 
+    /**
+     * Tests if every student added is then returned
+     */
     @Test
     void getStudents() {
         this.island.addStudents(students);
@@ -106,6 +141,9 @@ class IslandTest {
         }
     }
 
+    /**
+     * Tests that a tower is setted (and so getted) correctly;
+     */
     @Test
     void setTower() {
         Player player = new Player("Test");
@@ -114,6 +152,9 @@ class IslandTest {
         assertEquals(tower,island.getTower());
     }
 
+    /**
+     * Tests that the username is setted (and so getted) correctly;
+     */
     @Test
     void getTower() {
         Player player = new Player("Test");
@@ -122,13 +163,19 @@ class IslandTest {
         assertEquals(tower,island.getTower());
     }
 
-
+    /**
+     * Tests that the number of towers on the island is setted (and so getted) correctly;
+     */
     @Test
     void setNumOfTowers() {
         //I use randomId because is a random int from 0 to 12
         island.setNumOfTowers(randomId);
         assertEquals(randomId,island.getNumOfTowers());
     }
+
+    /**
+     * Tests that the number of towers on the island is setted (and so getted) correctly;
+     */
     @Test
     void getNumOfTowers() {
         //I use randomId because is a random int from 0 to 12
@@ -136,7 +183,9 @@ class IslandTest {
         assertEquals(randomId,island.getNumOfTowers());
     }
 
-
+    /**
+     * Tests that the id of the island is changed;
+     */
     @Test
     void changeId() {
         int decrement = 1;

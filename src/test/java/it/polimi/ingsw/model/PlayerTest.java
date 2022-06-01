@@ -15,6 +15,11 @@ class PlayerTest {
     private Player player;
     private List<Assistant> deck;
 
+    /**
+     *  Initialises a new player with deck of 3 assistant cards
+     *  <br>
+     *  <u>It's called before each test</u>
+     */
     @BeforeEach
     void init() {
         Assistant a1 = new Assistant(1,2, Wizards.WIZARD_1);
@@ -26,37 +31,65 @@ class PlayerTest {
         player.getAssistantDeck().addAll(deck);
     }
 
+    /**
+     * Sets to null every attribute
+     * <br>
+     * <u>It's called after each test</u>
+     */
     @AfterEach
     void tearDown() {
         player = null;
         deck = null;
     }
 
+    /**
+     * Tests that the username is setted (and so getted) correctly;
+     */
     @Test
     void getUsername() {
         assertEquals("nickname", player.getUsername());
     }
 
+    /**
+     * Tests that the deck of assistant cards setted on initialization is the one returned;
+     */
     @Test
     void getAssistantDeck() {
         assertEquals(deck, player.getAssistantDeck());
     }
 
+    /**
+     * Tests if it returns the schoolboard
+     * <br>
+     *  <u>This method is implicitly tested by other tests</u>
+     */
     @Test
     void getSchoolBoard() {
         assertTrue(true, "tested in other methods");
     }
 
+    /**
+     * Tests if it returns the discard pile of assistant cards
+     *
+     */
     @Test
     void getDiscardPile() {
         assertEquals(new ArrayList<Assistant>(), player.getDiscardPile());
     }
 
+    /**
+     * Tests if it returns the correct team
+     */
     @Test
     void getTagTeam() {
         assertEquals(1, player.getTagTeam());
     }
 
+    /**
+     * Tests that 2 player object with different usernames
+     * are recognized as 2 different player and that 2 player object
+     * with the same username are recognized as the same player
+     */
     @Test
     void testEquals() {
         Player player2 = new Player("nickname");
@@ -67,11 +100,18 @@ class PlayerTest {
         assertFalse(player3.equals(new Object()));
     }
 
+    /**
+     * Tests that the tower color is setted (and so getted) correctly;
+     */
     @Test
     void setAndGetTowerColor() {
         assertEquals(ColorT.BLACK, player.getTowerColor());
     }
 
+    /**
+     * Tests if a card is removed from the assistant deck and added to the assistant discard pile
+     *
+     */
     @Test
     void addToDiscardPile(){
         Assistant assistant = deck.get(0);

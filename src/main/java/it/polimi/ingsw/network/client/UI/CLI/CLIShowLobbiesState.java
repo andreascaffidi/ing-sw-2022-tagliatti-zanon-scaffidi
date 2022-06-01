@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 import it.polimi.ingsw.network.server.Lobby;
 
+import javax.swing.text.Style;
 import java.util.List;
 import java.util.Scanner;
 
@@ -42,6 +43,7 @@ public class CLIShowLobbiesState extends AbstractClientState{
 
         boolean valid = false;
         while (!valid){
+            System.out.print("Insert the selected host: "+Ansi.TYPING_ICON+" ");
             String input = in.nextLine();
             for (Lobby l : availableLobbies){
                 if (input.equalsIgnoreCase(l.getHost())) {
@@ -52,7 +54,7 @@ public class CLIShowLobbiesState extends AbstractClientState{
                 }
             }
             if (!valid){
-                System.out.println("Invalid host ");
+                CLI.error("Invalid host \n");
             }
         }
 

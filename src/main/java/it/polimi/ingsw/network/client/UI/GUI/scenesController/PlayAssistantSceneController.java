@@ -878,11 +878,11 @@ public class PlayAssistantSceneController extends AbstractSceneController {
         }
         for(int i = 0; i < client.getReducedModel().getBoards().get(0).getStudents().get(ColorS.YELLOW) ; i++)
         {
-            player1DiningRoom.add(setStudentsDimension(new ImageView(green)), i, 2);
+            player1DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 2);
         }
         for(int i = 0; i < client.getReducedModel().getBoards().get(0).getStudents().get(ColorS.PINK) ; i++)
         {
-            player1DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 3);
+            player1DiningRoom.add(setStudentsDimension(new ImageView(pink)), i, 3);
         }
         for(int i = 0; i < client.getReducedModel().getBoards().get(0).getStudents().get(ColorS.BLUE) ; i++)
         {
@@ -901,11 +901,11 @@ public class PlayAssistantSceneController extends AbstractSceneController {
         }
         for(int i = 0; i < client.getReducedModel().getBoards().get(1).getStudents().get(ColorS.YELLOW) ; i++)
         {
-            player2DiningRoom.add(setStudentsDimension(new ImageView(green)), i, 2);
+            player2DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 2);
         }
         for(int i = 0; i < client.getReducedModel().getBoards().get(1).getStudents().get(ColorS.PINK) ; i++)
         {
-            player2DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 3);
+            player2DiningRoom.add(setStudentsDimension(new ImageView(pink)), i, 3);
         }
         for(int i = 0; i < client.getReducedModel().getBoards().get(1).getStudents().get(ColorS.BLUE) ; i++)
         {
@@ -922,10 +922,10 @@ public class PlayAssistantSceneController extends AbstractSceneController {
                 player3DiningRoom.add(setStudentsDimension(new ImageView(red)), i, 1);
             }
             for (int i = 0; i < client.getReducedModel().getBoards().get(2).getStudents().get(ColorS.YELLOW); i++) {
-                player3DiningRoom.add(setStudentsDimension(new ImageView(green)), i, 2);
+                player3DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 2);
             }
             for (int i = 0; i < client.getReducedModel().getBoards().get(2).getStudents().get(ColorS.PINK); i++) {
-                player3DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 3);
+                player3DiningRoom.add(setStudentsDimension(new ImageView(pink)), i, 3);
             }
             for (int i = 0; i < client.getReducedModel().getBoards().get(2).getStudents().get(ColorS.BLUE); i++) {
                 player3DiningRoom.add(setStudentsDimension(new ImageView(blue)), i, 4);
@@ -942,10 +942,10 @@ public class PlayAssistantSceneController extends AbstractSceneController {
                 player4DiningRoom.add(setStudentsDimension(new ImageView(red)), i, 1);
             }
             for (int i = 0; i < client.getReducedModel().getBoards().get(3).getStudents().get(ColorS.YELLOW); i++) {
-                player4DiningRoom.add(setStudentsDimension(new ImageView(green)), i, 2);
+                player4DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 2);
             }
             for (int i = 0; i < client.getReducedModel().getBoards().get(3).getStudents().get(ColorS.PINK); i++) {
-                player4DiningRoom.add(setStudentsDimension(new ImageView(yellow)), i, 3);
+                player4DiningRoom.add(setStudentsDimension(new ImageView(pink)), i, 3);
             }
             for (int i = 0; i < client.getReducedModel().getBoards().get(3).getStudents().get(ColorS.BLUE); i++) {
                 player4DiningRoom.add(setStudentsDimension(new ImageView(blue)), i, 4);
@@ -956,11 +956,11 @@ public class PlayAssistantSceneController extends AbstractSceneController {
 
     public void showProfessorTable()
     {
-        Image blue = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_blue.png")));
-        Image red = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_red.png")));
-        Image yellow = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_yellow.png")));
-        Image pink = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_pink.png")));
-        Image green = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_green.png")));
+        Image blue = new Image(String.valueOf(getClass().getResource("/img/Plancia/Professori/teacher_blue.png")));
+        Image red = new Image(String.valueOf(getClass().getResource("/img/Plancia/Professori/teacher_red.png")));
+        Image yellow = new Image(String.valueOf(getClass().getResource("/img/Plancia/Professori/teacher_yellow.png")));
+        Image pink = new Image(String.valueOf(getClass().getResource("/img/Plancia/Professori/teacher_pink.png")));
+        Image green = new Image(String.valueOf(getClass().getResource("/img/Plancia/Professori/teacher_green.png")));
         String color;
 
         //PLAYER1

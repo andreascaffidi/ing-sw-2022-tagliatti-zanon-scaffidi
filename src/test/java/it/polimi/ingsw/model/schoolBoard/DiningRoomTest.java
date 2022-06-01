@@ -12,6 +12,9 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class purpose is to test all methods of the DiningRoom class
+ */
 class DiningRoomTest {
 
     private DiningRoom diningRoom;
@@ -21,6 +24,11 @@ class DiningRoomTest {
     private List<Student> greenStudents;
     private List<Student> pinkStudents;
 
+    /**
+     *  Initialises and populates a  series of arraylists of the same color
+     *  <br>
+     *  <u>It's called before each test</u>
+     */
     @BeforeEach
     void init(){
         diningRoom = new DiningRoom();
@@ -37,11 +45,17 @@ class DiningRoomTest {
         greenStudents.add(new Student(ColorS.GREEN));
     }
 
+    /**
+     * Tests that an exception is thrown if is passed a non valid color
+     */
     @Test
     void getLine() {
         Exception e = assertThrows(RuntimeException.class,()-> diningRoom.getLine(null));
     }
 
+    /**
+     * Add some series of students by color and verifies that are returned correctly
+     */
     @Test
     void addStudent() {
         for (Student s : blueStudents){
@@ -63,6 +77,10 @@ class DiningRoomTest {
         assertEquals(pinkStudents, diningRoom.getLine(ColorS.PINK));
     }
 
+    /**
+     * Adds a fixed amount of a fixed color of student and tests that is returned the correct number
+     * of students for each color
+     */
     @Test
     void getNumberOfStudentsPerColor() {
         for (Student s : blueStudents){
@@ -75,6 +93,9 @@ class DiningRoomTest {
         assertEquals(1, diningRoom.getNumberOfStudentsPerColor(ColorS.RED));
     }
 
+    /**
+     * Tests if a students is removed
+     */
     @Test
     void removeStudentByColor() {
         for (Student s : yellowStudents) {
@@ -83,6 +104,7 @@ class DiningRoomTest {
         diningRoom.removeStudent(ColorS.YELLOW);
         assertFalse(diningRoom.getLine(ColorS.YELLOW).contains(yellowStudents.get(yellowStudents.size()-1)));
     }
+
 
     @Test
     void validColors() throws GameException, ColorNotFoundException {
@@ -104,6 +126,11 @@ class DiningRoomTest {
         diningRoom.validColors(colors);
     }
 
+    /**
+     * Sets to null every attribute
+     * <br>
+     * <u>It's called after each test</u>
+     */
     @AfterEach
     void tearDown(){
         diningRoom = null;
