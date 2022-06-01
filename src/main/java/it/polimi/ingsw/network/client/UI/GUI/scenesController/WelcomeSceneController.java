@@ -4,9 +4,10 @@ import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.event.ActionEvent;
 
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 /**
  * welcome scene controller
@@ -20,11 +21,19 @@ public class WelcomeSceneController extends AbstractSceneController {
     public Button loginButton;
     @FXML
     public TextField NickNameTextField;
+    @FXML
+    public Text alertMessage;
+    @FXML
+    public TextFlow alert;
 
-    public void login(ActionEvent event){
+    public void login(){
         String username = NickNameTextField.getText();
         client.setUsername(username);
         client.send(new SetupRequestMessage(SetupResponsesTypes.USERNAME, username));
     }
 
+    public void alert(String message){
+        alertMessage.setText(message);
+        alert.setVisible(true);
+    }
 }

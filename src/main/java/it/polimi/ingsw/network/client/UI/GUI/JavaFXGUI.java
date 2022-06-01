@@ -70,20 +70,12 @@ public class JavaFXGUI extends Application {
         mainPane.getChildren().add(pane);
     }
 
-    public static Pane getMainPane() {
-        return mainPane;
-    }
-
     public static void setOverlayPane(Pane pane){
         overlayPane.getChildren().clear();
         overlayPane.getChildren().add(pane);
     }
 
-    public static Pane getOverlayPane() {
-        return overlayPane;
-    }
-
-    public static Scene getPrimaryScene(){
+    public static void waitForStartingGUI(){
         synchronized(lock){
             while (!initialized) {
                 try {
@@ -92,25 +84,12 @@ public class JavaFXGUI extends Application {
                     Thread.currentThread().interrupt();
                 }
             }
-            return primaryScene;
-        }
-    }
-
-    public static Stage getPrimaryStage(){
-        synchronized(lock){
-            while (!initialized) {
-                try {
-                    lock.wait();
-                } catch (InterruptedException e){
-                    Thread.currentThread().interrupt();
-                }
-            }
-            return primaryStage;
         }
     }
 
     @Override
     public void stop() throws Exception {
         super.stop();
+        //TODO: disconnect client
     }
 }

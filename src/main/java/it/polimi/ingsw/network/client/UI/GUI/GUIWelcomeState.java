@@ -13,8 +13,7 @@ import java.net.URL;
 
 public class GUIWelcomeState extends AbstractClientState {
 
-    private Parent root;
-    private final Client client;
+    private WelcomeSceneController welcomeSceneController;
 
     public GUIWelcomeState(Client client){
         this.client = client;
@@ -22,12 +21,12 @@ public class GUIWelcomeState extends AbstractClientState {
 
     @Override
     public void render() {
-        JavaFXGUI.getPrimaryScene();
+        JavaFXGUI.waitForStartingGUI();
         URL url = getClass().getResource("/fxml/WelcomeScene.fxml");
         FXMLLoader loader = new FXMLLoader(url);
         try {
-            root = loader.load();
-            WelcomeSceneController welcomeSceneController = loader.getController();
+            Parent root = loader.load();
+            welcomeSceneController = loader.getController();
             welcomeSceneController.setClient(client);
             Platform.runLater(() ->JavaFXGUI.setMainPane((Pane)root));
         } catch (IOException e){
@@ -37,6 +36,6 @@ public class GUIWelcomeState extends AbstractClientState {
 
     @Override
     public void serverError(String message) {
-        //TODO: capire come gestire alert di errore
+        welcomeSceneController.alert(message);
     }
 }
