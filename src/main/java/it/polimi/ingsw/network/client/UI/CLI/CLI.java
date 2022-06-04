@@ -103,16 +103,6 @@ public static void showLogo(){
         model += "\n\uD83C\uDFB2 \uD83C\uDFB2 \uD83C\uDFB2 " + Ansi.colorize(" B O A R D S ",Ansi.BACKGROUND_RED,Ansi.BLACK,Ansi.HIGH_INTENSITY)+" \uD83C\uDFB2 \uD83C\uDFB2 \uD83C\uDFB2\n\n";
 
         model += boardsToString(reducedModel.getBoards());
-        /*
-        for(ReducedBoard b : reducedModel.getBoards())
-        {
-            model += boardToString(b);
-            model += assistantDeckToString(b.getAssistantDeck().getAssistantCards());
-            model += "\n";
-        }*/
-
-        //model += "\n\uD83C\uDCCF \uD83C\uDCCF \uD83C\uDCCF " + Ansi.colorize(" A S S I S T A N T   D E C K ",Ansi.BACKGROUND_BLUE,Ansi.BLACK,Ansi.HIGH_INTENSITY)+" \uD83C\uDCCF \uD83C\uDCCF \uD83C\uDCCF\n\n";
-
 
         System.out.println(model);
     }
@@ -145,7 +135,7 @@ public static void showLogo(){
         String[]  islandStrArray = new String[5];
         islandStrArray[0] =  Ansi.colorize("┌─────┬───┬──────┐",Ansi.GREEN);
         islandStrArray[1] =  Ansi.colorize("│",Ansi.GREEN)+" #"
-                +(island.getId() < 10 ? island.getId()+"  " : (island.getId()+1)+" ")+Ansi.colorize("│",Ansi.GREEN)
+                +(island.getId() < 10 ? (island.getId()+1)+"  " : (island.getId()+1)+" ")+Ansi.colorize("│",Ansi.GREEN)
                 + (island.getTower()!=null ? Ansi.colorize(" T ",island.getTower().getAnsiEscapeCode()) : "   ")
                 +Ansi.colorize("│",Ansi.GREEN)+ (island.isMotherNature() ? "  MN  ":"      ")
                 +Ansi.colorize("│",Ansi.GREEN);
@@ -186,18 +176,20 @@ public static void showLogo(){
     }
 
     public static String[] boardToStringArray(ReducedBoard b){
-        String[] boardStrArray = new String[10];
+        String[] boardStrArray = new String[12];
 
         ColorS colors[] = ColorS.values();
 
         boardStrArray[0] ="		 "+Ansi.colorize(" "+b.getPlayer()+" ",Ansi.BACKGROUND_YELLOW,Ansi.BLACK)+"’s BOARD                                    ";
-        boardStrArray[1] ="╔══════╦═════╦═══════════════════════════╦═════╦════════╗";
-        boardStrArray[2] ="║COLOR ║ ENT ║ DINING ROOM               ║ PRO ║ TOWERS ║";
-        boardStrArray[3] ="╠══════╬═════╬═══════════════════════════╬═════╬════════╣";
+        boardStrArray[1] ="╔══════╦═══════════════════════════╦═════╦════════╗";
+        boardStrArray[2] ="║COLOR ║ DINING ROOM               ║ PRO ║ TOWERS ║";
+        boardStrArray[3] ="╠══════╬═══════════════════════════╬═════╬════════╣";
         int index = 4;
         for(ColorS color : colors){
             String colorRow = "";
-            colorRow +="║"+Ansi.colorize(color.toString().toUpperCase(Locale.ROOT)+(String.join("", Collections.nCopies(6-color.toString().length(), " "))),color.getAnsiEscapeCode())+"║  "+b.getEntranceStudents().stream().filter(c-> c == color).count()+"  ║ ";
+            colorRow +="║"+Ansi.colorize(color.toString().toUpperCase(Locale.ROOT)+(String.join("", Collections.nCopies(6-color.toString().length(), " "))),color.getAnsiEscapeCode())+"║ ";
+
+            //colorRow +="║"+Ansi.colorize(color.toString().toUpperCase(Locale.ROOT)+(String.join("", Collections.nCopies(6-color.toString().length(), " "))),color.getAnsiEscapeCode())+"║  "+b.getEntranceStudents().stream().filter(c-> c == color).count()+"  ║ ";
 
             int students = b.getStudents().get(color).intValue();
             for(int i = 0; i<10; i++){
@@ -228,7 +220,14 @@ public static void showLogo(){
             colorRow += "║";
             boardStrArray[index++] = colorRow;
         }
-        boardStrArray[9] ="╚══════╩═════╩═══════════════════════════╩═════╩════════╝";
+        boardStrArray[9]  ="╠══════╩═══╦═══════════════════════╩═════╩════════╣";
+        boardStrArray[10] ="║ ENTRANCE ║";
+        List<ColorS> students = b.getEntranceStudents();
+        for (int i = 0; i < 9; i++) {
+            boardStrArray[10] += i < b.getEntranceStudents().size() ? " "+Ansi.colorize("S", students.get(i).getAnsiEscapeCode())+" " : " _ ";
+        }
+        boardStrArray[10] +=String.join("", Collections.nCopies(11, " "))+"║";
+        boardStrArray[11] ="╚══════════╩══════════════════════════════════════╝";
         return boardStrArray;
     }
 
@@ -238,7 +237,7 @@ public static void showLogo(){
         int boardsNum = boards.size();
         int rowsDone = 0;
         while((boardsNum/boardsPerRow)+(boardsNum%boardsPerRow)-(rowsDone)>0){
-            for(int i = 0; i<10; i++) {
+            for(int i = 0; i<12; i++) {
                 for(int j = rowsDone*boardsPerRow; j<boardsNum && j<(boardsPerRow*(rowsDone+1));j++){
                     boardsStr += boardToStringArray(boards.get(j))[i]+" ";
                 }
@@ -248,7 +247,7 @@ public static void showLogo(){
                 for(int j = rowsDone*boardsPerRow; j<boardsNum && j<(boardsPerRow*(rowsDone+1));j++){
                     String rowDeck = assistantDeckToStringArray(boards.get(j).getAssistantDeck().getAssistantCards())[i];
                     boardsStr += rowDeck;
-                    boardsStr +=String.join("", Collections.nCopies(57-rowDeck.length(), " "));
+                    boardsStr +=String.join("", Collections.nCopies(51-rowDeck.length(), " "));
                     boardsStr +=" ";
                 }
                 boardsStr += "\n";
@@ -301,8 +300,12 @@ public static void showLogo(){
         }
     }
 
+    public static void CTA(String string){
+        System.out.print(string +": "+ Ansi.TYPING_ICON +" ");
+    }
+
     public static void error(String string){
-        System.out.print("\t ❌️ "+Ansi.colorize(string,Ansi.RED));
+        System.out.print("\t "+Ansi.ERROR_ICON+"️ "+Ansi.colorize(string,Ansi.RED));
     }
 
     public void print(String string){
