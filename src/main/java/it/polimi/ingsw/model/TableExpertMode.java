@@ -32,7 +32,6 @@ public class TableExpertMode extends Table {
     public static final int NUM_OF_COINS_SETUP = 1;
     public static final int MAX_NO_ENTRY_TILES = 4;
 
-
     private int bank;
     private int numOfNoEntryTiles;
     private boolean characterAlreadyPlayed;
@@ -416,9 +415,9 @@ public class TableExpertMode extends Table {
             reducedCoins.put(p.getUsername(), this.playerCoins.get(p));
         }
 
-        Map<ReducedIsland, Boolean> reducedNoEntryTiles = new HashMap<>();
+        Map<Integer, Boolean> reducedNoEntryTiles = new HashMap<>();
         for (Island i : this.noEntryTiles.keySet()){
-            reducedNoEntryTiles.put(i.reduceIsland(), this.noEntryTiles.get(i));
+            reducedNoEntryTiles.put(i.reduceIsland().getId(), this.noEntryTiles.get(i));
         }
 
         List<ReducedCharacter> reducedCharacters = new ArrayList<>();

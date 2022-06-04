@@ -77,8 +77,14 @@ public final class Ansi {
         public static final Ansi BgCyan = new Ansi(BACKGROUND_CYAN);
         public static final Ansi BgWhite = new Ansi(BACKGROUND_WHITE);
 
+
         public static final String TYPING_ICON = "➡️";
         public static final String ERROR_ICON = "❌️";
+        public static final String CARD_ICON = "\uD83C\uDCCF️";
+        public static final String COIN_ICON = "\uD83E\uDE99️";
+        public static final String MONEY_BAG_ICON = "\uD83D\uDCB0️";
+        public static final String EFFECT_ICON = "✨";
+
 
 
         private String[] codes;

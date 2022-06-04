@@ -11,7 +11,7 @@ public class ReducedModelExpertMode extends ReducedModel implements Serializable
 
     private final String currentEffect;
     private final Map<String, Integer> coins;
-    private final Map<ReducedIsland, Boolean> noEntryTiles;
+    private final Map<Integer, Boolean> noEntryTiles;
     private final List<ReducedCharacter> characters;
     private final boolean characterAlreadyPlayed;
 
@@ -30,7 +30,7 @@ public class ReducedModelExpertMode extends ReducedModel implements Serializable
     public ReducedModelExpertMode(List<ReducedIsland> islands, List<ReducedCloud> clouds,
                                   String currentPlayer, List<ReducedBoard> boards,
                                   String currentEffect, Map<String, Integer> coins,
-                                  Map<ReducedIsland, Boolean> noEntryTiles,
+                                  Map<Integer, Boolean> noEntryTiles,
                                   List<ReducedCharacter> characters, boolean characterAlreadyPlayed) {
         super(islands, clouds, currentPlayer, boards);
         this.currentEffect = currentEffect;
@@ -60,7 +60,7 @@ public class ReducedModelExpertMode extends ReducedModel implements Serializable
      * gets no entry tiles placed
      * @return no entry tiles placed
      */
-    public Map<ReducedIsland, Boolean> getNoEntryTiles() {
+    public Map<Integer, Boolean> getNoEntryTiles() {
         return noEntryTiles;
     }
 

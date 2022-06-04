@@ -27,7 +27,6 @@ public class CLIPlayAssistantState extends AbstractClientState {
     public CLIPlayAssistantState(Client client){
         this.client = client;
         in = new Scanner(System.in);
-
         client.getUI().showModel(client.getReducedModel());
         System.out.println("It's your turn! Play an Assistant Card by typing the id ");
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
