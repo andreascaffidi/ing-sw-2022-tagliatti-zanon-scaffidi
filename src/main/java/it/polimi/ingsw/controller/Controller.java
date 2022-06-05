@@ -113,8 +113,12 @@ public class Controller implements Observer<ControllerMessage> {
             }
 
             //remove students from the entrance
+            List<Student> studentsToRemove = new ArrayList<>();
             for (int student : studentIndexes){
-                table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().remove(student-1);
+                studentsToRemove.add(table.getCurrentPlayer().getSchoolBoard().getEntrance().getStudents().get(student-1));
+            }
+            for (Student student : studentsToRemove){
+                table.getCurrentPlayer().getSchoolBoard().getEntrance().removeStudent(student);
             }
 
             table.notify(new ReducedModelMessage(ClientState.MOVE_MN, table.createReducedModel()));
