@@ -265,42 +265,42 @@ public class ChooseCloudSceneController extends AbstractSceneController {
                 }
             });
             playCharacter.toFront();
-        }
-        ReducedModelExpertMode reducedModelExpertMode = (ReducedModelExpertMode) client.getReducedModel();
-        for (int i = 0; i < reducedModelExpertMode.getCharacters().size(); i++) {
-            if (reducedModelExpertMode.getCharacters().get(i).getId() == 1 ||
-                    reducedModelExpertMode.getCharacters().get(i).getId() == 7 ||
-                    reducedModelExpertMode.getCharacters().get(i).getId() == 11) {
-                String color;
-                for (ColorS s : reducedModelExpertMode.getCharacters().get(i).getStudents()) {
-                    Image blue = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_blue.png")));
-                    Image red = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_red.png")));
-                    Image yellow = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_yellow.png")));
-                    Image pink = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_pink.png")));
-                    Image green = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_green.png")));
+            ReducedModelExpertMode reducedModelExpertMode = (ReducedModelExpertMode) client.getReducedModel();
+            for (int i = 0; i < reducedModelExpertMode.getCharacters().size(); i++) {
+                if (reducedModelExpertMode.getCharacters().get(i).getId() == 1 ||
+                        reducedModelExpertMode.getCharacters().get(i).getId() == 7 ||
+                        reducedModelExpertMode.getCharacters().get(i).getId() == 11) {
+                    String color;
+                    for (ColorS s : reducedModelExpertMode.getCharacters().get(i).getStudents()) {
+                        Image blue = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_blue.png")));
+                        Image red = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_red.png")));
+                        Image yellow = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_yellow.png")));
+                        Image pink = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_pink.png")));
+                        Image green = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_green.png")));
 
 
-                    color = s.toString().toLowerCase();
-                    switch (color) {
-                        case "blue":
-                            characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(blue)));
-                            break;
-                        case "red":
-                            characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(red)));
-                            break;
-                        case "pink":
-                            characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(pink)));
-                            break;
-                        case "yellow":
-                            characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(yellow)));
-                            break;
-                        case "green":
-                            characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(green)));
-                            break;
+                        color = s.toString().toLowerCase();
+                        switch (color) {
+                            case "blue":
+                                characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(blue)));
+                                break;
+                            case "red":
+                                characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(red)));
+                                break;
+                            case "pink":
+                                characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(pink)));
+                                break;
+                            case "yellow":
+                                characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(yellow)));
+                                break;
+                            case "green":
+                                characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(green)));
+                                break;
+                        }
                     }
                 }
+                characterStudents.get(i).toFront();
             }
-
         }
 
     }

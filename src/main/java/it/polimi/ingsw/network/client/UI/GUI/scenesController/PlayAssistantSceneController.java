@@ -357,7 +357,7 @@ public class PlayAssistantSceneController extends AbstractSceneController {
                         }
                     }
                 }
-
+                characterStudents.get(i).toFront();
             }
 
         }
