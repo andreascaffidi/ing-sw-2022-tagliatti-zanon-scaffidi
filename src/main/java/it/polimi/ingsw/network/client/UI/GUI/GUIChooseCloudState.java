@@ -18,6 +18,8 @@ public class GUIChooseCloudState extends AbstractClientState {
     private final Client client;
     private Parent root;
 
+    ChooseCloudSceneController chooseCloudSceneController;
+
     public GUIChooseCloudState(Client client){
         this.client = client;
     }
@@ -28,7 +30,7 @@ public class GUIChooseCloudState extends AbstractClientState {
         FXMLLoader loader = new FXMLLoader(url);
         try {
             root = loader.load();
-            ChooseCloudSceneController chooseCloudSceneController = loader.getController();
+            chooseCloudSceneController = loader.getController();
             chooseCloudSceneController.setClient(client);
             chooseCloudSceneController.setup();
             Platform.runLater(() ->JavaFXGUI.setMainPane((Pane)root));
@@ -36,5 +38,10 @@ public class GUIChooseCloudState extends AbstractClientState {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void serverError(String message) {
+        chooseCloudSceneController.alert(message);
     }
 }

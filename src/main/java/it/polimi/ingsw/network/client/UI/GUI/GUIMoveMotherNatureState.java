@@ -19,6 +19,7 @@ public class GUIMoveMotherNatureState extends AbstractClientState {
     private Parent root;
 
     private int id;
+    MoveMotherNatureSceneController moveMotherNatureSceneController;
 
     public GUIMoveMotherNatureState(Client client){
         this.client = client;
@@ -30,7 +31,7 @@ public class GUIMoveMotherNatureState extends AbstractClientState {
         FXMLLoader loader = new FXMLLoader(url);
         try {
             root = loader.load();
-            MoveMotherNatureSceneController moveMotherNatureSceneController = loader.getController();
+            moveMotherNatureSceneController = loader.getController();
             moveMotherNatureSceneController.setClient(client);
             moveMotherNatureSceneController.setup();
             Platform.runLater(() ->JavaFXGUI.setMainPane((Pane)root));
@@ -38,5 +39,10 @@ public class GUIMoveMotherNatureState extends AbstractClientState {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void serverError(String message) {
+        moveMotherNatureSceneController.alert(message);
     }
 }

@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class GUIMoveStudentsState extends AbstractClientState {
     private final Client client;
     private Parent root;
+    MoveStudentsSceneController moveStudentsSceneController;
 
     public GUIMoveStudentsState(Client client){
         this.client = client;
@@ -28,7 +29,7 @@ public class GUIMoveStudentsState extends AbstractClientState {
         FXMLLoader loader = new FXMLLoader(url);
         try {
             root = loader.load();
-            MoveStudentsSceneController moveStudentsSceneController = loader.getController();
+            moveStudentsSceneController = loader.getController();
             moveStudentsSceneController.setClient(client);
             moveStudentsSceneController.setup();
             Platform.runLater(() ->JavaFXGUI.setMainPane((Pane)root));
@@ -36,5 +37,10 @@ public class GUIMoveStudentsState extends AbstractClientState {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void serverError(String message) {
+        moveStudentsSceneController.alert(message);
     }
 }

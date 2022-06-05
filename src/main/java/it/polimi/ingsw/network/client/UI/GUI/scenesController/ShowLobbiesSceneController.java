@@ -19,9 +19,6 @@ public class ShowLobbiesSceneController extends AbstractSceneController {
     public Button Enter;
 
     @FXML
-    private Label myLabel;
-
-    @FXML
     private ChoiceBox<String> myChoiceBox;
 
     private final List<String> lobbies = new ArrayList<>();
