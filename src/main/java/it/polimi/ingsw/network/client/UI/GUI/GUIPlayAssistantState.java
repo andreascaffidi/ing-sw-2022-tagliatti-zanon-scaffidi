@@ -17,7 +17,7 @@ public class GUIPlayAssistantState extends AbstractClientState {
     private final Client client;
     private Parent root;
 
-    private int id;
+    private PlayAssistantSceneController playAssistantSceneController;
 
     public GUIPlayAssistantState(Client client){
         this.client = client;
@@ -29,12 +29,17 @@ public class GUIPlayAssistantState extends AbstractClientState {
         FXMLLoader loader = new FXMLLoader(url);
         try {
             root = loader.load();
-            PlayAssistantSceneController playAssistantSceneController = loader.getController();
+            playAssistantSceneController = loader.getController();
             playAssistantSceneController.setClient(client);
             playAssistantSceneController.setup();
             Platform.runLater(() ->JavaFXGUI.setMainPane((Pane)root));
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void serverError(String message) {
+        playAssistantSceneController.alert(message);
     }
 }

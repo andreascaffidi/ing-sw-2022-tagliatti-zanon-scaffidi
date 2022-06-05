@@ -3,7 +3,9 @@ package it.polimi.ingsw.network.client.reducedModel;
 import it.polimi.ingsw.model.enums.ColorS;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * reduced serializable version of a character card
@@ -49,5 +51,16 @@ public class ReducedCharacter implements Serializable {
     public List<ColorS> getStudents()
     {
         return this.students;
+    }
+
+
+    /**
+     * Return a list of students of a chosen color
+     * @param color The color
+     * @return list of students of the chosen color
+     */
+    public List<ColorS> getStudents(ColorS color) {
+        if(students == null) return  new ArrayList<>();
+        return students.stream().filter(i -> i.equals(color)).collect(Collectors.toList());
     }
 }

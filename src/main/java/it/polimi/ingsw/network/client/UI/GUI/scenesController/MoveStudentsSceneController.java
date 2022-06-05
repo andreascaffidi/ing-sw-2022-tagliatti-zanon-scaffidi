@@ -2,7 +2,9 @@ package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.network.client.reducedModel.ReducedBoard;
+import it.polimi.ingsw.network.client.reducedModel.ReducedIsland;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModelExpertMode;
+import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.requests.gameMessages.MoveStudentMessage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,6 +17,8 @@ import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -25,7 +29,40 @@ import static java.lang.String.valueOf;
 
 public class MoveStudentsSceneController extends AbstractSceneController {
 
-    // ---------- SCHOOLBOARDS
+    // CHARACTERS
+    @FXML
+    Pane character1;
+    @FXML
+    TilePane character1MoveStudents;
+
+    @FXML
+    Pane character2;
+    @FXML
+    TilePane character2MoveStudents;
+    @FXML
+    Pane character3;
+    @FXML
+    TilePane character3MoveStudents;
+
+    List<TilePane> characterStudents = new ArrayList<>();
+
+    // ASSISTANTS
+    @FXML
+    Pane player1Assistant;
+
+    @FXML
+    Pane player2Assistant;
+
+    @FXML
+    Pane player3Assistant;
+
+    @FXML
+    Pane player4Assistant;
+
+    @FXML
+    List<Pane> assistants = new ArrayList<>();
+
+    // COINS
     @FXML
     Pane player1Coins;
 
@@ -38,6 +75,10 @@ public class MoveStudentsSceneController extends AbstractSceneController {
     @FXML
     Pane player4Coins;
 
+    @FXML
+    List<Pane> coins = new ArrayList<>();
+
+    // ---------- SCHOOLBOARDS
     @FXML
     Pane player1;
 
@@ -189,25 +230,25 @@ public class MoveStudentsSceneController extends AbstractSceneController {
 
     // ---------- CHARACTERS
     @FXML
-    Button playCharacter1;
-
-    @FXML
-    Button playCharacter2;
-
-    @FXML
-    Button playCharacter3;
+    Button playCharacter;
     private int bigCount;
     int[] countSchoolBoard = {0, 0, 0, 0, 0};
 
     private Map<Integer, String> movementsChosen;
 
+    @FXML
+    public Text alertMessage;
+    @FXML
+    public TextFlow alert;
+
+    public void alert(String message){
+        alertMessage.setText(message);
+        alert.setVisible(true);
+    }
+
     @Override
     public void setup()
     {
-        playCharacter1.setVisible(false);
-        playCharacter2.setVisible(false);
-        playCharacter3.setVisible(false);
-
         bigCount = 0;
 
         movementsChosen = new HashMap<>();
@@ -219,42 +260,58 @@ public class MoveStudentsSceneController extends AbstractSceneController {
     // ---------- CHARACTERS
     public void handleCharacters()
     {
-        if(client.getReducedModel() instanceof ReducedModelExpertMode)
-        {
+        characterStudents.add(character1MoveStudents);
+        characterStudents.add(character2MoveStudents);
+        characterStudents.add(character3MoveStudents);
 
-            int id1 = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(0).getId();
-            int id2 = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(1).getId();
-            int id3 = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(2).getId();
+        if(client.getReducedModel() instanceof ReducedModelExpertMode) {
 
-            Image img1 = new Image(valueOf(getClass().getResource("/img/Personaggi/CarteTOT_front" + id1 + ".jpg")));
-            Image img2 = new Image(valueOf(getClass().getResource("/img/Personaggi/CarteTOT_front" + id2 + ".jpg")));
-            Image img3 = new Image(valueOf(getClass().getResource("/img/Personaggi/CarteTOT_front" + id3 + ".jpg")));
-
-            ImageView view1 = new ImageView(img1);
-            ImageView view2 = new ImageView(img2);
-            ImageView view3 = new ImageView(img3);
-
-            view1.setFitWidth(50);
-            view1.setPreserveRatio(true);
-            playCharacter1.setGraphic(view1);
-            playCharacter1.setVisible(true);
-            playCharacter1.setOnAction(e -> {
+            playCharacter.setVisible(true);
+            playCharacter.setOnAction(e -> {
+                if (!((ReducedModelExpertMode) client.getReducedModel()).isCharacterAlreadyPlayed()) {
+                    client.changeState(ClientState.PLAY_CHARACTER);
+                }
             });
+            playCharacter.toFront();
+            ReducedModelExpertMode reducedModelExpertMode = (ReducedModelExpertMode) client.getReducedModel();
+            for (int i = 0; i < reducedModelExpertMode.getCharacters().size(); i++) {
+                if (reducedModelExpertMode.getCharacters().get(i).getId() == 1 ||
+                        reducedModelExpertMode.getCharacters().get(i).getId() == 7 ||
+                        reducedModelExpertMode.getCharacters().get(i).getId() == 11) {
+                    String color;
+                    for (ColorS s : reducedModelExpertMode.getCharacters().get(i).getStudents()) {
+                        Image blue = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_blue.png")));
+                        Image red = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_red.png")));
+                        Image yellow = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_yellow.png")));
+                        Image pink = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_pink.png")));
+                        Image green = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_green.png")));
 
-            view2.setFitWidth(50);
-            view2.setPreserveRatio(true);
-            playCharacter2.setGraphic(view2);
-            playCharacter2.setVisible(true);
-            playCharacter2.setOnAction(e -> {
-            });
 
-            view3.setFitWidth(50);
-            view3.setPreserveRatio(true);
-            playCharacter3.setGraphic(view3);
-            playCharacter3.setVisible(true);
-            playCharacter3.setOnAction(e -> {
-            });
+                        color = s.toString().toLowerCase();
+                        switch (color) {
+                            case "blue":
+                                characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(blue)));
+                                break;
+                            case "red":
+                                characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(red)));
+                                break;
+                            case "pink":
+                                characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(pink)));
+                                break;
+                            case "yellow":
+                                characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(yellow)));
+                                break;
+                            case "green":
+                                characterStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(green)));
+                                break;
+                        }
+                    }
+                }
+                characterStudents.get(i).toFront();
+
+            }
         }
+
     }
 
     public void showModel()
@@ -264,9 +321,9 @@ public class MoveStudentsSceneController extends AbstractSceneController {
         showClouds();
         showCloudsStudents();
         showSchoolBoards();
-        //showCoins();
-        //showPlayedAssistant();
-        //showNoEntryTile();
+        showCoins();
+        showPlayedAssistant();
+        showCharacters();
     }
 
     // ---------- ISLANDS
@@ -419,9 +476,31 @@ public class MoveStudentsSceneController extends AbstractSceneController {
             {
                 islandStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(mN)));
             }
+
+            /*if(client.getReducedModel() instanceof ReducedModelExpertMode)
+            {
+                if(((ReducedModelExpertMode) client.getReducedModel()).getNoEntryTiles().get(client.getReducedModel().getIslands().get(i)).equals(true))
+                {
+                    islandStudents.get(i).getChildren().add(setStudentsDimension(new ImageView("/img/Tavolo/Isole/deny_island_icon.png")));
+                }
+            }*/
         }
 
-        for(TilePane island : islands)
+        if(client.getReducedModel() instanceof ReducedModelExpertMode)
+        {
+            for(ReducedIsland r : client.getReducedModel().getIslands())
+            {
+                if(((ReducedModelExpertMode) client.getReducedModel()).getNoEntryTiles().containsKey(r))
+                {
+                    if(((ReducedModelExpertMode) client.getReducedModel()).getNoEntryTiles().get(r).equals(true))
+                    {
+                        islandStudents.get(client.getReducedModel().getIslands().indexOf(r)).getChildren().add(setStudentsDimension(new ImageView("/img/Tavolo/Isole/deny_island_icon.png")));
+                    }
+                }
+            }
+        }
+
+        for(TilePane island : islandStudents)
         {
             island.toFront();
         }
@@ -584,11 +663,11 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                     }
                     if(client.getReducedModel().getBoards().get(0).getPlayer().equals(client.getReducedModel().getCurrentPlayer()))
                     {
-                        setDragAndDrop(player1Entrance, supp, color, count);
+                        setDragAndDrop(player1Entrance, supp, count);
                     }
                     count++;
 
-                    //player1Entrance.getOnDragDropped();
+
                 }
             }
         }
@@ -627,7 +706,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                     }
                     if(client.getReducedModel().getBoards().get(1).getPlayer().equals(client.getReducedModel().getCurrentPlayer()))
                     {
-                        setDragAndDrop(player2Entrance, supp, color, count);
+                        setDragAndDrop(player2Entrance, supp, count);
                     }
                     count++;
                 }
@@ -667,7 +746,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                         }
                         if(client.getReducedModel().getBoards().get(2).getPlayer().equals(client.getReducedModel().getCurrentPlayer()))
                         {
-                            setDragAndDrop(player3Entrance, supp, color, count);
+                            setDragAndDrop(player3Entrance, supp, count);
                         }
                         count++;
                     }
@@ -709,7 +788,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                         }
                         if(client.getReducedModel().getBoards().get(3).getPlayer().equals(client.getReducedModel().getCurrentPlayer()))
                         {
-                            setDragAndDrop(player4Entrance, supp, color, count);
+                            setDragAndDrop(player4Entrance, supp, count);
                         }
                         count++;
                     }
@@ -830,6 +909,11 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                 configureDiningRoom(player4DiningRoom);
             }
         }
+
+        player1DiningRoom.toFront();
+        player2DiningRoom.toFront();
+        player3DiningRoom.toFront();
+        player4DiningRoom.toFront();
     }
 
     public void showProfessorTable()
@@ -940,7 +1024,6 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                         player4ProfessorBoard.add(setStudentsDimension(new ImageView(green)), 0, 0);
                         break;
                 }
-
             }
             player4ProfessorBoard.toFront();
         }
@@ -1016,31 +1099,93 @@ public class MoveStudentsSceneController extends AbstractSceneController {
 
     public void showCoins()
     {
+        coins.add(player1Coins);
+        coins.add(player2Coins);
+        coins.add(player3Coins);
+        coins.add(player4Coins);
 
+        Image ex1 = new Image(valueOf(getClass().getResource("/img/Plancia/Moneta_base.png")));
+
+        for(int i = 0; i < client.getReducedModel().getBoards().size(); i++)
+        {
+            coins.get(i).getChildren().add(setStudentsDimension(new ImageView(ex1)));
+            if(client.getReducedModel() instanceof ReducedModelExpertMode) {
+                ReducedModelExpertMode reducedModel = (ReducedModelExpertMode) client.getReducedModel();
+                coins.get(i).getChildren().add(new Text(reducedModel.getCoins().get(reducedModel.getBoards().get(i).getPlayer()).toString()));
+                coins.get(i).setVisible(true);
+                coins.get(i).toFront();
+            }
+        }
+
+
+        for(int i = client.getReducedModel().getBoards().size(); i < schoolBoards.size(); i++)
+        {
+            coins.get(i).setVisible(false);
+        }
+    }
+
+    public ImageView setAssistantSize(ImageView img)
+    {
+        img.setFitHeight(180);
+        img.setFitWidth(100);
+        return img;
     }
 
     public void showPlayedAssistant()
     {
+        assistants.add(player1Assistant);
+        assistants.add(player2Assistant);
+        assistants.add(player3Assistant);
+        assistants.add(player4Assistant);
 
+        for(int i = 0; i < client.getReducedModel().getBoards().size(); i++)
+        {
+            assistants.get(i).getChildren().add(setAssistantSize(new ImageView("/img/Assistenti/Assistente("
+                    + (client.getReducedModel().getBoards().get(i).getAssistantDeck().getPlayedAssistant().getId()) +").png" )));
+            assistants.get(i).setVisible(true);
+            assistants.get(i).toFront();
+        }
     }
 
-    public void showNoEntryTile()
+    public void showCharacters()
     {
+        if(client.getReducedModel() instanceof ReducedModelExpertMode) {
+            int id1 = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(0).getId();
+            int id2 = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(1).getId();
+            int id3 = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(2).getId();
 
+            Image img1 = new Image(String.valueOf(getClass().getResource("/img/Personaggi/CarteTOT_front" + id1 + ".jpg")));
+            Image img2 = new Image(String.valueOf(getClass().getResource("/img/Personaggi/CarteTOT_front" + id2 + ".jpg")));
+            Image img3 = new Image(String.valueOf(getClass().getResource("/img/Personaggi/CarteTOT_front" + id3 + ".jpg")));
+
+            ImageView view1 = new ImageView(img1);
+            ImageView view2 = new ImageView(img2);
+            ImageView view3 = new ImageView(img3);
+
+            view1.setFitWidth(100);
+            view1.setFitHeight(150);
+            character1.getChildren().add(view1);
+            character1MoveStudents.setVisible(true);
+
+            view2.setFitWidth(100);
+            view2.setFitHeight(150);
+            character2.getChildren().add(view2);
+            character2MoveStudents.setVisible(true);
+
+            view3.setFitWidth(100);
+            view3.setFitHeight(150);
+            character3.getChildren().add(view3);
+            character3MoveStudents.setVisible(true);
+        }
     }
 
-    public void setDragAndDrop(GridPane entrance, ImageView supp, String color, int count)
+    public void setDragAndDrop(GridPane entrance, ImageView supp, int count)
     {
-        //detected
-        //drop
-
         entrance.getChildren().get(entrance.getChildren().size() - 1).setOnDragDetected((javafx.scene.input.MouseEvent event) ->
         {
             Dragboard db = supp.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
-
             content.putImage(supp.getImage());
-            //content.putString(color);
             content.putString(valueOf(count));
             db.setContent(content);
             entrance.getChildren().remove(supp);
@@ -1125,7 +1270,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                         }
                     }*/
 
-            int index = Integer.parseInt(event.getDragboard().getString());
+            int index = parseInt(event.getDragboard().getString());
             ColorS colorS = null;
             String color = null;
 
@@ -1183,7 +1328,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
         });
     }
 
-    public void checkDiningRoom(Integer index)
+    public void checkDiningRoom(int index)
     {
         bigCount = bigCount + 1;
         String destination = "DINING ROOM";
@@ -1194,7 +1339,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
         check();
     }
 
-    public void checkIsland(Integer stud, Integer id)
+    public void checkIsland(int stud, int id)
     {
         bigCount = bigCount + 1;
 
@@ -1210,7 +1355,6 @@ public class MoveStudentsSceneController extends AbstractSceneController {
     {
         if(bigCount == 3)
         {
-            System.out.println("sto dentro");
             System.out.println(movementsChosen);
             client.send(new MoveStudentMessage(movementsChosen));
         }
