@@ -637,9 +637,12 @@ public class Table extends Observable<ResponseMessage> {
     public void playAssistant(Assistant card) throws GameException, AssistantNotFoundException {
         List<Assistant> playable = new ArrayList<>(getCurrentPlayer().getAssistantDeck());
         for(Player player : players) {
-            if (!player.getDiscardPile().isEmpty()) {
+            //if a player has a bigger discard pile means that he has played before
+            if (player.getDiscardPile().size() > currentPlayer.getDiscardPile().size()) {
                 int valueToRemove = player.getDiscardPile().peek().getValue();
-                playable.remove(getCurrentPlayer().getAssistant(valueToRemove));
+                if (playable.stream().map(Assistant::getValue).collect(Collectors.toList()).contains(valueToRemove)){
+                    playable.remove(getCurrentPlayer().getAssistant(valueToRemove));
+                }
             }
         }
         if(playable.contains(card) || playable.size() == 0){
