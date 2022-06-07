@@ -15,9 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class CardWithStudentsTest {
 
     private List<Student> students;
-    private int character1;
-    private int character2;
 
+    /**
+     *  Initialises a list of students
+     *  <br>
+     *  <u>It's called before each test</u>
+     */
     @BeforeEach
     void setup()
     {
@@ -28,25 +31,30 @@ class CardWithStudentsTest {
         students.add(student2);
     }
 
+    /**
+     * Tests if return students on the card correctly
+     */
     @Test
     void getStudents() {
         CardWithStudents card = new CardWithStudents(students, 3);
         assertEquals(students, card.getStudents());
     }
 
+    /**
+     * Tests if return the correct character ID of the card
+     */
     @Test
-    short getCharacter() {
+    void getCharacter() {
         CardWithStudents card = new CardWithStudents(students, 3);
-        assertEquals(3, this.getCharacter());
-        return 0;
+        assertEquals(3, card.getCharacter());
     }
 
+    /**
+     * Tests if a student on the card is valid
+     */
     @Test
     void validStudent() {
         CardWithStudents card = new CardWithStudents(students, 3);
-        CardWithStudents card2 = new CardWithStudents(students, 1);
-        Exception exception = new GameException("Invalid Student");
-        exception = assertThrows(GameException.class, () -> card.validStudent(4));
-        assertEquals("Invalid Student", exception.getMessage());
+        assertThrows(GameException.class, () -> card.validStudent(4));
     }
 }

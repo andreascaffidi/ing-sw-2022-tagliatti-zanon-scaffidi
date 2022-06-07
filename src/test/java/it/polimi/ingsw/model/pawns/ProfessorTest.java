@@ -26,7 +26,7 @@ class ProfessorTest {
     }
 
     /**
-     * Tests if it returns the color setted during initialization
+     * Tests if it returns the color set during initialization
      */
     @Test
     void getColor() {
@@ -34,7 +34,7 @@ class ProfessorTest {
     }
 
     /**
-     * Tests that the owner is setted (and so getted) correctly;
+     * Tests that the owner is set (and so got) correctly;
      */
     @Test
     void setAndGetOwner() {

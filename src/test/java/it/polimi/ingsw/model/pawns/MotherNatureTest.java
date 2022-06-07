@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MotherNatureTest {
 
     /**
-     * Tests that the island associated is setted (and so getted) correctly;
+     * Tests that the island associated is set (and so got) correctly;
      */
     @Test
     void setAndGetIsland() {

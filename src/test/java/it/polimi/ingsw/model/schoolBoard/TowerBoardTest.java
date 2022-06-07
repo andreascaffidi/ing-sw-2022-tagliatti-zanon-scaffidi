@@ -15,19 +15,32 @@ class TowerBoardTest {
     private TowerBoard towerBoard;
     private List<Tower> towerList;
 
+    /**
+     *  Initialises a tower board and a player
+     *  <br>
+     *  <u>It's called before each test</u>
+     */
     @BeforeEach
     void init(){
         towerBoard = new TowerBoard();
         Player player = new Player("username");
-        towerList = new ArrayList<Tower>(Arrays.asList(new Tower(ColorT.BLACK, player), new Tower(ColorT.BLACK, player)));
+        towerList = new ArrayList<>(Arrays.asList(new Tower(ColorT.BLACK, player), new Tower(ColorT.BLACK, player)));
     }
 
+    /**
+     * Sets to null every attribute
+     *  <br>
+     *  <u>It's called after each test</u>
+     */
     @AfterEach
     void tearDown(){
         towerBoard = null;
         towerList = null;
     }
 
+    /**
+     * Tests that a tower is added and got correctly
+     */
     @Test
     void addAndGetTowers() {
         for (Tower t : towerList){
@@ -36,6 +49,9 @@ class TowerBoardTest {
         assertEquals(towerList, towerBoard.getTowers());
     }
 
+    /**
+     * Tests if the last tower is removed correctly from the tower board
+     */
     @Test
     void removeLastTower() {
         for (Tower t : towerList){

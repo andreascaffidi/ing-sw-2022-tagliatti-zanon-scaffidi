@@ -1,8 +1,16 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.AssistantNotFoundException;
+import it.polimi.ingsw.exceptions.GameException;
 import it.polimi.ingsw.model.cards.Assistant;
+import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.enums.Wizards;
+import it.polimi.ingsw.model.pawns.Professor;
+import it.polimi.ingsw.model.pawns.Student;
+import it.polimi.ingsw.model.pawns.Tower;
+import it.polimi.ingsw.model.schoolBoard.SchoolBoard;
+import it.polimi.ingsw.network.client.reducedModel.ReducedBoard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +51,7 @@ class PlayerTest {
     }
 
     /**
-     * Tests that the username is setted (and so getted) correctly;
+     * Tests that the username is set (and so got) correctly;
      */
     @Test
     void getUsername() {
@@ -51,7 +59,7 @@ class PlayerTest {
     }
 
     /**
-     * Tests that the deck of assistant cards setted on initialization is the one returned;
+     * Tests that the deck of assistant cards set on initialization is the one returned;
      */
     @Test
     void getAssistantDeck() {
@@ -59,18 +67,19 @@ class PlayerTest {
     }
 
     /**
-     * Tests if it returns the schoolboard
-     * <br>
-     *  <u>This method is implicitly tested by other tests</u>
+     * Tests that the school board is set (and so got) correctly;
      */
     @Test
-    void getSchoolBoard() {
+    void setAndGetSchoolBoard() {
         assertTrue(true, "tested in other methods");
+        SchoolBoard schoolBoard = new SchoolBoard();
+        Player player = new Player("p2");
+        player.setSchoolBoard(schoolBoard);
+        assertEquals(schoolBoard, player.getSchoolBoard());
     }
 
     /**
      * Tests if it returns the discard pile of assistant cards
-     *
      */
     @Test
     void getDiscardPile() {
@@ -93,15 +102,15 @@ class PlayerTest {
     @Test
     void testEquals() {
         Player player2 = new Player("nickname");
-        assertTrue(player2.equals(player));
+        assertEquals(player2, player);
         Player player3 = new Player("username");
-        assertFalse(player3.equals(player2));
-        assertFalse(player2.equals(null));
-        assertFalse(player3.equals(new Object()));
+        assertNotEquals(player3, player2);
+        assertNotEquals(null, player2);
+        assertNotEquals(player3, new Object());
     }
 
     /**
-     * Tests that the tower color is setted (and so getted) correctly;
+     * Tests that the tower color is set (and so got) correctly;
      */
     @Test
     void setAndGetTowerColor() {
@@ -110,7 +119,6 @@ class PlayerTest {
 
     /**
      * Tests if a card is removed from the assistant deck and added to the assistant discard pile
-     *
      */
     @Test
     void addToDiscardPile(){
@@ -120,11 +128,65 @@ class PlayerTest {
         assertFalse(player.getAssistantDeck().contains(assistant));
     }
 
+    /**
+     * Tests if it returns the correct assistant card, it also tests AssistantNotFoundException
+     */
     @Test
-    void otherConstructors(){
-        Player p1 = new Player("username");
-        Player p2 = new Player("username", 1);
-        assertEquals("username", p1.getUsername());
-        assertEquals(1, p2.getTagTeam());
+    void getAssistant() throws AssistantNotFoundException {
+        Assistant assistant = player.getAssistant(3);
+        assertEquals(3, assistant.getValue());
+
+        //test AssistantNotFound exception
+        assertThrows(AssistantNotFoundException.class, () -> player.getAssistant(5));
+    }
+
+    /**
+     * Tests if a mother nature movement is valid and in case it tests also GameException
+     */
+    @Test
+    void validMovement() throws GameException {
+        Assistant assistant = deck.get(0);
+        player.addToDiscardPile(assistant);
+        player.validMovement(1);
+        player.validMovement(2);
+        assertThrows(GameException.class, () -> player.validMovement(3));
+    }
+
+    /**
+     * Tests if it returns the correct reduced board
+     *  <ol>
+     *      <li>Creates a school board with random values</li>
+     *      <li>Verifies if the reduced board has the same values</li>
+     *  </ol>
+     */
+    @Test
+    void reduceBoard() {
+        SchoolBoard schoolBoard = new SchoolBoard();
+        schoolBoard.getDiningRoom().addStudent(new Student(ColorS.BLUE));
+        schoolBoard.getDiningRoom().addStudent(new Student(ColorS.RED));
+        schoolBoard.getEntrance().addStudent(new Student(ColorS.BLUE));
+        schoolBoard.getEntrance().addStudent(new Student(ColorS.RED));
+        schoolBoard.getProfessorTable().addProfessor(new Professor(ColorS.BLUE));
+        schoolBoard.getProfessorTable().addProfessor(new Professor(ColorS.RED));
+        schoolBoard.getTowerBoard().addTower(new Tower(ColorT.BLACK, player));
+        player.setSchoolBoard(schoolBoard);
+        Assistant discardPile = new Assistant(5, 1, Wizards.WIZARD_1);
+        player.getAssistantDeck().add(discardPile);
+        player.addToDiscardPile(discardPile);
+
+        ReducedBoard reducedBoard = player.reduceBoard();
+        assertEquals("nickname", reducedBoard.getPlayer());
+        assertEquals(ColorT.BLACK, reducedBoard.getTowerColor());
+        assertTrue(reducedBoard.getStudents().containsKey(ColorS.BLUE));
+        assertEquals(1, reducedBoard.getStudents().get(ColorS.BLUE));
+        assertTrue(reducedBoard.getEntranceStudents().contains(ColorS.BLUE));
+        assertTrue(reducedBoard.getEntranceStudents().contains(ColorS.RED));
+        assertFalse(reducedBoard.getEntranceStudents().contains(ColorS.YELLOW));
+        assertTrue(reducedBoard.getProfessors().contains(ColorS.BLUE));
+        assertTrue(reducedBoard.getProfessors().contains(ColorS.RED));
+        assertFalse(reducedBoard.getProfessors().contains(ColorS.YELLOW));
+        assertEquals(1, reducedBoard.getNumOfTowers());
+        assertEquals(1, reducedBoard.getAssistantDeck().getAssistantCards().get(0).getId());
+        assertEquals(5, reducedBoard.getAssistantDeck().getPlayedAssistant().getId());
     }
 }

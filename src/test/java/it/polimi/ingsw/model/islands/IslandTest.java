@@ -3,9 +3,9 @@ package it.polimi.ingsw.model.islands;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
-import it.polimi.ingsw.model.pawns.MotherNature;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Tower;
+import it.polimi.ingsw.network.client.reducedModel.ReducedIsland;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +60,7 @@ class IslandTest {
     }
 
     /**
-     * Tests if it returns the id setted during initialization
+     * Tests if it returns the id set during initialization
      */
     @Test
     void getId() {
@@ -98,20 +98,17 @@ class IslandTest {
     void numStudent() {
         this.island.addStudents(students);
         ColorS randColor = ColorS.values()[new Random().nextInt(ColorS.values().length)];
-        int numOfColor = this.students
+        int numOfColor = (int) this.students
                 .stream()
-                .filter((student)->student.getColor().equals(randColor))
-                .collect(Collectors.toList())
-                .size();
+                .filter((student) -> student.getColor().equals(randColor)).count();
         assertEquals(numOfColor,island.numStudent(randColor));
     }
 
     /**
-     * Tests if mother nature is setted
+     * Tests if mother nature is set
      */
     @Test
     void setMotherNature() {
-        MotherNature motherNature = new MotherNature(island);
         island.setMotherNature(true);
         assertTrue(island.isMotherNature());
     }
@@ -121,7 +118,6 @@ class IslandTest {
      */
     @Test
     void isMotherNature() {
-        MotherNature motherNature = new MotherNature(island);
         island.setMotherNature(true);
         assertTrue(island.isMotherNature());
     }
@@ -142,7 +138,7 @@ class IslandTest {
     }
 
     /**
-     * Tests that a tower is setted (and so getted) correctly;
+     * Tests that a tower is set (and so got) correctly;
      */
     @Test
     void setTower() {
@@ -153,7 +149,7 @@ class IslandTest {
     }
 
     /**
-     * Tests that the username is setted (and so getted) correctly;
+     * Tests that the username is set (and so got) correctly;
      */
     @Test
     void getTower() {
@@ -164,7 +160,7 @@ class IslandTest {
     }
 
     /**
-     * Tests that the number of towers on the island is setted (and so getted) correctly;
+     * Tests that the number of towers on the island is set (and so got) correctly;
      */
     @Test
     void setNumOfTowers() {
@@ -174,7 +170,7 @@ class IslandTest {
     }
 
     /**
-     * Tests that the number of towers on the island is setted (and so getted) correctly;
+     * Tests that the number of towers on the island is set (and so got) correctly;
      */
     @Test
     void getNumOfTowers() {
@@ -193,5 +189,19 @@ class IslandTest {
         assertEquals(randomId-decrement, island.getId());
     }
 
-
+    /**
+     * Tests if an island is reduced correctly
+     */
+    @Test
+    void reduceIsland(){
+        island.setTower(new Tower(ColorT.BLACK, new Player("Test")));
+        island.setMotherNature(true);
+        island.addStudents(students);
+        List<ColorS> colors = students.stream().map(Student::getColor).collect(Collectors.toList());
+        ReducedIsland reducedIsland = island.reduceIsland();
+        assertEquals(randomId, reducedIsland.getId());
+        assertTrue(reducedIsland.isMotherNature());
+        assertEquals(ColorT.BLACK, reducedIsland.getTower());
+        assertEquals(colors, reducedIsland.getStudents());
+    }
 }

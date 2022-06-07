@@ -55,7 +55,7 @@ class CloudTest {
      *  <ol>
      *      <li>Adds some students into the bag</li>
      *      <li>Verifies that all students are in the bag</li>
-     *      <li>Takes all student sfrom the bag</li>
+     *      <li>Takes all student from the bag</li>
      *      <li>Verifies that the bag is empty</li>
      *  </ol>
      */

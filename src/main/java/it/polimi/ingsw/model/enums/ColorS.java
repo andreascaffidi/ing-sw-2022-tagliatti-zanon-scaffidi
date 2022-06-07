@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.enums;
 
 import it.polimi.ingsw.network.client.UI.CLI.Ansi;
-import it.polimi.ingsw.network.client.UI.CLI.CLI;
 import it.polimi.ingsw.exceptions.ColorNotFoundException;
 
 import java.io.Serializable;
@@ -17,8 +16,12 @@ public enum ColorS implements Serializable {
     PINK(Ansi.MAGENTA),
     YELLOW(Ansi.YELLOW);
 
-    public String ansiEscapeCode;
+    private final String ansiEscapeCode;
 
+    /**
+     * sets an ANSI escape code to a pawn color
+     * @param ansiEscapeCode ANSI escape code
+     */
     ColorS(String ansiEscapeCode) {
         this.ansiEscapeCode = ansiEscapeCode;
     }
@@ -37,11 +40,10 @@ public enum ColorS implements Serializable {
         }
     }
 
+    /**
+     * gets the ANSI escape code of the pawn color
+     */
     public String getAnsiEscapeCode() {
         return ansiEscapeCode;
-    }
-
-    public String toAnsiString(){
-        return this.ansiEscapeCode+ toString()+CLI.ANSI_RESET;
     }
 }

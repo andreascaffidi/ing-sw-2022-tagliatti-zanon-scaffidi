@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.schoolBoard;
 
-import it.polimi.ingsw.exceptions.ColorNotFoundException;
 import it.polimi.ingsw.exceptions.GameException;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.pawns.Student;
@@ -32,25 +31,17 @@ class DiningRoomTest {
     @BeforeEach
     void init(){
         diningRoom = new DiningRoom();
-        blueStudents = new ArrayList<Student>();
-        yellowStudents = new ArrayList<Student>();
-        redStudents = new ArrayList<Student>();
-        greenStudents = new ArrayList<Student>();
-        pinkStudents = new ArrayList<Student>();
+        blueStudents = new ArrayList<>();
+        yellowStudents = new ArrayList<>();
+        redStudents = new ArrayList<>();
+        greenStudents = new ArrayList<>();
+        pinkStudents = new ArrayList<>();
         blueStudents.add(new Student(ColorS.BLUE));
         blueStudents.add(new Student(ColorS.BLUE));
         yellowStudents.add(new Student(ColorS.YELLOW));
         yellowStudents.add(new Student(ColorS.YELLOW));
         redStudents.add(new Student(ColorS.RED));
         greenStudents.add(new Student(ColorS.GREEN));
-    }
-
-    /**
-     * Tests that an exception is thrown if is passed a non valid color
-     */
-    @Test
-    void getLine() {
-        Exception e = assertThrows(RuntimeException.class,()-> diningRoom.getLine(null));
     }
 
     /**
@@ -105,9 +96,12 @@ class DiningRoomTest {
         assertFalse(diningRoom.getLine(ColorS.YELLOW).contains(yellowStudents.get(yellowStudents.size()-1)));
     }
 
-
+    /**
+     * Tests if a color is a valid choice on the dining room (used when the character card effect needs to switch students)
+     * @throws GameException if there's a problem
+     */
     @Test
-    void validColors() throws GameException, ColorNotFoundException {
+    void validColors() throws GameException {
         diningRoom.addStudent(new Student(ColorS.BLUE));
         List<ColorS> colors = new ArrayList<>();
         colors.add(ColorS.BLUE);

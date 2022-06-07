@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.enums.Wizards;
+import it.polimi.ingsw.network.client.reducedModel.ReducedAssistant;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- *  This class purpose is to tests all methods of the Assistant class
+ *  This class purpose is to test all methods of the Assistant class
  */
 class AssistantTest {
 
@@ -25,7 +26,7 @@ class AssistantTest {
     }
 
     /**
-     * Tests if it returns the value setted during initialization
+     * Tests if it returns the value set during initialization
      */
     @Test
     void getValue() {
@@ -33,7 +34,7 @@ class AssistantTest {
     }
 
     /**
-     * Tests if it returns the mother nature movements setted during initialization
+     * Tests if it returns the mother nature movements set during initialization
      */
     @Test
     void getMotherNatureMovements() {
@@ -41,11 +42,22 @@ class AssistantTest {
     }
 
     /**
-     * Tests if it returns the wizard setted during initialization
+     * Tests if it returns the wizard set during initialization
      */
     @Test
     void getWizard() {
         assertEquals(Wizards.WIZARD_1, assistant.getWizard());
+    }
+
+    /**
+     * Tests if assistant is reduced correctly
+     */
+    @Test
+    void reduceAssistant(){
+        ReducedAssistant reducedAssistant = assistant.reduceAssistant();
+        assertEquals(10, reducedAssistant.getId());
+        assertEquals(3, reducedAssistant.getMotherNatureMovements());
+        assertEquals(Wizards.WIZARD_1, reducedAssistant.getWizard());
     }
 
     /**

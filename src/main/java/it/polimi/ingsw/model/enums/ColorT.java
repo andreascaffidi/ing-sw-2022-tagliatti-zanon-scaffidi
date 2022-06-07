@@ -8,14 +8,26 @@ import java.io.Serializable;
  * tower colors
  */
 public enum ColorT implements Serializable {
-    BLACK(Ansi.BACKGROUND_BLACK), WHITE(Ansi.BACKGROUND_WHITE), GREY(Ansi.WHITE);
 
+    //FIXME: rivedere questi colori
+    BLACK(Ansi.BACKGROUND_BLACK),
+    WHITE(Ansi.BACKGROUND_WHITE),
+    GREY(Ansi.WHITE);
+
+    private final String ansiEscapeCode;
+
+    /**
+     * sets an ANSI escape code to a tower color
+     * @param ansiEscapeCode ANSI escape code
+     */
     ColorT(String ansiEscapeCode) {
         this.ansiEscapeCode = ansiEscapeCode;
     }
 
-    public String ansiEscapeCode;
 
+    /**
+     * gets the ANSI escape code of the tower color
+     */
     public String getAnsiEscapeCode() {
         return ansiEscapeCode;
     }
