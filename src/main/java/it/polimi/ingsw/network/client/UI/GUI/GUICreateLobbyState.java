@@ -16,6 +16,8 @@ public class GUICreateLobbyState extends AbstractClientState {
     private final Client client;
     private Parent root;
 
+    CreateLobbySceneController createLobbySceneController;
+
     public GUICreateLobbyState(Client client){
         this.client = client;
     }
@@ -26,13 +28,15 @@ public class GUICreateLobbyState extends AbstractClientState {
         FXMLLoader loader = new FXMLLoader(url);
         try {
             root = loader.load();
-            CreateLobbySceneController createLobbySceneController = loader.getController();
+            createLobbySceneController = loader.getController();
             createLobbySceneController.setClient(client);
             Platform.runLater(() ->JavaFXGUI.setMainPane((Pane)root));
         } catch (IOException e){
             e.printStackTrace();
         }
     }
-
-
+    @Override
+    public void serverError(String message) {
+        createLobbySceneController.alert(message);
+    }
 }

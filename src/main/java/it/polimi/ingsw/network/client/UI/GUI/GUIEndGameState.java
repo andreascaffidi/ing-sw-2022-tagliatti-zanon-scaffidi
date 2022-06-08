@@ -18,6 +18,8 @@ public class GUIEndGameState extends AbstractClientState {
     private final Client client;
     private Parent root;
 
+    EndGameSceneController endGameSceneController;
+
     public GUIEndGameState(Client client){
         this.client = client;
     }
@@ -28,11 +30,16 @@ public class GUIEndGameState extends AbstractClientState {
         FXMLLoader loader = new FXMLLoader(url);
         try {
             root = loader.load();
-            EndGameSceneController endGameSceneController = loader.getController();
+            endGameSceneController = loader.getController();
             endGameSceneController.setClient(client);
             Platform.runLater(() ->JavaFXGUI.setMainPane((Pane)root));
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void serverError(String message) {
+        endGameSceneController.alert(message);
     }
 }

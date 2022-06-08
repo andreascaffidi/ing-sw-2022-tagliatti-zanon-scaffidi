@@ -15,6 +15,8 @@ public class GUIWaitingState extends AbstractClientState {
     private final Client client;
     private Parent root;
 
+    WaitingSceneController waitingSceneController;
+
     public GUIWaitingState(Client client){
         this.client = client;
     }
@@ -25,11 +27,15 @@ public class GUIWaitingState extends AbstractClientState {
         FXMLLoader loader = new FXMLLoader(url);
         try {
             root = loader.load();
-            WaitingSceneController waitingSceneController = loader.getController();
+            waitingSceneController = loader.getController();
             waitingSceneController.setClient(client);
             Platform.runLater(() ->JavaFXGUI.setMainPane((Pane)root));
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+    @Override
+    public void serverError(String message) {
+        waitingSceneController.alert(message);
     }
 }

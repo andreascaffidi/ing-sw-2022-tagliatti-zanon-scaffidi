@@ -15,6 +15,8 @@ public class GUIMenuState extends AbstractClientState {
     private final Client client;
     private Parent root;
 
+    MenuSceneController menuSceneController;
+
     public GUIMenuState(Client client){
         this.client = client;
     }
@@ -25,11 +27,16 @@ public class GUIMenuState extends AbstractClientState {
         FXMLLoader loader = new FXMLLoader(url);
         try {
             root = loader.load();
-            MenuSceneController menuSceneController = loader.getController();
+            menuSceneController = loader.getController();
             menuSceneController.setClient(client);
             Platform.runLater(() ->JavaFXGUI.setMainPane((Pane)root));
         } catch (IOException e){
             e.printStackTrace();
         }
     }
+
+    public void serverError(String message) {
+        menuSceneController.alert(message);
+    }
+
 }

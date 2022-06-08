@@ -1,10 +1,16 @@
 package it.polimi.ingsw.network.client.UI.GUI;
 
+import it.polimi.ingsw.exceptions.ColorNotFoundException;
+import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.UI.UI;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+
+import java.util.Scanner;
 
 public class GUI implements UI {
 
@@ -33,5 +39,19 @@ public class GUI implements UI {
     @Override
     public void showModel(ReducedModel reducedModel) {
         //TODO: metterci la roba di lucrezia
+    }
+
+    public static ColorS chooseValidColor(String color, TextField textField){
+        boolean exit = false;
+        ColorS colorChosen = null;
+        while (!exit){
+            try {
+                colorChosen = ColorS.parseToColor(color);
+                exit = true;
+            } catch (ColorNotFoundException e) {
+                textField.setText("Invalid color, try another");
+            }
+        }
+        return colorChosen;
     }
 }

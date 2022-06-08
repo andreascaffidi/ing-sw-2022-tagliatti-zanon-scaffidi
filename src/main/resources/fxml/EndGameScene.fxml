@@ -8,7 +8,7 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.network.client.UI.GUI.scenesController.EndGameSceneController">
     <children>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c6e4ff" height="400.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
-        <Text layoutX="211.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game ended...">
+        <Text fx:id="endGameText" layoutX="211.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0">
             <font>
                 <Font name="Book Antiqua" size="28.0" />
             </font>

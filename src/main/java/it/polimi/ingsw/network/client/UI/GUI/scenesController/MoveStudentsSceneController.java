@@ -273,6 +273,8 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                 }
             });
             playCharacter.toFront();
+
+
             ReducedModelExpertMode reducedModelExpertMode = (ReducedModelExpertMode) client.getReducedModel();
             for (int i = 0; i < reducedModelExpertMode.getCharacters().size(); i++) {
                 if (reducedModelExpertMode.getCharacters().get(i).getId() == 1 ||
@@ -477,13 +479,15 @@ public class MoveStudentsSceneController extends AbstractSceneController {
                 islandStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(mN)));
             }
 
-            /*if(client.getReducedModel() instanceof ReducedModelExpertMode)
-            {
-                if(((ReducedModelExpertMode) client.getReducedModel()).getNoEntryTiles().get(client.getReducedModel().getIslands().get(i)).equals(true))
-                {
-                    islandStudents.get(i).getChildren().add(setStudentsDimension(new ImageView("/img/Tavolo/Isole/deny_island_icon.png")));
+        }
+
+        for(int i = 0; i < client.getReducedModel().getIslands().size(); i++)
+        {
+            for(int j = 0; j < client.getReducedModel().getIslands().get(i).getNumOfTowers(); j++) {
+                if (client.getReducedModel().getIslands().get(i).getTower() != null) {
+                    islandStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(new Image(valueOf(getClass().getResource("/img/Plancia/Torri/" + client.getReducedModel().getIslands().get(i).getTower().toString() + "_tower.png"))))));
                 }
-            }*/
+            }
         }
 
         if(client.getReducedModel() instanceof ReducedModelExpertMode)
@@ -1103,6 +1107,10 @@ public class MoveStudentsSceneController extends AbstractSceneController {
         coins.add(player2Coins);
         coins.add(player3Coins);
         coins.add(player4Coins);
+
+        player1Coins.setVisible(false);
+        player2Coins.setVisible(false);
+        player3Coins.setVisible(false);
 
         Image ex1 = new Image(valueOf(getClass().getResource("/img/Plancia/Moneta_base.png")));
 
