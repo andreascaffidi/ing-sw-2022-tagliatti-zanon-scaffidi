@@ -320,7 +320,6 @@ public class PlayCharacterSceneController extends AbstractSceneController {
 
     public void handleCharacters()
     {
-
         id1 = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(0).getId();
         id2 = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(1).getId();
         id3 = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(2).getId();

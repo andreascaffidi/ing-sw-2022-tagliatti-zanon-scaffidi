@@ -251,6 +251,7 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
     @Override
     public void setup() {
 
+
         handleCharacters();
         showModel();
     }
@@ -265,7 +266,7 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
         if(client.getReducedModel() instanceof ReducedModelExpertMode) {
 
             playCharacter.setVisible(true);
-            playCharacter.setOnAction(e -> {
+            playCharacter.setOnMouseClicked(e -> {
                 if (!((ReducedModelExpertMode) client.getReducedModel()).isCharacterAlreadyPlayed()) {
                     client.changeState(ClientState.PLAY_CHARACTER);
                 }

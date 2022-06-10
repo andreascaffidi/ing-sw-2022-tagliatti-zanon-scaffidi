@@ -7,6 +7,9 @@ import it.polimi.ingsw.network.client.UI.GUI.JavaFXGUI;
 import it.polimi.ingsw.network.client.UI.UI;
 
 import java.io.IOException;
+import java.util.Scanner;
+
+import static java.lang.Integer.parseInt;
 
 public class ClientApp
 {
@@ -19,6 +22,7 @@ public class ClientApp
      * @throws IOException
      */
     public static void main( String[] args ) throws IOException {
+        //final Scanner in = new Scanner(System.in);
         String UIType = args.length > 0 ? args[0].toUpperCase() : "GUI";
         UI ui;
         if (UIType.equals("GUI")){
@@ -26,6 +30,10 @@ public class ClientApp
         }else{
             ui = new CLI();
         }
+        //IP: 127.0.0.1
+        //PORT: 12345
+        //String Ip = in.nextLine();
+        //String port = in.nextLine();
         Client client = new Client("127.0.0.1", 12345, ui);
         client.startClient();
     }
