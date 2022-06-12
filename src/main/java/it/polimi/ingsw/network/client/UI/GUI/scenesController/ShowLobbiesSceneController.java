@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 import it.polimi.ingsw.network.requests.gameMessages.ChooseCloudMessage;
 import it.polimi.ingsw.network.requests.setupMessages.ChooseTeamMessage;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
-import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
+import it.polimi.ingsw.network.requests.setupMessages.SetupRequestTypes;
 import it.polimi.ingsw.network.server.Lobby;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -105,7 +105,7 @@ public class ShowLobbiesSceneController extends AbstractSceneController {
                     }
                 }
                 else {
-                    client.send(new SetupRequestMessage(SetupResponsesTypes.JOIN_LOBBY, definitiveLobby));
+                    client.send(new SetupRequestMessage(SetupRequestTypes.JOIN_LOBBY, definitiveLobby));
                 }
             }
         }
