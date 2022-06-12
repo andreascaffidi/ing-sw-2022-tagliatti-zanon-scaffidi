@@ -1,13 +1,9 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
 import it.polimi.ingsw.model.enums.ColorS;
-import it.polimi.ingsw.network.client.reducedModel.ReducedCharacter;
 import it.polimi.ingsw.network.client.reducedModel.ReducedIsland;
-import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModelExpertMode;
 import it.polimi.ingsw.network.requests.gameMessages.*;
-import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
-import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
-import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
+import it.polimi.ingsw.network.requests.setupMessages.SetupRequestTypes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,11 +16,11 @@ public class MenuSceneController extends AbstractSceneController {
     public Button createButton;
 
     public void create(ActionEvent event) throws IOException {
-        client.send(new SetupRequestMessage(SetupResponsesTypes.COMMAND, "CREATE"));
+        client.send(new SetupRequestMessage(SetupRequestTypes.COMMAND, "CREATE"));
     }
 
     public void join(ActionEvent event) throws IOException
     {
-        client.send(new SetupRequestMessage(SetupResponsesTypes.COMMAND, "JOIN"));
+        client.send(new SetupRequestMessage(SetupRequestTypes.COMMAND, "JOIN"));
     }
 }

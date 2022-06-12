@@ -52,9 +52,9 @@ public class ReducedIsland implements Serializable {
 
 
     /**
-     * Return a list of students of a chosen color
-     * @param color The color
-     * @return list of students of the chosen color
+     * gets a list of students of a chosen color
+     * @param color color chosen
+     * @return students of the chosen color
      */
     public List<ColorS> getStudents(ColorS color) {
         return students.stream().filter(i -> i.equals(color)).collect(Collectors.toList());

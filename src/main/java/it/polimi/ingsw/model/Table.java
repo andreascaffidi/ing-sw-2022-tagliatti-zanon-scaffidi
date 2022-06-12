@@ -138,7 +138,6 @@ public class Table extends Observable<ResponseMessage> {
     /**
      * sets up the 12 islands and mother nature
      */
-
     private void setupIslands(){
         this.islands = new ArrayList<>();
         for (int i = 0; i < NUM_OF_ISLANDS; i++){
@@ -177,7 +176,6 @@ public class Table extends Observable<ResponseMessage> {
     /**
      * sets up the clouds depending on the number of players
      */
-
     private void setupClouds(){
         this.clouds = new ArrayList<>();
         // The number of clouds is the same as the number of players
@@ -214,7 +212,6 @@ public class Table extends Observable<ResponseMessage> {
     /**
      * sets up the school boards, one for each player
      */
-
     private void setupSchoolBoards(){
         for(int i = 0; i < this.numberOfPlayers; i++){
             Player player = this.players[i];
@@ -761,7 +758,6 @@ public class Table extends Observable<ResponseMessage> {
                 for (Cloud c : this.clouds) {
                     addStudentsToCloud(c);
                 }
-                //TODO: test this endgame condition
                 if (currentPlayer.getAssistantDeck().isEmpty()) {
                     throw new EndGameException("No more assistants");
                 }

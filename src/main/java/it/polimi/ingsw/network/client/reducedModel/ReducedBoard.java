@@ -95,6 +95,10 @@ public class ReducedBoard implements Serializable {
         return assistantDeck;
     }
 
+    /**
+     * gets the students on the dining room
+     * @return number of student on the dining room per color
+     */
     public Map <ColorS,Integer> getStudents(){
         return students;
     }

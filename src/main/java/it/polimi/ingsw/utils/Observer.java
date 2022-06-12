@@ -1,7 +1,15 @@
 package it.polimi.ingsw.utils;
 
+/**
+ * interface observer
+ * @param <T> generic
+ */
 public interface Observer<T> {
 
-    public void update(T message);
+    /**
+     * called when an event is notified
+     * @param message generic message
+     */
+    void update(T message);
 
 }

@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.client.UI.CLI;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
-import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
+import it.polimi.ingsw.network.requests.setupMessages.SetupRequestTypes;
 
 import java.util.Scanner;
 
@@ -19,7 +19,6 @@ public class CLIMenuState extends AbstractClientState {
      * builds a CLI menu state class
      * @param client client
      */
-    private final String CTA = "Create or join a lobby by typing "+Ansi.colorize("CREATE",Ansi.UNDERLINE)+" or "+Ansi.colorize("JOIN",Ansi.UNDERLINE)+": "+Ansi.TYPING_ICON+" ";
     public CLIMenuState(Client client){
         this.client = client;
         in = new Scanner(System.in);
@@ -32,7 +31,8 @@ public class CLIMenuState extends AbstractClientState {
     public void render(){
         boolean valid = false;
         while (!valid){
-            System.out.print(CTA);
+            CLI.CTA("Create or join a lobby by typing "+Ansi.colorize("CREATE",Ansi.UNDERLINE)+
+                    " or "+Ansi.colorize("JOIN",Ansi.UNDERLINE));
             String rawInput = in.nextLine();
             String input = rawInput.toUpperCase();
             if (input.equals("JOIN")){
@@ -45,6 +45,6 @@ public class CLIMenuState extends AbstractClientState {
                CLI.error("["+rawInput+"] is not a valid command\n");
             }
         }
-        client.send(new SetupRequestMessage(SetupResponsesTypes.COMMAND, command));
+        client.send(new SetupRequestMessage(SetupRequestTypes.COMMAND, command));
     }
 }

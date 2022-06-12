@@ -29,10 +29,12 @@ public class CLICreateLobbyState extends AbstractClientState {
      */
     @Override
     public void render(){
-        System.out.print("Insert the game mode by typing: NORMAL or EXPERT ");
+        CLI.CTA("Insert the game mode by typing "+Ansi.colorize("NORMAL", Ansi.UNDERLINE)+
+                " or "+Ansi.colorize("EXPERT", Ansi.UNDERLINE));
         boolean valid = false;
         while (!valid){
-            String input = in.nextLine().toUpperCase();
+            String rawInput = in.nextLine();
+            String input = rawInput.toUpperCase();
             if (input.equals("NORMAL")){
                 gameMode = input;
                 valid = true;
@@ -40,11 +42,11 @@ public class CLICreateLobbyState extends AbstractClientState {
                 gameMode = input;
                 valid = true;
             }else{
-                CLI.error("Unknown command, please type: NORMAL or EXPERT ");
+                CLI.error("["+rawInput+"] is not a valid command\n");
             }
         }
 
-        System.out.print("Insert the number of players (maximum 4 players) ");
+        CLI.CTA("Insert the number of players (maximum 4 players)");
         int num=0;
         while (num < 2 || num > 4){
             try {

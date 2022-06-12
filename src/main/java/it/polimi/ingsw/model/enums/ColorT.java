@@ -9,9 +9,9 @@ import java.io.Serializable;
  */
 public enum ColorT implements Serializable {
 
-    //FIXME: rivedere questi colori
-    BLACK(Ansi.BACKGROUND_BLACK),
-    WHITE(Ansi.BACKGROUND_WHITE),
+    //FIXME: rivedere questi colori perchè sono orribili
+    BLACK(Ansi.BLACK),
+    WHITE(Ansi.HIGH_INTENSITY),
     GREY(Ansi.WHITE);
 
     private final String ansiEscapeCode;

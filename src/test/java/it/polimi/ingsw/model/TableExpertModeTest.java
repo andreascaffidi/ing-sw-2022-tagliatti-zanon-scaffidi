@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.model.islands.Island;
 import it.polimi.ingsw.model.pawns.Student;
 import it.polimi.ingsw.model.pawns.Tower;
+import it.polimi.ingsw.network.client.reducedModel.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,6 +29,11 @@ class TableExpertModeTest {
     private List<Player> three;
     private List<Player> four;
 
+    /**
+     *  Initialises four different table (expert mode), one for each match's number of player
+     *  <br>
+     *  <u>It's called before each test</u>
+     */
     @BeforeEach
     void init() {
         Player p1,p2,p3,p4,p5,p6,p7,p8,p9;
@@ -47,6 +54,11 @@ class TableExpertModeTest {
         table4p = new TableExpertMode(four);
     }
 
+    /**
+     * Sets to null every attribute
+     *  <br>
+     *  <u>It's called after each test</u>
+     */
     @AfterEach
     void tearDown() {
         table2p = null;
@@ -57,7 +69,9 @@ class TableExpertModeTest {
         four = null;
     }
 
-
+    /**
+     * Tests if character cards are correctly set up (test is repeated because the choice of the cards is random)
+     */
     @RepeatedTest(20)
     void setupCharacterCards() {
         assertEquals(3, table2p.getCharacters().size());
@@ -72,6 +86,10 @@ class TableExpertModeTest {
         }
     }
 
+    /**
+     * Tests if students on card are correctly set up, when the character card should have students on it
+     * (test is repeated because the choice of the cards is random)
+     */
     @RepeatedTest(20)
     void setupStudentsOnCard() throws CardNotFoundException {
         if(table2p.getCharacters().containsKey(1)){
@@ -88,11 +106,18 @@ class TableExpertModeTest {
         }
     }
 
+    /**
+     * Tests if card with students on it is got correctly
+     * <u>This method is implicitly tested by other tests</u>
+     */
     @Test
     void getCardWithStudent(){
         assertTrue(true, "tested in other methods");
     }
 
+    /**
+     * Tests that coins are added and paid correctly, checking also the bank amount
+     */
     @Test
     void addAndPayCoins() {
         assertEquals(18, table2p.getBank());
@@ -129,6 +154,9 @@ class TableExpertModeTest {
         assertEquals(14, table4p.getBank());
     }
 
+    /**
+     * Tests if a card has been incremented after the first use
+     */
     @Test
     void incrementCardCost(){
         if (!table2p.getCharacters().containsKey(10)){
@@ -142,11 +170,24 @@ class TableExpertModeTest {
         assertEquals(2, table2p.getCharacters().get(10));
     }
 
+    /**
+     * Tests if an effect is set and reset correctly
+     * <u>This method is implicitly tested by other tests</u>
+     */
     @Test
     void setAndResetCurrentEffect(){
         assertTrue(true, "tested in other methods");
     }
 
+    /**
+     * Tests what happens when there is an effect placed on an island on which calculate supremacy
+     * <ol>
+     *     <li>Checks what happens when there is a NoEntryTile placed on an island</li>
+     *     <li>Checks what happens when there is a AdditionalInfluence placed on an island</li>
+     *     <li>Checks what happens when there is a NoInfluenceColorEffect placed on an island</li>
+     *     <li>Checks what happens when there is a CountTowersEffect placed on an island</li>
+     * </ol>
+     */
     @Test
     void getSupremacy() throws ParityException {
         table2p.motherNatureIsland().setTower(new Tower(ColorT.BLACK, two.get(0)));
@@ -190,6 +231,9 @@ class TableExpertModeTest {
         assertEquals(four.get(0), table4p.getSupremacy(table4p.motherNatureIsland()));
     }
 
+    /**
+     * Tests what happens when an island has a NoEntryTile on it and a new group of islands has to be created from it
+     */
     @Test
     void newIslandGroup(){
         table2p.getIsland(2).setTower(new Tower(ColorT.BLACK, two.get(0)));
@@ -202,6 +246,21 @@ class TableExpertModeTest {
         assertTrue(table2p.isNoEntryTile(table2p.getIsland(2)));
     }
 
+    /**
+     * Tests what happens if a MoveMotherNature effect is activated
+     */
+    @Test
+    void moveMotherNature(){
+        table2p.setCurrentEffect(new AdditionalMovementEffect(2));
+        int motherNatureIsland = table2p.motherNatureIsland().getId();
+        table2p.moveMotherNature(3);
+        int newIsland = (motherNatureIsland + 5) % 12;
+        assertEquals(newIsland, table2p.motherNatureIsland().getId());
+    }
+
+    /**
+     * Tests what happens if a ProfessorTie effect is activated
+     */
     @Test
     void setProfessorOwner(){
         table2p.setCurrentEffect(new ProfessorTieEffect(table2p.getPlayers()[1]));
@@ -221,6 +280,9 @@ class TableExpertModeTest {
         assertEquals(two.get(1), table2p.getProfessorOwner(ColorS.YELLOW));
     }
 
+    /**
+     * Tests if a character card is valid for the current match
+     */
     @Test
     void invalidCharacter(){
         for (int i = 1; i < 13; i++){
@@ -231,6 +293,9 @@ class TableExpertModeTest {
         }
     }
 
+    /**
+     * Tests if player hasn't got enough coins to pay a specific character
+     */
     @Test
     void notEnoughCoins() throws GameException {
         table2p.getCharacters().put(13, 20);
@@ -239,6 +304,9 @@ class TableExpertModeTest {
         table2p.validCharacter(14);
     }
 
+    /**
+     * Tests if an additional movement chosen (from AdditionalMovement effect) is valid
+     */
     @Test
     void validAdditionalMovement() throws GameException {
         table2p.validAdditionalMovement(1);
@@ -247,6 +315,10 @@ class TableExpertModeTest {
         assertThrows(GameException.class, () -> table2p.validAdditionalMovement(3));
     }
 
+    /**
+     * Tests if a NoEntryTile is valid to be placed on a specific island, checks if there are two NoEntryTile on the same island
+     * and if there are more than 4 NoEntryTile in this match
+     */
     @Test
     void validNoEntryTile() throws GameException{
         table2p.validNoEntryTile(table2p.getIsland(1));
@@ -259,5 +331,78 @@ class TableExpertModeTest {
         table2p.validNoEntryTile(table2p.getIsland(4));
         table2p.setNoEntryTile(table2p.getIsland(4), true);
         assertThrows(GameException.class, () -> table2p.validNoEntryTile(table2p.getIsland(5)));
+    }
+
+    /**
+     * Tests if model (expert mode) is reduced correctly
+     */
+    @Test
+    void createReducedModel(){
+        table2p.setCurrentEffect(new AdditionalMovementEffect(2));
+        table2p.setNoEntryTile(table2p.getIsland(0), true);
+        ReducedModel reducedModel = table2p.createReducedModel();
+
+        List<ReducedIsland> islands = table2p.getIslands().stream().map(Island::reduceIsland).collect(Collectors.toList());
+
+        List<ReducedCloud> clouds = new ArrayList<>();
+        for (int i = 0; i < table2p.getClouds().size(); i++){
+            Cloud cloud = table2p.getClouds().get(i);
+            clouds.add(new ReducedCloud(i, cloud.getStudents().stream().map(Student::getColor).collect(Collectors.toList())));
+        }
+
+        List<ReducedBoard> boards = new ArrayList<>();
+        for (Player p : table2p.getPlayers()){
+            boards.add(p.reduceBoard());
+        }
+
+        //check same current player
+        assertEquals(two.get(0).getUsername(), reducedModel.getCurrentPlayer());
+
+        //check same island values
+        for (int i = 0; i < 12; i++){
+            assertEquals(islands.get(i).getId(), reducedModel.getIslands().get(i).getId());
+            assertEquals(islands.get(i).getStudents(), reducedModel.getIslands().get(i).getStudents());
+            assertEquals(islands.get(i).getTower(), reducedModel.getIslands().get(i).getTower());
+            assertEquals(islands.get(i).getNumOfTowers(), reducedModel.getIslands().get(i).getNumOfTowers());
+        }
+
+        //check same cloud values
+        for (int i = 0; i < 2; i++){
+            assertEquals(clouds.get(i).getId(), reducedModel.getClouds().get(i).getId());
+            assertEquals(clouds.get(i).getStudents(), reducedModel.getClouds().get(i).getStudents());
+        }
+
+        //check same boards values
+        for (int i = 0; i < 2; i++){
+            assertEquals(boards.get(i).getStudents(), reducedModel.getBoards().get(i).getStudents());
+            assertEquals(boards.get(i).getEntranceStudents(), reducedModel.getBoards().get(i).getEntranceStudents());
+            assertEquals(boards.get(i).getProfessors(), reducedModel.getBoards().get(i).getProfessors());
+        }
+
+        ReducedModelExpertMode reducedModelExpertMode = (ReducedModelExpertMode) reducedModel;
+
+        //check coins value
+        for (String player : reducedModelExpertMode.getCoins().keySet()){
+            assertEquals(1, reducedModelExpertMode.getCoins().get(player));
+        }
+
+        //check NoEntryTile position
+        for (Integer island : reducedModelExpertMode.getNoEntryTiles().keySet()){
+            if (island == 0){
+                assertTrue(reducedModelExpertMode.getNoEntryTiles().get(island));
+            }else {
+                assertFalse(reducedModelExpertMode.getNoEntryTiles().get(island));
+            }
+        }
+
+        //check current effect
+        String effect = "Current player can move mother nature up to 2 movements more";
+        assertEquals(effect, reducedModelExpertMode.getCurrentEffect());
+
+        //check character cards
+        List<Integer> characters = reducedModelExpertMode.getCharacters().stream().map(ReducedCharacter::getId).collect(Collectors.toList());
+        for (int character : table2p.getCharacters().keySet()){
+            assertTrue(characters.contains(character));
+        }
     }
 }

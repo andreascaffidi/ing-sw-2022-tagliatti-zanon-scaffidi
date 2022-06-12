@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.client.UI.CLI;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
-import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
+import it.polimi.ingsw.network.requests.setupMessages.SetupRequestTypes;
 
 import java.util.Scanner;
 
@@ -12,7 +12,6 @@ import java.util.Scanner;
  */
 public class CLIWelcomeState extends AbstractClientState {
     private final Scanner in;
-    private final String CTA = "Insert a username: "+Ansi.TYPING_ICON+" ";
     /**
      * builds a CLI welcome state class
      * @param client client
@@ -29,7 +28,7 @@ public class CLIWelcomeState extends AbstractClientState {
     public void render(){
         System.out.println("\n\t\t\t\t\t\t\t"+Ansi.colorize("W E L C O M E   T O",Ansi.UNDERLINE));
         CLI.showLogo();
-        System.out.print(CTA);
+        CLI.CTA("Insert a username");
         this.askUsername();
     }
 
@@ -53,12 +52,12 @@ public class CLIWelcomeState extends AbstractClientState {
             username = in.nextLine();
             if (username.contains(" ") || username.length() == 0){
                 CLI.error("Username not permitted (avoid white spaces)\n");
-                System.out.print(CTA);
+                CLI.CTA("Insert a username");
             }else {
                 valid = true;
             }
         }
         client.setUsername(username.toLowerCase());
-        client.send(new SetupRequestMessage(SetupResponsesTypes.USERNAME, username.toLowerCase()));
+        client.send(new SetupRequestMessage(SetupRequestTypes.USERNAME, username.toLowerCase()));
     }
 }

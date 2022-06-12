@@ -8,7 +8,7 @@ import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 import it.polimi.ingsw.network.responses.ResponseMessage;
 import it.polimi.ingsw.network.responses.reducedModelMessage.ServerErrorMessage;
 import it.polimi.ingsw.network.responses.setupMessages.SetupResponseMessage;
-import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
+import it.polimi.ingsw.network.requests.setupMessages.SetupRequestTypes;
 import it.polimi.ingsw.network.responses.setupMessages.ShowLobbyMessage;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.Observer;
@@ -18,6 +18,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * connection class (used to connect a client to the server)
+ */
 public class Connection extends Observable<ControllerMessage> implements Runnable, Observer<ResponseMessage> {
 
     private final Socket socket;
@@ -28,29 +31,43 @@ public class Connection extends Observable<ControllerMessage> implements Runnabl
     private String hostLobby;
     private boolean active = true;
 
+    /**
+     * builds a connection
+     * @param socket socket connection
+     * @param server server
+     */
     public Connection(Socket socket, Server server){
         this.socket = socket;
         this.server = server;
     }
 
+    /**
+     * checks if connection is active
+     * @return true if connection is active, else false
+     */
     private synchronized boolean isActive(){
         return active;
     }
 
+    /**
+     * sends a response message to the client through the socket's output stream
+     * @param message response message
+     */
     public void send(ResponseMessage message){
         try {
-            synchronized (out) {
-                if (!isActive()) {
-                    return;
-                }
-                out.writeObject(message);
-                out.flush();
+            if (!isActive()) {
+                return;
             }
+            out.writeObject(message);
+            out.flush();
         }catch (IOException e){
             e.printStackTrace();
         }
     }
 
+    /**
+     * starts the main process of the connection (receiving messages from the client)
+     */
     @Override
     public void run() {
         try {
@@ -69,6 +86,11 @@ public class Connection extends Observable<ControllerMessage> implements Runnabl
         }
     }
 
+    /**
+     * receives a request message from the client through the socket's input stream
+     * @throws IOException if there are IO problems
+     * @throws ClassNotFoundException if there are problems with readObject() method
+     */
     private void receive() throws IOException, ClassNotFoundException {
         RequestMessage request = (RequestMessage) in.readObject();
         if (request instanceof SetupExecute){
@@ -79,8 +101,12 @@ public class Connection extends Observable<ControllerMessage> implements Runnabl
         }
     }
 
+    /**
+     * handles a setup message based on the specific type of the message (SetupTypeMessage)
+     * @param message setup message (contains a string and a SetupRequestType)
+     */
     public void setupConnection(SetupRequestMessage message){
-        SetupResponsesTypes typeOfMessage = message.getTypeOfMessage();
+        SetupRequestTypes typeOfMessage = message.getTypeOfMessage();
         switch(typeOfMessage){
             case USERNAME:
                 String username = message.getMessage();
@@ -110,15 +136,26 @@ public class Connection extends Observable<ControllerMessage> implements Runnabl
         }
     }
 
+    /**
+     * creates a lobby with the specific setting on the server
+     * @param message lobby settings message
+     */
     public void lobbySettings(CreateLobbyMessage message){
         this.hostLobby = this.getUsernameConnection();
         server.createLobby(message, this);
     }
 
+    /**
+     * chooses a team for this lobby and set it on the server
+     * @param message choose team message
+     */
     public void chooseTeam(ChooseTeamMessage message){
         server.setLobbyTeam(message, this);
     }
 
+    /**
+     * closes the connection
+     */
     public synchronized void closeConnection(){
         try{
             socket.close();
@@ -131,18 +168,34 @@ public class Connection extends Observable<ControllerMessage> implements Runnabl
         active = false;
     }
 
+    /**
+     * gets the host of the lobby joined
+     * @return host username
+     */
     public String getHostLobby() {
         return hostLobby;
     }
 
+    /**
+     * sets the host of the lobby joined
+     * @param hostLobby host name
+     */
     public void setHostLobby(String hostLobby) {
         this.hostLobby = hostLobby;
     }
 
+    /**
+     * get the username of the client
+     * @return client's username
+     */
     public String getUsernameConnection() {
         return usernameConnection;
     }
 
+    /**
+     * handles a message received from the model
+     * @param message generic message
+     */
     @Override
     public void update(ResponseMessage message) {
         send(message);

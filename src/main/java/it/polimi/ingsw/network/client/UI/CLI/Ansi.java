@@ -24,12 +24,7 @@ public final class Ansi {
         public static final String	HIGH_INTENSITY		= "\u001B[1m";
         public static final String	LOW_INTENSITY		= "\u001B[2m";
 
-        public static final String	ITALIC				= "\u001B[3m";
         public static final String	UNDERLINE			= "\u001B[4m";
-        public static final String	BLINK				= "\u001B[5m";
-        public static final String	RAPID_BLINK			= "\u001B[6m";
-        public static final String	REVERSE_VIDEO		= "\u001B[7m";
-        public static final String	INVISIBLE_TEXT		= "\u001B[8m";
 
         public static final String	BLACK				= "\u001B[30m";
         public static final String	RED					= "\u001B[31m";
@@ -44,87 +39,38 @@ public final class Ansi {
         public static final String	BACKGROUND_RED		= "\u001B[41m";
         public static final String	BACKGROUND_GREEN	= "\u001B[42m";
         public static final String	BACKGROUND_YELLOW	= "\u001B[43m";
-        public static final String	BACKGROUND_BLUE		= "\u001B[44m";
         public static final String	BACKGROUND_MAGENTA	= "\u001B[45m";
         public static final String	BACKGROUND_CYAN		= "\u001B[46m";
         public static final String	BACKGROUND_WHITE	= "\u001B[47m";
 
-        public static final Ansi HighIntensity = new Ansi(HIGH_INTENSITY);
-        public static final Ansi Bold = HighIntensity;
-        public static final Ansi LowIntensity = new Ansi(LOW_INTENSITY);
-        public static final Ansi Normal = LowIntensity;
-
-        public static final Ansi Italic = new Ansi(ITALIC);
-        public static final Ansi Underline = new Ansi(UNDERLINE);
-        public static final Ansi Blink = new Ansi(BLINK);
-        public static final Ansi RapidBlink = new Ansi(RAPID_BLINK);
-
-        public static final Ansi Black = new Ansi(BLACK);
-        public static final Ansi Red = new Ansi(RED);
-        public static final Ansi Green = new Ansi(GREEN);
-        public static final Ansi Yellow = new Ansi(YELLOW);
-        public static final Ansi Blue = new Ansi(BLUE);
-        public static final Ansi Magenta = new Ansi(MAGENTA);
-        public static final Ansi Cyan = new Ansi(CYAN);
-        public static final Ansi White = new Ansi(WHITE);
-
-        public static final Ansi BgBlack = new Ansi(BACKGROUND_BLACK);
-        public static final Ansi BgRed = new Ansi(BACKGROUND_RED);
-        public static final Ansi BgGreen = new Ansi(BACKGROUND_GREEN);
-        public static final Ansi BgYellow = new Ansi(BACKGROUND_YELLOW);
-        public static final Ansi BgBlue = new Ansi(BACKGROUND_BLUE);
-        public static final Ansi BgMagenta = new Ansi(BACKGROUND_MAGENTA);
-        public static final Ansi BgCyan = new Ansi(BACKGROUND_CYAN);
-        public static final Ansi BgWhite = new Ansi(BACKGROUND_WHITE);
-
-
         public static final String TYPING_ICON = "➡️";
         public static final String ERROR_ICON = "❌️";
         public static final String CARD_ICON = "\uD83C\uDCCF️";
-        public static final String COIN_ICON = "\uD83E\uDE99️";
         public static final String MONEY_BAG_ICON = "\uD83D\uDCB0️";
         public static final String EFFECT_ICON = "✨";
 
-
-
-        private String[] codes;
-        private static String codes_str;
-
-        public Ansi(String... codes) {
-            this.codes = codes;
-            String _codes_str = "";
-            for (String code : codes) {
-                _codes_str += code;
-            }
-            codes_str = _codes_str;
-        }
-        public static String colorize(String original) {
-                return codes_str + original + RESET;
-        }
+        /**
+         * colorizes a string with a specific color
+         * @param original string to colorize
+         * @param color color
+         * @return string colored
+         */
         public static String colorize(String original, String color) {
                 return color + original + RESET;
         }
 
+        /**
+         * colorizes a string with more effect colors
+         * @param original string to colorize
+         * @param codes colors
+         * @return string colored
+         */
         public static String colorize(String original, String... codes) {
-                String _codes_str = "";
+                StringBuilder _codes_str = new StringBuilder();
                 for (String code : codes) {
-                        _codes_str +=code;
+                        _codes_str.append(code);
                 }
                 return _codes_str + original + RESET;
         }
- /*
-        public Ansi and(Ansi other) {
-            List<String> both = new ArrayList<String>();
-            Collections.addAll(both, codes);
-            Collections.addAll(both, other.codes);
-            return new Ansi(both.toArray(new String[] {}));
-        }
 
-      public static String colorize(String original) {
-            return codes_str + original + RESET;
-        }
-
-        public String format(String template, Object... args) {
-            return colorize(String.format(template, args));
-        }*/
 }

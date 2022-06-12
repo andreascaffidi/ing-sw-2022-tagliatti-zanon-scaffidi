@@ -1,14 +1,13 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
-import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
+import it.polimi.ingsw.network.requests.setupMessages.SetupRequestTypes;
 import it.polimi.ingsw.network.server.Lobby;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Button;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class ShowLobbiesSceneController extends AbstractSceneController {
                 definitiveLobby = l.getHost();
             }
         }
-        client.send(new SetupRequestMessage(SetupResponsesTypes.JOIN_LOBBY, definitiveLobby));
+        client.send(new SetupRequestMessage(SetupRequestTypes.JOIN_LOBBY, definitiveLobby));
     }
 
 }

@@ -5,17 +5,28 @@ import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.responses.ClientExecute;
 import it.polimi.ingsw.network.responses.ResponseMessage;
 
-import java.net.MalformedURLException;
 
+/**
+ * end game message
+ */
 public class EndGameMessage implements ResponseMessage, ClientExecute {
-    private String winner;
+    private final String winner;
 
+    /**
+     * builds an end game message
+     * @param winner winner of the game
+     */
     public EndGameMessage(String winner){
         this.winner = winner;
     }
 
+    /**
+     * implements ClientExecute interface
+     * sets the winner of the game to clients and executes changeState() method on Client class
+     * @param client client
+     */
     @Override
-    public void execute(Client client) throws MalformedURLException {
+    public void execute(Client client){
         client.setWinner(winner);
         client.changeState(ClientState.END_GAME);
     }

@@ -41,11 +41,11 @@ public class CLIPlayCharacterState extends AbstractClientState {
     @Override
     public void render()
     {
-        System.out.println("Select a character card from the following on the table or" +
-                " type EXIT to come back to the game ");
+        System.out.println("Select a character card from the following on the table:");
         for (ReducedCharacter character : characters) {
             System.out.println(character.getId() + " : cost = " + character.getCost());
         }
+        CLI.CTA("Or type "+Ansi.colorize("EXIT", Ansi.UNDERLINE)+ " to come back to the game");
 
         int characterChosen;
         boolean exit = false;
@@ -61,18 +61,18 @@ public class CLIPlayCharacterState extends AbstractClientState {
                 try {
                     characterChosen = Integer.parseInt(input);
                     if (!possibleChoices.contains(characterChosen)) {
-                        System.out.println("Character not available in this match ");
+                        CLI.error("Character not available in this match ");
                     }
                     else if (reducedModelExpertMode.getCoins().get(client.getUsername())
                             < reducedModelExpertMode.getCharacterById(characterChosen).getCost()) {
-                        System.out.println("You haven't got enough coins to pay this card ");
+                        CLI.error("You haven't got enough coins to pay this card ");
                     } else {
                         exit = true;
-                        System.out.println("Card selected! EXIT no more available ");
+                        System.out.println("Card selected! "+Ansi.colorize("EXIT", Ansi.UNDERLINE)+" no more available ");
                         client.send(characterMessage(characterChosen));
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("You have to insert a number ");
+                    CLI.error("You have to insert a number ");
                 }
             }
         }
@@ -106,9 +106,9 @@ public class CLIPlayCharacterState extends AbstractClientState {
      * @return pay character 1 message
      */
     private PayCharacter1Message character1(){
-        System.out.println("Choose a student from the card by typing its position ");
+        CLI.CTA("Choose a student from the card by typing its position");
         int studentChosen = CLI.chooseValidStudentOnCard(reducedModelExpertMode, 1);
-        System.out.println("Choose an island to place the student on it ");
+        CLI.CTA("Choose an island to place the student on it");
         int islandChosen = CLI.chooseValidIsland(reducedModelExpertMode);
         System.out.println("Student moved ");
         return new PayCharacter1Message(islandChosen, studentChosen);
@@ -127,7 +127,7 @@ public class CLIPlayCharacterState extends AbstractClientState {
      * @return pay character 3 message
      */
     private PayCharacter3Message character3(){
-        System.out.println("Choose an island on which calculate supremacy ");
+        CLI.CTA("Choose an island on which calculate supremacy");
         int islandChosen = CLI.chooseValidIsland(reducedModelExpertMode);
         System.out.println("Island's supremacy calculated ");
         return new PayCharacter3Message(islandChosen);
@@ -138,19 +138,19 @@ public class CLIPlayCharacterState extends AbstractClientState {
      * @return pay character 4 message
      */
     private PayCharacter4Message character4(){
-        System.out.println("Insert a number of additional movement (maximum 2) ");
+        CLI.CTA("Insert a number of additional movement (maximum 2)");
         boolean exit = false;
         int movementChosen = 0;
         while (!exit){
             try {
                 movementChosen = Integer.parseInt(in.nextLine());
                 if (movementChosen < 1 || movementChosen > 2) {
-                    System.out.println("Invalid additional movement, choose 1 or 2");
+                    CLI.error("Invalid additional movement, choose 1 or 2");
                 } else {
                     exit = true;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("You have to insert a number ");
+                CLI.error("You have to insert a number ");
             }
         }
         System.out.println("Additional movement set ");
@@ -162,7 +162,7 @@ public class CLIPlayCharacterState extends AbstractClientState {
      * @return pay character 5 message
      */
     private PayCharacter5Message character5(){
-        System.out.println("Choose an island to place a No-Entry Tile ");
+        CLI.CTA("Choose an island to place a No-Entry Tile");
         int islandChosen = CLI.chooseValidIsland(reducedModelExpertMode);
         System.out.println("No-Entry Tile placed ");
         return new PayCharacter5Message(islandChosen);
@@ -173,7 +173,7 @@ public class CLIPlayCharacterState extends AbstractClientState {
      * @return pay character 6 message
      */
     private PayCharacter6Message character6(){
-        System.out.println("Choose an island on which towers don't count for supremacy calculation ");
+        CLI.CTA("Choose an island on which towers don't count for supremacy calculation");
         int islandChosen = CLI.chooseValidIsland(reducedModelExpertMode);
         System.out.println("Effect activated ");
         return new PayCharacter6Message(islandChosen);
@@ -184,7 +184,7 @@ public class CLIPlayCharacterState extends AbstractClientState {
      * @return pay character 7 message
      */
     private PayCharacter7Message character7(){
-        System.out.println("Insert the number of students you want do switch (maximum 3) ");
+        CLI.CTA("Insert the number of students you want do switch (maximum 3)");
 
         List<Integer> entranceChosen = new ArrayList<>();
         List<Integer> cardChosen = new ArrayList<>();
@@ -196,20 +196,20 @@ public class CLIPlayCharacterState extends AbstractClientState {
             try {
                 choices = Integer.parseInt(in.nextLine());
                 if (choices < 1 || choices > 3){
-                    System.out.println("Invalid number, please select between 1 and 3");
+                    CLI.error("Invalid number, please select between 1 and 3");
                 }else{
                     exit = true;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("You have to insert a number ");
+                CLI.error("You have to insert a number ");
             }
         }
 
         //player can make the same choices, in that case it's his fault
         while (choices > 0) {
-            System.out.println("Choose a student from your entrance by typing its position");
+            CLI.CTA("Choose a student from your entrance by typing its position");
             int entranceStudent = CLI.chooseValidEntranceStudent(reducedModelExpertMode, client.getUsername());
-            System.out.println("Choose a student from the card by typing its position");
+            CLI.CTA("Choose a student from the card by typing its position");
             int cardStudent = CLI.chooseValidStudentOnCard(reducedModelExpertMode, 7);
             entranceChosen.add(entranceStudent);
             cardChosen.add(cardStudent);
@@ -232,7 +232,7 @@ public class CLIPlayCharacterState extends AbstractClientState {
      * @return pay character 9 message
      */
     private PayCharacter9Message character9(){
-        System.out.println("Choose a color that has no influence in this round ");
+        CLI.CTA("Choose a color that has no influence in this round");
         ColorS colorChosen = CLI.chooseValidColor();
         System.out.println("Effect activated ");
         return new PayCharacter9Message(colorChosen);
@@ -265,35 +265,35 @@ public class CLIPlayCharacterState extends AbstractClientState {
             return new PayCharacter10Message(null, null);
         }
 
-        System.out.println("Insert the number of students you want do switch (maximum 2) ");
+        CLI.CTA("Insert the number of students you want do switch (maximum 2)");
 
         while (!exit){
             try {
                 choices = Integer.parseInt(in.nextLine());
                 if (choices < 1 || choices > 2){
-                    System.out.println("Invalid number, please select 1 or 2");
+                    CLI.error("Invalid number, please select 1 or 2");
                 }else if (choices > diningStudents) {
-                    System.out.println("You don't have enough students in your dining room");
+                    CLI.error("You don't have enough students in your dining room");
                 }else{
                     exit = true;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("You have to insert a number ");
+                CLI.error("You have to insert a number ");
             }
         }
 
         //player can make the same choices, in that case it's his fault
         while (choices > 0) {
-            System.out.println("Choose a student from your entrance by typing its position");
+            CLI.CTA("Choose a student from your entrance by typing its position");
             int studentChosen = CLI.chooseValidEntranceStudent(reducedModelExpertMode, client.getUsername());
-            System.out.println("Choose a color from the dining room ");
+            CLI.CTA("Choose a color from the dining room");
             exit = false;
             ColorS colorChosen = null;
             while(!exit){
                 colorChosen = CLI.chooseValidColor();
                 int numOfStudents = myBoard.getStudents().get(colorChosen);
                 if (numOfStudents == 0){
-                    System.out.println("There aren't " + colorChosen + " students in your dining room");
+                    CLI.error("There aren't " + colorChosen + " students in your dining room");
                 }else{
                     exit = true;
                 }
@@ -311,7 +311,7 @@ public class CLIPlayCharacterState extends AbstractClientState {
      * @return pay character 11 message
      */
     private PayCharacter11Message character11(){
-        System.out.println("Choose a student from the card by typing its position ");
+        CLI.CTA("Choose a student from the card by typing its position");
         int studentChosen = CLI.chooseValidStudentOnCard(reducedModelExpertMode, 11);
         System.out.println("Student moved ");
         return new PayCharacter11Message(studentChosen);
@@ -322,7 +322,7 @@ public class CLIPlayCharacterState extends AbstractClientState {
      * @return pay character 12 message
      */
     private PayCharacter12Message character12(){
-        System.out.println("Choose a color ");
+        CLI.CTA("Choose a color");
         ColorS colorChosen = CLI.chooseValidColor();
         System.out.println("Effect activated ");
         return new PayCharacter12Message(colorChosen);
@@ -334,7 +334,7 @@ public class CLIPlayCharacterState extends AbstractClientState {
      */
     @Override
     public void serverError(String message) {
-        System.out.println(message);
+        CLI.error(message);
         render();
     }
 }

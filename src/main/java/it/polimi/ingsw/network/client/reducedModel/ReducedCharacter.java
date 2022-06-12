@@ -55,9 +55,9 @@ public class ReducedCharacter implements Serializable {
 
 
     /**
-     * Return a list of students of a chosen color
-     * @param color The color
-     * @return list of students of the chosen color
+     * gets a list of students of a chosen color
+     * @param color color chosen
+     * @return students of the chosen color
      */
     public List<ColorS> getStudents(ColorS color) {
         if(students == null) return  new ArrayList<>();

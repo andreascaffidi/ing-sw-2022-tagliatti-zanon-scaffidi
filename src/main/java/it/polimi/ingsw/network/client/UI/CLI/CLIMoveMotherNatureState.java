@@ -25,10 +25,11 @@ public class CLIMoveMotherNatureState extends AbstractClientState {
         in = new Scanner(System.in);
 
         client.getUI().showModel(client.getReducedModel());
-        System.out.println("It's your turn! Move Mother Nature by typing the number of movement you want, ");
+        System.out.print("It's your turn! Move Mother Nature by typing the number of movement you want");
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
-            System.out.println("Or you can even pay a character card from the available, by typing " +
-                    "PAY CHARACTER (you can pay a character card only one time per round)");
+            System.out.print("\nOr you can even pay a character card from the available, by typing "
+                    +Ansi.colorize("PAY CHARACTER", Ansi.UNDERLINE) +
+                    " (you can pay a character card only one time per round)\n\n");
         }
     }
 
@@ -48,7 +49,7 @@ public class CLIMoveMotherNatureState extends AbstractClientState {
 
         if (myBoard != null){
             maxMovement = myBoard.getAssistantDeck().getPlayedAssistant().getMotherNatureMovements();
-            System.out.println("Maximum movements available: " + maxMovement);
+            CLI.CTA("Maximum movements available: " + maxMovement);
         }
 
         while (!exit){
@@ -56,7 +57,7 @@ public class CLIMoveMotherNatureState extends AbstractClientState {
             if (client.getReducedModel() instanceof ReducedModelExpertMode &&
                     input.equalsIgnoreCase("PAY CHARACTER")){
                 if ( ((ReducedModelExpertMode) client.getReducedModel()).isCharacterAlreadyPlayed()){
-                    System.out.println("You have already played a character in this round ");
+                    CLI.error("You have already played a character in this round ");
                 }else{
                     exit = true;
                     payCharacter = true;
@@ -66,13 +67,13 @@ public class CLIMoveMotherNatureState extends AbstractClientState {
                 try {
                     movementChosen = Integer.parseInt(input);
                     if (movementChosen < 1 || movementChosen > maxMovement) {
-                        System.out.println("Invalid Mother Nature Movement ");
+                        CLI.error("Invalid Mother Nature Movement ");
                     } else {
                         System.out.println("Mother Nature moved, waiting for the other players...");
                         exit = true;
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("You have to insert a number ");
+                    CLI.error("You have to insert a number ");
                 }
             }
         }
@@ -87,7 +88,7 @@ public class CLIMoveMotherNatureState extends AbstractClientState {
      */
     @Override
     public void serverError(String message) {
-        System.out.println(message);
+        CLI.error(message);
         render();
     }
 }

@@ -40,6 +40,11 @@ public class ReducedCloud implements Serializable {
         return students;
     }
 
+    /**
+     * gets a list of students of a chosen color
+     * @param color color chosen
+     * @return students of the chosen color
+     */
     public List<ColorS> getStudents(ColorS color) {
         return students.stream().filter(i -> i.equals(color)).collect(Collectors.toList());
     }

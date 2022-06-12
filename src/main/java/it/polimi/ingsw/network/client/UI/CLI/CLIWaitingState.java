@@ -17,12 +17,12 @@ public class CLIWaitingState extends AbstractClientState {
     }
 
     /**
-     * displays waiting state on command line
+     * displays waiting state on command line and start waiting thread
      */
     @Override
     public void render(){
+        //FIXME bloccare input
         System.out.println(client.getWaitingMessage());
-        //TODO: bloccare input in qualche modo
     }
 
     /**

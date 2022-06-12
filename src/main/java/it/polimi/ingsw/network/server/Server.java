@@ -20,6 +20,9 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * server class, manages all the matches
+ */
 public class Server {
     private static final int PORT= 12345;
     private final ServerSocket serverSocket;
@@ -34,6 +37,10 @@ public class Server {
 
     private final List<Connection> connections = new ArrayList<>();
 
+    /**
+     * builds a server class
+     * @throws IOException if there are IO problems
+     */
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
         this.clients = new HashMap<>();
@@ -41,10 +48,19 @@ public class Server {
         this.playingLobbies = new HashMap<>();
     }
 
+    /**
+     * adds a connection to the list of active connections
+     * @param connection connection to add
+     */
     private synchronized void registerConnection(Connection connection){
         connections.add(connection);
     }
 
+    /**
+     * removes a connection from the list of active connections; it also manages the cases when the player to remove
+     * is in a waiting lobby, is the host of a lobby and is in a playing lobby
+     * @param connection connection to remove
+     */
     public synchronized void deregisterConnection(Connection connection){
         connections.remove(connection);
         //remove from clients list
@@ -121,6 +137,11 @@ public class Server {
         System.out.println("Connection number: " + getNumOfConnections());
     }
 
+    /**
+     * makes a player join a lobby
+     * @param host host of the lobby to join
+     * @param connection connection of the player who wants to join
+     */
     public synchronized void joinLobby(String host, Connection connection){
         //search for host's lobby
         Lobby lobby = waitingLobbies.keySet().stream().filter(l -> l.getHost().equals(host)).findFirst().orElse(null);
@@ -152,6 +173,9 @@ public class Server {
 
     }
 
+    /**
+     * starts the main process on the server (called in ServerApp)
+     */
     public void run(){
         System.out.println("Server listening on port: " + PORT);
         while(true){
@@ -167,6 +191,12 @@ public class Server {
         }
     }
 
+    /**
+     * checks if a username is valid (is unique) and, in that case, adds it to clients list
+     * @param username username
+     * @param connection connection of the player
+     * @return validity of username
+     */
     public boolean validUsername(String username, Connection connection){
         if (clients.containsKey(username)){
             return false;
@@ -176,6 +206,11 @@ public class Server {
         }
     }
 
+    /**
+     * creates a lobby with specific settings and add it to waiting lobbies list
+     * @param settings lobby settings
+     * @param connection connection of the player who creates the lobby
+     */
     public void createLobby(CreateLobbyMessage settings, Connection connection){
         List<Connection> lobbyConnections = new ArrayList<>();
         lobbyConnections.add(connection);
@@ -191,6 +226,11 @@ public class Server {
         connection.send(new WaitingMessage(ClientState.WAITING, "Lobby created, waiting for players..."));
     }
 
+    /**
+     * sets the teams for a lobby (4 players match)
+     * @param message choose team message
+     * @param connection connection of the player who has chosen the team
+     */
     public synchronized void setLobbyTeam(ChooseTeamMessage message, Connection connection){
         Lobby lobby = waitingLobbies.keySet().stream().filter(l -> l.getHost().equals(message.getSelectedHost())).findFirst().orElse(null);
         //if there isn't the lobby
@@ -213,14 +253,28 @@ public class Server {
         }
     }
 
+    /**
+     * gets the waiting lobbies
+     * @return waiting lobbies
+     */
     public List<Lobby> getWaitingLobbies() {
         return new ArrayList<>(waitingLobbies.keySet());
     }
 
+    /**
+     * gets the number of active connections on the server
+     * @return number of connections
+     */
     public int getNumOfConnections() {
         return connections.size();
     }
 
+    /**
+     * creates a match for a lobby initializing players, model, controller and observers. it also moves the lobby
+     * to the list of playing lobbies
+     * @param lobby lobby to start
+     * @param lobbyConnections connections on the lobby
+     */
     private void createMatch(Lobby lobby, List<Connection> lobbyConnections){
         System.out.println("Lobby full, create match");
 

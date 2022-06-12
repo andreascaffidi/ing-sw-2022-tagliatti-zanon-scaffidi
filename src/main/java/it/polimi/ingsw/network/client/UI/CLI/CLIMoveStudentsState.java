@@ -26,11 +26,12 @@ public class CLIMoveStudentsState extends AbstractClientState {
 
         client.getUI().showModel(client.getReducedModel());
         choices = client.getReducedModel().getBoards().size() == 3 ? 4 : 3;
-        System.out.println("It's your turn! Choose " + choices +" students from your entrance and move them" +
+        System.out.print("It's your turn! Choose " + choices +" students from your entrance and move them" +
                 " to an Island or your Dining room");
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
-            System.out.println("Or you can even pay a character card from the available, by typing " +
-                    "PAY CHARACTER (you can pay a character card only one time per round)");
+            System.out.print("\nOr you can even pay a character card from the available, by typing "
+                    +Ansi.colorize("PAY CHARACTER", Ansi.UNDERLINE) +
+                    " (you can pay a character card only one time per round)\n\n");
         }
     }
 
@@ -50,7 +51,7 @@ public class CLIMoveStudentsState extends AbstractClientState {
 
         while (choices > 0)
         {
-            System.out.println("Choose a student from your entrance by typing its position ");
+            CLI.CTA("Choose a student from your entrance by typing its "+Ansi.colorize("position", Ansi.UNDERLINE));
 
             int studentChosen = 0;
             boolean exit = false;
@@ -60,7 +61,7 @@ public class CLIMoveStudentsState extends AbstractClientState {
                 if (client.getReducedModel() instanceof ReducedModelExpertMode &&
                         input.equalsIgnoreCase("PAY CHARACTER")){
                     if ( ((ReducedModelExpertMode) client.getReducedModel()).isCharacterAlreadyPlayed()){
-                        System.out.println("You have already played a character in this round ");
+                        CLI.error("You have already played a character in this round ");
                     }else{
                         exit = true;
                         choices = 0;
@@ -71,18 +72,20 @@ public class CLIMoveStudentsState extends AbstractClientState {
                     try {
                         studentChosen = Integer.parseInt(input);
                         if (!studentsAvailable.contains(studentChosen)) {
-                            System.out.println("Invalid student position ");
+                            CLI.error("Invalid student position ");
                         } else {
                             studentsAvailable.remove((Integer) studentChosen);
                             exit = true;
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println("You have to insert a number ");
+                        CLI.error("You have to insert a number ");
                     }
                 }
             }
             if (!payCharacter) {
-                System.out.println("Choose a destination for this student by typing DINING ROOM or a number of an island ");
+                CLI.CTA("Choose a destination for this student by typing "+
+                        Ansi.colorize("DINING ROOM", Ansi.UNDERLINE) +" or a "+
+                        Ansi.colorize("number", Ansi.UNDERLINE) +" of an island");
 
                 String destination;
                 exit = false;
@@ -91,7 +94,7 @@ public class CLIMoveStudentsState extends AbstractClientState {
                     if (client.getReducedModel() instanceof ReducedModelExpertMode &&
                             input.equalsIgnoreCase("PAY CHARACTER")){
                         if ( ((ReducedModelExpertMode) client.getReducedModel()).isCharacterAlreadyPlayed()){
-                            System.out.println("You have already played a character in this round ");
+                            CLI.error("You have already played a character in this round ");
                         }else{
                             exit = true;
                             choices = 0;
@@ -108,14 +111,14 @@ public class CLIMoveStudentsState extends AbstractClientState {
                             try {
                                 int islandChosen = Integer.parseInt(destination);
                                 if (islandChosen < 1 || islandChosen > client.getReducedModel().getIslands().size()) {
-                                    System.out.println("Invalid island, choose another one");
+                                    CLI.error("Invalid island, choose another one");
                                 } else {
                                     exit = true;
                                     choices--;
                                     movementsChosen.put(studentChosen, destination);
                                 }
                             } catch (NumberFormatException e) {
-                                System.out.println("You have to insert the number of an island or DINING ROOM");
+                                CLI.error("You have to insert the number of an island or DINING ROOM");
                             }
                         }
                     }
@@ -135,7 +138,7 @@ public class CLIMoveStudentsState extends AbstractClientState {
      */
     @Override
     public void serverError(String message) {
-        System.out.println(message);
+        CLI.error(message);
         render();
     }
 }

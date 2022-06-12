@@ -28,11 +28,13 @@ public class CLIPlayAssistantState extends AbstractClientState {
         this.client = client;
         in = new Scanner(System.in);
         client.getUI().showModel(client.getReducedModel());
-        System.out.println("It's your turn! Play an Assistant Card by typing the id ");
+        System.out.print("It's your turn! Play an Assistant Card by typing the "+Ansi.colorize("ID", Ansi.UNDERLINE));
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
-            System.out.println("Or you can even pay a character card from the available, by typing " +
-                    "PAY CHARACTER (you can pay a character card only one time per round)");
+            System.out.print("\nOr you can even pay a character card from the available, by typing "
+                    +Ansi.colorize("PAY CHARACTER", Ansi.UNDERLINE) +
+                    " (you can pay a character card only one time per round)");
         }
+        CLI.CTA("");
     }
 
     /**
@@ -59,7 +61,7 @@ public class CLIPlayAssistantState extends AbstractClientState {
             if (client.getReducedModel() instanceof ReducedModelExpertMode &&
                     input.equalsIgnoreCase("PAY CHARACTER")){
                 if ( ((ReducedModelExpertMode) client.getReducedModel()).isCharacterAlreadyPlayed()){
-                    System.out.println("You have already played a character in this round ");
+                    CLI.error("You have already played a character in this round ");
                 }else{
                     exit = true;
                     payCharacter = true;
@@ -69,13 +71,13 @@ public class CLIPlayAssistantState extends AbstractClientState {
                 try{
                     assistantChosen = Integer.parseInt(input);
                     if (!possibleChoices.contains(assistantChosen)) {
-                        System.out.println("You can't play this assistant ");
+                        CLI.error("You can't play this assistant ");
                     } else {
                         System.out.println("Assistant chosen, waiting for players...");
                         exit = true;
                     }
                 }catch (NumberFormatException e){
-                    System.out.println("You have to insert a number ");
+                    CLI.error("You have to insert a number ");
                 }
             }
         }
@@ -90,7 +92,7 @@ public class CLIPlayAssistantState extends AbstractClientState {
      */
     @Override
     public void serverError(String message) {
-        System.out.println(message);
+        CLI.error(message);
         render();
     }
 }

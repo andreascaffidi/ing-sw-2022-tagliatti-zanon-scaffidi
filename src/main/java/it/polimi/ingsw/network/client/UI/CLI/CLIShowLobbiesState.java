@@ -4,10 +4,9 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.requests.setupMessages.ChooseTeamMessage;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
-import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
+import it.polimi.ingsw.network.requests.setupMessages.SetupRequestTypes;
 import it.polimi.ingsw.network.server.Lobby;
 
-import javax.swing.text.Style;
 import java.util.List;
 import java.util.Scanner;
 
@@ -35,7 +34,8 @@ public class CLIShowLobbiesState extends AbstractClientState{
     @Override
     public void render(){
         List<Lobby> availableLobbies = client.getAvailableLobbies();
-        System.out.println("Select the lobby to join by typing the username of the host:\n\n");
+        System.out.print("Select the lobby to join by typing the "+Ansi.colorize("username", Ansi.UNDERLINE)
+                +" of the host: \n\n");
         for (Lobby l : availableLobbies){
             System.out.println(l.getHost() + " :    " + l.getGameMode() + " MODE  " +
                     l.getNumOfConnection() + "/" + l.getNumOfPlayers() + "\n");
@@ -43,7 +43,7 @@ public class CLIShowLobbiesState extends AbstractClientState{
 
         boolean valid = false;
         while (!valid){
-            System.out.print("Insert the selected host: "+Ansi.TYPING_ICON+" ");
+            CLI.CTA("Insert the selected host");
             String input = in.nextLine();
             for (Lobby l : availableLobbies){
                 if (input.equalsIgnoreCase(l.getHost())) {
@@ -59,7 +59,6 @@ public class CLIShowLobbiesState extends AbstractClientState{
         }
 
         if (selectedLobby.getNumOfPlayers() == 4){
-            System.out.println("Match for 4 players, choose a team by typing 1 or 2: ");
             System.out.println("Team 1:");
             for (String player : selectedLobby.getPlayersByTeam(1)){
                 System.out.println(player + "\t");
@@ -70,21 +69,24 @@ public class CLIShowLobbiesState extends AbstractClientState{
                 System.out.println(player + "\t");
             }
 
+            CLI.CTA("Match for 4 players, choose a team by typing "+Ansi.colorize("1", Ansi.UNDERLINE)
+                    +" or "+Ansi.colorize("2", Ansi.UNDERLINE));
+
             int num = 0;
             while (num < 1 || num > 2) {
                 try {
                     num = Integer.parseInt(in.nextLine());
                     if (num < 1 || num > 2) {
-                        System.out.println("Invalid team ");
+                        CLI.error("Invalid team ");
                     } else {
                         client.send(new ChooseTeamMessage(num, selectedHost));
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("You have to insert a number ");
+                    CLI.error("You have to insert a number ");
                 }
             }
         }else {
-            client.send(new SetupRequestMessage(SetupResponsesTypes.JOIN_LOBBY, selectedHost));
+            client.send(new SetupRequestMessage(SetupRequestTypes.JOIN_LOBBY, selectedHost));
         }
     }
 
@@ -94,6 +96,6 @@ public class CLIShowLobbiesState extends AbstractClientState{
      */
     @Override
     public void serverError(String message) {
-        System.out.println(message);
+        CLI.error(message);
     }
 }

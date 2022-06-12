@@ -105,7 +105,7 @@ class PlayerTest {
         assertEquals(player2, player);
         Player player3 = new Player("username");
         assertNotEquals(player3, player2);
-        assertNotEquals(null, player2);
+        assertNotEquals(player2, null);
         assertNotEquals(player3, new Object());
     }
 

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
-import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
+import it.polimi.ingsw.network.requests.setupMessages.SetupRequestTypes;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -29,7 +29,7 @@ public class WelcomeSceneController extends AbstractSceneController {
     public void login(){
         String username = NickNameTextField.getText();
         client.setUsername(username);
-        client.send(new SetupRequestMessage(SetupResponsesTypes.USERNAME, username));
+        client.send(new SetupRequestMessage(SetupRequestTypes.USERNAME, username));
     }
 
     public void alert(String message){

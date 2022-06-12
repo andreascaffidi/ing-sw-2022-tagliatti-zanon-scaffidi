@@ -82,7 +82,7 @@ public class ReducedModelExpertMode extends ReducedModel implements Serializable
     }
 
     /**
-     * check if a player has already played a character
+     * checks if a player has already played a character
      * @return if a player has already played a character
      */
     public boolean isCharacterAlreadyPlayed() {

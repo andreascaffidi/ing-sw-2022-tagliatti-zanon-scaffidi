@@ -2,8 +2,15 @@ package it.polimi.ingsw.network.responses;
 
 import it.polimi.ingsw.network.client.Client;
 
-import java.net.MalformedURLException;
 
+/**
+ * interface used to dispatch Client methods
+ */
 public interface ClientExecute {
-    void execute(Client client) throws MalformedURLException;
+
+    /**
+     * executes a method on Client class
+     * @param client client
+     */
+    void execute(Client client);
 }
