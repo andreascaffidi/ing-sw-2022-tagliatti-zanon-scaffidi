@@ -1,9 +1,15 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
 import it.polimi.ingsw.model.enums.ColorS;
+import it.polimi.ingsw.model.enums.ColorT;
+import it.polimi.ingsw.network.client.reducedModel.ReducedCharacter;
 import it.polimi.ingsw.network.client.reducedModel.ReducedIsland;
+import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModelExpertMode;
 import it.polimi.ingsw.network.requests.gameMessages.*;
+import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
+import it.polimi.ingsw.network.responses.setupMessages.SetupResponsesTypes;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -17,8 +23,10 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
@@ -312,11 +320,13 @@ public class PlayCharacterSceneController extends AbstractSceneController {
 
     public void handleCharacters()
     {
-        AdditionalMovements.setVisible(false);
-
         id1 = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(0).getId();
         id2 = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(1).getId();
         id3 = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(2).getId();
+
+        /*character1.setAccessibleText("Cost: " + ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(0).getCost());
+        character2.setAccessibleText("Cost: " + ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(1).getCost());
+        character3.setAccessibleText("Cost: " + ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().get(2).getCost());*/
 
         Image img1 = new Image(String.valueOf(getClass().getResource("/img/Personaggi/CarteTOT_front" + id1 + ".jpg")));
         Image img2 = new Image(String.valueOf(getClass().getResource("/img/Personaggi/CarteTOT_front" + id2 + ".jpg")));
@@ -326,20 +336,12 @@ public class PlayCharacterSceneController extends AbstractSceneController {
         ImageView view2 = new ImageView(img2);
         ImageView view3 = new ImageView(img3);
 
-        /*isCardWithStudents(id1, character1Students);
-        isCardWithStudents(id2, character2Students);
-        isCardWithStudents(id3, character3Students);*/
-
-        Image blue = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_blue.png")));
-        Image red = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_red.png")));
-        Image yellow = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_yellow.png")));
-        Image pink = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_pink.png")));
-        Image green = new Image(String.valueOf(getClass().getResource("/img/Plancia/Studenti/student_green.png")));
 
         view1.setFitWidth(200);
         view1.setFitHeight(400);
         playCharacter1.setGraphic(view1);
         playCharacter1.setVisible(true);
+        character1Students.setVisible(true);
         playCharacter1.toFront();
         playCharacter1.setOnAction(e -> {
             play(id1);
@@ -350,6 +352,7 @@ public class PlayCharacterSceneController extends AbstractSceneController {
         view2.setFitHeight(400);
         playCharacter2.setGraphic(view2);
         playCharacter2.setVisible(true);
+        character2Students.setVisible(true);
         playCharacter2.toFront();
         playCharacter2.setOnAction(e -> {
             play(id2);
@@ -360,6 +363,7 @@ public class PlayCharacterSceneController extends AbstractSceneController {
         view3.setFitHeight(400);
         playCharacter3.setGraphic(view3);
         playCharacter3.setVisible(true);
+        character3Students.setVisible(true);
         playCharacter3.toFront();
         playCharacter3.setOnAction(e -> {
             play(id3);
@@ -369,6 +373,47 @@ public class PlayCharacterSceneController extends AbstractSceneController {
         character1Students.toFront();
         character2Students.toFront();
         character3Students.toFront();
+
+        List<Integer> possibleChoices = ((ReducedModelExpertMode) client.getReducedModel()).getCharacters().stream().map(ReducedCharacter::getId).collect(Collectors.toList());
+
+        if (!possibleChoices.contains(id1)) {
+            playCharacter1.setVisible(false);
+            character1.setVisible(false);
+            character1MoveStudents.setVisible(false);
+            character1Students.setVisible(false);
+        } else if (((ReducedModelExpertMode) client.getReducedModel()).getCoins().get(client.getUsername()) <
+        ((ReducedModelExpertMode) client.getReducedModel()).getCharacterById(id1).getCost()) {
+            playCharacter1.setVisible(false);
+            character1.setVisible(false);
+            character1MoveStudents.setVisible(false);
+            character1Students.setVisible(false);
+        }
+
+        if (!possibleChoices.contains(id2)) {
+            playCharacter2.setVisible(false);
+            character2.setVisible(false);
+            character2MoveStudents.setVisible(false);
+            character2Students.setVisible(false);
+        } else if (((ReducedModelExpertMode) client.getReducedModel()).getCoins().get(client.getUsername()) <
+                ((ReducedModelExpertMode) client.getReducedModel()).getCharacterById(id2).getCost()) {
+            playCharacter2.setVisible(false);
+            character2.setVisible(false);
+            character2MoveStudents.setVisible(false);
+            character2Students.setVisible(false);
+        }
+
+        if (!possibleChoices.contains(id3)) {
+            playCharacter3.setVisible(false);
+            character3.setVisible(false);
+            character3MoveStudents.setVisible(false);
+            character3Students.setVisible(false);
+        } else if (((ReducedModelExpertMode) client.getReducedModel()).getCoins().get(client.getUsername()) <
+                ((ReducedModelExpertMode) client.getReducedModel()).getCharacterById(id3).getCost()) {
+            playCharacter3.setVisible(false);
+            character3.setVisible(false);
+            character3MoveStudents.setVisible(false);
+            character3Students.setVisible(false);
+        }
     }
 
     public void isCardWithStudents(int id, TilePane characterStudents, TilePane characterMoveStudents)
@@ -417,6 +462,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
 
     public void play(int id)
     {
+        AdditionalMovements.setVisible(false);
+
         playCharacter1.setVisible(false);
         playCharacter2.setVisible(false);
         playCharacter3.setVisible(false);
@@ -426,6 +473,14 @@ public class PlayCharacterSceneController extends AbstractSceneController {
         character3Students.setVisible(false);
 
         showModel();
+
+        character1.setVisible(true);
+        character2.setVisible(true);
+        character3.setVisible(true);
+
+        character1MoveStudents.setVisible(true);
+        character2MoveStudents.setVisible(true);
+        character3MoveStudents.setVisible(true);
 
         switch (id){
             case 1 : character1();
@@ -459,7 +514,7 @@ public class PlayCharacterSceneController extends AbstractSceneController {
         }
 
         for (int i = 0; i < client.getReducedModel().getIslands().size(); i++) {
-            dropOnIsland(i);
+            dropOnIsland1(i);
         }
 
     }
@@ -482,7 +537,7 @@ public class PlayCharacterSceneController extends AbstractSceneController {
         }
     }
 
-    public void dropOnIsland(int i) {
+    public void dropOnIsland1(int i) {
 
         TilePane currentIsland = islandStudents.get(i);
 
@@ -510,7 +565,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
 
     public void character3()
     {
-        for (int i = 0; i < client.getReducedModel().getIslands().size(); i++) {
+        for (int i = 0; i < client.getReducedModel().getIslands().size(); i++)
+        {
             clickOnIsland(i);
         }
     }
@@ -518,15 +574,16 @@ public class PlayCharacterSceneController extends AbstractSceneController {
     public void clickOnIsland(int i)
     {
         islandStudents.get(i).setOnMouseClicked((MouseEvent event) ->
-            {
-                client.send(new PayCharacter3Message(i + 1));
-            });
+        {
+            client.send(new PayCharacter3Message(i + 1));
+        });
     }
 
     public void character4()
     {
         AdditionalMovements.setVisible(true);
-        AdditionalMovements.setOnKeyPressed((KeyEvent event) ->
+        AdditionalMovements.toFront();
+        AdditionalMovements.setOnMouseClicked((MouseEvent event) ->
         {
             String movements = AdditionalMovements.getText();
             client.send(new PayCharacter4Message(parseInt(movements)));
@@ -569,6 +626,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
     public void character7()
     {
         AdditionalMovements.setVisible(true);
+        AdditionalMovements.toFront();
+
         AdditionalMovements.setOnKeyPressed((KeyEvent event) ->
         {
             numOfStudents = Integer.parseInt(AdditionalMovements.getText());
@@ -710,6 +769,7 @@ public class PlayCharacterSceneController extends AbstractSceneController {
     public void character9()
     {
         AdditionalMovements.setVisible(true);
+        AdditionalMovements.toFront();
         AdditionalMovements.setOnKeyPressed((KeyEvent event) ->
         {
             String color = AdditionalMovements.getText().toLowerCase();
@@ -728,12 +788,13 @@ public class PlayCharacterSceneController extends AbstractSceneController {
     public void character10()
     {
         AdditionalMovements.setVisible(true);
-        AdditionalMovements.setOnKeyPressed((KeyEvent event) ->
+        AdditionalMovements.toFront();
+        AdditionalMovements.setOnAction((ActionEvent event) ->
         {
             numOfStudents = Integer.parseInt(AdditionalMovements.getText());
+            AdditionalMovements.setVisible(false);
+            event.consume();
         });
-
-        AdditionalMovements.setVisible(false);
 
         List<Integer> entranceChosen = new ArrayList<>();
         List<ColorS> diningChosen = new ArrayList<>();
@@ -792,6 +853,7 @@ public class PlayCharacterSceneController extends AbstractSceneController {
                                 diningChosen.add(ColorS.GREEN);
                             }
 
+                            GridPane.getRowIndex(img);
                             player1Entrance.getChildren().remove(img);
                             if(entranceChosen.size() >= numOfStudents && diningChosen.size() >= numOfStudents)
                             {
@@ -1022,6 +1084,7 @@ public class PlayCharacterSceneController extends AbstractSceneController {
     public void character12()
     {
         AdditionalMovements.setVisible(true);
+        AdditionalMovements.toFront();
         AdditionalMovements.setOnKeyPressed((KeyEvent event) ->
         {
             String color = AdditionalMovements.getText().toLowerCase();
@@ -1179,6 +1242,16 @@ public class PlayCharacterSceneController extends AbstractSceneController {
             }
 
         }
+
+        for(int i = 0; i < client.getReducedModel().getIslands().size(); i++)
+        {
+            for(int j = 0; j < client.getReducedModel().getIslands().get(i).getNumOfTowers(); j++) {
+                if (client.getReducedModel().getIslands().get(i).getTower() != null) {
+                    islandStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(new Image(valueOf(getClass().getResource("/img/Plancia/Torri/" + client.getReducedModel().getIslands().get(i).getTower().toString() + "_tower.png"))))));
+                }
+            }
+        }
+
         if(client.getReducedModel() instanceof ReducedModelExpertMode)
         {
             for(ReducedIsland r : client.getReducedModel().getIslands())

@@ -251,6 +251,7 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
     @Override
     public void setup() {
 
+
         handleCharacters();
         showModel();
     }
@@ -265,12 +266,13 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
         if(client.getReducedModel() instanceof ReducedModelExpertMode) {
 
             playCharacter.setVisible(true);
-            playCharacter.setOnAction(e -> {
+            playCharacter.setOnMouseClicked(e -> {
                 if (!((ReducedModelExpertMode) client.getReducedModel()).isCharacterAlreadyPlayed()) {
                     client.changeState(ClientState.PLAY_CHARACTER);
                 }
             });
             playCharacter.toFront();
+
             ReducedModelExpertMode reducedModelExpertMode = (ReducedModelExpertMode) client.getReducedModel();
             for (int i = 0; i < reducedModelExpertMode.getCharacters().size(); i++) {
                 if (reducedModelExpertMode.getCharacters().get(i).getId() == 1 ||
@@ -474,6 +476,15 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
             {
                 islandStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(mN)));
                 configureMn(i, islandStudents.get(i).getChildren().size() - 1);
+            }
+        }
+
+        for(int i = 0; i < client.getReducedModel().getIslands().size(); i++)
+        {
+            for(int j = 0; j < client.getReducedModel().getIslands().get(i).getNumOfTowers(); j++) {
+                if (client.getReducedModel().getIslands().get(i).getTower() != null) {
+                    islandStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(new Image(valueOf(getClass().getResource("/img/Plancia/Torri/" + client.getReducedModel().getIslands().get(i).getTower().toString() + "_tower.png"))))));
+                }
             }
         }
 
@@ -1032,6 +1043,10 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
         coins.add(player3Coins);
         coins.add(player4Coins);
 
+        player1Coins.setVisible(false);
+        player2Coins.setVisible(false);
+        player3Coins.setVisible(false);
+
         Image ex1 = new Image(valueOf(getClass().getResource("/img/Plancia/Moneta_base.png")));
 
         for(int i = 0; i < client.getReducedModel().getBoards().size(); i++)
@@ -1122,15 +1137,17 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
             Image img = event.getDragboard().getImage();
             island.getChildren().add(setStudentsDimension(new ImageView(img)));
             System.out.println(id);
+            System.out.println(parseInt(event.getDragboard().getString()) + 1);
             if(id - (parseInt(event.getDragboard().getString()) + 1) > 0)
             {
-                System.out.println(id - (parseInt(event.getDragboard().getString()) + 1));
-                client.send(new MoveMotherNatureMessage(id - parseInt(event.getDragboard().getString()) + 1));
+                int movements = id - (parseInt(event.getDragboard().getString()) + 1);
+                System.out.println(movements);
+                client.send(new MoveMotherNatureMessage(movements));
             }
             else
             {
-                System.out.println(12 % abs(id - (parseInt(event.getDragboard().getString()) + 1)));
-                client.send(new MoveMotherNatureMessage(12 % abs(id -(parseInt(event.getDragboard().getString())) )));
+                System.out.println(client.getReducedModel().getIslands().size() % abs(id - (parseInt(event.getDragboard().getString()) + 1)));
+                client.send(new MoveMotherNatureMessage(client.getReducedModel().getIslands().size() % abs(id -(parseInt(event.getDragboard().getString()) + 1) )));
             }
             event.consume();
         });

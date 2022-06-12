@@ -4,6 +4,8 @@ import it.polimi.ingsw.network.requests.setupMessages.CreateLobbyMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 public class CreateLobbySceneController extends AbstractSceneController {
 
@@ -27,6 +29,16 @@ public class CreateLobbySceneController extends AbstractSceneController {
 
     private String mode;
     private int num;
+
+    @FXML
+    public Text alertMessage;
+    @FXML
+    public TextFlow alert;
+
+    public void alert(String message){
+        alertMessage.setText(message);
+        alert.setVisible(true);
+    }
 
     public void enter(ActionEvent event){
         client.send(new CreateLobbyMessage(client.getUsername(), this.mode.toUpperCase(), this.num));

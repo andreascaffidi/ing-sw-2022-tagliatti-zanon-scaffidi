@@ -410,160 +410,157 @@ public class PlayAssistantSceneController extends AbstractSceneController {
         Assistant9.toFront();
         Assistant10.toFront();
 
-        client.getReducedModel().getBoards().stream()
+        List<Integer> possibleChoices = null;
+
+        ReducedBoard myBoard = client.getReducedModel().getBoards().stream()
                 .filter(b -> b.getPlayer().equals(client.getUsername()))
-                .findFirst().ifPresent(myBoard -> possibleChoices = myBoard.getAssistantDeck().getAssistantCards().stream()
-                        .map(ReducedAssistant::getId).collect(Collectors.toList()));
+                .findFirst().orElse(null);
 
-        Image img1 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(1).png")));
-        ImageView view1 = new ImageView(img1);
-        setAssistantDimension(view1);
-        Assistant1.setGraphic(view1);
-        if(possibleChoices.contains(1))
-        {
-            deck.add(Assistant1);
-            Assistant1.setOnAction(e -> {
-                deck.remove(Assistant1);
-                client.send(new PlayAssistantMessage(1)); });
-        }
-        else{
-            Assistant1.setVisible(false);
+        if (myBoard != null){
+            possibleChoices = myBoard.getAssistantDeck().getAssistantCards().stream()
+                    .map(ReducedAssistant::getId).collect(Collectors.toList());
         }
 
-        Image img2 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(2).png")));
-        ImageView view2 = new ImageView(img2);
-        setAssistantDimension(view2);
-        Assistant2.setGraphic(view2);
-        if(possibleChoices.contains(2))
-        {
-            deck.add(Assistant2);
-            Assistant2.setOnAction(e -> {
-                deck.remove(Assistant2);
-                client.send(new PlayAssistantMessage(2));
-            });
-        }
-        else{
-            Assistant2.setVisible(false);
-        }
+        if(possibleChoices != null) {
+            Image img1 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(1).png")));
+            ImageView view1 = new ImageView(img1);
+            setAssistantDimension(view1);
+            Assistant1.setGraphic(view1);
+            if (possibleChoices.contains(1)) {
+                deck.add(Assistant1);
+                Assistant1.setOnAction(e -> {
+                    deck.remove(Assistant1);
+                    client.send(new PlayAssistantMessage(1));
+                });
+            } else {
+                Assistant1.setVisible(false);
+            }
 
-        Image img3 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(3).png")));
-        ImageView view3 = new ImageView(img3);
-        setAssistantDimension(view3);
-        Assistant3.setGraphic(view3);
-        if(possibleChoices.contains(3)) {
-            deck.add(Assistant3);
-            Assistant3.setOnAction(e -> {
-                deck.remove(Assistant3);
-                client.send(new PlayAssistantMessage(3));
-            });
-        }
-        else{
-            Assistant3.setVisible(false);
-        }
+            Image img2 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(2).png")));
+            ImageView view2 = new ImageView(img2);
+            setAssistantDimension(view2);
+            Assistant2.setGraphic(view2);
+            if (possibleChoices.contains(2)) {
+                deck.add(Assistant2);
+                Assistant2.setOnAction(e -> {
+                    deck.remove(Assistant2);
+                    client.send(new PlayAssistantMessage(2));
+                });
+            } else {
+                Assistant2.setVisible(false);
+            }
 
-        Image img4 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(4).png")));
-        ImageView view4 = new ImageView(img4);
-        setAssistantDimension(view4);
-        Assistant4.setGraphic(view4);
-        if(possibleChoices.contains(4)) {
-            deck.add(Assistant4);
-            Assistant4.setOnAction(e -> {
-                deck.remove(Assistant4);
-                client.send(new PlayAssistantMessage(4));
-            });
-        }
-        else{
-            Assistant4.setVisible(false);
-        }
+            Image img3 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(3).png")));
+            ImageView view3 = new ImageView(img3);
+            setAssistantDimension(view3);
+            Assistant3.setGraphic(view3);
+            if (possibleChoices.contains(3)) {
+                deck.add(Assistant3);
+                Assistant3.setOnAction(e -> {
+                    deck.remove(Assistant3);
+                    client.send(new PlayAssistantMessage(3));
+                });
+            } else {
+                Assistant3.setVisible(false);
+            }
 
-        Image img5 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(5).png")));
-        ImageView view5 = new ImageView(img5);
-        setAssistantDimension(view5);
-        Assistant5.setGraphic(view5);
-        if(possibleChoices.contains(5)) {
-            deck.add(Assistant5);
-            Assistant5.setOnAction(e -> {
-                deck.remove(Assistant5);
-                client.send(new PlayAssistantMessage(5));
-            });
-        }
-        else{
-            Assistant5.setVisible(false);
-        }
+            Image img4 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(4).png")));
+            ImageView view4 = new ImageView(img4);
+            setAssistantDimension(view4);
+            Assistant4.setGraphic(view4);
+            if (possibleChoices.contains(4)) {
+                deck.add(Assistant4);
+                Assistant4.setOnAction(e -> {
+                    deck.remove(Assistant4);
+                    client.send(new PlayAssistantMessage(4));
+                });
+            } else {
+                Assistant4.setVisible(false);
+            }
 
-        Image img6 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(6).png")));
-        ImageView view6 = new ImageView(img6);
-        setAssistantDimension(view6);
-        Assistant6.setGraphic(view6);
-        if(possibleChoices.contains(6)) {
-            deck.add(Assistant6);
-            Assistant6.setOnAction(e -> {
-                deck.remove(Assistant6);
-                client.send(new PlayAssistantMessage(6));
-            });
-        }
-        else{
-            Assistant6.setVisible(false);
-        }
+            Image img5 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(5).png")));
+            ImageView view5 = new ImageView(img5);
+            setAssistantDimension(view5);
+            Assistant5.setGraphic(view5);
+            if (possibleChoices.contains(5)) {
+                deck.add(Assistant5);
+                Assistant5.setOnAction(e -> {
+                    deck.remove(Assistant5);
+                    client.send(new PlayAssistantMessage(5));
+                });
+            } else {
+                Assistant5.setVisible(false);
+            }
 
-        Image img7 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(7).png")));
-        ImageView view7 = new ImageView(img7);
-        setAssistantDimension(view7);
-        Assistant7.setGraphic(view7);
-        if(possibleChoices.contains(7)) {
-            deck.add(Assistant7);
-            Assistant7.setOnAction(e -> {
-                deck.remove(Assistant7);
-                client.send(new PlayAssistantMessage(7));
-            });
-        }
-        else{
-            Assistant7.setVisible(false);
-        }
+            Image img6 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(6).png")));
+            ImageView view6 = new ImageView(img6);
+            setAssistantDimension(view6);
+            Assistant6.setGraphic(view6);
+            if (possibleChoices.contains(6)) {
+                deck.add(Assistant6);
+                Assistant6.setOnAction(e -> {
+                    deck.remove(Assistant6);
+                    client.send(new PlayAssistantMessage(6));
+                });
+            } else {
+                Assistant6.setVisible(false);
+            }
 
-        Image img8 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(8).png")));
-        ImageView view8 = new ImageView(img8);
-        setAssistantDimension(view8);
-        Assistant8.setGraphic(view8);
-        if(possibleChoices.contains(8)) {
-            deck.add(Assistant8);
-            Assistant8.setOnAction(e -> {
-                deck.remove(Assistant8);
-                client.send(new PlayAssistantMessage(8));
-            });
-        }
-        else{
-            Assistant8.setVisible(false);
-        }
+            Image img7 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(7).png")));
+            ImageView view7 = new ImageView(img7);
+            setAssistantDimension(view7);
+            Assistant7.setGraphic(view7);
+            if (possibleChoices.contains(7)) {
+                deck.add(Assistant7);
+                Assistant7.setOnAction(e -> {
+                    deck.remove(Assistant7);
+                    client.send(new PlayAssistantMessage(7));
+                });
+            } else {
+                Assistant7.setVisible(false);
+            }
 
-        Image img9 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(9).png")));
-        ImageView view9 = new ImageView(img9);
-        setAssistantDimension(view9);
-        Assistant9.setGraphic(view9);
-        if(possibleChoices.contains(9)) {
-            deck.add(Assistant9);
-            Assistant9.setOnAction(e -> {
-                deck.remove(Assistant9);
-                client.send(new PlayAssistantMessage(9));
-            });
-        }
-        else{
-            Assistant9.setVisible(false);
-        }
+            Image img8 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(8).png")));
+            ImageView view8 = new ImageView(img8);
+            setAssistantDimension(view8);
+            Assistant8.setGraphic(view8);
+            if (possibleChoices.contains(8)) {
+                deck.add(Assistant8);
+                Assistant8.setOnAction(e -> {
+                    deck.remove(Assistant8);
+                    client.send(new PlayAssistantMessage(8));
+                });
+            } else {
+                Assistant8.setVisible(false);
+            }
 
-        Image img10 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(10).png")));
-        ImageView view10 = new ImageView(img10);
-        setAssistantDimension(view10);
-        Assistant10.setGraphic(view10);
-        if(possibleChoices.contains(10)) {
-            deck.add(Assistant10);
-            Assistant10.setOnAction(e -> {
-                deck.remove(Assistant10);
-                client.send(new PlayAssistantMessage(10));
-            });
-        }
-        else{
-            Assistant10.setVisible(false);
+            Image img9 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(9).png")));
+            ImageView view9 = new ImageView(img9);
+            setAssistantDimension(view9);
+            Assistant9.setGraphic(view9);
+            if (possibleChoices.contains(9)) {
+                deck.add(Assistant9);
+                Assistant9.setOnAction(e -> {
+                    deck.remove(Assistant9);
+                    client.send(new PlayAssistantMessage(9));
+                });
+            } else {
+                Assistant9.setVisible(false);
+            }
+
+            Image img10 = new Image(String.valueOf(getClass().getResource("/img/Assistenti/Assistente(10).png")));
+            ImageView view10 = new ImageView(img10);
+            setAssistantDimension(view10);
+            Assistant10.setGraphic(view10);
+            if (possibleChoices.contains(10)) {
+                deck.add(Assistant10);
+                Assistant10.setOnAction(e -> {
+                    deck.remove(Assistant10);
+                    client.send(new PlayAssistantMessage(10));
+                });
+            } else {
+                Assistant10.setVisible(false);
+            }
         }
     }
 
@@ -694,6 +691,16 @@ public class PlayAssistantSceneController extends AbstractSceneController {
                 islandStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(mN)));
             }
         }
+
+        for(int i = 0; i < client.getReducedModel().getIslands().size(); i++)
+        {
+            for(int j = 0; j < client.getReducedModel().getIslands().get(i).getNumOfTowers(); j++) {
+                if (client.getReducedModel().getIslands().get(i).getTower() != null) {
+                    islandStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(new Image(valueOf(getClass().getResource("/img/Plancia/Torri/" + client.getReducedModel().getIslands().get(i).getTower().toString() + "_tower.png"))))));
+                }
+            }
+        }
+
         if(client.getReducedModel() instanceof ReducedModelExpertMode)
         {
             for(ReducedIsland r : client.getReducedModel().getIslands())
@@ -1232,6 +1239,10 @@ public class PlayAssistantSceneController extends AbstractSceneController {
         coins.add(player3Coins);
         coins.add(player4Coins);
 
+        player1Coins.setVisible(false);
+        player2Coins.setVisible(false);
+        player3Coins.setVisible(false);
+
         Image ex1 = new Image(valueOf(getClass().getResource("/img/Plancia/Moneta_base.png")));
 
         for(int i = 0; i < client.getReducedModel().getBoards().size(); i++)
@@ -1266,6 +1277,7 @@ public class PlayAssistantSceneController extends AbstractSceneController {
         assistants.add(player3Assistant);
         assistants.add(player4Assistant);
 
+
         for(int i = 0; i < client.getReducedModel().getBoards().size(); i++)
         {
             if(client.getReducedModel().getBoards().get(i).getAssistantDeck().getPlayedAssistant() != null) {
@@ -1273,6 +1285,8 @@ public class PlayAssistantSceneController extends AbstractSceneController {
                         + (client.getReducedModel().getBoards().get(i).getAssistantDeck().getPlayedAssistant().getId()) + ").png")));
                 assistants.get(i).setVisible(true);
                 assistants.get(i).toFront();
+                System.out.println(client.getReducedModel().getBoards().get(i).getAssistantDeck().getPlayedAssistant().getId());
+                System.out.println(client.getReducedModel().getBoards().get(i).getAssistantDeck().getPlayedAssistant().getId());
             }
         }
     }

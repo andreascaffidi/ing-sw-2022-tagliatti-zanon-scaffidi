@@ -259,12 +259,15 @@ public class ChooseCloudSceneController extends AbstractSceneController {
         if(client.getReducedModel() instanceof ReducedModelExpertMode) {
 
             playCharacter.setVisible(true);
+
             playCharacter.setOnAction(e -> {
                 if (!((ReducedModelExpertMode) client.getReducedModel()).isCharacterAlreadyPlayed()) {
                     client.changeState(ClientState.PLAY_CHARACTER);
                 }
             });
             playCharacter.toFront();
+
+
             ReducedModelExpertMode reducedModelExpertMode = (ReducedModelExpertMode) client.getReducedModel();
             for (int i = 0; i < reducedModelExpertMode.getCharacters().size(); i++) {
                 if (reducedModelExpertMode.getCharacters().get(i).getId() == 1 ||
@@ -455,6 +458,15 @@ public class ChooseCloudSceneController extends AbstractSceneController {
             if(client.getReducedModel().getIslands().get(i).isMotherNature())
             {
                 islandStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(mN)));
+            }
+        }
+
+        for(int i = 0; i < client.getReducedModel().getIslands().size(); i++)
+        {
+            for(int j = 0; j < client.getReducedModel().getIslands().get(i).getNumOfTowers(); j++) {
+                if (client.getReducedModel().getIslands().get(i).getTower() != null) {
+                    islandStudents.get(i).getChildren().add(setStudentsDimension(new ImageView(new Image(valueOf(getClass().getResource("/img/Plancia/Torri/" + client.getReducedModel().getIslands().get(i).getTower().toString() + "_tower.png"))))));
+                }
             }
         }
 
@@ -1004,29 +1016,32 @@ public class ChooseCloudSceneController extends AbstractSceneController {
 
     }
 
+    int chosenCloud;
+
     public void configureCloud(List<TilePane> clouds)
     {
-
-        for(int i = 0; i < cloudStudents.size(); i++)
+        for(int i = 0; i < client.getReducedModel().getClouds().size(); i++)
         {
+            int j = i;
+
             cloudStudents.get(i).setOnMouseClicked((MouseEvent event) ->
             {
-                check(i);
+                client.send(new ChooseCloudMessage(j + 1));
+                event.consume();
             });
-            break;
         }
     }
 
-    public void check(int index)
-    {
-        client.send(new ChooseCloudMessage(index + 1));
-    }
     public void showCoins()
     {
         coins.add(player1Coins);
         coins.add(player2Coins);
         coins.add(player3Coins);
         coins.add(player4Coins);
+
+        player1Coins.setVisible(false);
+        player2Coins.setVisible(false);
+        player3Coins.setVisible(false);
 
         Image ex1 = new Image(valueOf(getClass().getResource("/img/Plancia/Moneta_base.png")));
 
