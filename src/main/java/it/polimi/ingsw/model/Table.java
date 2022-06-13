@@ -320,7 +320,7 @@ public class Table extends Observable<ResponseMessage> {
         for (Island i : islands){
             this.islands.remove(i);
             if (i.isMotherNature()){
-                islandGroup.setMotherNature(true);
+                setMotherNature(islandGroup);
             }
             islandGroup.addStudents(i.getStudents());
         }
