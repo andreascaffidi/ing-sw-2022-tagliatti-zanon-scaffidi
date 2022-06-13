@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
 import it.polimi.ingsw.network.client.Client;
 
+/**
+ * abstract scene controller (GUI)
+ */
 public class AbstractSceneController {
 
     protected Client client;

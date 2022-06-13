@@ -21,7 +21,7 @@
             <Font name="Gigi" size="64.0" />
          </font>
       </Text>
-      <TextFlow fx:id="alert" layoutX="420.0" layoutY="555.0" prefHeight="70.0" prefWidth="518.0" style="-fx-background-color: #d92727;" textAlignment="CENTER" visible="false">
+      <TextFlow fx:id="alertBox" layoutX="420.0" layoutY="555.0" prefHeight="70.0" prefWidth="518.0" style="-fx-background-color: #d92727;" textAlignment="CENTER" visible="false">
          <children>
             <Text fx:id="alertMessage" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="138.6875">
                <font>

@@ -1,23 +1,32 @@
 package it.polimi.ingsw.network.client.UI.GUI;
 
-import it.polimi.ingsw.exceptions.ColorNotFoundException;
-import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.UI.UI;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
-import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 
-import java.util.Scanner;
-
+/**
+ * GUI class (graphical user interface UI)
+ */
 public class GUI implements UI {
 
-    public GUI() {
+    /**
+     * starts the thread for JavaFX
+     * @param disconnectClient method to call when JavaFX is stopped
+     */
+    public void startJavaFX(Runnable disconnectClient){
+        JavaFXGUI.disconnectClient = disconnectClient;
         new Thread(JavaFXGUI::launchJavaFX).start();
     }
 
+    /**
+     * gets the client state based on the given ClientState enum
+     * @param clientState client state enum
+     * @param client client
+     * @return abstract client state
+     */
+    @Override
     public AbstractClientState getClientState(ClientState clientState, Client client)
     {
         switch (clientState){
@@ -36,22 +45,13 @@ public class GUI implements UI {
         }
     }
 
+    /**
+     *
+     * @param reducedModel reduced model
+     */
     @Override
     public void showModel(ReducedModel reducedModel) {
-        //TODO: metterci la roba di lucrezia
+
     }
 
-    public static ColorS chooseValidColor(String color, TextField textField){
-        boolean exit = false;
-        ColorS colorChosen = null;
-        while (!exit){
-            try {
-                colorChosen = ColorS.parseToColor(color);
-                exit = true;
-            } catch (ColorNotFoundException e) {
-                textField.setText("Invalid color, try another");
-            }
-        }
-        return colorChosen;
-    }
 }

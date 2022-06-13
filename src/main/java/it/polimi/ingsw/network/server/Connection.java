@@ -78,7 +78,7 @@ public class Connection extends Observable<ControllerMessage> implements Runnabl
                 receive();
             }
         } catch(IOException e){
-            System.err.println(e.getMessage());
+            System.err.println("Connection closed from client side");
         } catch (ClassNotFoundException e){
             e.printStackTrace();
         } finally {

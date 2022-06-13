@@ -3,9 +3,7 @@ package it.polimi.ingsw.network.client.UI.CLI;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.reducedModel.ReducedAssistant;
 import it.polimi.ingsw.network.client.reducedModel.ReducedBoard;
-import it.polimi.ingsw.network.client.reducedModel.ReducedModelExpertMode;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
-import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.requests.gameMessages.PlayAssistantMessage;
 
 import java.util.List;
@@ -28,13 +26,7 @@ public class CLIPlayAssistantState extends AbstractClientState {
         this.client = client;
         in = new Scanner(System.in);
         client.getUI().showModel(client.getReducedModel());
-        System.out.print("It's your turn! Play an Assistant Card by typing the "+Ansi.colorize("ID", Ansi.UNDERLINE));
-        if (client.getReducedModel() instanceof ReducedModelExpertMode){
-            System.out.print("\nOr you can even pay a character card from the available, by typing "
-                    +Ansi.colorize("PAY CHARACTER", Ansi.UNDERLINE) +
-                    " (you can pay a character card only one time per round)");
-        }
-        CLI.CTA("");
+        CLI.CTA("It's your turn! Play an Assistant Card by typing the "+Ansi.colorize("ID", Ansi.UNDERLINE));
     }
 
     /**
@@ -44,7 +36,6 @@ public class CLIPlayAssistantState extends AbstractClientState {
     public void render(){
         int assistantChosen = 0;
         boolean exit = false;
-        boolean payCharacter = false;
         List<Integer> possibleChoices = null;
 
         ReducedBoard myBoard = client.getReducedModel().getBoards().stream()
@@ -58,32 +49,20 @@ public class CLIPlayAssistantState extends AbstractClientState {
 
         while (possibleChoices != null && !exit){
             String input = in.nextLine();
-            if (client.getReducedModel() instanceof ReducedModelExpertMode &&
-                    input.equalsIgnoreCase("PAY CHARACTER")){
-                if ( ((ReducedModelExpertMode) client.getReducedModel()).isCharacterAlreadyPlayed()){
-                    CLI.error("You have already played a character in this round ");
-                }else{
+            try{
+                assistantChosen = Integer.parseInt(input);
+                if (!possibleChoices.contains(assistantChosen)) {
+                    CLI.error("You can't play this assistant ");
+                } else {
+                    System.out.println("Assistant chosen, waiting for players...");
                     exit = true;
-                    payCharacter = true;
-                    client.changeState(ClientState.PLAY_CHARACTER);
                 }
-            }else {
-                try{
-                    assistantChosen = Integer.parseInt(input);
-                    if (!possibleChoices.contains(assistantChosen)) {
-                        CLI.error("You can't play this assistant ");
-                    } else {
-                        System.out.println("Assistant chosen, waiting for players...");
-                        exit = true;
-                    }
-                }catch (NumberFormatException e){
-                    CLI.error("You have to insert a number ");
-                }
+            }catch (NumberFormatException e){
+                CLI.error("You have to insert a number ");
             }
         }
-        if (!payCharacter){
-            client.send(new PlayAssistantMessage(assistantChosen));
-        }
+
+        client.send(new PlayAssistantMessage(assistantChosen));
     }
 
     /**

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.client;
 
+import it.polimi.ingsw.network.client.UI.GUI.GUI;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
@@ -42,6 +43,8 @@ public class Client {
 
     private String winner;
 
+    private Socket socket;
+
     /**
      * builds a client
      * @param ip ip address
@@ -52,6 +55,9 @@ public class Client {
         this.ip = ip;
         this.port = port;
         this.ui = ui;
+        if (ui instanceof GUI){
+            ((GUI)ui).startJavaFX(this::disconnectClient);
+        }
         this.availableLobbies = new ArrayList<>();
     }
 
@@ -60,7 +66,7 @@ public class Client {
      * @throws IOException if there are IO problems
      */
     public void startClient() throws IOException{
-        Socket socket = new Socket(ip, port);
+        socket = new Socket(ip, port);
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
         try{
@@ -219,6 +225,13 @@ public class Client {
      */
     public void disconnectClient(){
         this.active = false;
+        try {
+            in.close();
+            out.close();
+            socket.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     /**

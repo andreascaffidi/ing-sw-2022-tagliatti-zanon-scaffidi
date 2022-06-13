@@ -11,14 +11,24 @@ import javafx.scene.layout.Pane;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * GUI welcome state class
+ */
 public class GUIWelcomeState extends AbstractClientState {
 
     private WelcomeSceneController welcomeSceneController;
 
+    /**
+     * builds a GUI welcome state
+     * @param client client
+     */
     public GUIWelcomeState(Client client){
         this.client = client;
     }
 
+    /**
+     * loads the welcome scene (fxml file)
+     */
     @Override
     public void render() {
         JavaFXGUI.waitForStartingGUI();
@@ -34,6 +44,10 @@ public class GUIWelcomeState extends AbstractClientState {
         }
     }
 
+    /**
+     * manages a server error
+     * @param message error message
+     */
     @Override
     public void serverError(String message) {
         welcomeSceneController.alert(message);

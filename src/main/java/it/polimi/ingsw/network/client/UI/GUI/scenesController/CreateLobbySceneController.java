@@ -27,8 +27,8 @@ public class CreateLobbySceneController extends AbstractSceneController {
     @FXML
     private Button enter;
 
-    private String mode;
-    private int num;
+    private String mode = "normal";
+    private int num = 2;
 
     @FXML
     public Text alertMessage;

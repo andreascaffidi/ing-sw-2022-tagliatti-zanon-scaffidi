@@ -12,7 +12,9 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
-
+/**
+ * JavaFX Application manager
+ */
 public class JavaFXGUI extends Application {
 
     private static Stage primaryStage;
@@ -24,10 +26,19 @@ public class JavaFXGUI extends Application {
     private static final Object lock = new Object();
     private static boolean initialized = false;
 
+    public static Runnable disconnectClient;
+
+    /**
+     * launches JavaFX application
+     */
     public static void launchJavaFX() {
         launch();
     }
 
+    /**
+     * method called after launching JavaFX
+     * @param stage stage
+     */
     @Override
     public void start(Stage stage){
         synchronized (lock) {
@@ -65,16 +76,35 @@ public class JavaFXGUI extends Application {
         primaryStage.show();
     }
 
+    /**
+     * sets the main pane to display
+     * @param pane main pane
+     */
     public static void setMainPane(Pane pane){
         mainPane.getChildren().clear();
         mainPane.getChildren().add(pane);
     }
 
+    /**
+     * sets the overlay pane to display
+     * @param pane overlay pane
+     */
     public static void setOverlayPane(Pane pane){
         overlayPane.getChildren().clear();
         overlayPane.getChildren().add(pane);
     }
 
+    /**
+     * gets the overlay pane
+     * @return overlay pane
+     */
+    public static Pane getOverlayPane(){
+        return overlayPane;
+    }
+
+    /**
+     * waits for the current thread (client's GUI) to start
+     */
     public static void waitForStartingGUI(){
         synchronized(lock){
             while (!initialized) {
@@ -87,9 +117,13 @@ public class JavaFXGUI extends Application {
         }
     }
 
+    /**
+     * method called when JavaFX is stopped, disconnects the client from the server
+     * @throws Exception if there is a problem
+     */
     @Override
     public void stop() throws Exception {
         super.stop();
-        //TODO: disconnect client
+        disconnectClient.run();
     }
 }

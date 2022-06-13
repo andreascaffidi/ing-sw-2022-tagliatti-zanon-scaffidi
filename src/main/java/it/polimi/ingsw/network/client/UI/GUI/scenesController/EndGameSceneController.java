@@ -4,6 +4,9 @@ import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+/**
+ * end game scene controller (GUI)
+ */
 public class EndGameSceneController extends AbstractSceneController {
 
     @FXML
@@ -27,6 +30,6 @@ public class EndGameSceneController extends AbstractSceneController {
         }else{
             endGameText.setText("The winner is... not you! It's " + client.getWinner());
         }
-        client.disconnectClient();
+        //TODO: mettere bottone per tornare al menu
     }
 }

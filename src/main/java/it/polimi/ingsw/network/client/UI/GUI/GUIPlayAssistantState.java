@@ -2,7 +2,6 @@ package it.polimi.ingsw.network.client.UI.GUI;
 
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.UI.GUI.scenesController.PlayAssistantSceneController;
-import it.polimi.ingsw.network.client.UI.GUI.scenesController.ShowLobbiesSceneController;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +10,6 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Scanner;
 
 public class GUIPlayAssistantState extends AbstractClientState {
     private final Client client;
