@@ -62,9 +62,9 @@ public class ControllerExpertMode extends Controller{
      */
     @Override
     public void chooseCloud(ChooseCloudMessage message){
-        super.chooseCloud(message);
         table.resetCurrentEffect();
         table.setCharacterAlreadyPlayed(false);
+        super.chooseCloud(message);
     }
 
     /**

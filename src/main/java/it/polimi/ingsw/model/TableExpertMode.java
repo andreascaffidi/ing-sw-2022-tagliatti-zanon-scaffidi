@@ -218,7 +218,11 @@ public class TableExpertMode extends Table {
      */
     public void setNoEntryTile(Island island, boolean entryTile) {
         this.noEntryTiles.put(island, entryTile);
-        this.numOfNoEntryTiles++;
+        if (entryTile){
+            this.numOfNoEntryTiles++;
+        } else {
+            this.numOfNoEntryTiles--;
+        }
     }
 
     /**
@@ -263,7 +267,9 @@ public class TableExpertMode extends Table {
     public Player getSupremacy (Island island)throws ParityException {
         if (this.isNoEntryTile(island)){
             this.setNoEntryTile(island, false);
-            this.numOfNoEntryTiles--;
+            if (island.getTower() == null){
+                throw new ParityException("There's a parity");
+            }
             return island.getTower().getOwner();
         }
         else{

@@ -120,7 +120,7 @@ public class CLI implements UI {
         islandStrArray[0] =  Ansi.colorize("┌─────┬───┬──────┐",BORDER_COLOR);
         islandStrArray[1] =  Ansi.colorize("│",BORDER_COLOR)+" #"
                 +(island.getId() < 9 ? (island.getId()+1)+"  " : (island.getId()+1)+" ")+Ansi.colorize("│",BORDER_COLOR)
-                + (island.getTower()!=null ? Ansi.colorize(" T ",island.getTower().getAnsiEscapeCode()) : "   ")
+                + (island.getTower()!=null ? Ansi.colorize(" T ",island.getTower().getAnsiEscapeCode(), Ansi.BACKGROUND_GREY) : "   ")
                 +Ansi.colorize("│",BORDER_COLOR)+ (island.isMotherNature() ? "  MN  ":"      ")
                 +Ansi.colorize("│",BORDER_COLOR);
         islandStrArray[2] = Ansi.colorize("├─────┴───┴──────┤",BORDER_COLOR);
@@ -295,7 +295,7 @@ public class CLI implements UI {
             // TOWERS
             for(int i = 0; i<2;i++){
                 if(printedTowers<towers){
-                    colorRow.append(Ansi.colorize("T", b.getTowerColor().getAnsiEscapeCode()));
+                    colorRow.append(Ansi.colorize("T", b.getTowerColor().getAnsiEscapeCode(), Ansi.BACKGROUND_GREY));
                     printedTowers++;
                 }else{
                     colorRow.append("_");

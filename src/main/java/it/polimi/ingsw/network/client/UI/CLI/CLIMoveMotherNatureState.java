@@ -49,7 +49,7 @@ public class CLIMoveMotherNatureState extends AbstractClientState {
 
         if (myBoard != null){
             maxMovement = myBoard.getAssistantDeck().getPlayedAssistant().getMotherNatureMovements();
-            CLI.CTA("Maximum movements available: " + maxMovement);
+            CLI.CTA("\nMaximum movements available: " + maxMovement);
         }
 
         while (!exit){

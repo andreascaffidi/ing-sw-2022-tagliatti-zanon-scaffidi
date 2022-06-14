@@ -12,8 +12,8 @@ class ColorTTest {
      */
     @Test
     void getAnsiEscapeCode() {
-        assertEquals(Ansi.WHITE, ColorT.GREY.getAnsiEscapeCode());
-        assertEquals(Ansi.BACKGROUND_WHITE, ColorT.WHITE.getAnsiEscapeCode());
-        assertEquals(Ansi.BACKGROUND_BLACK, ColorT.BLACK.getAnsiEscapeCode());
+        assertEquals(Ansi.GREY, ColorT.GREY.getAnsiEscapeCode());
+        assertEquals(Ansi.WHITE, ColorT.WHITE.getAnsiEscapeCode());
+        assertEquals(Ansi.BLACK, ColorT.BLACK.getAnsiEscapeCode());
     }
 }
