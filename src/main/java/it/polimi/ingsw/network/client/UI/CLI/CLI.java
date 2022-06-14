@@ -347,7 +347,8 @@ public class CLI implements UI {
             // Assistant Deck
             for(int i = 0; i<6; i++) {
                 for(int j = rowsDone*boardsPerRow; j<boardsNum && j<(boardsPerRow*(rowsDone+1));j++){
-                    String rowDeck = assistantDeckToStringArray(boards.get(j).getAssistantDeck().getAssistantCards())[i];
+                    String [] deckArray = assistantDeckToStringArray(boards.get(j).getAssistantDeck().getAssistantCards());
+                    String rowDeck = i < deckArray.length ?  deckArray[i] : "";
                     boardsStr.append(rowDeck);
                     boardsStr.append(String.join("", Collections.nCopies(51 - rowDeck.length(), " ")));
                     boardsStr.append(" ");
