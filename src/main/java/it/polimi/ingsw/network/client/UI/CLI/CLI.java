@@ -120,7 +120,7 @@ public class CLI implements UI {
         islandStrArray[0] =  Ansi.colorize("┌─────┬───┬──────┐",BORDER_COLOR);
         islandStrArray[1] =  Ansi.colorize("│",BORDER_COLOR)+" #"
                 +(island.getId() < 9 ? (island.getId()+1)+"  " : (island.getId()+1)+" ")+Ansi.colorize("│",BORDER_COLOR)
-                + (island.getTower()!=null ? Ansi.colorize(" T ",island.getTower().getAnsiEscapeCode(), Ansi.BACKGROUND_GREY) : "   ")
+                + (island.getTower()!=null ? Ansi.colorize(island.getNumOfTowers()+" T",island.getTower().getAnsiEscapeCode(), Ansi.BACKGROUND_GREY) : "   ")
                 +Ansi.colorize("│",BORDER_COLOR)+ (island.isMotherNature() ? "  MN  ":"      ")
                 +Ansi.colorize("│",BORDER_COLOR);
         islandStrArray[2] = Ansi.colorize("├─────┴───┴──────┤",BORDER_COLOR);
@@ -315,7 +315,7 @@ public class CLI implements UI {
         if (coins == -1){
             boardStrArray[10] +=String.join("", Collections.nCopies(11, " "))+"║";
         } else {
-            boardStrArray[10] +=" ║ CO ║ "+coins+"  ║";
+            boardStrArray[10] +=" ║ COINS "+coins+" ║";
         }
         boardStrArray[11] ="╚══════════╩══════════════════════════════════════╝";
         return boardStrArray;
@@ -352,9 +352,17 @@ public class CLI implements UI {
                     boardsStr.append(rowDeck);
                     boardsStr.append(String.join("", Collections.nCopies(51 - rowDeck.length(), " ")));
                     boardsStr.append(" ");
+
                 }
                 boardsStr.append("\n");
             }
+            for(int j = rowsDone*boardsPerRow; j<boardsNum && j<(boardsPerRow*(rowsDone+1));j++){
+                ReducedAssistant assistant = boards.get(j).getAssistantDeck().getPlayedAssistant();
+                String discardPile = Ansi.CARD_ICON+" LAST ASSISTANT PLAYED: "+ (assistant != null ? ("#"+assistant.getId()+" - "+assistant.getMotherNatureMovements()+" M.N.M."): " - ");
+                boardsStr.append(discardPile);
+                boardsStr.append(String.join("", Collections.nCopies(53 - discardPile.length(), " ")));
+            }
+            boardsStr.append("\n");
             rowsDone++;
         }
 
