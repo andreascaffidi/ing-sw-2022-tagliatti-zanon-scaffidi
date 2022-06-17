@@ -24,8 +24,9 @@ import java.util.concurrent.Executors;
  * server class, manages all the matches
  */
 public class Server {
-    private static final int PORT= 12345;
     private final ServerSocket serverSocket;
+
+    private final int port;
 
     private final ExecutorService executor = Executors.newFixedThreadPool(128);
 
@@ -41,8 +42,9 @@ public class Server {
      * builds a server class
      * @throws IOException if there are IO problems
      */
-    public Server() throws IOException {
-        this.serverSocket = new ServerSocket(PORT);
+    public Server(int port) throws IOException {
+        this.port = port;
+        this.serverSocket = new ServerSocket(port);
         this.clients = new HashMap<>();
         this.waitingLobbies = new HashMap<>();
         this.playingLobbies = new HashMap<>();
@@ -177,7 +179,7 @@ public class Server {
      * starts the main process on the server (called in ServerApp)
      */
     public void run(){
-        System.out.println("Server listening on port: " + PORT);
+        System.out.println("Server listening on port: " + port);
         while(true){
             try {
                 Socket socket = serverSocket.accept();
