@@ -315,23 +315,22 @@ public class Table extends Observable<ResponseMessage> {
      */
     public void newIslandGroup(List<Island> islands){
         int idMin = islands.stream().map(Island::getId).reduce(12, (id1, id2) -> id1 < id2 ? id1 : id2);
-        int idMax = islands.stream().map(Island::getId).reduce(0, (id1, id2) -> id1 > id2 ? id1 : id2);
+        int numOfTowers = 0;
         Island islandGroup = new Island(idMin);
         for (Island i : islands){
             this.islands.remove(i);
+            numOfTowers += i.getNumOfTowers();
             if (i.isMotherNature()){
                 setMotherNature(islandGroup);
             }
             islandGroup.addStudents(i.getStudents());
         }
         islandGroup.setTower(islands.get(0).getTower());
-        islandGroup.setNumOfTowers(islands.size());
-        for (Island i : this.islands){
-            if (i.getId() > idMax){
-                i.changeId( islands.size()-1);
-            }
-        }
+        islandGroup.setNumOfTowers(numOfTowers);
         this.islands.add(idMin, islandGroup);
+        for (int i = 0; i < this.islands.size(); i++){
+            this.islands.get(i).changeId(i);
+        }
     }
 
 

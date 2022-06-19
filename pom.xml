@@ -67,7 +67,7 @@
                       <configuration>
                           <classifier>spring-boot</classifier>
                           <mainClass>
-                              it.polimi.ingsw.ClientApp
+                              it.polimi.ingsw.EriantysApp
                           </mainClass>
                       </configuration>
                   </execution>

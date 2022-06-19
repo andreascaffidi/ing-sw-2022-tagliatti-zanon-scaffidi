@@ -314,6 +314,7 @@ public class ControllerExpertMode extends Controller{
             table.getCardWithStudents(message.getCharacter()).validStudent(message.getStudentId()-1);
             Student student = table.getCardWithStudents(message.getCharacter()).getStudents().remove(message.getStudentId()-1);
             table.getCurrentPlayer().getSchoolBoard().getDiningRoom().addStudent(student);
+            table.setProfessorOwner(student.getColor(), table.getCurrentPlayer());
             if (!table.getBag().getStudents().isEmpty()) {
                 table.getCardWithStudents(message.getCharacter()).getStudents().add(table.getBag().drawStudent());
             }

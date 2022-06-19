@@ -13,6 +13,7 @@ import java.util.Map;
 public class ReducedBoard implements Serializable {
 
     private final String player;
+    private final int tagTeam;
     private final ColorT towerColor;
 
     private final Map <ColorS,Integer> students;
@@ -28,6 +29,7 @@ public class ReducedBoard implements Serializable {
     /**
      * builds a reduced board
      * @param player player's username
+     * @param tagTeam player's team
      * @param towerColor tower's color
      * @param students students on the dining room
      * @param entranceStudents colors of entrance students
@@ -35,9 +37,10 @@ public class ReducedBoard implements Serializable {
      * @param numOfTowers number of towers on the board
      * @param assistantDeck reduced assistant deck
      */
-    public ReducedBoard(String player, ColorT towerColor, Map <ColorS,Integer> students, List<ColorS> entranceStudents, List<ColorS> professors,
+    public ReducedBoard(String player, int tagTeam, ColorT towerColor, Map <ColorS,Integer> students, List<ColorS> entranceStudents, List<ColorS> professors,
                         int numOfTowers, ReducedAssistantDeck assistantDeck) {
         this.player = player;
+        this.tagTeam = tagTeam;
         this.towerColor = towerColor;
         this.students = students;
         this.entranceStudents = entranceStudents;
@@ -52,6 +55,14 @@ public class ReducedBoard implements Serializable {
      */
     public String getPlayer() {
         return player;
+    }
+
+    /**
+     * gets player's tag team
+     * @return player's tag team
+     */
+    public int getTagTeam() {
+        return tagTeam;
     }
 
     /**

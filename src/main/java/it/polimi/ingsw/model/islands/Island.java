@@ -119,10 +119,10 @@ public class Island {
 
     /**
      * changes island id when a new group of island is created
-     * @param decrement new id offset
+     * @param newID new id to set
      */
-    public void changeId(int decrement){
-        this.id = this.id - decrement;
+    public void changeId(int newID){
+        this.id = newID;
     }
 
     /**

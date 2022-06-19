@@ -40,6 +40,7 @@ public class Server {
 
     /**
      * builds a server class
+     * @param port server port on listening
      * @throws IOException if there are IO problems
      */
     public Server(int port) throws IOException {

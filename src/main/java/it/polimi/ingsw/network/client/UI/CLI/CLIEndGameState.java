@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 
 /**
@@ -23,11 +24,20 @@ public class CLIEndGameState extends AbstractClientState {
     @Override
     public void render()
     {
-        if(client.getUsername().equals(client.getWinner()))
-        {
-            System.out.println("Congrats! =) You are the winner. Wow you are so intelligent! :)");
-        }else{
-            System.out.println("The winner is... not you! It's " + client.getWinner());
+        ReducedModel reducedModel = client.getReducedModel();
+        if (reducedModel.getBoards().size() == 4){
+            int winningTeam = reducedModel.getBoard(client.getWinner()).getTagTeam();
+            if (reducedModel.getBoard(client.getUsername()).getTagTeam() == winningTeam){
+                System.out.println("Congrats! =) Team " + winningTeam + " is the winner. Wow you are so intelligent! :)");
+            } else {
+                System.out.println("The winner is... not you! It's team " + winningTeam);
+            }
+        } else {
+            if(client.getUsername().equals(client.getWinner())){
+                System.out.println("Congrats! =) You are the winner. Wow you are so intelligent! :)");
+            }else{
+                System.out.println("The winner is... not you! It's " + client.getWinner());
+            }
         }
         client.disconnectClient();
     }

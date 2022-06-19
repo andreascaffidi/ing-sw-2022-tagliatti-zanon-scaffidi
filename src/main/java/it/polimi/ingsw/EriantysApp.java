@@ -48,6 +48,7 @@ public class EriantysApp
             {
                 Server server = new Server(port);
                 server.run();
+                break;
             }
         }
     }

@@ -173,6 +173,7 @@ public class Player {
         }
         return new ReducedBoard(
                 this.username,
+                this.tagTeam,
                 this.towerColor,
                 students,
                 this.getSchoolBoard().getEntrance().getStudents().stream().map(Student::getColor).collect(Collectors.toList()),

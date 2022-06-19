@@ -184,9 +184,9 @@ class IslandTest {
      */
     @Test
     void changeId() {
-        int decrement = 1;
-        island.changeId(decrement);
-        assertEquals(randomId-decrement, island.getId());
+        int newID = 1;
+        island.changeId(newID);
+        assertEquals(1, island.getId());
     }
 
     /**
