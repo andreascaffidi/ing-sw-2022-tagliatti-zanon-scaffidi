@@ -150,6 +150,9 @@ public class PlayCharacterSceneController extends AbstractSceneController {
     @FXML
     private TilePane cardWithStudents;
 
+    @FXML
+    private Button exit;
+
     private final List<Integer> cardStudents = new ArrayList<>();
     private final List<Integer> entranceStudents = new ArrayList<>();
     private final List<ColorS> diningStudents = new ArrayList<>();
@@ -208,6 +211,13 @@ public class PlayCharacterSceneController extends AbstractSceneController {
         modelView.setOpacity(0.5);
         overlayView.setDisable(true);
         overlayView.setOpacity(0.5);
+    }
+
+    /**
+     * quits the play character scene
+     */
+    public void exit(){
+        client.changeState(client.getBackState());
     }
 
     /**
@@ -524,7 +534,12 @@ public class PlayCharacterSceneController extends AbstractSceneController {
         List<ColorS> rows = new ArrayList<>(Arrays.asList(ColorS.GREEN, ColorS.RED, ColorS.YELLOW, ColorS.PINK, ColorS.BLUE));
         numOfDiningStudents = diningGrid.getChildren().size();
         if (numOfDiningStudents == 0) {
-            client.changeState(client.getBackState());
+            client.send(new PayCharacter10Message(null, null));
+            modelView.setDisable(true);
+            modelView.setOpacity(0.5);
+            exit.setVisible(true);
+            overlayView.setVisible(true);
+            overlayView.setDisable(false);
         } else {
 
             for (Node student : diningGrid.getChildren()) {

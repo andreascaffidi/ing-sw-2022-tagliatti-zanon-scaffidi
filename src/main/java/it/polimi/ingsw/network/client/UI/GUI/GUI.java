@@ -410,7 +410,7 @@ public class GUI implements UI {
         Text currentEffectText = new Text();
         currentEffectText.setText(reducedModelExpertMode.getCurrentEffect());
         currentEffectText.setFont(Font.font("Gigi", 30));
-        currentEffectText.setFill(Color.YELLOW);
+        currentEffectText.setFill(Color.RED);
         currentEffect.getChildren().add(currentEffectText);
         currentEffect.setTextAlignment(TextAlignment.CENTER);
         //adding characters
@@ -427,8 +427,8 @@ public class GUI implements UI {
                 for (ColorS student : reducedModelExpertMode.getCharacters().get(i).getStudents()){
                     Pane studentPane = new Pane();
                     studentPane.getStyleClass().add(student.toString().toLowerCase());
-                    studentPane.setPrefHeight(20);
-                    studentPane.setPrefWidth(20);
+                    studentPane.setPrefHeight(40);
+                    studentPane.setPrefWidth(40);
                     ((TilePane)characters.get(i).getGraphic()).getChildren().add(studentPane);
                 }
             }
@@ -454,11 +454,11 @@ public class GUI implements UI {
                 JSONObject card =  (JSONObject) o;
                 if (((Long)card.get("id")).intValue()==character.getId()){
                     int initialCost = ((Long)card.get("cost")).intValue();
-                    if (character.getCost() == initialCost){
+                    if (character.getCost() != initialCost){
                         Pane coin = new Pane();
                         coin.getStyleClass().add("coin");
-                        coin.setPrefHeight(20);
-                        coin.setPrefWidth(20);
+                        coin.setPrefHeight(40);
+                        coin.setPrefWidth(40);
                         ((TilePane)characterButton.getGraphic()).getChildren().add(coin);
                     }
                 }
