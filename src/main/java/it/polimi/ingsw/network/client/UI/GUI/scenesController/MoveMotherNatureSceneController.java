@@ -214,8 +214,10 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
 
             island.setOnDragDropped(e -> {
                 int motherNatureIslandIndex = Integer.parseInt(e.getDragboard().getString());
-                int movements = (islandPane.getChildren().indexOf(island) - motherNatureIslandIndex)
-                        % client.getReducedModel().getIslands().size();
+                int movements = (islandPane.getChildren().indexOf(island) - motherNatureIslandIndex);
+                if (movements < 0){
+                    movements = movements + client.getReducedModel().getIslands().size();
+                }
                 if (movements <= maxMovement && movements > 0) {
                     Pane motherNatureIsland = (Pane) islandPane.getChildren().get(motherNatureIslandIndex);
                     Pane motherNature = (Pane) motherNatureIsland.getChildren().stream().filter(p -> p.getId() != null &&

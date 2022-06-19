@@ -284,13 +284,17 @@ public class TableExpertMode extends Table {
      */
     @Override
     public void newIslandGroup(List<Island> islands){
-        super.newIslandGroup(islands);
-        int idMin = islands.stream().map(Island::getId).reduce(12, (id1, id2) -> id1 < id2 ? id1 : id2);
+        boolean noEntryTile = false;
         for (Island i : islands){
             if (noEntryTiles.get(i)){
-                this.setNoEntryTile(this.getIsland(idMin), true);
+                noEntryTile = true;
                 this.setNoEntryTile(i, false);
             }
+        }
+        super.newIslandGroup(islands);
+        int idMin = islands.stream().map(Island::getId).reduce(12, (id1, id2) -> id1 < id2 ? id1 : id2);
+        if (noEntryTile){
+            this.setNoEntryTile(this.getIsland(idMin), true);
         }
     }
 
