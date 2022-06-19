@@ -45,4 +45,9 @@ public class GUIMoveMotherNatureState extends AbstractClientState {
     public void serverError(String message) {
         moveMotherNatureSceneController.alert(message);
     }
+
+    @Override
+    public void disconnectionError(String message){
+        moveMotherNatureSceneController.disconnectClient(message);
+    }
 }

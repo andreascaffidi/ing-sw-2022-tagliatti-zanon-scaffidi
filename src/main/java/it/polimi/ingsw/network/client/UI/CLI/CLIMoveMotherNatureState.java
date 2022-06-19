@@ -24,7 +24,7 @@ public class CLIMoveMotherNatureState extends AbstractClientState {
         this.client = client;
         in = new Scanner(System.in);
 
-        client.getUI().showModel(client.getReducedModel());
+        CLI.showModel(client.getReducedModel());
         System.out.print("It's your turn! Move Mother Nature by typing the number of movement you want");
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
             System.out.print("\nOr you can even pay a character card from the available, by typing "
@@ -43,10 +43,7 @@ public class CLIMoveMotherNatureState extends AbstractClientState {
         boolean payCharacter = false;
         int maxMovement = 0;
 
-        ReducedBoard myBoard = client.getReducedModel().getBoards().stream()
-                .filter(b -> b.getPlayer().equals(client.getUsername()))
-                .findFirst().orElse(null);
-
+        ReducedBoard myBoard = client.getReducedModel().getBoard(client.getUsername());
         if (myBoard != null){
             maxMovement = myBoard.getAssistantDeck().getPlayedAssistant().getMotherNatureMovements();
             CLI.CTA("\nMaximum movements available: " + maxMovement);

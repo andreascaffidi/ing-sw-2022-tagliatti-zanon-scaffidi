@@ -249,9 +249,7 @@ public class CLIPlayCharacterState extends AbstractClientState {
         int choices = 0;
         boolean exit = false;
 
-        ReducedBoard myBoard = client.getReducedModel().getBoards().stream()
-                .filter(b -> b.getPlayer().equals(client.getUsername()))
-                .findFirst().orElse(null);
+        ReducedBoard myBoard = client.getReducedModel().getBoard(client.getUsername());
 
         int diningStudents = 0;
 

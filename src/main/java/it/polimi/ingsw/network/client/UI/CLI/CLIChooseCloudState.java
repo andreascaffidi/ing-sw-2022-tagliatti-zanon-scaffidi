@@ -23,7 +23,7 @@ public class CLIChooseCloudState extends AbstractClientState {
         this.client = client;
         in = new Scanner(System.in);
 
-        client.getUI().showModel(client.getReducedModel());
+        CLI.showModel(client.getReducedModel());
         System.out.print("It's your turn! Choose a cloud by typing the "+Ansi.colorize("ID", Ansi.UNDERLINE));
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
             System.out.print("\nOr you can even pay a character card from the available, by typing "

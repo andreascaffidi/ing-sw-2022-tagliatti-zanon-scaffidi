@@ -60,4 +60,15 @@ public class ReducedModel implements Serializable {
     public String getCurrentPlayer() {
         return currentPlayer;
     }
+
+    /**
+     * gets a board of a specific player
+     * @param player board's owner
+     * @return reduced board of player
+     */
+    public ReducedBoard getBoard(String player){
+        return getBoards().stream()
+                .filter(b -> b.getPlayer().equals(player))
+                .findFirst().orElse(null);
+    }
 }

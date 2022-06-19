@@ -43,4 +43,9 @@ public class GUIMoveStudentsState extends AbstractClientState {
     public void serverError(String message) {
         moveStudentsSceneController.alert(message);
     }
+
+    @Override
+    public void disconnectionError(String message){
+        moveStudentsSceneController.disconnectClient(message);
+    }
 }

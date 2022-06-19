@@ -2,3 +2,233 @@
     -fx-background-image: url(../img/eriantys_background.jpg);
     -fx-background-size: 100% 100%;
 }
+
+.island1{
+    -fx-background-image: url(../img/Tavolo/Isole/island1.png);
+    -fx-background-size: 100% 100%;
+}
+
+.island2{
+    -fx-background-image: url(../img/Tavolo/Isole/island2.png);
+    -fx-background-size: 100% 100%;
+}
+
+.island3{
+    -fx-background-image: url(../img/Tavolo/Isole/island3.png);
+    -fx-background-size: 100% 100%;
+}
+
+.schoolBoard{
+    -fx-background-image: url(../img/Plancia/Plancia_DEF2.png);
+    -fx-background-size: 100% 100%;
+}
+
+.cloud1{
+    -fx-background-image: url(../img/Tavolo/Nuvole/cloud_card_1.png);
+    -fx-background-size: 100% 100%;
+}
+
+.cloud2{
+    -fx-background-image: url(../img/Tavolo/Nuvole/cloud_card_2.png);
+    -fx-background-size: 100% 100%;
+}
+
+.cloud3{
+    -fx-background-image: url(../img/Tavolo/Nuvole/cloud_card_3.png);
+    -fx-background-size: 100% 100%;
+}
+
+.cloud4{
+    -fx-background-image: url(../img/Tavolo/Nuvole/cloud_card_4.png);
+    -fx-background-size: 100% 100%;
+}
+
+.red{
+    -fx-background-image: url(../img/Plancia/Studenti/student_red.png);
+    -fx-background-size: 100% 100%;
+}
+
+.blue{
+    -fx-background-image: url(../img/Plancia/Studenti/student_blue.png);
+    -fx-background-size: 100% 100%;
+}
+
+.green{
+    -fx-background-image: url(../img/Plancia/Studenti/student_green.png);
+    -fx-background-size: 100% 100%;
+}
+
+.pink{
+    -fx-background-image: url(../img/Plancia/Studenti/student_pink.png);
+    -fx-background-size: 100% 100%;
+}
+
+.yellow{
+    -fx-background-image: url(../img/Plancia/Studenti/student_yellow.png);
+    -fx-background-size: 100% 100%;
+}
+
+.prof_red{
+    -fx-background-image: url(../img/Plancia/Professori/teacher_red.png);
+    -fx-background-size: 100% 100%;
+}
+
+.prof_blue{
+    -fx-background-image: url(../img/Plancia/Professori/teacher_blue.png);
+    -fx-background-size: 100% 100%;
+}
+
+.prof_green{
+    -fx-background-image: url(../img/Plancia/Professori/teacher_green.png);
+    -fx-background-size: 100% 100%;
+}
+
+.prof_pink{
+    -fx-background-image: url(../img/Plancia/Professori/teacher_pink.png);
+    -fx-background-size: 100% 100%;
+}
+
+.prof_yellow{
+    -fx-background-image: url(../img/Plancia/Professori/teacher_yellow.png);
+    -fx-background-size: 100% 100%;
+}
+
+.black{
+    -fx-background-image: url(../img/Plancia/Torri/black_tower.png);
+    -fx-background-size: 100% 100%;
+}
+
+.grey{
+    -fx-background-image: url(../img/Plancia/Torri/grey_tower.png);
+    -fx-background-size: 100% 100%;
+}
+
+.white{
+    -fx-background-image: url(../img/Plancia/Torri/white_tower.png);
+    -fx-background-size: 100% 100%;
+}
+
+.motherNature{
+    -fx-background-image: url(../img/Tavolo/mother_nature.png);
+    -fx-background-size: 100% 100%;
+}
+
+.noEntryTile{
+    -fx-background-image: url(../img/Tavolo/Isole/deny_island_icon.png);
+    -fx-background-size: 100% 100%;
+}
+
+.coin{
+    -fx-background-image: url(../img/Plancia/Moneta_base.png);
+    -fx-background-size: 100% 100%;
+}
+
+.assistant-1{
+    -fx-background-image: url(../img/Assistenti/Assistente1.png);
+    -fx-background-size: 100% 100%;
+}
+
+.assistant-2{
+    -fx-background-image: url(../img/Assistenti/Assistente2.png);
+    -fx-background-size: 100% 100%;
+}
+
+.assistant-3{
+    -fx-background-image: url(../img/Assistenti/Assistente3.png);
+    -fx-background-size: 100% 100%;
+}
+
+.assistant-4{
+    -fx-background-image: url(../img/Assistenti/Assistente4.png);
+    -fx-background-size: 100% 100%;
+}
+
+.assistant-5{
+    -fx-background-image: url(../img/Assistenti/Assistente5.png);
+    -fx-background-size: 100% 100%;
+}
+
+.assistant-6{
+    -fx-background-image: url(../img/Assistenti/Assistente6.png);
+    -fx-background-size: 100% 100%;
+}
+
+.assistant-7{
+    -fx-background-image: url(../img/Assistenti/Assistente7.png);
+    -fx-background-size: 100% 100%;
+}
+
+.assistant-8{
+    -fx-background-image: url(../img/Assistenti/Assistente8.png);
+    -fx-background-size: 100% 100%;
+}
+
+.assistant-9{
+    -fx-background-image: url(../img/Assistenti/Assistente9.png);
+    -fx-background-size: 100% 100%;
+}
+
+.assistant-10{
+    -fx-background-image: url(../img/Assistenti/Assistente10.png);
+    -fx-background-size: 100% 100%;
+}
+
+.character-1{
+    -fx-background-image: url(../img/Personaggi/CarteTOT_front1.jpg);
+    -fx-background-size: 100% 100%;
+}
+
+.character-2{
+    -fx-background-image: url(../img/Personaggi/CarteTOT_front2.jpg);
+    -fx-background-size: 100% 100%;
+}
+
+.character-3{
+    -fx-background-image: url(../img/Personaggi/CarteTOT_front3.jpg);
+    -fx-background-size: 100% 100%;
+}
+
+.character-4{
+    -fx-background-image: url(../img/Personaggi/CarteTOT_front4.jpg);
+    -fx-background-size: 100% 100%;
+}
+
+.character-5{
+    -fx-background-image: url(../img/Personaggi/CarteTOT_front5.jpg);
+    -fx-background-size: 100% 100%;
+}
+
+.character-6{
+    -fx-background-image: url(../img/Personaggi/CarteTOT_front6.jpg);
+    -fx-background-size: 100% 100%;
+}
+
+.character-7{
+    -fx-background-image: url(../img/Personaggi/CarteTOT_front7.jpg);
+    -fx-background-size: 100% 100%;
+}
+
+.character-8{
+    -fx-background-image: url(../img/Personaggi/CarteTOT_front8.jpg);
+    -fx-background-size: 100% 100%;
+}
+
+.character-9{
+    -fx-background-image: url(../img/Personaggi/CarteTOT_front9.jpg);
+    -fx-background-size: 100% 100%;
+}
+
+.character-10{
+    -fx-background-image: url(../img/Personaggi/CarteTOT_front10.jpg);
+    -fx-background-size: 100% 100%;
+}
+
+.character-11{
+    -fx-background-image: url(../img/Personaggi/CarteTOT_front11.jpg);
+    -fx-background-size: 100% 100%;
+}
+
+.character-12{
+    -fx-background-image: url(../img/Personaggi/CarteTOT_front12.jpg);
+    -fx-background-size: 100% 100%;
+}

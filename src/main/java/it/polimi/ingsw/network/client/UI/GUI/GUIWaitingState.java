@@ -29,13 +29,20 @@ public class GUIWaitingState extends AbstractClientState {
             root = loader.load();
             waitingSceneController = loader.getController();
             waitingSceneController.setClient(client);
+            waitingSceneController.setup();
             Platform.runLater(() ->JavaFXGUI.setMainPane((Pane)root));
         } catch (IOException e){
             e.printStackTrace();
         }
     }
+
     @Override
     public void serverError(String message) {
         waitingSceneController.alert(message);
+    }
+
+    @Override
+    public void disconnectionError(String message){
+        waitingSceneController.disconnectClient(message);
     }
 }

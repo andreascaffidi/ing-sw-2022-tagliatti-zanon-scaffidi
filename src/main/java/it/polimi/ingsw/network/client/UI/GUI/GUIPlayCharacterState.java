@@ -42,4 +42,9 @@ public class GUIPlayCharacterState extends AbstractClientState {
     public void serverError(String message) {
         playCharacterSceneController.alert(message);
     }
+
+    @Override
+    public void disconnectionError(String message){
+        playCharacterSceneController.disconnectClient(message);
+    }
 }

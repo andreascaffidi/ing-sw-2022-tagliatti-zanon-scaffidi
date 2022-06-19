@@ -21,6 +21,9 @@ public class CLIWaitingState extends AbstractClientState {
      */
     @Override
     public void render(){
+        if (client.getReducedModel() != null){
+            CLI.showModel(client.getReducedModel());
+        }
         //FIXME bloccare input
         System.out.println(client.getWaitingMessage());
     }

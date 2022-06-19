@@ -33,7 +33,6 @@ public class GameStartedMessage implements ResponseMessage, ClientExecute {
         client.setReducedModel(reducedModel);
         if(!reducedModel.getCurrentPlayer().equals(client.getUsername()))
         {
-            client.getUI().showModel(reducedModel);
             clientState = ClientState.WAITING;
             client.setWaitingMessage("It's " + reducedModel.getCurrentPlayer() + " turn, waiting for yours...");
         }

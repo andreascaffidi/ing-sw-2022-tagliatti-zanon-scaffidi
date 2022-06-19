@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client.reducedModel;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * reduced serializable version of player's assistant deck
@@ -35,5 +36,14 @@ public class ReducedAssistantDeck implements Serializable {
      */
     public ReducedAssistant getPlayedAssistant() {
         return playedAssistant;
+    }
+
+    /**
+     * gets all assistant values available
+     * @return all assistant values available
+     */
+    public List<Integer> getPossibleChoices(){
+        return getAssistantCards().stream()
+                .map(ReducedAssistant::getId).collect(Collectors.toList());
     }
 }

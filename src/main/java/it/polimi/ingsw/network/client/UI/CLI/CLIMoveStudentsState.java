@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.client.UI.CLI;
 
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.reducedModel.ReducedBoard;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModelExpertMode;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
@@ -24,7 +25,7 @@ public class CLIMoveStudentsState extends AbstractClientState {
         this.client = client;
         in = new Scanner(System.in);
 
-        client.getUI().showModel(client.getReducedModel());
+        CLI.showModel(client.getReducedModel());
         choices = client.getReducedModel().getBoards().size() == 3 ? 4 : 3;
         System.out.print("It's your turn! Choose " + choices +" students from your entrance and move them" +
                 " to an Island or your Dining room");
@@ -44,9 +45,12 @@ public class CLIMoveStudentsState extends AbstractClientState {
 
         boolean payCharacter = false;
 
+        ReducedBoard myBoard = client.getReducedModel().getBoard(client.getUsername());
         List<Integer> studentsAvailable = new ArrayList<>();
-        for (int i = 1; i < client.getReducedModel().getBoards().get(0).getEntranceStudents().size()+1; i++){
-            studentsAvailable.add(i);
+        if (myBoard != null) {
+            for (int i = 1; i < myBoard.getEntranceStudents().size() + 1; i++) {
+                studentsAvailable.add(i);
+            }
         }
 
         while (choices > 0)

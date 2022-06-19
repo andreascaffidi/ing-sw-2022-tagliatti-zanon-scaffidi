@@ -77,8 +77,7 @@ public class CLI implements UI {
      * prints the model
      * @param reducedModel reduced model
      */
-    @Override
-    public void showModel(ReducedModel reducedModel){
+    public static void showModel(ReducedModel reducedModel){
         String _ISLANDS = "\n\uD83C\uDFDD \uD83C\uDFDD \uD83C\uDFDD "+ Ansi.colorize(" I S L A N D S ",Ansi.HIGH_INTENSITY,Ansi.BACKGROUND_GREEN,Ansi.BLACK) + " \uD83C\uDFDD \uD83C\uDFDD \uD83C\uDFDD \n";
         String _CLOUDS;
         String _BOARDS;
@@ -510,9 +509,7 @@ public class CLI implements UI {
     public static int chooseValidEntranceStudent(ReducedModel reducedModel, String player){
         List<Integer> entranceAvailable = new ArrayList<>();
 
-        ReducedBoard myBoard = reducedModel.getBoards().stream()
-                .filter(b -> b.getPlayer().equals(player))
-                .findFirst().orElse(null);
+        ReducedBoard myBoard = reducedModel.getBoard(player);
 
         if (myBoard != null) {
             for (int i = 1; i < myBoard.getEntranceStudents().size() + 1; i++) {

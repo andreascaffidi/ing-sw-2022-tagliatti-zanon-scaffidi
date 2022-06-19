@@ -69,6 +69,10 @@ public class JavaFXGUI extends Application {
             primaryScene = new Scene(pane, 1280, 720, Color.BLACK);
             primaryStage.setScene(primaryScene);
             primaryStage.setFullScreen(false);
+            primaryStage.setMaxHeight(720);
+            primaryStage.setMaxWidth(1280);
+            primaryStage.setMinHeight(720);
+            primaryStage.setMinWidth(1280);
             initialized = true;
             lock.notifyAll();
         }

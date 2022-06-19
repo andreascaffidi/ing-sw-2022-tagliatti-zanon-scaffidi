@@ -45,6 +45,8 @@ public class Client {
 
     private Socket socket;
 
+    private int characterSelected;
+
     /**
      * builds a client
      * @param ip ip address
@@ -240,5 +242,20 @@ public class Client {
      */
     public UI getUI() {
         return ui;
+    }
+
+    /**
+     * gets the character selected ID
+     * @return character selected ID
+     */
+    public int getCharacterSelected(){
+        return characterSelected;
+    }
+
+    /**
+     * sets the character selected ID
+     */
+    public void setCharacterSelected(int character){
+        this.characterSelected = character;
     }
 }

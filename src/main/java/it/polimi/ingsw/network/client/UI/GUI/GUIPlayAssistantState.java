@@ -40,4 +40,9 @@ public class GUIPlayAssistantState extends AbstractClientState {
     public void serverError(String message) {
         playAssistantSceneController.alert(message);
     }
+
+    @Override
+    public void disconnectionError(String message){
+        playAssistantSceneController.disconnectClient(message);
+    }
 }

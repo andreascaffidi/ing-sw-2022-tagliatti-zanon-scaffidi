@@ -44,4 +44,9 @@ public class GUIChooseCloudState extends AbstractClientState {
     public void serverError(String message) {
         chooseCloudSceneController.alert(message);
     }
+
+    @Override
+    public void disconnectionError(String message){
+        chooseCloudSceneController.disconnectClient(message);
+    }
 }
