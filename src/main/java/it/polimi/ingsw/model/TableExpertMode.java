@@ -295,6 +295,8 @@ public class TableExpertMode extends Table {
         int idMin = islands.stream().map(Island::getId).reduce(12, (id1, id2) -> id1 < id2 ? id1 : id2);
         if (noEntryTile){
             this.setNoEntryTile(this.getIsland(idMin), true);
+        } else {
+            this.noEntryTiles.put(this.getIsland(idMin), false);
         }
     }
 

@@ -212,6 +212,8 @@ public class MoveStudentsSceneController extends AbstractSceneController {
             island.setOnDragDropped(e -> {
                 String studentIndex = e.getDragboard().getString();
                 Pane studentMoved = (Pane) entranceGrid.getChildren().get(Integer.parseInt(studentIndex));
+                studentMoved.setPrefHeight(20);
+                studentMoved.setPrefWidth(20);
                 ((TilePane) island).getChildren().add(studentMoved);
                 choices--;
                 movementsChosen.put(Integer.parseInt(studentMoved.getId())+1, String.valueOf(islandPane.getChildren().indexOf(island) + 1));
