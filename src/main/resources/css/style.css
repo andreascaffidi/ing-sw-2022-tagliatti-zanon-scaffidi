@@ -232,3 +232,109 @@
     -fx-background-image: url(../img/Personaggi/CarteTOT_front12.jpg);
     -fx-background-size: 100% 100%;
 }
+
+.btn-primary{
+    -fx-background-color: transparent;
+    -fx-background-image: url(../img/Ui/btn.primary.png);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 100% 100%;
+    -fx-font-family: 'Newborough';
+    -fx-text-fill: #fff;
+    -fx-font-size:24px;
+    -fx-pref-height: 65px;
+}
+.btn-primary:hover{
+    -fx-background-color: transparent;
+   -fx-background-image: url(../img/Ui/btn.primary.contrast.png);
+     -fx-background-position: center;
+     -fx-background-repeat: no-repeat;
+    -fx-font-family: 'Newborough';
+    -fx-text-fill: #0054ba;
+     -fx-font-size:20px;
+}
+
+.btn-login{
+     -fx-pref-width: 120px;
+     -fx-padding: 0 0 5 0;
+}
+
+.input-username{
+ -fx-background-image: url(../img/Ui/input.background.png);
+  -fx-background-size: 100% 100%;
+   -fx-background-position: center;
+   -fx-background-repeat: no-repeat;
+   -fx-font-family: 'Newborough';
+   -fx-text-fill: #fff;
+    -fx-font-size:24px;
+ -fx-pref-height: 50px;
+    -fx-padding: 0 10 0 10;
+}
+
+
+.text-light{
+    -fx-text-fill: #f9edd3;
+}
+
+.background-blue{
+     -fx-background-image: url(../img/Ui/input.background.png);
+  -fx-background-size: 100% 100%;
+   -fx-background-position: center;
+   -fx-background-repeat: no-repeat;
+}
+
+.waiting-background{
+ -fx-background-color: transparent;
+ -fx-graphics: url(../img/Ui/input.background.png);
+ -fx-background-repeat: repeat;
+}
+
+.radio-team{
+ -fx-background-color: transparent;
+ -fx-background-image: url(../img/Ui/btn.primary.png);
+ -fx-background-size: 100% 100%;
+ -fx-font-family: 'Newborough';
+ -fx-text-fill: #fff;
+ -fx-padding: 15px, 0px, 25px, 20px;
+  -fx-pref-height: 30px;
+  -fx-font-size:18px;
+
+
+}
+.radio-team:selected{
+ -fx-background-color: transparent;
+ -fx-background-image: url(../img/Ui/btn.primary.contrast.png);
+ -fx-background-size: 100% 100%;
+ -fx-font-family: 'Newborough';
+ -fx-text-fill: #0054ba;
+}
+
+.radio-team:armed{
+ -fx-background-color: transparent;
+ -fx-background-image: url(../img/Ui/btn.primary.contrast.png);
+ -fx-background-size: 100% 100%;
+ -fx-font-family: 'Newborough';
+ -fx-text-fill: #0054ba;
+}
+.radio-team:determinate{
+ -fx-background-color: transparent;
+ -fx-background-image: url(../img/Ui/btn.primary.contrast.png);
+ -fx-background-size: 100% 100%;
+ -fx-font-family: 'Newborough';
+ -fx-text-fill: #0054ba;
+}
+.radio-team:indeterminate{
+ -fx-background-color: transparent;
+ -fx-background-image: url(../img/Ui/btn.primary.contrast.png);
+ -fx-background-size: 100% 100%;
+ -fx-font-family: 'Newborough';
+ -fx-text-fill: #0054ba;
+}
+.radio-team .radio{
+-fx-background-color: transparent;
+-fx-padding: 0px;
+}
+.radio-team .dot{
+-fx-background-color: transparent;
+-fx-padding: 0px;
+}

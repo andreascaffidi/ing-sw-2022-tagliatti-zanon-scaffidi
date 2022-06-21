@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -50,6 +51,8 @@ public class JavaFXGUI extends Application {
                 Image image = new Image(imagePath.toString());
                 stage.getIcons().add(image);
             }
+            //LOAD FONT
+            Font.loadFont(getClass().getResourceAsStream("/resources/NEWBOROU.TTF"), 14);
 
             //overlay root is the external layer of the scene
             overlayPane.setMouseTransparent(true);

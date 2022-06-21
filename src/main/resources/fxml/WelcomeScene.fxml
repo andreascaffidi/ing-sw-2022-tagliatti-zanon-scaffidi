@@ -1,26 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.effect.MotionBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane prefHeight="600.0" prefWidth="400.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.network.client.UI.GUI.scenesController.WelcomeSceneController">
+<AnchorPane maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.network.client.UI.GUI.scenesController.WelcomeSceneController">
    <children>
-      <Button fx:id="loginButton" layoutX="840.0" layoutY="430.0" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="100.0" text="Login">
-         <font>
-            <Font size="24.0" />
-         </font></Button>
-      <TextField fx:id="NickNameTextField" layoutX="420.0" layoutY="430.0" onAction="#login" prefHeight="50.0" prefWidth="400.0" />
-      <Text fill="WHITE" layoutX="306.0" layoutY="372.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome, insert your nickname!">
-         <font>
-            <Font name="Gigi" size="64.0" />
-         </font>
-      </Text>
+      <Group>
+         <children>
+            <ImageView fitHeight="720.0" fitWidth="1280.0" opacity="0.84" visible="false">
+               <image>
+                  <Image url="@../img/2138689.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="677.0" fitWidth="787.0" layoutX="510.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/Scenes/Lobby/island.center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="198.0" fitWidth="130.0" layoutX="279.0" layoutY="315.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/Scenes/Lobby/moternature.right.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="720.0" fitWidth="1280.0" opacity="0.75" visible="false">
+               <image>
+                  <Image url="@../img/Ui/gradient.background.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="294.0" fitWidth="299.0" layoutY="412.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/Scenes/Lobby/island.left.2.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="356.0" fitWidth="299.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/Scenes/Lobby/island.left.1.png" />
+               </image>
+            </ImageView>
+            <Rectangle fill="DODGERBLUE" height="720.0" opacity="0.23" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="waiting-background" width="1280.0" />
+         </children>
+      </Group>
       <TextFlow fx:id="alertBox" layoutX="420.0" layoutY="555.0" prefHeight="70.0" prefWidth="518.0" style="-fx-background-color: #d92727;" textAlignment="CENTER" visible="false">
          <children>
             <Text fx:id="alertMessage" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="138.6875">
@@ -37,5 +67,44 @@
             </MotionBlur>
          </effect>
       </TextFlow>
+      <ImageView fitHeight="444.0" fitWidth="400.0" layoutX="441.0" layoutY="153.0">
+         <image>
+            <Image url="@../img/Scenes/Welcome/login.background.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="NickNameTextField" layoutX="511.0" layoutY="398.0" onAction="#login" prefHeight="60.0" prefWidth="260.0" styleClass="input-username" />
+      <Button fx:id="loginButton" alignment="CENTER" layoutX="579.0" layoutY="458.0" mnemonicParsing="false" onAction="#login" prefHeight="60.0" text="Login">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <styleClass>
+            <String fx:value="btn-primary" />
+            <String fx:value="btn-login" />
+         </styleClass></Button>
+      <Text fill="WHITE" layoutX="546.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert your username!" textAlignment="CENTER">
+         <font>
+            <Font name="Newborough" size="20.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="98.0" fitWidth="345.0" layoutX="483.0" layoutY="206.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/Ui/logo.eriantys.png" />
+         </image>
+      </ImageView>
+      <Text fill="#fbefd7" layoutX="513.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-light" text="The magical world of floating islands">
+         <font>
+            <Font name="Newborough" size="18.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="593.0" layoutY="545.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Implemented by" textAlignment="CENTER">
+         <font>
+            <Font name="Newborough" size="14.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="533.0" layoutY="567.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A. Scaffidi - L. Tagliatti - F. Zanon" textAlignment="CENTER">
+         <font>
+            <Font name="Newborough" size="14.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
