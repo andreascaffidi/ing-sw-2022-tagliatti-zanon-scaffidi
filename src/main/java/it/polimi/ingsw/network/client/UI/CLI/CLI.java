@@ -78,7 +78,7 @@ public class CLI implements UI {
      * @param reducedModel reduced model
      */
     public static void showModel(ReducedModel reducedModel){
-        String _ISLANDS = "\n\uD83C\uDFDD \uD83C\uDFDD \uD83C\uDFDD "+ Ansi.colorize(" I S L A N D S ",Ansi.HIGH_INTENSITY,Ansi.BACKGROUND_GREEN,Ansi.BLACK) + " \uD83C\uDFDD \uD83C\uDFDD \uD83C\uDFDD \n";
+        String _ISLANDS = "\n       "+ Ansi.colorize(" I S L A N D S ",Ansi.HIGH_INTENSITY,Ansi.BACKGROUND_GREEN,Ansi.BLACK) + "\n";
         String _CLOUDS;
         String _BOARDS;
 
@@ -101,7 +101,7 @@ public class CLI implements UI {
 
         model += _CLOUDS;
 
-        model += "\n\uD83C\uDFB2 \uD83C\uDFB2 \uD83C\uDFB2 " + Ansi.colorize(" B O A R D S ",Ansi.BACKGROUND_RED,Ansi.BLACK,Ansi.HIGH_INTENSITY)+" \uD83C\uDFB2 \uD83C\uDFB2 \uD83C\uDFB2\n";
+        model += "\n       " + Ansi.colorize(" B O A R D S ",Ansi.BACKGROUND_RED,Ansi.BLACK,Ansi.HIGH_INTENSITY)+"\n";
 
         model += _BOARDS;
 
@@ -186,7 +186,7 @@ public class CLI implements UI {
      * @return a string that represents the clouds
      */
     private static String cloudsToString(List<ReducedCloud> clouds){
-        StringBuilder cloudStr = new StringBuilder("☁ ☁ ☁ " + Ansi.colorize(" C L O U D S ", Ansi.HIGH_INTENSITY, Ansi.BACKGROUND_CYAN, Ansi.BLACK)+ " ☁ ☁ ☁ \n");
+        StringBuilder cloudStr = new StringBuilder("      " + Ansi.colorize(" C L O U D S ", Ansi.HIGH_INTENSITY, Ansi.BACKGROUND_CYAN, Ansi.BLACK)+ "\n");
         for(int i = 0; i<3; i++) {
             for (ReducedCloud cloud : clouds) {
                 cloudStr.append(cloudToStringArray(cloud)[i]);
@@ -205,7 +205,7 @@ public class CLI implements UI {
      * @return string that represents clouds and expert mode information
      */
     private static String expertCloudAndCharacterToString(List<ReducedCloud> clouds,List<ReducedCharacter> characters, String currentEffect){
-        StringBuilder cloudAndCharactersStr = new StringBuilder("☁ ☁ ☁ " + Ansi.colorize(" C L O U D S ", Ansi.HIGH_INTENSITY, Ansi.BACKGROUND_CYAN, Ansi.BLACK) + " ☁ ☁ ☁              " + Ansi.CARD_ICON + " " + Ansi.CARD_ICON + " " + Ansi.CARD_ICON + " " + Ansi.colorize(" C H A R A C T E R   C A R D S ", Ansi.HIGH_INTENSITY, Ansi.BACKGROUND_MAGENTA, Ansi.BLACK) + " " + Ansi.CARD_ICON + " " + Ansi.CARD_ICON + " " + Ansi.CARD_ICON + " " + "\n");
+        StringBuilder cloudAndCharactersStr = new StringBuilder("      " + Ansi.colorize(" C L O U D S ", Ansi.HIGH_INTENSITY, Ansi.BACKGROUND_CYAN, Ansi.BLACK) + "                           " + Ansi.colorize(" C H A R A C T E R   C A R D S ", Ansi.HIGH_INTENSITY, Ansi.BACKGROUND_MAGENTA, Ansi.BLACK) + "\n");
         final int _ROWS = clouds.size() < 3 ? 5 : 6;
         final int cloudsPerRow = 2;
         final int cloudSize = clouds.size();
@@ -232,7 +232,7 @@ public class CLI implements UI {
                 if(cloudSize < 3){
                     cloudAndCharactersStr.append(String.join("", Collections.nCopies(40, " ")));
                 }
-                cloudAndCharactersStr.append(Ansi.EFFECT_ICON + " CURRENT EFFECT: ").append(currentEffect != null ? currentEffect : " _ ");
+                cloudAndCharactersStr.append(" CURRENT EFFECT: ").append(currentEffect != null ? currentEffect : " _ ");
             }
             cloudAndCharactersStr.append("\n");
         }
@@ -246,7 +246,7 @@ public class CLI implements UI {
      */
     private static String characterToString(ReducedCharacter card){
         StringBuilder cardString = new StringBuilder();
-        cardString.append("#").append(card.getId() < 10 ? card.getId() + " " : card.getId()).append(" │ ").append(Ansi.MONEY_BAG_ICON).append(" ").append(card.getCost()).append(" │ ");
+        cardString.append("#").append(card.getId() < 10 ? card.getId() + " " : card.getId()).append(" │ ").append(" ").append(card.getCost()).append(" │ ");
         for(ColorS color : ColorS.values()){
             cardString.append(Ansi.colorize(String.valueOf(card.getStudents(color).size()), color.getAnsiEscapeCode())).append(" ");
         }
@@ -351,13 +351,12 @@ public class CLI implements UI {
                     boardsStr.append(rowDeck);
                     boardsStr.append(String.join("", Collections.nCopies(51 - rowDeck.length(), " ")));
                     boardsStr.append(" ");
-
                 }
                 boardsStr.append("\n");
             }
             for(int j = rowsDone*boardsPerRow; j<boardsNum && j<(boardsPerRow*(rowsDone+1));j++){
                 ReducedAssistant assistant = boards.get(j).getAssistantDeck().getPlayedAssistant();
-                String discardPile = Ansi.CARD_ICON+" LAST ASSISTANT PLAYED: "+ (assistant != null ? ("#"+assistant.getId()+" - "+assistant.getMotherNatureMovements()+" M.N.M."): " - ");
+                String discardPile = "  LAST ASSISTANT PLAYED: "+ (assistant != null ? ("#"+assistant.getId()+" - "+assistant.getMotherNatureMovements()+" M.N.M."): " - ");
                 boardsStr.append(discardPile);
                 boardsStr.append(String.join("", Collections.nCopies(53 - discardPile.length(), " ")));
             }
@@ -410,7 +409,7 @@ public class CLI implements UI {
      * @param string request input string
      */
     public static void CTA(String string){
-        System.out.print(string +": "+ Ansi.TYPING_ICON +" ");
+        System.out.print(string +": ");
     }
 
     /**
@@ -418,7 +417,7 @@ public class CLI implements UI {
      * @param string error string
      */
     public static void error(String string){
-        System.out.print("\t "+Ansi.ERROR_ICON+"️ "+Ansi.colorize(string,Ansi.RED)+"\n");
+        System.out.print("\t X️ "+Ansi.colorize(string,Ansi.RED)+"\n");
     }
 
     /**

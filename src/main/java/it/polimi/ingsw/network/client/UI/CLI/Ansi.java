@@ -42,12 +42,6 @@ public final class Ansi {
         public static final String	BACKGROUND_CYAN		= "\u001B[46m";
         public static final String	BACKGROUND_GREY     = "\u001B[100m";
 
-        public static final String TYPING_ICON = "➡️";
-        public static final String ERROR_ICON = "❌️";
-        public static final String CARD_ICON = "\uD83C\uDCCF️";
-        public static final String MONEY_BAG_ICON = "\uD83D\uDCB0️";
-        public static final String EFFECT_ICON = "✨";
-
         /**
          * colorizes a string with a specific color
          * @param original string to colorize
