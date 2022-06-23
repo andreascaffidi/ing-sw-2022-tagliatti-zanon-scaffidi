@@ -1,22 +1,14 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
 import it.polimi.ingsw.model.enums.ColorS;
-import it.polimi.ingsw.model.enums.ColorT;
-import it.polimi.ingsw.network.client.UI.CLI.CLI;
 import it.polimi.ingsw.network.client.UI.GUI.GUI;
 import it.polimi.ingsw.network.client.reducedModel.*;
 import it.polimi.ingsw.network.requests.gameMessages.*;
-import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
-import it.polimi.ingsw.network.requests.setupMessages.SetupRequestTypes;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -25,13 +17,10 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 
 public class PlayCharacterSceneController extends AbstractSceneController {
@@ -282,7 +271,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
      */
     public void character1()
     {
-        alert("Move a student from the card to an island, drag and drop");
+        gameMessage.setText("Move a student from the card to an island, drag and drop");
+        messageBox.setVisible(true);
         cardWithStudents.getStyleClass().add("character-" + client.getCharacterSelected());
         for (ColorS student : ((ReducedModelExpertMode) client.getReducedModel()).getCharacterById(client.getCharacterSelected()).getStudents()){
             Pane studentPane = new Pane();
@@ -292,6 +282,7 @@ public class PlayCharacterSceneController extends AbstractSceneController {
             studentPane.setOnDragDetected(e -> {
                 Dragboard db = studentPane.startDragAndDrop(TransferMode.MOVE);
                 ClipboardContent content = new ClipboardContent();
+                content.putImage(studentPane.getBackground().getImages().get(0).getImage());
                 content.putString(valueOf(cardWithStudents.getChildren().indexOf(studentPane)));
                 db.setContent(content);
                 e.consume();
@@ -330,7 +321,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
      */
     private void character3()
     {
-        alert("Click on an island on which calculate supremacy");
+        gameMessage.setText("Click on an island on which calculate supremacy");
+        messageBox.setVisible(true);
         Pane islandPane = (Pane) islands.getChildren().get(0);
         for (Node island : islandPane.getChildren()) {
             island.setOnMouseClicked(e ->
@@ -343,7 +335,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
      */
     private void character4()
     {
-        alert("Insert a number of additional movement (maximum 2)");
+        gameMessage.setText("Insert a number of additional movement (maximum 2)");
+        messageBox.setVisible(true);
         requestInput.setText("Choose an additional movement");
         movements1.setVisible(true);
         movements2.setVisible(true);
@@ -364,7 +357,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
      */
     private void character5()
     {
-        alert("Click on an island to place a No-Entry Tile");
+        gameMessage.setText("Click on an island to place a No-Entry Tile");
+        messageBox.setVisible(true);
         Pane islandPane = (Pane) islands.getChildren().get(0);
         for (Node island : islandPane.getChildren()) {
             island.setOnMouseClicked(e ->
@@ -377,7 +371,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
      */
     private void character6()
     {
-        alert("Click on an island on which towers don't count for supremacy calculation");
+        gameMessage.setText("Click on an island on which towers don't count for supremacy calculation");
+        messageBox.setVisible(true);
         Pane islandPane = (Pane) islands.getChildren().get(0);
         for (Node island : islandPane.getChildren()) {
             island.setOnMouseClicked(e ->
@@ -394,7 +389,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
         playCharacter.setOnAction(e -> client.send(new PayCharacter7Message(cardStudents, entranceStudents)));
         playCharacter.setVisible(true);
         playCharacter.setDisable(true);
-        alert("Switch students from card and entrance (max 3), click on them");
+        gameMessage.setText("Switch students from card and entrance (max 3), click on them");
+        messageBox.setVisible(true);
         choices = 3;
         cardWithStudents.getStyleClass().add("character-" + client.getCharacterSelected());
         //set students on card
@@ -516,7 +512,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
      */
     private void character9()
     {
-        alert("Choose a color that has no influence in this round");
+        gameMessage.setText("Choose a color that has no influence in this round");
+        messageBox.setVisible(true);
         requestInput.setText("Choose a color, clicking on it");
         colorsInput.setVisible(true);
         redStudent.setOnMouseClicked(e -> client.send(new PayCharacter9Message(ColorS.RED)));
@@ -536,7 +533,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
         playCharacter.setOnAction(e -> client.send(new PayCharacter10Message(diningStudents, entranceStudents)));
         playCharacter.setVisible(true);
         playCharacter.setDisable(true);
-        alert("Switch students from dining and entrance (max 2), click on them");
+        gameMessage.setText("Switch students from dining and entrance (max 2), click on them");
+        messageBox.setVisible(true);
         choices = 2;
         List<ColorS> rows = new ArrayList<>(Arrays.asList(ColorS.GREEN, ColorS.RED, ColorS.YELLOW, ColorS.PINK, ColorS.BLUE));
         numOfDiningStudents = diningGrid.getChildren().size();
@@ -655,7 +653,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
      */
     private void character11()
     {
-        alert("Move a student from the card to dining room, drag and drop");
+        gameMessage.setText("Move a student from the card to dining room, drag and drop");
+        messageBox.setVisible(true);
         cardWithStudents.getStyleClass().add("character-" + client.getCharacterSelected());
         for (ColorS student : ((ReducedModelExpertMode) client.getReducedModel()).getCharacterById(client.getCharacterSelected()).getStudents()){
             Pane studentPane = new Pane();
@@ -665,6 +664,7 @@ public class PlayCharacterSceneController extends AbstractSceneController {
             studentPane.setOnDragDetected(e -> {
                 Dragboard db = studentPane.startDragAndDrop(TransferMode.MOVE);
                 ClipboardContent content = new ClipboardContent();
+                content.putImage(studentPane.getBackground().getImages().get(0).getImage());
                 content.putString(valueOf(cardWithStudents.getChildren().indexOf(studentPane)));
                 db.setContent(content);
                 e.consume();
@@ -691,7 +691,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
      */
     private void character12()
     {
-        alert("Choose a color");
+        gameMessage.setText("Choose a color");
+        messageBox.setVisible(true);
         requestInput.setText("Choose a color, clicking on it");
         colorsInput.setVisible(true);
         redStudent.setOnMouseClicked(e -> client.send(new PayCharacter12Message(ColorS.RED)));

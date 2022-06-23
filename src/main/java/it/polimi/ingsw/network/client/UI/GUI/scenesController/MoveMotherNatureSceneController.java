@@ -202,6 +202,7 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
                     motherNature.setOnDragDetected(e -> {
                         Dragboard db = motherNature.startDragAndDrop(TransferMode.MOVE);
                         ClipboardContent content = new ClipboardContent();
+                        content.putImage(motherNature.getBackground().getImages().get(0).getImage());
                         content.putString(valueOf(islandPane.getChildren().indexOf(motherNatureIsland)));
                         db.setContent(content);
                         e.consume();

@@ -23,6 +23,19 @@
     -fx-background-size: 100% 100%;
 }
 
+.schoolBoard-button{
+    -fx-background-image: url(../img/Plancia/Plancia_DEF2.png);
+    -fx-background-size: 100% 100%;
+    -fx-font-family: 'Newborough';
+    -fx-text-fill: #000000;
+    -fx-font-size:40px;
+    -fx-pref-height: 65px;
+}
+
+.schoolBoard-button:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
+}
+
 .cloud1{
     -fx-background-image: url(../img/Tavolo/Nuvole/cloud_card_1.png);
     -fx-background-size: 100% 100%;
@@ -128,9 +141,17 @@
     -fx-background-size: 100% 100%;
 }
 
+.assistant-1:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
+}
+
 .assistant-2{
     -fx-background-image: url(../img/Assistenti/Assistente2.png);
     -fx-background-size: 100% 100%;
+}
+
+.assistant-2:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
 }
 
 .assistant-3{
@@ -138,9 +159,17 @@
     -fx-background-size: 100% 100%;
 }
 
+.assistant-3:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
+}
+
 .assistant-4{
     -fx-background-image: url(../img/Assistenti/Assistente4.png);
     -fx-background-size: 100% 100%;
+}
+
+.assistant-4:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
 }
 
 .assistant-5{
@@ -148,9 +177,17 @@
     -fx-background-size: 100% 100%;
 }
 
+.assistant-5:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
+}
+
 .assistant-6{
     -fx-background-image: url(../img/Assistenti/Assistente6.png);
     -fx-background-size: 100% 100%;
+}
+
+.assistant-6:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
 }
 
 .assistant-7{
@@ -158,9 +195,17 @@
     -fx-background-size: 100% 100%;
 }
 
+.assistant-7:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
+}
+
 .assistant-8{
     -fx-background-image: url(../img/Assistenti/Assistente8.png);
     -fx-background-size: 100% 100%;
+}
+
+.assistant-8:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
 }
 
 .assistant-9{
@@ -168,9 +213,17 @@
     -fx-background-size: 100% 100%;
 }
 
+.assistant-9:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
+}
+
 .assistant-10{
     -fx-background-image: url(../img/Assistenti/Assistente10.png);
     -fx-background-size: 100% 100%;
+}
+
+.assistant-10:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
 }
 
 .character-1{
@@ -178,9 +231,17 @@
     -fx-background-size: 100% 100%;
 }
 
+.character-1:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
+}
+
 .character-2{
     -fx-background-image: url(../img/Personaggi/CarteTOT_front2.jpg);
     -fx-background-size: 100% 100%;
+}
+
+.character-2:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
 }
 
 .character-3{
@@ -188,9 +249,17 @@
     -fx-background-size: 100% 100%;
 }
 
+.character-3:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
+}
+
 .character-4{
     -fx-background-image: url(../img/Personaggi/CarteTOT_front4.jpg);
     -fx-background-size: 100% 100%;
+}
+
+.character-4:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
 }
 
 .character-5{
@@ -198,9 +267,17 @@
     -fx-background-size: 100% 100%;
 }
 
+.character-5:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
+}
+
 .character-6{
     -fx-background-image: url(../img/Personaggi/CarteTOT_front6.jpg);
     -fx-background-size: 100% 100%;
+}
+
+.character-6:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
 }
 
 .character-7{
@@ -208,9 +285,17 @@
     -fx-background-size: 100% 100%;
 }
 
+.character-7:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
+}
+
 .character-8{
     -fx-background-image: url(../img/Personaggi/CarteTOT_front8.jpg);
     -fx-background-size: 100% 100%;
+}
+
+.character-8:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
 }
 
 .character-9{
@@ -218,9 +303,17 @@
     -fx-background-size: 100% 100%;
 }
 
+.character-9:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
+}
+
 .character-10{
     -fx-background-image: url(../img/Personaggi/CarteTOT_front10.jpg);
     -fx-background-size: 100% 100%;
+}
+
+.character-10:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
 }
 
 .character-11{
@@ -228,9 +321,17 @@
     -fx-background-size: 100% 100%;
 }
 
+.character-11:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
+}
+
 .character-12{
     -fx-background-image: url(../img/Personaggi/CarteTOT_front12.jpg);
     -fx-background-size: 100% 100%;
+}
+
+.character-12:hover{
+    -fx-effect: dropshadow(gaussian, black, 15, 0, 0, 0);
 }
 
 .btn-primary{

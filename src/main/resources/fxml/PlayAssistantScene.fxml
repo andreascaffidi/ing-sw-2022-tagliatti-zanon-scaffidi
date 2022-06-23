@@ -106,7 +106,7 @@
             </GridPane>
             <TextFlow fx:id="messageBox" layoutX="391.0" layoutY="134.0" prefHeight="126.0" prefWidth="498.0" textAlignment="CENTER">
                <children>
-                  <Text fx:id="gameMessage" fill="#fdff00" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="317.8515625">
+                  <Text fx:id="gameMessage" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="317.8515625">
                      <font>
                         <Font name="Gigi" size="40.0" />
                      </font></Text>
@@ -121,11 +121,11 @@
                 <RowConstraints maxHeight="170.53330078125003" minHeight="10.0" prefHeight="165.19997253417972" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="playCharacter" mnemonicParsing="false" onAction="#showAssistants" prefHeight="70.0" prefWidth="180.0" text="Play assistant" GridPane.halignment="CENTER" />
+                  <Button fx:id="playCharacter" mnemonicParsing="false" onAction="#showAssistants" prefHeight="70.0" prefWidth="180.0" styleClass="btn-primary" stylesheets="@../css/style.css" text="Play assistant" GridPane.halignment="CENTER" />
                   <TextFlow fx:id="currentEffectBox" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
                </children>
             </GridPane>
-            <TilePane fx:id="coins" layoutX="1069.0" layoutY="374.0" prefHeight="85.0" prefTileHeight="40.0" prefTileWidth="40.0" prefWidth="85.0" styleClass="coin" stylesheets="@../css/style.css" tileAlignment="TOP_RIGHT" visible="false" />
+            <TilePane fx:id="coins" layoutX="1069.0" layoutY="374.0" prefHeight="85.0" prefTileHeight="40.0" prefTileWidth="40.0" prefWidth="85.0" styleClass="coin" stylesheets="@../css/style.css" visible="false" />
             <Group fx:id="islands" layoutX="308.0" layoutY="58.0" />
             <Pane fx:id="charactersPane" prefHeight="499.0" prefWidth="1080.0" style="-fx-background-color: white;" visible="false">
                <children>
@@ -156,14 +156,14 @@
                               <RowConstraints maxHeight="345.0" minHeight="10.0" prefHeight="345.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                         </GridPane>
-                        <Button mnemonicParsing="false" onAction="#hideAssistants" prefHeight="56.0" prefWidth="56.0" text="X" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="0.0" />
+                        <Button mnemonicParsing="false" onAction="#hideAssistants" prefHeight="56.0" prefWidth="56.0" styleClass="btn-primary" stylesheets="@../css/style.css" text="X" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </content>
             </ScrollPane>
             <Group fx:id="otherPlayerPane" layoutX="248.0" layoutY="164.0" visible="false">
                <children>
-                  <Pane prefHeight="355.0" prefWidth="782.0" styleClass="schoolBoard" stylesheets="@../css/style.css">
+                  <Pane prefHeight="355.0" prefWidth="782.0" style="-fx-effect: dropshadow(gaussian, black, 30, 0, 0, 0);" styleClass="schoolBoard" stylesheets="@../css/style.css">
                      <children>
                         <GridPane fx:id="otherEntranceGrid" layoutX="19.0" layoutY="33.0" prefHeight="290.0" prefWidth="92.0">
                            <columnConstraints>
@@ -226,9 +226,9 @@
                      </children>
                   </Pane>
                   <Pane fx:id="otherAssistantPlayed" layoutX="847.0" layoutY="142.0" prefHeight="174.0" prefWidth="130.0" stylesheets="@../css/style.css" />
-                  <TilePane fx:id="otherCoins" layoutX="819.0" layoutY="38.0" prefHeight="85.0" prefTileHeight="40.0" prefTileWidth="40.0" prefWidth="85.0" styleClass="coin" stylesheets="@../css/style.css" tileAlignment="TOP_RIGHT" visible="false" />
-                  <Button layoutX="834.0" layoutY="-69.0" mnemonicParsing="false" onAction="#hideOtherBoard" prefHeight="52.0" prefWidth="91.0" text="Close" />
-                  <Text fx:id="otherPlayerName" layoutX="143.0" layoutY="-18.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="534.13671875">
+                  <TilePane fx:id="otherCoins" layoutX="819.0" layoutY="38.0" prefHeight="85.0" prefTileHeight="40.0" prefTileWidth="40.0" prefWidth="85.0" styleClass="coin" stylesheets="@../css/style.css" visible="false" />
+                  <Button layoutX="834.0" layoutY="-69.0" mnemonicParsing="false" onAction="#hideOtherBoard" prefHeight="52.0" prefWidth="91.0" styleClass="btn-primary" text="Close" />
+                  <Text fx:id="otherPlayerName" fill="WHITE" layoutY="-18.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="780.5367431640625">
                      <font>
                         <Font size="45.0" />
                      </font>

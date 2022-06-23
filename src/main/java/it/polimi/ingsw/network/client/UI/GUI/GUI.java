@@ -249,8 +249,8 @@ public class GUI implements UI {
         for (ColorS student : students){
             Pane studentPane = new Pane();
             studentPane.getStyleClass().add(student.toString().toLowerCase());
-            studentPane.setPrefHeight(20);
-            studentPane.setPrefWidth(20);
+            studentPane.setPrefHeight(40);
+            studentPane.setPrefWidth(40);
             cloud.getChildren().add(studentPane);
         }
     }
@@ -279,7 +279,7 @@ public class GUI implements UI {
             if (!reducedBoard.getPlayer().equals(client.getUsername())) {
                 //create button for each player's board
                 Button board = new Button();
-                board.getStyleClass().add("schoolBoard");
+                board.getStyleClass().add("schoolBoard-button");
                 board.setMaxWidth(200);
                 board.setMaxHeight(100);
                 board.setText(reducedBoard.getPlayer());
@@ -295,7 +295,11 @@ public class GUI implements UI {
                     otherCoins.getChildren().clear();
 
                     //add the correct player's info
-                    otherPlayerName.setText(reducedBoard.getPlayer() + "'s board and info");
+                    if (client.getReducedModel().getBoards().size() == 4){
+                        otherPlayerName.setText("(TEAM " + reducedBoard.getTagTeam() + ") " + reducedBoard.getPlayer() + "'s board and info");
+                    } else {
+                        otherPlayerName.setText(reducedBoard.getPlayer() + "'s board and info");
+                    }
                     showEntrance(reducedBoard.getEntranceStudents(), otherEntrance);
                     showDining(reducedBoard.getStudents(), otherDining);
                     showProfessors(reducedBoard.getProfessors(), otherProfessors);
@@ -307,6 +311,8 @@ public class GUI implements UI {
                         ReducedModelExpertMode reducedModelExpertMode = (ReducedModelExpertMode) client.getReducedModel();
                         Text numOfCoins = new Text();
                         numOfCoins.setText(String.valueOf(reducedModelExpertMode.getCoins().get(reducedBoard.getPlayer())));
+                        numOfCoins.setFill(Color.BLACK);
+                        numOfCoins.setFont(Font.font(40));
                         otherCoins.getChildren().add(numOfCoins);
                         otherCoins.setVisible(true);
                     }
@@ -438,6 +444,8 @@ public class GUI implements UI {
         //adding coins
         Text numOfCoins = new Text();
         numOfCoins.setText(String.valueOf(reducedModelExpertMode.getCoins().get(client.getUsername())));
+        numOfCoins.setFill(Color.BLACK);
+        numOfCoins.setFont(Font.font(40));
         coins.getChildren().add(numOfCoins);
         coins.setVisible(true);
         //adding current effect

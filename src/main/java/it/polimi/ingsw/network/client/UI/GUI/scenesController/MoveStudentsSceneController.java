@@ -200,6 +200,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
             student.setOnDragDetected(e ->{
                 Dragboard db = student.startDragAndDrop(TransferMode.MOVE);
                 ClipboardContent content = new ClipboardContent();
+                content.putImage(((Pane)student).getBackground().getImages().get(0).getImage());
                 content.putString(valueOf(entranceGrid.getChildren().indexOf(student)));
                 db.setContent(content);
                 e.consume();
