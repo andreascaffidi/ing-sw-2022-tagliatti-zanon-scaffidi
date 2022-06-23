@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
+import it.polimi.ingsw.network.client.UI.GUI.GUI;
 import it.polimi.ingsw.network.requests.setupMessages.ChooseTeamMessage;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestTypes;
@@ -7,8 +8,8 @@ import it.polimi.ingsw.network.server.Lobby;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,19 +21,19 @@ public class ShowLobbiesSceneController extends AbstractSceneController {
 
 
     @FXML
-    public RadioButton Team1;
+    private RadioButton Team1;
     @FXML
-    public RadioButton Team2;
+    private RadioButton Team2;
 
     @FXML
     private ChoiceBox<String> myChoiceBox;
 
-    private List<Lobby> availableLobbies;
+    @FXML
+    private Text alertMessage;
+    @FXML
+    private Pane alert;
 
-    @FXML
-    public Text alertMessage;
-    @FXML
-    public TextFlow alert;
+    private List<Lobby> availableLobbies;
 
     /**
      * shows an alert with a message
@@ -41,7 +42,7 @@ public class ShowLobbiesSceneController extends AbstractSceneController {
      */
     public void alert(String message) {
         alertMessage.setText(message);
-        alert.setVisible(true);
+        ((GUI) client.getUI()).setAlertAnimation(alert);
     }
 
     /**

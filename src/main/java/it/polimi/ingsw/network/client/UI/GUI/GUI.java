@@ -3,14 +3,19 @@ package it.polimi.ingsw.network.client.UI.GUI;
 import it.polimi.ingsw.model.enums.ColorS;
 import it.polimi.ingsw.model.enums.ColorT;
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.UI.GUI.scenesController.AbstractSceneController;
 import it.polimi.ingsw.network.client.UI.UI;
 import it.polimi.ingsw.network.client.reducedModel.*;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -21,6 +26,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -28,6 +34,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +46,7 @@ import java.util.Map;
 public class GUI implements UI {
 
     private Client client;
+    private AbstractSceneController controller;
 
     /**
      * starts the thread for JavaFX
@@ -72,6 +80,32 @@ public class GUI implements UI {
             case PLAY_CHARACTER: return new GUIPlayCharacterState(client);
             default : return null;
         }
+    }
+
+    /**
+     * loads a FXML scene
+     * @param url FXML file's URL
+     * @param client client to set for controller
+     */
+    public void loadScene(URL url, Client client){
+        FXMLLoader loader = new FXMLLoader(url);
+        try {
+            Parent root = loader.load();
+            controller = loader.getController();
+            controller.setClient(client);
+            controller.setup();
+            Platform.runLater(() ->JavaFXGUI.setMainPane((Pane)root));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * gets the scene controller
+     * @return scene controller
+     */
+    public AbstractSceneController getSceneController() {
+        return controller;
     }
 
     /**
@@ -466,6 +500,20 @@ public class GUI implements UI {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * sets the fade transition for an alert pane
+     * @param alert alert pane
+     */
+    public void setAlertAnimation(Pane alert){
+        FadeTransition fadeTransition = new FadeTransition();
+        fadeTransition.setDuration(Duration.millis(3000));
+        fadeTransition.setNode(alert);
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
+        alert.setVisible(true);
+        fadeTransition.play();
     }
 
 }

@@ -50,7 +50,7 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
     private GridPane otherBoards;
 
     @FXML
-    private TextFlow alertBox;
+    private Pane alert;
 
     @FXML
     private TextFlow currentEffectBox;
@@ -106,6 +106,12 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
     @FXML
     private Text otherPlayerName;
 
+    @FXML
+    private TextFlow messageBox;
+
+    @FXML
+    private Text gameMessage;
+
     private int maxMovement;
 
     /**
@@ -114,7 +120,7 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
      */
     public void alert(String message){
         alertMessage.setText(message);
-        alertBox.setVisible(true);
+        ((GUI) client.getUI()).setAlertAnimation(alert);
     }
 
     /**
@@ -155,7 +161,7 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
      * @param message disconnection message
      */
     public void disconnectClient(String message){
-        alert(message);
+        gameMessage.setText(message);
         modelView.setDisable(true);
         modelView.setOpacity(0.5);
         overlayView.setDisable(true);
@@ -177,7 +183,8 @@ public class MoveMotherNatureSceneController extends AbstractSceneController {
         if (myBoard != null) {
             maxMovement = myBoard.getAssistantDeck().getPlayedAssistant().getMotherNatureMovements();
         }
-        alert("Move mother nature, maximum: " + maxMovement + " clockwise movements");
+        gameMessage.setText("Move mother nature, maximum: " + maxMovement + " clockwise movements");
+        messageBox.setVisible(true);
         setDragAndDrop();
     }
 

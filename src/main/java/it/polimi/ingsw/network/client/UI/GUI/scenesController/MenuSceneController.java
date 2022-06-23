@@ -13,9 +13,9 @@ import javafx.scene.text.TextFlow;
 public class MenuSceneController extends AbstractSceneController {
 
     @FXML
-    public Text alertMessage;
+    private Text alertMessage;
     @FXML
-    public TextFlow alert;
+    private TextFlow alert;
 
     /**
      * shows an alert with a message

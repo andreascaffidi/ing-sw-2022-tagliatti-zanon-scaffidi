@@ -1,12 +1,13 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
+import it.polimi.ingsw.network.client.UI.GUI.GUI;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestMessage;
 import it.polimi.ingsw.network.requests.setupMessages.SetupRequestTypes;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 
 /**
  * welcome scene controller (GUI)
@@ -14,11 +15,11 @@ import javafx.scene.text.TextFlow;
 public class WelcomeSceneController extends AbstractSceneController {
 
     @FXML
-    public TextField NickNameTextField;
+    private TextField NickNameTextField;
     @FXML
-    public Text alertMessage;
+    private Text alertMessage;
     @FXML
-    public TextFlow alertBox;
+    private Pane alert;
 
     /**
      * sends the username to the server, event dispatched when user presses login button
@@ -39,6 +40,6 @@ public class WelcomeSceneController extends AbstractSceneController {
      */
     public void alert(String message){
         alertMessage.setText(message);
-        alertBox.setVisible(true);
+        ((GUI) client.getUI()).setAlertAnimation(alert);
     }
 }

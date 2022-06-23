@@ -42,7 +42,7 @@ public class WaitingSceneController extends AbstractSceneController {
     private GridPane otherBoards;
 
     @FXML
-    private TextFlow alertBox;
+    private Pane alert;
 
     @FXML
     private TextFlow currentEffectBox;
@@ -101,6 +101,12 @@ public class WaitingSceneController extends AbstractSceneController {
     @FXML
     private Text otherPlayerName;
 
+    @FXML
+    private TextFlow messageBox;
+
+    @FXML
+    private Text gameMessage;
+
 
     /**
      * shows an alert message
@@ -108,7 +114,7 @@ public class WaitingSceneController extends AbstractSceneController {
      */
     public void alert(String message){
         alertMessage.setText(message);
-        alertBox.setVisible(true);
+        ((GUI) client.getUI()).setAlertAnimation(alert);
     }
 
     /**
@@ -136,7 +142,8 @@ public class WaitingSceneController extends AbstractSceneController {
 
             ((GUI) client.getUI()).showOtherPlayers(waitingGame, otherBoards, overlayView, otherPlayerPane, otherEntranceGrid,
                     otherDiningGrid, otherProfessorsGrid, otherTowersGrid, otherAssistantPlayed, otherCoins, otherPlayerName);
-            alert(client.getWaitingMessage());
+            gameMessage.setText(client.getWaitingMessage());
+            messageBox.setVisible(true);
             playCharacter.setVisible(false);
             playAssistant.setVisible(false);
         }
@@ -147,7 +154,7 @@ public class WaitingSceneController extends AbstractSceneController {
      * @param message disconnection message
      */
     public void disconnectClient(String message){
-        alert(message);
+        gameMessage.setText(message);
         waitingGame.setDisable(true);
         waitingGame.setOpacity(0.5);
         waitingLobby.setDisable(true);

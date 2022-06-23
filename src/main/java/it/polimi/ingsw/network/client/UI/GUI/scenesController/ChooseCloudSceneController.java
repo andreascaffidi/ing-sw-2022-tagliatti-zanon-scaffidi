@@ -43,7 +43,7 @@ public class ChooseCloudSceneController extends AbstractSceneController {
     private GridPane otherBoards;
 
     @FXML
-    private TextFlow alertBox;
+    private Pane alert;
 
     @FXML
     private TextFlow currentEffectBox;
@@ -99,6 +99,12 @@ public class ChooseCloudSceneController extends AbstractSceneController {
     @FXML
     private Text otherPlayerName;
 
+    @FXML
+    private TextFlow messageBox;
+
+    @FXML
+    private Text gameMessage;
+
 
     /**
      * shows an alert message
@@ -106,7 +112,7 @@ public class ChooseCloudSceneController extends AbstractSceneController {
      */
     public void alert(String message){
         alertMessage.setText(message);
-        alertBox.setVisible(true);
+        ((GUI) client.getUI()).setAlertAnimation(alert);
     }
 
     /**
@@ -147,7 +153,7 @@ public class ChooseCloudSceneController extends AbstractSceneController {
      * @param message disconnection message
      */
     public void disconnectClient(String message){
-        alert(message);
+        gameMessage.setText(message);
         modelView.setDisable(true);
         modelView.setOpacity(0.5);
         overlayView.setDisable(true);
@@ -165,7 +171,8 @@ public class ChooseCloudSceneController extends AbstractSceneController {
 
         ((GUI) client.getUI()).showOtherPlayers(modelView, otherBoards, overlayView, otherPlayerPane, otherEntranceGrid,
                 otherDiningGrid, otherProfessorsGrid, otherTowersGrid, otherAssistantPlayed, otherCoins, otherPlayerName);
-        alert("Choose a cloud, clicking on it");
+        gameMessage.setText("Choose a cloud, clicking on it");
+        messageBox.setVisible(true);
         setClick();
     }
 

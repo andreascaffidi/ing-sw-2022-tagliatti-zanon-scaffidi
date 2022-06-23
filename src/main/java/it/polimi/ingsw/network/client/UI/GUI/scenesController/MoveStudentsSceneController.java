@@ -51,7 +51,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
     private GridPane otherBoards;
 
     @FXML
-    private TextFlow alertBox;
+    private Pane alert;
 
     @FXML
     private TextFlow currentEffectBox;
@@ -107,6 +107,12 @@ public class MoveStudentsSceneController extends AbstractSceneController {
     @FXML
     private Text otherPlayerName;
 
+    @FXML
+    private TextFlow messageBox;
+
+    @FXML
+    private Text gameMessage;
+
 
     private int choices;
 
@@ -118,7 +124,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
      */
     public void alert(String message){
         alertMessage.setText(message);
-        alertBox.setVisible(true);
+        ((GUI) client.getUI()).setAlertAnimation(alert);
     }
 
     /**
@@ -159,7 +165,7 @@ public class MoveStudentsSceneController extends AbstractSceneController {
      * @param message disconnection message
      */
     public void disconnectClient(String message){
-        alert(message);
+        gameMessage.setText(message);
         modelView.setDisable(true);
         modelView.setOpacity(0.5);
         overlayView.setDisable(true);
@@ -177,7 +183,8 @@ public class MoveStudentsSceneController extends AbstractSceneController {
 
         ((GUI) client.getUI()).showOtherPlayers(modelView, otherBoards, overlayView, otherPlayerPane, otherEntranceGrid,
                 otherDiningGrid, otherProfessorsGrid, otherTowersGrid, otherAssistantPlayed, otherCoins, otherPlayerName);
-        alert("Move students to an island or to your dining room (drag and drop)");
+        gameMessage.setText("Move students to an island or to your dining room (drag and drop)");
+        messageBox.setVisible(true);
         choices = client.getReducedModel().getBoards().size() == 3 ? 4 : 3;
         movementsChosen = new HashMap<>();
         setDragAndDrop();

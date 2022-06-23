@@ -61,7 +61,7 @@ public class PlayCharacterSceneController extends AbstractSceneController {
     private GridPane otherBoards;
 
     @FXML
-    private TextFlow alertBox;
+    private Pane alert;
 
     @FXML
     private TextFlow currentEffectBox;
@@ -153,6 +153,12 @@ public class PlayCharacterSceneController extends AbstractSceneController {
     @FXML
     private Button exit;
 
+    @FXML
+    private TextFlow messageBox;
+
+    @FXML
+    private Text gameMessage;
+
     private final List<Integer> cardStudents = new ArrayList<>();
     private final List<Integer> entranceStudents = new ArrayList<>();
     private final List<ColorS> diningStudents = new ArrayList<>();
@@ -165,7 +171,7 @@ public class PlayCharacterSceneController extends AbstractSceneController {
      */
     public void alert(String message){
         alertMessage.setText(message);
-        alertBox.setVisible(true);
+        ((GUI) client.getUI()).setAlertAnimation(alert);
     }
 
     /**
@@ -206,7 +212,8 @@ public class PlayCharacterSceneController extends AbstractSceneController {
      * @param message disconnection message
      */
     public void disconnectClient(String message){
-        alert(message);
+        gameMessage.setText(message);
+        messageBox.setVisible(true);
         modelView.setDisable(true);
         modelView.setOpacity(0.5);
         overlayView.setDisable(true);

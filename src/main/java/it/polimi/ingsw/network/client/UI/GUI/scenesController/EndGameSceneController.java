@@ -10,16 +10,7 @@ import javafx.scene.text.TextFlow;
 public class EndGameSceneController extends AbstractSceneController {
 
     @FXML
-    public Text endGameText;
-    @FXML
-    public Text alertMessage;
-    @FXML
-    public TextFlow alert;
-
-    public void alert(String message){
-        alertMessage.setText(message);
-        alert.setVisible(true);
-    }
+    private Text endGameText;
 
     @Override
     public void setup()

@@ -47,7 +47,7 @@ public class PlayAssistantSceneController extends AbstractSceneController{
     private GridPane otherBoards;
 
     @FXML
-    private TextFlow alertBox;
+    private Pane alert;
 
     @FXML
     private TextFlow currentEffectBox;
@@ -109,6 +109,12 @@ public class PlayAssistantSceneController extends AbstractSceneController{
     @FXML
     private Text otherPlayerName;
 
+    @FXML
+    private Text gameMessage;
+
+    @FXML
+    private TextFlow messageBox;
+
     /**
      * sets up the model in the main components of the scene
      */
@@ -119,7 +125,8 @@ public class PlayAssistantSceneController extends AbstractSceneController{
 
         ((GUI) client.getUI()).showOtherPlayers(modelView, otherBoards, overlayView, otherPlayerPane, otherEntranceGrid,
                 otherDiningGrid, otherProfessorsGrid, otherTowersGrid, otherAssistantPlayed, otherCoins, otherPlayerName);
-        alert("Play an assistant card");
+        gameMessage.setText("Play an assistant card");
+        messageBox.setVisible(true);
         setupAssistants();
     }
 
@@ -194,7 +201,7 @@ public class PlayAssistantSceneController extends AbstractSceneController{
      */
     public void alert(String message){
         alertMessage.setText(message);
-        alertBox.setVisible(true);
+        ((GUI) client.getUI()).setAlertAnimation(alert);
     }
 
     /**
@@ -202,7 +209,7 @@ public class PlayAssistantSceneController extends AbstractSceneController{
      * @param message disconnection message
      */
     public void disconnectClient(String message){
-        alert(message);
+        gameMessage.setText(message);
         modelView.setDisable(true);
         modelView.setOpacity(0.5);
         overlayView.setDisable(true);

@@ -22,4 +22,14 @@ public class AbstractSceneController {
      */
     public void setup(){ }
 
+    /**
+     * shows an alert message
+     * @param message message
+     */
+    public void alert(String message){ }
+
+    /**
+     * shows a disabled scene when a player is disconnected
+     */
+    public void disconnectClient(String message){ }
 }

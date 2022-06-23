@@ -31,9 +31,9 @@ public class CreateLobbySceneController extends AbstractSceneController {
     private int num = 2;
 
     @FXML
-    public Text alertMessage;
+    private Text alertMessage;
     @FXML
-    public TextFlow alert;
+    private TextFlow alert;
 
     public void alert(String message){
         alertMessage.setText(message);
