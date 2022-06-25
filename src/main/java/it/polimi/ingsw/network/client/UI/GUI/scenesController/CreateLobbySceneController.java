@@ -1,70 +1,75 @@
 package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
 import it.polimi.ingsw.network.requests.setupMessages.CreateLobbyMessage;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+/**
+ * create lobby scene controller (GUI)
+ */
 public class CreateLobbySceneController extends AbstractSceneController {
-
-    @FXML
-    private Button expert;
-
-    @FXML
-    private Button normal;
-
-    @FXML
-    private Button two;
-
-    @FXML
-    private Button tree;
-
-    @FXML
-    private Button four;
-
-    @FXML
-    private Button enter;
-
-    private String mode = "normal";
-    private int num = 2;
 
     @FXML
     private Text alertMessage;
     @FXML
     private TextFlow alert;
 
+    private String mode = "normal";
+    private int num = 2;
+
+    /**
+     * shows an alert message
+     * @param message message
+     */
     public void alert(String message){
         alertMessage.setText(message);
         alert.setVisible(true);
     }
 
-    public void enter(ActionEvent event){
+    /**
+     * sends the lobby setting (dispatched by clicking enter button)
+     */
+    public void enter(){
         client.send(new CreateLobbyMessage(client.getUsername(), this.mode.toUpperCase(), this.num));
     }
 
-    public void expert(ActionEvent event)
+    /**
+     * sets expert mode
+     */
+    public void expert()
     {
         this.mode = "expert";
     }
 
-    public void normal(ActionEvent event)
+    /**
+     * sets normal mode
+     */
+    public void normal()
     {
         this.mode = "normal";
     }
 
-    public void two(ActionEvent event)
+    /**
+     * sets two players match
+     */
+    public void two()
     {
         this.num = 2;
     }
 
-    public void tree(ActionEvent event)
+    /**
+     * sets three players match
+     */
+    public void tree()
     {
         this.num = 3;
     }
 
-    public void four(ActionEvent event)
+    /**
+     * sets four players match
+     */
+    public void four()
     {
         this.num = 4;
     }

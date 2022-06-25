@@ -355,10 +355,7 @@ public class GUI implements UI {
                 row++;
                 column = 0;
             }
-            Pane student = new Pane();
-            student.getStyleClass().add(entranceStudent.toString().toLowerCase());
-            student.setMaxWidth(38);
-            student.setMaxHeight(38);
+            Pane student = setStudent(entranceStudent);
             entranceGrid.add(student, column, row);
             GridPane.setHalignment(student, HPos.CENTER);
             column++;
@@ -376,16 +373,26 @@ public class GUI implements UI {
         for (ColorS row : rows){
             int columnIndex = 0;
             for (int i = 0; i < diningStudents.get(row); i++){
-                Pane student = new Pane();
-                student.getStyleClass().add(row.toString().toLowerCase());
-                student.setMaxWidth(38);
-                student.setMaxHeight(38);
+                Pane student = setStudent(row);
                 diningGrid.add(student, columnIndex, rowIndex);
                 GridPane.setHalignment(student, HPos.CENTER);
                 columnIndex++;
             }
             rowIndex++;
         }
+    }
+
+    /**
+     * creates and returns a colored student Pane
+     * @param color student color
+     * @return student pane
+     */
+    private Pane setStudent(ColorS color){
+        Pane student = new Pane();
+        student.getStyleClass().add(color.toString().toLowerCase());
+        student.setMaxWidth(38);
+        student.setMaxHeight(38);
+        return student;
     }
 
     /**

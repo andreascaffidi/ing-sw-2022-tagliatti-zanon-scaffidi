@@ -10,7 +10,6 @@ import it.polimi.ingsw.network.client.UI.UI;
 import it.polimi.ingsw.network.client.states.AbstractClientState;
 import it.polimi.ingsw.network.client.states.ClientState;
 
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -42,22 +41,6 @@ public class CLI implements UI {
         }
     }
 
-    //TODO: tests this method on windows terminal
-    /**
-     * Clears the screen by erasing all the content on the current cli. <br>
-     * Actually is like if the users scrolls down until all the older printed message are hidden
-     */
-    public void clearScreen() {
-
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-        try {
-            if (System.getProperty("os.name").contains("Windows"))
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            else
-                Runtime.getRuntime().exec("clear");
-        } catch (IOException | InterruptedException ignored) {}
-    }
 
     /**
      * prints the logo of the game

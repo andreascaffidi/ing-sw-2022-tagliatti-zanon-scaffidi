@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.responses.reducedModelMessage;
 
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.UI.GUI.GUI;
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import it.polimi.ingsw.network.client.states.ClientState;
 import it.polimi.ingsw.network.responses.ClientExecute;
@@ -34,13 +35,17 @@ public class CharacterPaidMessage implements ResponseMessage, ClientExecute {
         client.setReducedModel(reducedModel);
         if(!reducedModel.getCurrentPlayer().equals(client.getUsername()))
         {
-            client.changeState(ClientState.WAITING);
-            client.setWaitingMessage(reducedModel.getCurrentPlayer() + "has payed " + character + " card.\n"
+            client.setWaitingMessage(reducedModel.getCurrentPlayer() + " has payed " + character + " card.\n"
                     + "It's " + reducedModel.getCurrentPlayer() + " turn, waiting for yours...");
+            client.changeState(ClientState.WAITING);
         }else {
-            //FIXME: aggiustare questa stampa anche per GUI
-            System.out.println("You have correctly payed " + character + " card");
-            client.changeState(client.getBackState());
+            if (client.getUI() instanceof GUI){
+                client.changeState(client.getBackState());
+                client.getCurrentState().serverError("You have correctly payed " + character + " card");
+            } else {
+                System.out.println("You have correctly payed " + character + " card");
+                client.changeState(client.getBackState());
+            }
         }
     }
 }

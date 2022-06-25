@@ -23,6 +23,9 @@ import java.util.List;
 
 import static java.lang.String.valueOf;
 
+/**
+ * play character scene controller (GUI)
+ */
 public class PlayCharacterSceneController extends AbstractSceneController {
 
     @FXML
@@ -628,7 +631,9 @@ public class PlayCharacterSceneController extends AbstractSceneController {
                         //hide the two selected students
                         student.setVisible(false);
                         Node switchedStudent = diningGrid.getChildren().stream().filter(n -> n.getOpacity() == 1).findFirst().orElse(null);
-                        switchedStudent.setVisible(false);
+                        if (switchedStudent != null){
+                            switchedStudent.setVisible(false);
+                        }
 
                         //enable all the students disabled
                         for (Node otherStudent : entranceGrid.getChildren()) {
