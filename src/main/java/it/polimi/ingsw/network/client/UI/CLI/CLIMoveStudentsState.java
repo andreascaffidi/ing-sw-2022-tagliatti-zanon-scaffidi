@@ -28,9 +28,9 @@ public class CLIMoveStudentsState extends AbstractClientState {
         CLI.showModel(client.getReducedModel());
         choices = client.getReducedModel().getBoards().size() == 3 ? 4 : 3;
         System.out.print("It's your turn! Choose " + choices +" students from your entrance and move them" +
-                " to an Island or your Dining room");
+                " to an Island or your Dining room\n");
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
-            System.out.print("\nOr you can even pay a character card from the available, by typing "
+            System.out.print("Or you can even pay a character card from the available, by typing "
                     +Ansi.colorize("PAY CHARACTER", Ansi.UNDERLINE) +
                     " (you can pay a character card only one time per round)\n\n");
         }

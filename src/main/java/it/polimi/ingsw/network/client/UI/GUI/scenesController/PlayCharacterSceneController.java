@@ -361,8 +361,18 @@ public class PlayCharacterSceneController extends AbstractSceneController {
         messageBox.setVisible(true);
         Pane islandPane = (Pane) islands.getChildren().get(0);
         for (Node island : islandPane.getChildren()) {
-            island.setOnMouseClicked(e ->
-                    client.send(new PayCharacter5Message(islandPane.getChildren().indexOf(island) + 1)));
+            island.setOnMouseClicked(e -> {
+                client.send(new PayCharacter5Message(islandPane.getChildren().indexOf(island) + 1));
+                long numOfNoEntryTile =((ReducedModelExpertMode) client.getReducedModel()).getNoEntryTiles().
+                        values().stream().filter(t -> t).count();
+                if ( numOfNoEntryTile >= 4) {
+                    modelView.setDisable(true);
+                    modelView.setOpacity(0.5);
+                    exit.setVisible(true);
+                    overlayView.setVisible(true);
+                    overlayView.setDisable(false);
+                    }
+            });
         }
     }
 
@@ -617,7 +627,7 @@ public class PlayCharacterSceneController extends AbstractSceneController {
                     if (diningStudents.size() == entranceStudents.size()) {
                         //hide the two selected students
                         student.setVisible(false);
-                        Node switchedStudent = diningGrid.getChildren().stream().filter(n -> !n.isDisable()).findFirst().orElse(null);
+                        Node switchedStudent = diningGrid.getChildren().stream().filter(n -> n.getOpacity() == 1).findFirst().orElse(null);
                         switchedStudent.setVisible(false);
 
                         //enable all the students disabled

@@ -551,9 +551,13 @@ public class Table extends Observable<ResponseMessage> {
             Player newIslandKing = this.getSupremacy(island);
             if (island.getTower() == null || !newIslandKing.equals(island.getTower().getOwner())){
                 if (island.getTower() != null){
-                    island.getTower().getOwner().getSchoolBoard().getTowerBoard().addTower(island.getTower());
+                    for (int i = 0; i < island.getNumOfTowers(); i++){
+                        island.getTower().getOwner().getSchoolBoard().getTowerBoard().addTower(new Tower(island.getTower().getColor(), island.getTower().getOwner()));
+                    }
                 }
-                island.setTower(newIslandKing.getSchoolBoard().getTowerBoard().removeLastTower());
+                for (int i = 0; i < island.getNumOfTowers(); i++){
+                    island.setTower(newIslandKing.getSchoolBoard().getTowerBoard().removeLastTower());
+                }
                 if (newIslandKing.getSchoolBoard().getTowerBoard().getTowers().size() == 0){
                     throw new EndGameException("Last tower placed");
                 }

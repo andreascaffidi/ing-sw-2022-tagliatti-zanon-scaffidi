@@ -25,6 +25,7 @@ public class GUIEndGameState extends AbstractClientState {
     public void render(){
         URL url = getClass().getResource("/fxml/EndGameScene.fxml");
         ((GUI) client.getUI()).loadScene(url, client);
+        client.disconnectClient();
     }
 
     /**
