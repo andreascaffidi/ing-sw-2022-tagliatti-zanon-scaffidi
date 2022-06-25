@@ -290,6 +290,7 @@ public class TableExpertMode extends Table {
                 noEntryTile = true;
                 this.setNoEntryTile(i, false);
             }
+            this.noEntryTiles.remove(i);
         }
         super.newIslandGroup(islands);
         int idMin = islands.stream().map(Island::getId).reduce(12, (id1, id2) -> id1 < id2 ? id1 : id2);
