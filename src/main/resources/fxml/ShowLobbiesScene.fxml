@@ -10,80 +10,19 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.network.client.UI.GUI.scenesController.ShowLobbiesSceneController">
    <children>
-      <Group>
-         <children>
-            <ImageView fitHeight="720.0" fitWidth="1280.0" opacity="0.84" visible="false">
-               <image>
-                  <Image url="@../img/2138689.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="677.0" fitWidth="787.0" layoutX="510.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../img/Scenes/Lobby/island.center.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="198.0" fitWidth="130.0" layoutX="279.0" layoutY="315.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../img/Scenes/Lobby/moternature.right.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="720.0" fitWidth="1280.0" opacity="0.75" visible="false">
-               <image>
-                  <Image url="@../img/Ui/gradient.background.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="294.0" fitWidth="299.0" layoutY="412.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../img/Scenes/Lobby/island.left.2.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="356.0" fitWidth="299.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../img/Scenes/Lobby/island.left.1.png" />
-               </image>
-            </ImageView>
-            <Rectangle fill="DODGERBLUE" height="720.0" opacity="0.23" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="waiting-background" width="1280.0" />
-         </children>
-      </Group>
       <Group />
-      <ImageView fitHeight="444.0" fitWidth="400.0" layoutX="451.0" layoutY="153.0">
+      <ImageView fitHeight="444.0" fitWidth="400.0" layoutX="440.0" layoutY="163.0">
          <image>
             <Image url="@../img/Scenes/Welcome/login.background.png" />
-         </image>
-      </ImageView>
-
-            <ChoiceBox fx:id="myChoiceBox" layoutX="511.0" layoutY="374.0" onAction="#selectTeam" prefHeight="60.0" prefWidth="283.0" styleClass="input-username" />
-      <Button fx:id="Enter" layoutX="570.0" layoutY="500.0" mnemonicParsing="false" onAction="#selectLobby" prefHeight="50.0" prefWidth="175.0" styleClass="btn-primary" text="Enter">
-         <font>
-            <Font name="Newborough" size="18.0" />
-         </font>
-         <padding>
-            <Insets bottom="3.0" />
-         </padding>
-      </Button>
-      <Text fill="WHITE" layoutX="590.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a lobby!">
-         <font>
-            <Font name="Newborough" size="20.0" />
-         </font>
-      </Text>
-      <RadioButton fx:id="Team1" layoutX="535.0" layoutY="445.0" mnemonicParsing="false" styleClass="radio-team" text="Team 1 ">
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-         <toggleGroup>
-            <ToggleGroup fx:id="selectTeam" />
-         </toggleGroup></RadioButton>
-      <RadioButton fx:id="Team2" layoutX="671.0" layoutY="445.0" mnemonicParsing="false" styleClass="radio-team" text="Team 2 " toggleGroup="$selectTeam" />
-      <ImageView fitHeight="98.0" fitWidth="345.0" layoutX="493.0" layoutY="216.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../img/Ui/logo.eriantys.png" />
          </image>
       </ImageView>
       <Pane fx:id="alert" disable="true" layoutX="417.0" layoutY="53.0" prefHeight="147.0" prefWidth="466.0" visible="false">
@@ -103,5 +42,58 @@
             </Text>
          </children>
       </Pane>
+      <ImageView fitHeight="100.0" fitWidth="345.0" layoutX="482.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/Ui/logo.eriantys.png" />
+         </image>
+      </ImageView>
+      <GridPane layoutX="440.0" layoutY="300.0" prefHeight="275.0" prefWidth="400.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="77.0" minHeight="10.0" prefHeight="45.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="107.0" minHeight="10.0" prefHeight="71.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="92.0" minHeight="10.0" prefHeight="40.716064453125" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="106.64102172851562" minHeight="10.0" prefHeight="105.283935546875" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a lobby!">
+               <font>
+                  <Font name="Newborough" size="24.0" />
+               </font>
+            </Text>
+      
+                  <ChoiceBox fx:id="myChoiceBox" onAction="#selectTeam" prefHeight="60.0" prefWidth="283.0" styleClass="input-username" GridPane.rowIndex="1" />
+            <Button fx:id="Enter" mnemonicParsing="false" onAction="#selectLobby" prefHeight="83.0" prefWidth="200.0" styleClass="btn-primary" text="Enter" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Newborough" size="18.0" />
+               </font>
+               <padding>
+                  <Insets bottom="3.0" />
+               </padding>
+            </Button>
+            <GridPane GridPane.rowIndex="2">
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <RadioButton fx:id="Team1" mnemonicParsing="false" styleClass="radio-team" text="Team 1 ">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="selectTeam" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="Team2" mnemonicParsing="false" styleClass="radio-team" text="Team 2 " toggleGroup="$selectTeam" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>

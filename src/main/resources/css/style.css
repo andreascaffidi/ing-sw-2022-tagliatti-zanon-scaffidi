@@ -347,7 +347,7 @@
 }
 .btn-primary:hover{
     -fx-background-color: transparent;
-   -fx-background-image: url(../img/Ui/btn.primary.contrast.png);
+    -fx-background-image: url(../img/Ui/btn.primary.contrast.png);
      -fx-background-position: center;
      -fx-background-repeat: no-repeat;
     -fx-font-family: 'Newborough';
@@ -390,6 +390,7 @@
  -fx-background-repeat: repeat;
 }
 
+
 .radio-team{
  -fx-background-color: transparent;
  -fx-background-image: url(../img/Ui/btn.primary.png);
@@ -402,6 +403,27 @@
 
 
 }
+.radio-players{
+  -fx-min-height: 50px;
+  -fx-pref-height: 50px;
+  -fx-max-height: 50px;
+  -fx-min-width: 55px;
+    -fx-pref-width: 55px;
+    -fx-max-width: 55px;
+ -fx-padding: 16px, 10px, 20px, 10px;
+}
+
+.radio-gamemode{
+  -fx-min-height: 50px;
+  -fx-pref-height: 50px;
+  -fx-max-height: 50px;
+  -fx-min-width: 100px;
+    -fx-pref-width: 100px;
+    -fx-max-width: 100px;
+ -fx-padding: 16px, 10px, 20px, 10px;
+}
+
+
 .radio-team:selected{
  -fx-background-color: transparent;
  -fx-background-image: url(../img/Ui/btn.primary.contrast.png);
@@ -438,4 +460,16 @@
 .radio-team .dot{
 -fx-background-color: transparent;
 -fx-padding: 0px;
+}
+
+.lobby-scroll-pane > .viewport{
+-fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+.scroll-pane {
+   -fx-background-color: transparent;
 }
