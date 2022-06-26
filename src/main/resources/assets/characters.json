@@ -1,82 +1,82 @@
 [{
-        "name": "character1",
+        "name": "monk",
         "id": 1,
         "studentsOnCard": 4,
         "cost": 1
     },
 
     {
-        "name": "character2",
+        "name": "farmer",
         "id": 2,
         "studentsOnCard": 0,
         "cost": 2
     },
 
     {
-        "name": "character3",
+        "name": "herald",
         "id": 3,
         "studentsOnCard": 0,
         "cost": 3
     },
 
     {
-        "name": "character4",
+        "name": "magic mailman",
         "id": 4,
         "studentsOnCard": 0,
         "cost": 1
     },
 
     {
-        "name": "character5",
+        "name": "grandma herbs",
         "id": 5,
         "studentsOnCard": 0,
         "cost": 2
     },
 
     {
-        "name": "character6",
+        "name": "centaur",
         "id": 6,
         "studentsOnCard": 0,
         "cost": 3
     },
 
     {
-        "name": "character7",
+        "name": "jester",
         "id": 7,
         "studentsOnCard": 6,
         "cost": 1
     },
 
     {
-        "name": "character8",
+        "name": "knight",
         "id": 8,
         "studentsOnCard": 0,
         "cost": 2
     },
 
     {
-        "name": "character9",
+        "name": "mushroom",
         "id": 9,
         "studentsOnCard": 0,
         "cost": 3
     },
 
     {
-        "name": "character10",
+        "name": "minstrel",
         "id": 10,
         "studentsOnCard": 0,
         "cost": 1
     },
 
     {
-        "name": "character11",
+        "name": "princess",
         "id": 11,
         "studentsOnCard": 4,
         "cost": 2
     },
 
     {
-        "name": "character12",
+        "name": "thief",
         "id": 12,
         "studentsOnCard": 0,
         "cost": 3
