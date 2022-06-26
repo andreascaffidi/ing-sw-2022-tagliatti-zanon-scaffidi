@@ -15,8 +15,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
@@ -74,7 +74,7 @@ public class TableExpertMode extends Table {
      */
     private void setupCharacterCards() {
         JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("assets/characters.json"))
+        try (InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/characters.json"))))
         {
             Object obj = jsonParser.parse(reader);
             JSONArray cards = (JSONArray) obj;
@@ -186,7 +186,7 @@ public class TableExpertMode extends Table {
     public void incrementCardCost(int character){
         int cost = this.characters.get(character);
         JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("assets/characters.json"))
+        try (InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/characters.json"))))
         {
             Object obj = jsonParser.parse(reader);
             JSONArray cards = (JSONArray) obj;

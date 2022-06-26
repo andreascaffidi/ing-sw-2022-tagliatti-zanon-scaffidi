@@ -26,8 +26,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -236,7 +236,7 @@ public class Table extends Observable<ResponseMessage> {
      */
     private void setupAssistantCards(){
         JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("assets/assistants.json"))
+        try (InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/assistants.json"))))
         {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
