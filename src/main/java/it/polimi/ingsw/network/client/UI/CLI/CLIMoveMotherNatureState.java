@@ -28,7 +28,7 @@ public class CLIMoveMotherNatureState extends AbstractClientState {
         System.out.print("It's your turn! Move Mother Nature by typing the number of movement you want");
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
             System.out.print("\nOr you can even pay a character card from the available, by typing "
-                    +Ansi.colorize("PAY CHARACTER", Ansi.UNDERLINE) +
+                    +CLI.Ansi.colorize("PAY CHARACTER", CLI.Ansi.UNDERLINE) +
                     " (you can pay a character card only one time per round)\n\n");
         }
     }

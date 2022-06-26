@@ -34,7 +34,7 @@ public class CLIShowLobbiesState extends AbstractClientState{
     @Override
     public void render(){
         List<Lobby> availableLobbies = client.getAvailableLobbies();
-        System.out.print("Select the lobby to join by typing the "+Ansi.colorize("username", Ansi.UNDERLINE)
+        System.out.print("Select the lobby to join by typing the "+CLI.Ansi.colorize("username", CLI.Ansi.UNDERLINE)
                 +" of the host: \n\n");
         for (Lobby l : availableLobbies){
             System.out.println(l.getHost() + " :    " + l.getGameMode() + " MODE  " +
@@ -69,8 +69,8 @@ public class CLIShowLobbiesState extends AbstractClientState{
                 System.out.println(player + "\t");
             }
 
-            CLI.CTA("Match for 4 players, choose a team by typing "+Ansi.colorize("1", Ansi.UNDERLINE)
-                    +" or "+Ansi.colorize("2", Ansi.UNDERLINE));
+            CLI.CTA("Match for 4 players, choose a team by typing "+CLI.Ansi.colorize("1", CLI.Ansi.UNDERLINE)
+                    +" or "+CLI.Ansi.colorize("2", CLI.Ansi.UNDERLINE));
 
             int num = 0;
             while (num < 1 || num > 2) {

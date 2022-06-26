@@ -45,7 +45,7 @@ public class CLIPlayCharacterState extends AbstractClientState {
         for (ReducedCharacter character : characters) {
             System.out.println(character.getId() + " : cost = " + character.getCost());
         }
-        CLI.CTA("Or type "+Ansi.colorize("EXIT", Ansi.UNDERLINE)+ " to come back to the game");
+        CLI.CTA("Or type "+CLI.Ansi.colorize("EXIT", CLI.Ansi.UNDERLINE)+ " to come back to the game");
 
         int characterChosen;
         boolean exit = false;
@@ -68,7 +68,7 @@ public class CLIPlayCharacterState extends AbstractClientState {
                         CLI.error("You haven't got enough coins to pay this card ");
                     } else {
                         exit = true;
-                        System.out.println("Card selected! "+Ansi.colorize("EXIT", Ansi.UNDERLINE)+" no more available ");
+                        System.out.println("Card selected! "+CLI.Ansi.colorize("EXIT", CLI.Ansi.UNDERLINE)+" no more available ");
                         client.send(characterMessage(characterChosen));
                     }
                 } catch (NumberFormatException e) {

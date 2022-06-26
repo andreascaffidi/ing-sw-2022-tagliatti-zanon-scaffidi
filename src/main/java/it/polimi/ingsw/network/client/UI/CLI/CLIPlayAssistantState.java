@@ -24,7 +24,7 @@ public class CLIPlayAssistantState extends AbstractClientState {
         this.client = client;
         in = new Scanner(System.in);
         CLI.showModel(client.getReducedModel());
-        CLI.CTA("It's your turn! Play an Assistant Card by typing the "+Ansi.colorize("ID", Ansi.UNDERLINE));
+        CLI.CTA("It's your turn! Play an Assistant Card by typing the "+CLI.Ansi.colorize("ID", CLI.Ansi.UNDERLINE));
     }
 
     /**

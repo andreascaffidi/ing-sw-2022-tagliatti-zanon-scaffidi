@@ -26,7 +26,7 @@ public class CLIWelcomeState extends AbstractClientState {
      */
     @Override
     public void render(){
-        System.out.println("\n\t\t\t\t\t\t\t"+Ansi.colorize("W E L C O M E   T O",Ansi.UNDERLINE));
+        System.out.println("\n\t\t\t\t\t\t\t"+CLI.Ansi.colorize("W E L C O M E   T O",CLI.Ansi.UNDERLINE));
         CLI.showLogo();
         CLI.CTA("Insert a username");
         this.askUsername();
