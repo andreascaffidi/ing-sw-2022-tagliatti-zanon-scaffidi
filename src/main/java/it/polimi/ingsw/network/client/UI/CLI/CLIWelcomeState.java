@@ -26,10 +26,12 @@ public class CLIWelcomeState extends AbstractClientState {
      */
     @Override
     public void render(){
-        System.out.println("\n\t\t\t\t\t\t\t"+CLI.Ansi.colorize("W E L C O M E   T O",CLI.Ansi.UNDERLINE));
+        System.out.println("\n\t\t\t\t\t\t\t\t\t"+CLI.Ansi.colorize("W E L C O M E   T O\n",CLI.Ansi.UNDERLINE));
         CLI.showLogo();
+        System.out.println("\n\t\t\t\tA game implemented by "+CLI.Ansi.colorize("L. TAGLIATTI - F. ZANON - A. SCAFFIDI\n",CLI.Ansi.UNDERLINE));
         CLI.CTA("Insert a username");
         this.askUsername();
+
     }
 
     /**

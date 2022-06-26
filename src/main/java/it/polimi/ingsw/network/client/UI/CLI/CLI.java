@@ -68,7 +68,16 @@ public class CLI implements UI {
                 "|  |____ |  |\\  \\----.   |  |  /  _____  \\  |  |\\   |     |  |     |  | .----)   |   \n" +
                 "|_______|| _| `._____|   |__| /__/     \\__\\ |__| \\__|     |__|     |__| |_______/    \n" +
                 "                                                                                     \n\n";
-        System.out.print(Ansi.colorize(logo,Ansi.CYAN));
+        final String logo2 = "   ▄████████    ▄████████  ▄█     ▄████████ ███▄▄▄▄       ███     ▄██   ▄      ▄████████ \n" +
+                "  ███    ███   ███    ███ ███    ███    ███ ███▀▀▀██▄ ▀█████████▄ ███   ██▄   ███    ███ \n" +
+                "  ███    █▀    ███    ███ ███▌   ███    ███ ███   ███    ▀███▀▀██ ███▄▄▄███   ███    █▀  \n" +
+                " ▄███▄▄▄      ▄███▄▄▄▄██▀ ███▌   ███    ███ ███   ███     ███   ▀ ▀▀▀▀▀▀███   ███        \n" +
+                "▀▀███▀▀▀     ▀▀███▀▀▀▀▀   ███▌ ▀███████████ ███   ███     ███     ▄██   ███ ▀███████████ \n" +
+                "  ███    █▄  ▀███████████ ███    ███    ███ ███   ███     ███     ███   ███          ███ \n" +
+                "  ███    ███   ███    ███ ███    ███    ███ ███   ███     ███     ███   ███    ▄█    ███ \n" +
+                "  ██████████   ███    ███ █▀     ███    █▀   ▀█   █▀     ▄████▀    ▀█████▀   ▄████████▀  \n" +
+                "               ███    ███                                                                \n";
+        System.out.print(Ansi.colorize(logo2,Ansi.CYAN));
     }
 
     /**
@@ -260,8 +269,9 @@ public class CLI implements UI {
         String[] boardStrArray = new String[12];
 
         ColorS[] colors = ColorS.values();
+        String teamColor = (b.getTagTeam() == 1) ? Ansi.BACKGROUND_CYAN : Ansi.BACKGROUND_GREEN;
 
-        boardStrArray[0] ="		 "+Ansi.colorize(" "+b.getPlayer()+" ",Ansi.BACKGROUND_YELLOW,Ansi.BLACK)+"’s BOARD                                    ";
+        boardStrArray[0] ="		 "+Ansi.colorize(" "+b.getPlayer()+" ",teamColor,Ansi.BLACK)+"’s BOARD                                    ";
         boardStrArray[1] ="╔══════╦═══════════════════════════╦═════╦════════╗";
         boardStrArray[2] ="║COLOR ║ DINING ROOM               ║ PRO ║ TOWERS ║";
         boardStrArray[3] ="╠══════╬═══════════════════════════╬═════╬════════╣";
@@ -415,7 +425,7 @@ public class CLI implements UI {
      * @param string error string
      */
     public static void error(String string){
-        System.out.print("\t X️ "+Ansi.colorize(string,Ansi.RED)+"\n");
+        System.out.print("\t ️ "+Ansi.colorize("X "+string,Ansi.RED)+"\n");
     }
 
     /**
