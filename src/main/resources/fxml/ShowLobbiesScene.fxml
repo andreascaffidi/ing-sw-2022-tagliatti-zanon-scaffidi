@@ -62,7 +62,7 @@
             <ChoiceBox fx:id="myChoiceBox" layoutX="511.0" layoutY="374.0" onAction="#selectTeam" prefHeight="60.0" prefWidth="283.0" styleClass="input-username" />
       <Button fx:id="Enter" layoutX="570.0" layoutY="500.0" mnemonicParsing="false" onAction="#selectLobby" prefHeight="50.0" prefWidth="175.0" styleClass="btn-primary" text="Enter">
          <font>
-            <Font size="18.0" />
+            <Font name="Newborough" size="18.0" />
          </font>
          <padding>
             <Insets bottom="3.0" />
@@ -98,7 +98,7 @@
             </ImageView>
             <Text fx:id="alertMessage" fill="WHITE" layoutX="12.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="442.1368980407715">
                <font>
-                  <Font size="34.0" />
+                  <Font name="Newborough" size="34.0" />
                </font>
             </Text>
          </children>

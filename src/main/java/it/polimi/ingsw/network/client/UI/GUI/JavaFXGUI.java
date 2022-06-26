@@ -48,7 +48,7 @@ public class JavaFXGUI extends Application {
                 stage.getIcons().add(image);
             }
             //LOAD FONT
-            Font.loadFont(getClass().getResourceAsStream("/resources/NEWBOROU.TTF"), 14);
+            Font.loadFont(getClass().getResourceAsStream("/NEWBOROU.TTF"), 14);
 
             //main root is the root layer of the scene
             mainPane.setId("root");

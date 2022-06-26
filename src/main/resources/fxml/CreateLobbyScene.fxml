@@ -16,7 +16,7 @@
          <children>
             <Text fx:id="alertMessage" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="138.6875">
                <font>
-                  <Font name="Gigi" size="46.0" />
+                  <Font name="Newborough" size="46.0" />
                </font>
             </Text>
          </children>
@@ -35,37 +35,37 @@
       </ImageView>
       <Button fx:id="normal" layoutX="600.0" layoutY="360.0" mnemonicParsing="false" onAction="#normal" prefHeight="50.0" prefWidth="100.0" text="Normal">
          <font>
-            <Font size="18.0" />
+            <Font name="Newborough" size="18.0" />
          </font>
       </Button>
       <Text fill="WHITE" layoutX="30.0" layoutY="402.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the game mode:">
          <font>
-            <Font name="Gigi" size="64.0" />
+            <Font name="Newborough" size="64.0" />
          </font>
       </Text>
       <Button fx:id="expert" layoutX="750.0" layoutY="360.0" mnemonicParsing="false" onAction="#expert" prefHeight="50.0" prefWidth="100.0" text="Expert">
          <font>
-            <Font size="18.0" />
+            <Font name="Newborough" size="18.0" />
          </font>
       </Button>
       <Text fill="WHITE" layoutX="30.0" layoutY="592.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose the number of players:">
          <font>
-            <Font name="Gigi" size="64.0" />
+            <Font name="Newborough" size="64.0" />
          </font>
       </Text>
       <Button fx:id="two" layoutX="800.0" layoutY="550.0" mnemonicParsing="false" onAction="#two" prefHeight="50.0" prefWidth="100.0" text="2">
          <font>
-            <Font size="28.0" />
+            <Font name="Newborough" size="28.0" />
          </font>
       </Button>
       <Button fx:id="tree" layoutX="950.0" layoutY="550.0" mnemonicParsing="false" onAction="#tree" prefHeight="50.0" prefWidth="100.0" text="3">
          <font>
-            <Font size="28.0" />
+            <Font name="Newborough" size="28.0" />
          </font>
       </Button>
       <Button fx:id="four" layoutX="1100.0" layoutY="550.0" mnemonicParsing="false" onAction="#four" prefHeight="50.0" prefWidth="100.0" text="4">
          <font>
-            <Font size="28.0" />
+            <Font name="Newborough" size="28.0" />
          </font>
       </Button>
       <Button fx:id="enter" layoutX="600.0" layoutY="247.0" mnemonicParsing="false" onAction="#enter" prefHeight="50.0" prefWidth="100.0" text="Enter" />

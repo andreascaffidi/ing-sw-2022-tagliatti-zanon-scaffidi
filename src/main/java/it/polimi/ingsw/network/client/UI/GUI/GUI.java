@@ -312,7 +312,7 @@ public class GUI implements UI {
                         Text numOfCoins = new Text();
                         numOfCoins.setText(String.valueOf(reducedModelExpertMode.getCoins().get(reducedBoard.getPlayer())));
                         numOfCoins.setFill(Color.BLACK);
-                        numOfCoins.setFont(Font.font(40));
+                        numOfCoins.setFont(Font.font("Newborough", 40));
                         otherCoins.getChildren().add(numOfCoins);
                         otherCoins.setVisible(true);
                     }
@@ -452,13 +452,13 @@ public class GUI implements UI {
         Text numOfCoins = new Text();
         numOfCoins.setText(String.valueOf(reducedModelExpertMode.getCoins().get(client.getUsername())));
         numOfCoins.setFill(Color.BLACK);
-        numOfCoins.setFont(Font.font(40));
+        numOfCoins.setFont(Font.font("Newborough", 40));
         coins.getChildren().add(numOfCoins);
         coins.setVisible(true);
         //adding current effect
         Text currentEffectText = new Text();
         currentEffectText.setText(reducedModelExpertMode.getCurrentEffect());
-        currentEffectText.setFont(Font.font("Gigi", 30));
+        currentEffectText.setFont(Font.font("Newborough", 30));
         currentEffectText.setFill(Color.RED);
         currentEffect.getChildren().add(currentEffectText);
         currentEffect.setTextAlignment(TextAlignment.CENTER);

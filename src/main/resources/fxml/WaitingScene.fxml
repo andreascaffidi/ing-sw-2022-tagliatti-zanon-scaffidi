@@ -108,7 +108,7 @@
                <children>
                   <Text fx:id="gameMessage" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="317.8515625">
                      <font>
-                        <Font name="Gigi" size="40.0" />
+                        <Font name="Newborough" size="40.0" />
                      </font>
                   </Text>
                </children>
@@ -231,7 +231,7 @@
                   <Button layoutX="834.0" layoutY="-69.0" mnemonicParsing="false" onAction="#hideOtherBoard" prefHeight="52.0" prefWidth="91.0" styleClass="btn-primary" text="Close" />
                   <Text fx:id="otherPlayerName" fill="WHITE" layoutY="-18.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="780.5367431640625">
                      <font>
-                        <Font size="45.0" />
+                        <Font name="Newborough" size="45.0" />
                      </font>
                   </Text>
                </children>
@@ -250,7 +250,7 @@
             </ImageView>
             <Text fx:id="alertMessage" fill="WHITE" layoutX="422.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="441.3368797302246">
                <font>
-                  <Font size="34.0" />
+                  <Font name="Newborough" size="34.0" />
                </font>
             </Text>
          </children>
