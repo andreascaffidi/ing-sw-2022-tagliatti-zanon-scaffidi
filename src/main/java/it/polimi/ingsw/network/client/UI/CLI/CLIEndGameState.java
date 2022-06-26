@@ -27,18 +27,50 @@ public class CLIEndGameState extends AbstractClientState {
         ReducedModel reducedModel = client.getReducedModel();
         if (reducedModel.getBoards().size() == 4){
             int winningTeam = reducedModel.getBoard(client.getWinner()).getTagTeam();
+
             if (reducedModel.getBoard(client.getUsername()).getTagTeam() == winningTeam){
-                System.out.println("Congrats! =) Team " + winningTeam + " is the winner. Wow you are so intelligent! :)");
+                this.showVictory();
+                System.out.println("\"             Congratulations, your team won this game!          ");
             } else {
-                System.out.println("The winner is... not you! It's team " + winningTeam);
+                this.showGameOver();
+                System.out.println("                       And the winner is... not you! It's  " + CLI.Ansi.colorize("winningTeam" + String.valueOf(winningTeam),CLI.Ansi.BACKGROUND_GREEN));
             }
         } else {
             if(client.getUsername().equals(client.getWinner())){
-                System.out.println("Congrats! =) You are the winner. Wow you are so intelligent! :)");
+                this.showVictory();
+                System.out.println("               Congratulations, you won this game!              ");
             }else{
-                System.out.println("The winner is... not you! It's " + client.getWinner());
+                this.showGameOver();
+                System.out.println("                           And the winner is... not you! It's  " + CLI.Ansi.colorize(client.getWinner(),CLI.Ansi.BACKGROUND_GREEN));
             }
         }
         client.disconnectClient();
     }
+
+    private void showVictory(){
+        String gameOver =   "▄██   ▄    ▄██████▄  ███    █▄        ▄█     █▄   ▄█  ███▄▄▄▄   \n" +
+                            "███   ██▄ ███    ███ ███    ███      ███     ███ ███  ███▀▀▀██▄ \n" +
+                            "███▄▄▄███ ███    ███ ███    ███      ███     ███ ███▌ ███   ███ \n" +
+                            "▀▀▀▀▀▀███ ███    ███ ███    ███      ███     ███ ███▌ ███   ███ \n" +
+                            "▄██   ███ ███    ███ ███    ███      ███     ███ ███▌ ███   ███ \n" +
+                            "███   ███ ███    ███ ███    ███      ███     ███ ███  ███   ███ \n" +
+                            "███   ███ ███    ███ ███    ███      ███ ▄█▄ ███ ███  ███   ███ \n" +
+                            " ▀█████▀   ▀██████▀  ████████▀        ▀███▀███▀  █▀    ▀█   █▀  \n" +
+                            "                                                                \n" ;
+        System.out.println(CLI.Ansi.colorize(gameOver,CLI.Ansi.GREEN));
+    }
+
+    private void showGameOver(){
+        String gameOver =  "   ▄██████▄     ▄████████   ▄▄▄▄███▄▄▄▄      ▄████████       ▄██████▄   ▄█    █▄     ▄████████    ▄████████ \n" +
+                "  ███    ███   ███    ███ ▄██▀▀▀███▀▀▀██▄   ███    ███      ███    ███ ███    ███   ███    ███   ███    ███ \n" +
+                "  ███    █▀    ███    ███ ███   ███   ███   ███    █▀       ███    ███ ███    ███   ███    █▀    ███    ███ \n" +
+                " ▄███          ███    ███ ███   ███   ███  ▄███▄▄▄          ███    ███ ███    ███  ▄███▄▄▄      ▄███▄▄▄▄██▀ \n" +
+                "▀▀███ ████▄  ▀███████████ ███   ███   ███ ▀▀███▀▀▀          ███    ███ ███    ███ ▀▀███▀▀▀     ▀▀███▀▀▀▀▀   \n" +
+                "  ███    ███   ███    ███ ███   ███   ███   ███    █▄       ███    ███ ███    ███   ███    █▄  ▀███████████ \n" +
+                "  ███    ███   ███    ███ ███   ███   ███   ███    ███      ███    ███ ███    ███   ███    ███   ███    ███ \n" +
+                "  ████████▀    ███    █▀   ▀█   ███   █▀    ██████████       ▀██████▀   ▀██████▀    ██████████   ███    ███ \n" +
+                "                                                                                                 ███    ███ \n" ;
+        System.out.println(CLI.Ansi.colorize(gameOver,CLI.Ansi.RED));
+    }
+
 }
