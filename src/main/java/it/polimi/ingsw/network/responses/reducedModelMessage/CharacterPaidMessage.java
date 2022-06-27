@@ -35,15 +35,15 @@ public class CharacterPaidMessage implements ResponseMessage, ClientExecute {
         client.setReducedModel(reducedModel);
         if(!reducedModel.getCurrentPlayer().equals(client.getUsername()))
         {
-            client.setWaitingMessage(reducedModel.getCurrentPlayer() + " has payed " + character + " card.\n"
+            client.setWaitingMessage(reducedModel.getCurrentPlayer() + " has payed #" + character + " card.\n"
                     + "It's " + reducedModel.getCurrentPlayer() + " turn, waiting for yours...");
             client.changeState(ClientState.WAITING);
         }else {
             if (client.getUI() instanceof GUI){
                 client.changeState(client.getBackState());
-                client.getCurrentState().serverError("You have correctly payed " + character + " card");
+                client.getCurrentState().serverError("You have correctly payed #" + character + " card");
             } else {
-                System.out.println("You have correctly payed " + character + " card");
+                System.out.println("You have correctly payed #" + character + " card");
                 client.changeState(client.getBackState());
             }
         }

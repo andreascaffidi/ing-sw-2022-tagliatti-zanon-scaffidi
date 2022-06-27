@@ -247,7 +247,7 @@ public class CLI implements UI {
      */
     private static String characterToString(ReducedCharacter card){
         StringBuilder cardString = new StringBuilder();
-        cardString.append("#").append(card.getId() < 10 ? card.getId() + " " : card.getId()).append(" │ ").append(" ").append(card.getCost()).append(" │ ");
+        cardString.append(card.getName()).append(" │ ").append(" ").append(card.getCost()).append(" │ ");
         for(ColorS color : ColorS.values()){
             cardString.append(Ansi.colorize(String.valueOf(card.getStudents(color).size()), color.getAnsiEscapeCode())).append(" ");
         }
