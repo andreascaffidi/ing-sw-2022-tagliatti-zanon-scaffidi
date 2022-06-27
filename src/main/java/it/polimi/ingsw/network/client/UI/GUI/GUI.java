@@ -44,6 +44,7 @@ public class GUI implements UI {
 
     private Client client;
     private AbstractSceneController controller;
+    private String errorMessage;
 
     /**
      * starts the thread for JavaFX
@@ -103,6 +104,22 @@ public class GUI implements UI {
      */
     public AbstractSceneController getSceneController() {
         return controller;
+    }
+
+    /**
+     * gets an error message
+     * @return error message
+     */
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    /**
+     * sets an error message
+     * @param errorMessage error message
+     */
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     /**

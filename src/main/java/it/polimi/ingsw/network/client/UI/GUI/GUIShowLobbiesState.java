@@ -33,7 +33,7 @@ public class GUIShowLobbiesState extends AbstractClientState {
      */
     @Override
     public void serverError(String message) {
-        ((GUI)client.getUI()).getSceneController().alert(message);
+        ((GUI) client.getUI()).setErrorMessage(message);
     }
 
     /**
