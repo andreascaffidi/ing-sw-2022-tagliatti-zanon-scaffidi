@@ -29,8 +29,8 @@ public class CLICreateLobbyState extends AbstractClientState {
      */
     @Override
     public void render(){
-        CLI.CTA("Insert the game mode by typing "+CLI.Ansi.colorize("NORMAL", CLI.Ansi.UNDERLINE)+
-                " or "+CLI.Ansi.colorize("EXPERT", CLI.Ansi.UNDERLINE));
+        CLI.CTA("Insert the game mode by typing "+Ansi.colorize("NORMAL", Ansi.UNDERLINE)+
+                " or "+Ansi.colorize("EXPERT", Ansi.UNDERLINE));
         boolean valid = false;
         while (!valid){
             String rawInput = in.nextLine();

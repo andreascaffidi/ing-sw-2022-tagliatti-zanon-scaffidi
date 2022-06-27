@@ -16,7 +16,6 @@ import java.util.*;
  * CLI class (command line input UI)
  */
 public class CLI implements UI {
-    public static Ansi Ansi = new Ansi();
 
     /**
      * gets the client state based on the given ClientState enum
@@ -47,7 +46,8 @@ public class CLI implements UI {
      * Clears the screen by erasing all the content on the current cli. <br>
      * Actually is like if the users scrolls down until all the older printed message are hidden
      */
-    public static void clearScreen() {
+    public void clearScreen() {
+
         System.out.print("\033[H\033[2J");
         System.out.flush();
         try {
@@ -419,7 +419,7 @@ public class CLI implements UI {
      * @param string error string
      */
     public static void error(String string){
-        System.out.print("\t ️ "+Ansi.colorize("X "+string,Ansi.RED)+"\n");
+        System.out.print("\t️ "+Ansi.colorize("X "+string,Ansi.RED)+"\n");
     }
 
     /**

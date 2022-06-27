@@ -31,8 +31,8 @@ public class CLIMenuState extends AbstractClientState {
     public void render(){
         boolean valid = false;
         while (!valid){
-            CLI.CTA("Create or join a lobby by typing "+CLI.Ansi.colorize("CREATE",CLI.Ansi.UNDERLINE)+
-                    " or "+CLI.Ansi.colorize("JOIN",CLI.Ansi.UNDERLINE));
+            CLI.CTA("Create or join a lobby by typing "+Ansi.colorize("CREATE",Ansi.UNDERLINE)+
+                    " or "+Ansi.colorize("JOIN",Ansi.UNDERLINE));
             String rawInput = in.nextLine();
             String input = rawInput.toUpperCase();
             if (input.equals("JOIN")){

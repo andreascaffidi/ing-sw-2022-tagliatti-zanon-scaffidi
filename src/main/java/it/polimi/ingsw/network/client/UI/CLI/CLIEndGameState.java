@@ -33,7 +33,7 @@ public class CLIEndGameState extends AbstractClientState {
                 System.out.println("\"             Congratulations, your team won this game!          ");
             } else {
                 this.showGameOver();
-                System.out.println("                       And the winner is... not you! It's  " + CLI.Ansi.colorize("winningTeam" + String.valueOf(winningTeam),CLI.Ansi.BACKGROUND_GREEN));
+                System.out.println("                       And the winner is... not you! It's  " + Ansi.colorize("winningTeam" + winningTeam,Ansi.BACKGROUND_GREEN));
             }
         } else {
             if(client.getUsername().equals(client.getWinner())){
@@ -41,7 +41,7 @@ public class CLIEndGameState extends AbstractClientState {
                 System.out.println("               Congratulations, you won this game!              ");
             }else{
                 this.showGameOver();
-                System.out.println("                           And the winner is... not you! It's  " + CLI.Ansi.colorize(client.getWinner(),CLI.Ansi.BACKGROUND_GREEN));
+                System.out.println("                           And the winner is... not you! It's  " + Ansi.colorize(client.getWinner(),Ansi.BACKGROUND_GREEN));
             }
         }
         client.disconnectClient();
@@ -57,7 +57,7 @@ public class CLIEndGameState extends AbstractClientState {
                             "███   ███ ███    ███ ███    ███      ███ ▄█▄ ███ ███  ███   ███ \n" +
                             " ▀█████▀   ▀██████▀  ████████▀        ▀███▀███▀  █▀    ▀█   █▀  \n" +
                             "                                                                \n" ;
-        System.out.println(CLI.Ansi.colorize(gameOver,CLI.Ansi.GREEN));
+        System.out.println(Ansi.colorize(gameOver,Ansi.GREEN));
     }
 
     private void showGameOver(){
@@ -70,7 +70,7 @@ public class CLIEndGameState extends AbstractClientState {
                             "  ███    ███   ███    ███ ███   ███   ███   ███    ███      ███    ███ ███    ███   ███    ███   ███    ███ \n" +
                             "  ████████▀    ███    █▀   ▀█   ███   █▀    ██████████       ▀██████▀   ▀██████▀    ██████████   ███    ███ \n" +
                             "                                                                                                 ███    ███ \n" ;
-        System.out.println(CLI.Ansi.colorize(gameOver,CLI.Ansi.RED));
+        System.out.println(Ansi.colorize(gameOver,Ansi.RED));
     }
 
 }
