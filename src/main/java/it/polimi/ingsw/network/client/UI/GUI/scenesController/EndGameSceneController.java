@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client.UI.GUI.scenesController;
 
 import it.polimi.ingsw.network.client.reducedModel.ReducedModel;
 import javafx.fxml.FXML;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 /**
@@ -11,6 +12,9 @@ public class EndGameSceneController extends AbstractSceneController {
 
     @FXML
     private Text endGameText;
+
+    @FXML
+    private Pane endImage;
 
     /**
      * sets up the main components of the scene
@@ -22,15 +26,19 @@ public class EndGameSceneController extends AbstractSceneController {
         if (reducedModel.getBoards().size() == 4){
             int winningTeam = reducedModel.getBoard(client.getWinner()).getTagTeam();
             if (reducedModel.getBoard(client.getUsername()).getTagTeam() == winningTeam){
-                endGameText.setText("Congrats! =) Team " + winningTeam + " is the winner. Wow you are so intelligent! :)");
+                endGameText.setText("Congratulations, your team won this game!");
+                endImage.getStyleClass().add("winner");
             } else {
-                endGameText.setText("The winner is... not you! It's team " + winningTeam);
+                endGameText.setText("And the winner is... not you! It's team " + winningTeam);
+                endImage.getStyleClass().add("loser");
             }
         } else {
             if(client.getUsername().equals(client.getWinner())){
-                endGameText.setText("Congrats! =) You are the winner. Wow you are so intelligent! :)");
+                endGameText.setText("Congratulations, you won this game!");
+                endImage.getStyleClass().add("winner");
             }else{
-                endGameText.setText("The winner is... not you! It's " + client.getWinner());
+                endGameText.setText("And the winner is... not you! It's " + client.getWinner());
+                endImage.getStyleClass().add("loser");
             }
         }
     }

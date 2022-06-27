@@ -33,7 +33,7 @@ public class CLIEndGameState extends AbstractClientState {
                 System.out.println("\"             Congratulations, your team won this game!          ");
             } else {
                 this.showGameOver();
-                System.out.println("                       And the winner is... not you! It's  " + Ansi.colorize("winningTeam" + winningTeam,Ansi.BACKGROUND_GREEN));
+                System.out.println("                       And the winner is... not you! It's team " + Ansi.colorize(String.valueOf(winningTeam),Ansi.BACKGROUND_GREEN));
             }
         } else {
             if(client.getUsername().equals(client.getWinner())){

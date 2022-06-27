@@ -22,9 +22,6 @@ public class CreateLobbySceneController extends AbstractSceneController {
     @FXML
     private ToggleGroup gameMode;
 
-    private String mode = "normal";
-    private int num = 2;
-
     /**
      * shows an alert message
      * @param message message
@@ -38,9 +35,8 @@ public class CreateLobbySceneController extends AbstractSceneController {
      * sends the lobby setting (dispatched by clicking enter button)
      */
     public void enter(){
-        this.num = Integer.parseInt(players.getSelectedToggle().getUserData().toString());
-        this.mode = gameMode.getSelectedToggle().getUserData().toString();
-        System.out.print(this.num+" "+ this.mode);
-        client.send(new CreateLobbyMessage(client.getUsername(), this.mode.toUpperCase(), this.num));
+        int num = Integer.parseInt(players.getSelectedToggle().getUserData().toString());
+        String mode = gameMode.getSelectedToggle().getUserData().toString();
+        client.send(new CreateLobbyMessage(client.getUsername(), mode.toUpperCase(), num));
     }
 }
