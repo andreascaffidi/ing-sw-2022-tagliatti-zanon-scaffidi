@@ -24,10 +24,10 @@ public class CLIChooseCloudState extends AbstractClientState {
         in = new Scanner(System.in);
 
         CLI.showModel(client.getReducedModel());
-        System.out.print("It's your turn! Choose a cloud by typing the "+CLI.Ansi.colorize("ID", CLI.Ansi.UNDERLINE));
+        System.out.print("It's your turn! Choose a cloud by typing the "+Ansi.colorize("ID", Ansi.UNDERLINE));
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
             System.out.print("\nOr you can even pay a character card from the available, by typing "
-                    +CLI.Ansi.colorize("PAY CHARACTER", CLI.Ansi.UNDERLINE) +
+                    +Ansi.colorize("PAY CHARACTER", Ansi.UNDERLINE) +
                     " (you can pay a character card only one time per round)");
         }
         CLI.CTA("");

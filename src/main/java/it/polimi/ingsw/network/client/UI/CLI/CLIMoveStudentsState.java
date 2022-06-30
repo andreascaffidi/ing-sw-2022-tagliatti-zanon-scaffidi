@@ -31,7 +31,7 @@ public class CLIMoveStudentsState extends AbstractClientState {
                 " to an Island or your Dining room\n");
         if (client.getReducedModel() instanceof ReducedModelExpertMode){
             System.out.print("Or you can even pay a character card from the available, by typing "
-                    +CLI.Ansi.colorize("PAY CHARACTER", CLI.Ansi.UNDERLINE) +
+                    +Ansi.colorize("PAY CHARACTER", Ansi.UNDERLINE) +
                     " (you can pay a character card only one time per round)\n\n");
         }
     }
@@ -55,7 +55,7 @@ public class CLIMoveStudentsState extends AbstractClientState {
 
         while (choices > 0)
         {
-            CLI.CTA("Choose a student from your entrance by typing its "+CLI.Ansi.colorize("position", CLI.Ansi.UNDERLINE));
+            CLI.CTA("Choose a student from your entrance by typing its "+Ansi.colorize("position", Ansi.UNDERLINE));
 
             int studentChosen = 0;
             boolean exit = false;
@@ -88,8 +88,8 @@ public class CLIMoveStudentsState extends AbstractClientState {
             }
             if (!payCharacter) {
                 CLI.CTA("Choose a destination for this student by typing "+
-                        CLI.Ansi.colorize("DINING ROOM", CLI.Ansi.UNDERLINE) +" or a "+
-                        CLI.Ansi.colorize("number", CLI.Ansi.UNDERLINE) +" of an island");
+                        Ansi.colorize("DINING ROOM", Ansi.UNDERLINE) +" or a "+
+                        Ansi.colorize("number", Ansi.UNDERLINE) +" of an island");
 
                 String destination;
                 exit = false;

@@ -44,6 +44,7 @@ public class GUI implements UI {
 
     private Client client;
     private AbstractSceneController controller;
+    private String errorMessage;
 
     /**
      * starts the thread for JavaFX
@@ -103,6 +104,22 @@ public class GUI implements UI {
      */
     public AbstractSceneController getSceneController() {
         return controller;
+    }
+
+    /**
+     * gets an error message
+     * @return error message
+     */
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    /**
+     * sets an error message
+     * @param errorMessage error message
+     */
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     /**
@@ -520,7 +537,7 @@ public class GUI implements UI {
      */
     public void setAlertAnimation(Pane alert){
         FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(3000));
+        fadeTransition.setDuration(Duration.millis(5000));
         fadeTransition.setNode(alert);
         fadeTransition.setFromValue(1);
         fadeTransition.setToValue(0);

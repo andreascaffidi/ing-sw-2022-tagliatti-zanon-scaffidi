@@ -435,12 +435,29 @@ public class TableExpertMode extends Table {
 
         List<ReducedCharacter> reducedCharacters = new ArrayList<>();
         for (int character : this.characters.keySet()){
+
+            String characterName = null;
+            JSONParser jsonParser = new JSONParser();
+            try (InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("assets/characters.json"))))
+            {
+                Object obj = jsonParser.parse(reader);
+                JSONArray cards = (JSONArray) obj;
+                for (Object o : cards){
+                    JSONObject card =  (JSONObject) o;
+                    if (((Long)card.get("id")).intValue()==character){
+                        characterName = (String) card.get("name");
+                    }
+                }
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
+            }
+
             try {
                 List<Student> studentsOnCard = this.getCardWithStudents(character).getStudents();
                 reducedCharacters.add(new ReducedCharacter(character, this.characters.get(character),
-                        studentsOnCard.stream().map(Student::getColor).collect(Collectors.toList())));
+                        studentsOnCard.stream().map(Student::getColor).collect(Collectors.toList()), characterName));
             } catch (CardNotFoundException e){
-                reducedCharacters.add(new ReducedCharacter(character, this.characters.get(character), null));
+                reducedCharacters.add(new ReducedCharacter(character, this.characters.get(character), null, characterName));
             }
         }
 

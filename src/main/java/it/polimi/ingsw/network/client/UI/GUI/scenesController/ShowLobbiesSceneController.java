@@ -60,6 +60,9 @@ public class ShowLobbiesSceneController extends AbstractSceneController {
      */
     @Override
     public void setup() {
+        if ( ((GUI) client.getUI()).getErrorMessage() != null){
+            alert(((GUI) client.getUI()).getErrorMessage());
+        }
         availableLobbies = client.getAvailableLobbies();
         List<String> lobbies = new ArrayList<>();
         for (Lobby l : availableLobbies) {

@@ -64,7 +64,7 @@
                   <RadioButton maxWidth="108.0" minHeight="42.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="108.0" selected="true" text="Normal" userData="normal">
                      <styleClass>
                         <String fx:value="radio-team" />
-                        <String fx:value="radio-gamemode" />
+                        <String fx:value="radio-gameMode" />
                      </styleClass>
                      <toggleGroup>
                         <ToggleGroup fx:id="gameMode" />
@@ -73,7 +73,7 @@
                   <RadioButton maxWidth="108.0" minHeight="42.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="108.0" text="Expert" toggleGroup="$gameMode" userData="expert" GridPane.columnIndex="1">
                      <styleClass>
                         <String fx:value="radio-team" />
-                        <String fx:value="radio-gamemode" />
+                        <String fx:value="radio-gameMode" />
                      </styleClass>
                   </RadioButton>
                </children>

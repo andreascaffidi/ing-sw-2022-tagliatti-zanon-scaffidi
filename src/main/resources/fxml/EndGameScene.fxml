@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.network.client.UI.GUI.scenesController.EndGameSceneController">
-    <children>
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c6e4ff" height="400.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
-        <Text fx:id="endGameText" layoutX="211.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0">
-            <font>
-                <Font name="Newborough" size="28.0" />
-            </font>
-        </Text>
-    </children>
-</AnchorPane>
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.network.client.UI.GUI.scenesController.EndGameSceneController">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="background" stylesheets="@../css/style.css">
+         <children>
+            <Text fx:id="endGameText" fill="WHITE" layoutX="56.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="488.8765869140625">
+               <font>
+                  <Font name="Newborough" size="30.0" />
+               </font>
+            </Text>
+            <Pane fx:id="endImage" layoutY="40.0" prefHeight="202.0" prefWidth="460.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
