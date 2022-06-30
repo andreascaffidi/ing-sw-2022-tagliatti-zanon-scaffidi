@@ -48,6 +48,8 @@ mvn clean package spring-boot:repackage
 
 ## Run the JAR
 
+**NOTE THAT: if you use a pre-compiled JAR make sure the OS is the same of your PC.**
+
 #### Run the Server:
 
 In a terminal window, run:
