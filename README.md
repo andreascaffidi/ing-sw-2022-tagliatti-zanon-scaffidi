@@ -26,7 +26,7 @@
 Server components (Model and Controller) has been tested by writing unit tests for each class.
 The unit tests cover 98% of the lines of the Model and the 98% of the lines of the Controller.
 
-![Eriantys GUI running in Windows](.github/screenshots/eriantys_unit_tests.png "Eriantys GUI running in Windows")
+![Eriantys GUI running in Windows](screenshots/eriantys_unit_tests.PNG "Eriantys GUI running in Windows")
 
 ## Compile software and create JAR
 
@@ -66,14 +66,14 @@ In a terminal window, run:
 java -jar softeng-GC47-1.0-SNAPSHOT.jar gui
 ```
 
-![Eriantys GUI running in Windows](.github/screenshots/windows_eriantys_gui.png "Eriantys GUI running in Windows")
+![Eriantys GUI running in Windows](screenshots/windows_eriantys_gui.PNG "Eriantys GUI running in Windows")
 
 **For the CLI:**
 ```bash
 java -jar softeng-GC47-1.0-SNAPSHOT.jar cli
 ```
 
-![Eriantys CLI running in Windows](.github/screenshots/windows_eriantys_cli.png "Eriantys CLI running in Windows")
+![Eriantys CLI running in Windows](screenshots/windows_eriantys_cli.PNG "Eriantys CLI running in Windows")
 
 **NOTE THAT:**  
 By default Client creates the socket IP: `127.0.0.1` PORT: `7268`. To change these settings add respectively `IP_YOU_WANT_TO_USE` and `PORT_YOU_WANT_TO_USE` to arguments on command line.
