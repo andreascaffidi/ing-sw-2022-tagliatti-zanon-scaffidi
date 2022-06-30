@@ -463,11 +463,11 @@
 }
 
 .winner {
-    -fx-background-image: url(../img/Eriantys.png);
+    -fx-background-image: url(../img/Scenes/EndGame/winner.png);
     -fx-background-size: 100% 100%;
 }
 
 .loser {
-    -fx-background-image: url(../img/Eriantys.png);
+    -fx-background-image: url(../img/Scenes/EndGame/loser.png);
     -fx-background-size: 100% 100%;
 }
