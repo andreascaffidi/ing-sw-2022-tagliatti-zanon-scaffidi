@@ -47,6 +47,9 @@ public class CLIEndGameState extends AbstractClientState {
         client.disconnectClient();
     }
 
+    /**
+     * shows victory text
+     */
     private void showVictory(){
         String gameOver =   "▄██   ▄    ▄██████▄  ███    █▄        ▄█     █▄   ▄█  ███▄▄▄▄   \n" +
                             "███   ██▄ ███    ███ ███    ███      ███     ███ ███  ███▀▀▀██▄ \n" +
@@ -60,6 +63,9 @@ public class CLIEndGameState extends AbstractClientState {
         System.out.println(Ansi.colorize(gameOver,Ansi.GREEN));
     }
 
+    /**
+     * shows game over text
+     */
     private void showGameOver(){
         String gameOver =  "   ▄██████▄     ▄████████   ▄▄▄▄███▄▄▄▄      ▄████████       ▄██████▄   ▄█    █▄     ▄████████    ▄████████ \n" +
                             "  ███    ███   ███    ███ ▄██▀▀▀███▀▀▀██▄   ███    ███      ███    ███ ███    ███   ███    ███   ███    ███ \n" +
