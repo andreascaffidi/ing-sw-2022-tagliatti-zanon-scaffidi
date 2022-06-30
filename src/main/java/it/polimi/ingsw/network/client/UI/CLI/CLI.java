@@ -306,8 +306,11 @@ public class CLI implements UI {
             colorRow.append("║");
             boardStrArray[index++] = colorRow.toString();
         }
-
-        boardStrArray[9]  ="╠══════╩═══╦═══════════════════════╩═════╩════════╣";
+        if (coins == -1) {
+            boardStrArray[9] = "╠══════╩═══╦═══════════════════════╩═════╩════════╣";
+        }else{
+            boardStrArray[9] = "╠══════╩═══╦═══════════════════════╩════╦╩════════╣";
+        }
         boardStrArray[10] ="║ ENTRANCE ║";
         List<ColorS> students = b.getEntranceStudents();
         for (int i = 0; i < 9; i++) {
@@ -318,7 +321,11 @@ public class CLI implements UI {
         } else {
             boardStrArray[10] +=" ║ COINS "+coins+" ║";
         }
-        boardStrArray[11] ="╚══════════╩══════════════════════════════════════╝";
+        if (coins == -1) {
+            boardStrArray[11] ="╚══════════╩══════════════════════════════════════╝";
+        }else{
+            boardStrArray[11] ="╚══════════╩════════════════════════════╩═════════╝";
+        }
         return boardStrArray;
     }
 
