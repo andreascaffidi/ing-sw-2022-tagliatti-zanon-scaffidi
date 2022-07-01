@@ -48,7 +48,9 @@ mvn clean package spring-boot:repackage
 
 ## Run the JAR
 
-**NOTE THAT: if you use a pre-compiled JAR make sure the OS is the same of your PC.**
+**NOTE THAT:**   
+-If you use a pre-compiled JAR make sure the OS is the same of your PC.  
+-Colors in CLI may doesn't work on certain terminals, please refer to [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=it-it&gl=IT) for Windows and Terminal for macOS.
 
 #### Run the Server:
 
